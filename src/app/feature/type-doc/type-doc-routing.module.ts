@@ -1,0 +1,18 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { TypeDocComponent } from './type-doc.component';
+import { ListDocTypeComponent } from './list-doc-type/list-doc-type.component';
+
+const routes: Routes = [{ path: '', component: TypeDocComponent,children:
+  [
+    {path:'',pathMatch:'full',redirectTo:'list'},
+    {path:'list',component:ListDocTypeComponent},
+
+  ] 
+}];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class TypeDocRoutingModule { }

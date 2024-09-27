@@ -1,0 +1,10 @@
+@import "~primeicons/primeicons.css";
+
+:host ::ng-deep .acceptButton {
+    margin-left: 10px; /* Essayer avec !important si nécessaire */
+    border-color: rgb(249 250 251);
+    background-attachment: fixed;
+}
+.cherch input{
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);}

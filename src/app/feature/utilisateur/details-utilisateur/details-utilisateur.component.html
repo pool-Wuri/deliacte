@@ -1,48 +1,37 @@
 <h1>Details User</h1>
-<div>
-    <div>
-        <p-divider>
-            <div class="inline-flex align-items-center">
-                <i class="pi pi-info-circle user"></i>
-                <b>Infos utilisateur</b>
-            </div>
-        </p-divider>
-    </div>
-</div>
-<div class="card">
-    <div class="grid" style="display: inline-flex;">
+
+
+<p-splitter [style]="{'height': '300px'}">
+    <ng-template pTemplate>
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle">Nom:</label>
-                    <label for=""  class="propertyTitle">Prenom:</label>
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Prenom:</label>
 
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  class="propertyValue" > {{utilisateur.firstName}}</label>
-                    <label for=""  class="propertyValue" > {{utilisateur.lastName}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{utilisateur.firstName}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{utilisateur.lastName}}</label>
 
                 </div>
             </div>
-        </div>
-        <div class="col-3" >
-            <p-divider layout="vertical">
-                <b>OR</b>
-            </p-divider>
-        </div>
+        </div>    
+    </ng-template>
+    <ng-template pTemplate>
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle">Email:</label>
-                    <label for=""  class="propertyTitle">Organisation:</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Email:</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Organisation:</label>
                     
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  class="propertyValue" > {{utilisateur.email}}</label>
-                    <label for=""  class="propertyValue" > {{utilisateur.userOrganisation.name}}</label>
+                    <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{utilisateur.email}}</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyValue" > {{utilisateur.userOrganisation.name}}</label>
 
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </ng-template>
+</p-splitter>
