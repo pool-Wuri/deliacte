@@ -49,12 +49,12 @@
                 <!--th style="width: 4rem,">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th-->
-                <th>Nom</th>
+                <th >Nom</th>
                 <th >Prenom</th>
                 <th >Email</th>
                 <th >Organisation</th>
                 <th >Role</th>
-                <th style="width: 350px;">Action</th>
+                <th style="width: 350px;">Actions</th>
             </tr>
             
         </ng-template>
@@ -84,18 +84,18 @@
                     class=" bg-white from-green-500 via-green-600 t
                     o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
                     font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center me-1 mb-1  pi pi-eye"></button>
+                    text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
 
                     <button type="button" title="Modifier"  (click)="editUser(utilisateur)" style="background-color: #060;"
                     class="text-white from-green-400 via-green-500 
                     to-green-600 hover:bg-gradient-to-br focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center me-1 mb-1 pi pi-pencil"></button>
+                    text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
 
                     <button  (click)="assigne(utilisateur)" type="button"  title="Assigner" style="background-color: #e8e400;"
                         class="text-white  from-teal-400 via-teal-500 to-teal-600 
                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center me-1 mb-1  pi pi-arrow-right" 
+                        text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" 
                        >
                     </button>
                     <button  (click)="revoquerAdmin(utilisateur)" type="button" style="color: #060;" title="revoquer" 
@@ -103,13 +103,13 @@
                     to-teal-600 hover:bg-green-700 focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center 
-                    me-1 mb-1  pi pi-arrow-left" 
+                    mx-0 pi pi-arrow-left" 
                     ></button>
 
                     <button type="button" (click)="deleteUser(utilisateur)" title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
                     via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center 
-                    me-1 mb-1  pi pi-eraser">
+                    mx-0 pi pi-eraser">
                     </button>
                    
                 </td>
@@ -188,7 +188,7 @@
                             <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionner un rôle</label>
                             <select id="role" name="role" [(ngModel)]="utilisateur1.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option value="" disabled selected>Sélectionner un rôle</option>
-                                <option *ngFor="let role of roleUser" [value]="role">{{role}}</option>
+                                <option *ngFor="let role of roleUser" [value]="role.value">{{role.label}}</option>
                             </select>
                                                
                         </div>
@@ -224,7 +224,7 @@
 </div>
 
 
-<div id="assigner" 
+<div 
         [ngClass]="{'hidden': !assignModal}" 
         tabindex="-1" 
         [attr.aria-hidden]="!assignModal" 
@@ -259,7 +259,7 @@
                         <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
                         <select id="role" [(ngModel)]="userToAssign.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option selected>Role</option>
-                        <option *ngFor="let role of roleUser" [value]="role">{{role}}</option>
+                        <option *ngFor="let role of roleUser" [value]="role.value">{{role.label}}</option>
                         </select>                        
                     </div>
                     <div>

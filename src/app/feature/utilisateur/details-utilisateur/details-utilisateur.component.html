@@ -11,7 +11,10 @@
 
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{utilisateur.firstName}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="utilisateur.email===''"> </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="utilisateur.email!==''"> {{utilisateur.firstName}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="utilisateur.lastName===''"> ""</label>
+
                     <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{utilisateur.lastName}}</label>
 
                 </div>
@@ -28,7 +31,8 @@
                 </div>
                 <div class="valueWrap" >
                     <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{utilisateur.email}}</label>
-                    <label for=""  style="margin-top: 10px;" class="propertyValue" > {{utilisateur.userOrganisation.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="utilisateur.userOrganisation===undefined">" "</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyValue"   *ngIf="utilisateur.userOrganisation!==undefined"> {{utilisateur.userOrganisation.name}}</label>
 
                 </div>
             </div>

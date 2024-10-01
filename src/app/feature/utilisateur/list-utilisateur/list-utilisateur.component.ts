@@ -26,7 +26,7 @@ export class ListUtilisateurComponent {
   userToAssign=new User;
 userselect:any[] | undefined  ;
 organisation=new Organisation;
-roleUser:string[]=["ORG_ADMIN","PROCEDURE_MANAGER","SUPER_ADMIN"]
+roleUser=[{value:"ORG_ADMIN",label:"Administrateur d'organisation"},{value:"PROCEDURE_MANAGER",label:"Manager de procedure"},{value:"SUPER_ADMIN",label:"super admin"}]
 isModalOpen: boolean = false;
 modalVisible: boolean = false;
 assignModal:boolean=false;
@@ -50,7 +50,7 @@ soumettre:boolean=false;
   this.userService.search_users().subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result+"User total");
+     // console.log(result+"User total");
       this.utilisateurs=result;
     },
     error:(error)=>{
@@ -141,8 +141,6 @@ searchOrganisation(){
   this.addUser=false;
   this.editbutt=true;
   this.title="Modifier";
-  if(this.utilisateur1.role="Administrateur d'Organisation")
-    this.utilisateur1.role="ORG_ADMIN"
   console.log(this.utilisateur1)
  }
 
@@ -236,7 +234,6 @@ this.router.navigate(['/deliacte/utilisateur/details',user.id])
 }
 
 deleteUser(user:User){
-
  this.confirmationService.confirm({
     message: 'Voulez-vous vraiment supprimer cet utilisateur?',
     header: 'Suppression',
