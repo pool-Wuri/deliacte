@@ -4,7 +4,7 @@ import { SigninComponent } from './feature/authentification/signin/signin.compon
 import { BaseLayoutComponent } from './feature/feature/base-layout/base-layout.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'dialecte' }, // Redirection vers 'dialecte'
+  { path: '', pathMatch: 'full', redirectTo: 'deliacte' }, // Redirection vers 'dialecte'
 
   { 
     path: 'deliacte/login',
