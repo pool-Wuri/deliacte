@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<div class="card"> 
+
     <h1>Liste des type d'opération</h1>
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
@@ -25,6 +25,7 @@
             </button>
         </ng-template>
     </p-toolbar>
+    <div class="card"> 
     <p-table #dt  [value]="typeoperations" styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="typeoperationselect"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" dataKey="id"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
@@ -46,10 +47,9 @@
 
             <ng-template pTemplate="header">
                 <tr class="tableEnt">
-                    
                     <th>Nom</th>
                     <th >Description</th>
-                    <th style="width: 300px;" >Action</th>
+                    <th style="width: 350px;" >Action</th>
                 </tr>
                 
             </ng-template>
@@ -78,10 +78,10 @@
                         text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
 
                         <button type="button" (click)="deleteTypeoperation(typeoperation)" title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
-                    via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center 
-                    mx-0 pi pi-eraser">
-                    </button>
+                        via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center 
+                        mx-0 pi pi-eraser">
+                       </button>
 
                     </td>
                 </tr>
