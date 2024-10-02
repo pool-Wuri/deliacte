@@ -1,6 +1,6 @@
 <p-toast></p-toast>
 <div class="card"> 
-    <h1>Liste des organisations</h1>
+    <h1>Liste des type d'opération</h1>
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button type="button" 
@@ -18,17 +18,17 @@
 
         <ng-template pTemplate="right">
             <button    style="background-color: #060;" (click)="ajouter()"
-        class="text-white  from-green-400 via-green-500 to-green-600 
-        focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-        dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
-            Ajouter
-        </button>
+            class="text-white  from-green-400 via-green-500 to-green-600 
+            focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+            dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
+                Ajouter
+            </button>
         </ng-template>
     </p-toolbar>
-    <p-table #dt  [value]="organisations" styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="organisationselect"
+    <p-table #dt  [value]="typeoperations" styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="typeoperationselect"
             [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" dataKey="id"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="['nom','parentOrganisationId','description']">
+             [globalFilterFields]="['nom','description']">
             
                 <ng-template pTemplate="caption">
                     <div class="flex">
@@ -48,37 +48,33 @@
                 <tr class="tableEnt">
                     
                     <th>Nom</th>
-                    <th >Organisation parent</th>
                     <th >Description</th>
                     <th style="width: 300px;" >Action</th>
                 </tr>
                 
             </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-organisation>
+            <ng-template id="bodi" pTemplate="body" let-typeoperation>
                 <tr class="p-selectable-row tableContenu">
                    
                     <td>
-                       {{organisation.name}}
+                       {{typeoperation.name}}
                     </td>
+                   
                     <td>
-                        {{organisation.parentOrganisation?.name}}
-                    </td>
-                    
-                    <td>
-                        {{organisation.description}}
+                        {{typeoperation.description}}
                     </td> 
                     
                     <td>
-                        <button type="button"  (click)="detailsOrganisation(organisation)" title="visualiser"
+                        <button type="button"  (click)="detailsTypeoperation(typeoperation)" title="visualiser"
                         class="text-green-400 bg-white from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 pi pi-eye"></button>
-                        <button type="button" title="Modifier"  (click)="editOrganisation(organisation)"
+                        <button type="button" title="Modifier"  (click)="editTypeoperation(typeoperation)"
                         class="text-white bg-gradient-to-r from-green-400 via-green-500 
                         to-green-600 hover:bg-gradient-to-br focus:ring-4 
                         focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 
                         shadow-lg shadow-white-500/50 dark:shadow-lg dark:shadow-green-800/80 
                         font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 pi pi-pencil"></button>
                         
-                        <button type="button" (click)="deleteOrganisation(organisation)" class="text-white bg-gradient-to-r from-red-400 
+                        <button type="button" (click)="deleteTypeoperation(typeoperation)" class="text-white bg-gradient-to-r from-red-400 
                         via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 
                         focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 
                         shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 
@@ -90,13 +86,13 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="8">organisation non trouvé</td>
+                    <td colspan="8">Type opération non trouvé</td>
                 </tr>
             </ng-template>
      </p-table>
 </div>
 
-<div id="addOrganisation" 
+<div id="addTypeOperation" 
      [ngClass]="{'hidden': !modalVisible}" 
      tabindex="-1" 
      [attr.aria-hidden]="!modalVisible" 
@@ -122,27 +118,17 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">             
                 <form>
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                    <div class="grid gap-6 mb-6 md:grid-cols-0">
                         <div>
                             <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="nom" name="nom" [(ngModel)]="organisation1.name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le nom de l'organisation" required />
+                            <input type="text" id="nom" name="nom" [(ngModel)]="typeoperation1.name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le nom de l'organisation" required />
                         </div>
                         
-                        <div>
-                            <label for="parentOrganisation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation parent</label>
-                            <select id="parentOrganisation" name="parentOrganisation" [(ngModel)]="organisation1.parentOrganisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected>Organisation parent</option>
-                                <option *ngFor="let organisation of organisations" [value]="organisation.id">{{organisation.name}}</option>
-                            </select>        
-                        </div> 
-
-                        
-                        
                     </div>
-                    <div class="grid gap-12 mb-12 md:grid-cols-0">
+                    <div class="grid gap-6 mb-6 md:grid-cols-0">
                         <div>
                             <label for="description" class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <textarea id="description" name="description" [(ngModel)]="organisation1.description" 
+                            <textarea id="description" name="description" [(ngModel)]="typeoperation1.description" 
                                 rows="4" cols="50"
                                 class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                 placeholder="Entrer la description" required></textarea>
@@ -151,11 +137,9 @@
                 </form>
             </div>
 
-            
-
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" *ngIf="addOrganisation" (click)="saveOrganisation()"
+                <button type="button" *ngIf="addTypeOperation" (click)="saveTypeoperation()"
                 class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
 
                 <button type="button" *ngIf="editbutt" (click)="validerModif()"

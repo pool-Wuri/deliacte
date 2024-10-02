@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { TypeOperationRoutingModule } from './type-operation-routing.module';
+import { TypeOperationComponent } from './type-operation.component';
+import { ListTypeOperationComponent } from './list-type-operation/list-type-operation.component';
 import { ConfirmationService, MessageService } from 'primeng/api'; // Ajoute ConfirmationService et MessageService
-import { OrganisationsRoutingModule } from './organisations-routing.module';
-import { OrganisationsComponent } from './organisations.component';
-import { ListOrganisationsComponent } from './list-organisations/list-organisations.component';
 import {ToastModule} from 'primeng/toast';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ButtonModule} from 'primeng/button';
@@ -23,21 +24,22 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import {DividerModule} from 'primeng/divider';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
-import { DetailsOrganisationsComponent } from './details-organisations/details-organisations.component';
+import { DetailsTypeoperationComponent } from './details-typeoperation/details-typeoperation.component';
+
 
 @NgModule({
   declarations: [
-    OrganisationsComponent,
-    ListOrganisationsComponent,
-    DetailsOrganisationsComponent
+    TypeOperationComponent,
+    ListTypeOperationComponent,
+    DetailsTypeoperationComponent
   ],
   imports: [
     CommonModule,
+    TypeOperationRoutingModule,
     ConfirmDialogModule,
     DividerModule,
     InputTextareaModule,
     OverlayPanelModule,
-    OrganisationsRoutingModule,
     ToastModule,
     ToolbarModule,
     ButtonModule,
@@ -61,4 +63,4 @@ import { DetailsOrganisationsComponent } from './details-organisations/details-o
     MessageService // Add the ConfirmationService here
   ]
 })
-export class OrganisationsModule { }
+export class TypeOperationModule { }

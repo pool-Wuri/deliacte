@@ -4,21 +4,20 @@ import { Observable, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 import { catchError } from 'rxjs/operators';
 
-const ORGANISATION_API =environment.apiUrl +'/organisations';
+const TYPEOPERATION_API =environment.apiUrl +'/type-operations';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrganisationService {
+export class TypeOperationService {
 
   httpParams: HttpHeaders | undefined;
   constructor(private http: HttpClient,) { }
 
 
-
-  public search_Organisations(filterParam =''): Observable<any> {
+  public search_Typeoperation(filterParam =''): Observable<any> {
     return this.http
-    .get(ORGANISATION_API , {
+    .get(TYPEOPERATION_API , {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -33,9 +32,8 @@ export class OrganisationService {
       );
   }
 
-
-  public saveOrganisation (organisation:any): Observable<any>{
-    return this.http.post<any>(ORGANISATION_API,organisation).pipe(
+  public saveTypeoperation (TypeOperation:any): Observable<any>{
+    return this.http.post<any>(TYPEOPERATION_API,TypeOperation).pipe(
       tap((data)=>{
         console.log(data);
       })
@@ -43,9 +41,9 @@ export class OrganisationService {
 
   }
 
-  public get_Organisation(id?:number): Observable<any> {
+  public get_Typeoperation(id?:number): Observable<any> {
     return this.http
-      .get(ORGANISATION_API+ '/' + id, {
+      .get(TYPEOPERATION_API+ '/' + id, {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -60,9 +58,9 @@ export class OrganisationService {
       );
   }
 
-  public updateOrganisation(organisation:any,id?:number):Observable<any>{
+  public updateTypeoperation(TypeOperation:any,id?:number):Observable<any>{
     return this.http
-          .put<any>(ORGANISATION_API+'?'+id, organisation)
+          .put<any>(TYPEOPERATION_API+'?'+id, TypeOperation)
           .pipe(
             tap((data) => {
               console.log('api.service > update_organisation> tap :', data);
@@ -71,9 +69,9 @@ export class OrganisationService {
   }
 
 
-  public delete_organisation(organisationId?: number): Observable<any> {
+  public delete_Typeoperation(TypeOperationId?: number): Observable<any> {
     return this.http
-      .delete(ORGANISATION_API + '/' + organisationId, {
+      .delete(TYPEOPERATION_API + '/' + TypeOperationId, {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -87,7 +85,4 @@ export class OrganisationService {
         )
       );
   }
-  
 }
-
-

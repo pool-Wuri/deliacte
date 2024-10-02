@@ -4,7 +4,7 @@ import { SigninComponent } from './feature/authentification/signin/signin.compon
 import { BaseLayoutComponent } from './feature/feature/base-layout/base-layout.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'dialecte' }, // Redirection vers 'dialecte'
+  { path: '', pathMatch: 'full', redirectTo: 'deliacte' }, // Redirection vers 'dialecte'
 
   { 
     path: 'deliacte/login',
@@ -35,8 +35,12 @@ const routes: Routes = [
       { path: 'procedure', 
         loadChildren: () => import('./feature/procedure/procedure.module').then(m => m.ProcedureModule) 
       },
-      { path: 'typeDoc', loadChildren: () => import('./feature/type-doc/type-doc.module').then(m => m.TypeDocModule) },
-
+      { path: 'typeDoc', loadChildren: () => import('./feature/type-doc/type-doc.module').then(m => m.TypeDocModule)
+        
+       },
+      { path: 'type-operation', 
+        loadChildren: () => import('./feature/type-operation/type-operation.module').then(m => m.TypeOperationModule) 
+      },
       
     ]
   },

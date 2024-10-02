@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Route, ActivatedRoute } from '@angular/router';
+import { OrganisationService } from 'src/app/core/services/organisation.service';
+import { Organisation } from 'src/app/core/models/organisation.model';
+import { Result } from 'postcss';
 
 @Component({
   selector: 'app-details-organisations',
@@ -9,7 +12,9 @@ import { Route, ActivatedRoute } from '@angular/router';
 export class DetailsOrganisationsComponent {
 
   id:number | undefined;
-  constructor(private route:ActivatedRoute){
+  organisation=new Organisation;
+  constructor(private route:ActivatedRoute, 
+    private organisationService:OrganisationService){
 
 }
 
@@ -17,7 +22,22 @@ ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 
     console.log(this.id)
+    this.getOrganisation(this.id)
    }
   );
 }
+
+getOrganisation(id?:number){
+  this.organisationService.get_Organisation(id).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result)
+      this.organisation=result;
+    },
+    error:(error)=>{
+      console.log(error)
+    }
+  })
+}
+
 }

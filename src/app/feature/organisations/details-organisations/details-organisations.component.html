@@ -2,25 +2,36 @@
 
 <div class="card">
     <div class="grid" style="display: inline-flex;">
-        <div class="col-5 flex align-items-center justify-content-center">
+        <div class="col-6 flex align-items-center justify-content-center">
             <div class="p-fluid">
                 <div class="titleWrap">
+                    <label for=""  class="propertyTitle">Nom:</label>
+                    <label for=""  class="propertyTitle">Organisation parent:</label>
+
                 </div>
                 <div class="valueWrap" >
+                    <label for=""  class="propertyValue" > {{organisation.name}}</label>
+                    <label for=""  class="propertyValue" > {{organisation.parentOrganisation?.name}}</label>
+
                 </div>
             </div>
         </div>
         <div class="col-2" >
             <p-divider layout="vertical">
-                <b>Nom : Ministère de la Transition Digital</b>
+                <b></b>
             </p-divider>
         </div>
-        <div class="col-2" >
-            <p-divider layout="vertical">
-                <b>Parent : MTDPCE</b>
-            </p-divider>
-        </div>
-        <div class="col-5 flex align-items-center justify-content-center" style="background-color: azure;">
+        <div class="col-6 flex align-items-center justify-content-center">
+            <div class="p-fluid">
+                <div class="titleWrap">
+                    <label for=""  class="propertyTitle">Description:</label>
+                    
+                </div>
+                <div class="valueWrap" >
+                    <label for=""  class="propertyValue" > {{organisation.description}}</label>
+                    
+                </div>
+            </div>
         </div>
     </div>
 </div>
