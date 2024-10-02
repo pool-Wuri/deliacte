@@ -71,7 +71,8 @@
                     <td>
                         <button type="button"  (click)="detailsOrganisation(organisation)" title="visualiser"
                         class="text-green-400 bg-white from-green-500 via-green-600 to-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 pi pi-eye"></button>
-                        <button type="button" title="Modifier"  (click)="editOrganisation(organisation)"
+                        
+                        <button type="button" title="Modifier" style="background-color: #060;"  (click)="editOrganisation(organisation)"
                         class="text-white bg-gradient-to-r from-green-400 via-green-500 
                         to-green-600 hover:bg-gradient-to-br focus:ring-4 
                         focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 
@@ -155,10 +156,10 @@
 
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" *ngIf="addOrganisation" (click)="saveOrganisation()"
+                <button type="button" *ngIf="addOrganisation" style="background-color: #060;" (click)="saveOrganisation()"
                 class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
 
-                <button type="button" *ngIf="editbutt" (click)="validerModif()"
+                <button type="button" *ngIf="editbutt" style="background-color: #060;" (click)="validerModif()"
                 class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
                 
                 <button (click)="fermerModal()"  type="button" 
