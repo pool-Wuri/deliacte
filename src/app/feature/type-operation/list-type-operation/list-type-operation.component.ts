@@ -61,8 +61,8 @@ export class ListTypeOperationComponent implements OnInit {
     this.addTypeOperation = true;
     this.editbutt = false;
     this.title = 'Formulaire d\'ajout d\'un type d\'opération ';
-    this.typeoperation1 ={};
-    this.searchtypeoperation();
+   // this.typeoperation1 ={};
+   // this.searchtypeoperation();
 
    }
 
