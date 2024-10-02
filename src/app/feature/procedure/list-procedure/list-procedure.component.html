@@ -1,1 +1,183 @@
-<p>list-procedure works!</p>
+<p-toast></p-toast>
+<div > 
+    <h1>Liste des procedures</h1>
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button type="button" 
+            class="text-red-700 hover:text-white border border-red-700 
+            hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
+            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
+            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Importer</button>
+            <button type="button" 
+            class="text-red-700 hover:text-white border border-red-700 
+            hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
+            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
+            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Exporter</button> 
+        </ng-template>
+
+        <ng-template pTemplate="right">
+            <button  (click)="ajouter()"  style="background-color: #060;"
+            class="text-white  from-green-400 via-green-500 to-green-600 
+            focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+            dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
+                Ajouter
+            </button>
+        </ng-template>
+    </p-toolbar>
+    <div class="card">
+        <p-table #dt   styleClass="p-datatable-customers" [rowHover]="true" 
+        [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [globalFilterFields]="['firstName','lastName','email']">
+        
+         <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto cherch">
+                    <i class="pi pi-search" ></i>
+                    <input 
+                        pInputText 
+                        type="text" 
+                        #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder="      Rechercher" />
+                </span>
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="header">
+            <tr class="tableEnt">
+                <!--th style="width: 4rem,">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th-->
+                <th >Nom</th>
+                <th >Organisation</th>
+                <th >Statut</th>
+                <th style="width: 350px;">Actions</th>
+            </tr>
+            
+        </ng-template>
+        <ng-template id="bodi" pTemplate="body" >
+            <tr class="p-selectable-row tableContenu">
+                <!--td>
+                    <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                </td-->
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <button type="button"   style="color: #060;" title="visualiser"
+                    class=" bg-white from-green-500 via-green-600 t
+                    o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                    font-medium rounded-full 
+                    text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
+
+                    <button type="button" title="Modifier"   style="background-color: #060;"
+                    class="text-white from-green-400 via-green-500 
+                    to-green-600 hover:bg-gradient-to-br focus:ring-4 
+                    focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                    text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
+
+                    
+                    <button   type="button" style="color: #060;" title="revoquer" 
+                    class="bg-white from-teal-400 via-teal-500 
+                    to-teal-600 hover:bg-green-700 focus:ring-4 
+                    focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                    text-sm p-2.5 text-center inline-flex items-center 
+                    mx-0 pi pi-arrow-left" 
+                    ></button>
+
+                    <button type="button"  title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
+                    via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                    text-sm p-2.5 text-center inline-flex items-center 
+                    mx-0 pi pi-eraser">
+                    </button>
+                   
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">Aucune procedure trouvée</td>
+            </tr>
+        </ng-template>
+ </p-table>
+    </div>
+   
+</div>
+
+<div id="adduser" 
+     [ngClass]="{'hidden': !addboutton}" 
+     tabindex="-1" 
+     [attr.aria-hidden]="!addboutton" 
+     class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
+
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    {{title}}
+                </h3>
+                <button type="button" (click)="fermerModal()"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
+                rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">             
+                <form>
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                            <input type="text" id="firstName" name="firstName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+                            <!--div >
+                                <div class="text-rose-700">Ce champ est obligatoire</div>
+                              </div-->
+                        </div>
+                        <div>
+                            <label for="organisation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
+                            <select id="userOrganisationId" name="userOrganisationId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Organisation</option>
+                                <option ></option>
+    
+                            </select>                      
+                        </div>
+                        <div>
+                            <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                            
+                        </div>
+                        <div>
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                            <select id="userOrganisationId" name="userOrganisationId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>Statut</option>
+                                <option ></option>
+    
+                            </select>     
+                        </div>                          
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button type="button" *ngIf="addUser"  style="background-color: #060;"
+                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+                <button type="button" *ngIf="editbutt" style="background-color: #060;"
+                class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
+
+                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"
+                class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
