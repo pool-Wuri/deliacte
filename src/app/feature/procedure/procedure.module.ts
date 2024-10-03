@@ -25,12 +25,14 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DetailsProcedureComponent } from './details-procedure/details-procedure.component';
 
 
 @NgModule({
   declarations: [
     ProcedureComponent,
-    ListProcedureComponent
+    ListProcedureComponent,
+    DetailsProcedureComponent
   ],
   imports: [
     CommonModule,

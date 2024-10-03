@@ -25,7 +25,7 @@
         </ng-template>
     </p-toolbar>
     <div class="card">
-        <p-table #dt   styleClass="p-datatable-customers" [rowHover]="true" 
+        <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
         [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
         [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
          [globalFilterFields]="['firstName','lastName','email']">
@@ -56,40 +56,42 @@
             </tr>
             
         </ng-template>
-        <ng-template id="bodi" pTemplate="body" >
+        <ng-template id="bodi" pTemplate="body" let-procedure>
             <tr class="p-selectable-row tableContenu">
                 <!--td>
                     <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
                 </td-->
                 <td>
+                    {{procedure.name}}
                 </td>
                 <td>
+                    {{procedure.organisation.name}}
+
                 </td>
                 <td>
+                    {{procedure.status}}
+
                 </td>
                 <td>
-                    <button type="button"   style="color: #060;" title="visualiser"
+                    <button type="button"   style="color: #060;" title="visualiser" (click)="detailsProcedure(procedure)"
                     class=" bg-white from-green-500 via-green-600 t
                     o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
                     font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
 
-                    <button type="button" title="Modifier"   style="background-color: #060;"
+                    <button type="button" title="Modifier"  (click)="editProcedure(procedure)" style="background-color: #060;"
                     class="text-white from-green-400 via-green-500 
                     to-green-600 hover:bg-gradient-to-br focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
 
-                    
-                    <button   type="button" style="color: #060;" title="revoquer" 
-                    class="bg-white from-teal-400 via-teal-500 
-                    to-teal-600 hover:bg-green-700 focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center 
-                    mx-0 pi pi-arrow-left" 
-                    ></button>
+                    <button type="button" title="Publier"  (click)="publier(procedure)"style="background-color: #e8e400;"
+                    class="text-white  from-teal-400 via-teal-500 to-teal-600 
+                   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                    text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button>
 
-                    <button type="button"  title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
+
+                    <button type="button"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
                     via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center 
                     mx-0 pi pi-eraser">
@@ -136,30 +138,36 @@
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="firstName" name="firstName"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
-                            <!--div >
-                                <div class="text-rose-700">Ce champ est obligatoire</div>
-                              </div-->
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                            <input type="text" id="name" name="name" [(ngModel)]="procedure.name" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500" placeholder="nom" />
+                           
                         </div>
                         <div>
-                            <label for="organisation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
-                            <select id="userOrganisationId" name="userOrganisationId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="organisationId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
+                            <select id="organisationId" name="organisationId" [(ngModel)]="procedure.organisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Organisation</option>
-                                <option ></option>
+                                <option *ngFor="let organi of organisations" [value]="organi.id">{{organi.name}}</option>
     
                             </select>                      
                         </div>
                         <div>
-                            <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                            
-                        </div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                           
+                            <input type="text" id="description" name="description" [(ngModel)]="procedure.description" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500" placeholder="description"/>
+                        </div> 
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
-                            <select id="userOrganisationId" name="userOrganisationId"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
+                            <select id="status" name="statut"  [(ngModel)]="procedure.status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Statut</option>
-                                <option ></option>
+                                <option *ngFor="let statut of statuts" [value]="statut.value">{{statut.label}}</option>
     
                             </select>     
                         </div>                          
@@ -169,15 +177,17 @@
 
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" *ngIf="addUser"  style="background-color: #060;"
+                <button type="button" *ngIf="addUser"  style="background-color: #060;" (click)="saveProcedure()"
                 class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
 
-                <button type="button" *ngIf="editbutt" style="background-color: #060;"
+                <button type="button" *ngIf="editbutt" style="background-color: #060;" (click)="validerModif()"
                 class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
 
-                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"
+                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" (click)="deleteProcedure(procedure)"
                 class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
             </div>
         </div>
     </div>
 </div>
+
+<p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

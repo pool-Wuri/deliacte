@@ -4,8 +4,9 @@ export class Procedure{
         public description?:string,
         public name?:string,
         public organisation?:any,
-        public status?:string
-
+        public status?:string,
+        public organisationId?:number,
+        public isActive?:boolean,
 
     ){}
 }
