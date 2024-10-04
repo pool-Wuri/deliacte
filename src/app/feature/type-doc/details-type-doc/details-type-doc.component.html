@@ -1,1 +1,24 @@
-<p>details-type-doc works!</p>
+<h1>Details Type Document</h1>
+
+<p-splitter [style]="{'height': '300px'}">
+    <ng-template pTemplate>
+        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
+            <div class="p-fluid">
+                <div class="titleWrap">
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
+
+                </div>
+                <div class="valueWrap" >
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="Typedoc.name===''"> </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="Typedoc.name!==''"> {{Typedoc.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="Typedoc.description===''"> ""</label>
+
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{Typedoc.description}}</label>
+
+                </div>
+            </div>
+        </div>    
+    </ng-template>
+    
+</p-splitter>

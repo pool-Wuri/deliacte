@@ -158,4 +158,9 @@ ngOnInit(): void {
 });
  }
 
+
+ detailsType(Typedoc: TypeDoc) {
+  this.router.navigate(['/deliacte/typeDoc/details', Typedoc.id]);
+}
+
 }
