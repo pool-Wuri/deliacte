@@ -1,37 +1,37 @@
-<h1>Details Organisation</h1>
+<h1>Details Procédure</h1>
 
-<div class="card">
-    <div class="grid" style="display: inline-flex;">
-        <div class="col-6 flex align-items-center justify-content-center">
+<p-splitter [style]="{'height': '300px'}">
+    <ng-template pTemplate>
+        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle">Nom:</label>
-                    <label for=""  class="propertyTitle">Organisation parent:</label>
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent:</label>
 
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  class="propertyValue" > {{organisation.name}}</label>
-                    <label for=""  class="propertyValue" > {{organisation.parentOrganisation?.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.name===''"> </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.name!==''"> {{organisation.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.parentOrganisation?.name===''"> ""</label>
+
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{organisation.parentOrganisation?.name}}</label>
 
                 </div>
             </div>
-        </div>
-        <div class="col-2" >
-            <p-divider layout="vertical">
-                <b></b>
-            </p-divider>
-        </div>
-        <div class="col-6 flex align-items-center justify-content-center">
+        </div>    
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle">Description:</label>
-                    
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description:</label>
+                   
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  class="propertyValue" > {{organisation.description}}</label>
-                    
+                    <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{organisation.description}}</label>
+                   
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </ng-template>
+</p-splitter>

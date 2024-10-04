@@ -24,6 +24,7 @@ import {DividerModule} from 'primeng/divider';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import { DetailsOrganisationsComponent } from './details-organisations/details-organisations.component';
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DetailsOrganisationsComponent } from './details-organisations/details-o
     CommonModule,
     ConfirmDialogModule,
     DividerModule,
+    SplitterModule,
     InputTextareaModule,
     OverlayPanelModule,
     OrganisationsRoutingModule,
