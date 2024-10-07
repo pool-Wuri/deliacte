@@ -41,7 +41,8 @@ const routes: Routes = [
       { path: 'type-operation', 
         loadChildren: () => import('./feature/type-operation/type-operation.module').then(m => m.TypeOperationModule) 
       },
-      
+      { path: 'operation',
+         loadChildren: () => import('./feature/operation/operation.module').then(m => m.OperationModule) },
     ]
   },
   

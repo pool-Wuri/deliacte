@@ -4,7 +4,7 @@ export class Procedure{
         public description?:string,
         public name?:string,
         public organisation?:any,
-        public status?:ProcedureStatus,
+        public status?:any,
         public organisationId?:number,
         public isActive?:boolean,
 

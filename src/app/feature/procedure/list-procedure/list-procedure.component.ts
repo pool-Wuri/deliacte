@@ -22,6 +22,7 @@ statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouil
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
 
 procedure=new Procedure;
+  ProcedureStatus: any;
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,
@@ -29,6 +30,10 @@ procedure=new Procedure;
     private procedureService:ProcedureService,
     private organisationService:OrganisationService
   ){}
+
+  parseStatus(status: string): string {
+    return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
+  }
 
   ngOnInit(): void {
     this.search_Procedure();
@@ -198,19 +203,20 @@ procedure=new Procedure;
   }
 
 
-
   publier(procedure:Procedure){
     console.log(procedure)
     this.confirmationService.confirm({
       message: 'Voulez-vous publier cette procedure',
       acceptLabel:'Oui',
       rejectLabel:'Non',
+      header: 'Publication',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
-     // procedure.status=this.ProcedureStatus.PUBLISHED;
-      console.log(this.procedure.id)
-      this.procedureService.updateProcedureStatus(this.procedure.status,this.procedure.id).subscribe({
+      console.log(procedure.id)
+      procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
+
+      this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"procedure publié");
@@ -226,5 +232,9 @@ procedure=new Procedure;
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
   });
+  }
+
+   getStatusKey(status: ProcedureStatus): string {
+    return Object.keys(ProcedureStatus).find(key => ProcedureStatus[key as keyof typeof ProcedureStatus] === status) || 'Statut inconnu';
   }
 }
