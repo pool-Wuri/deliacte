@@ -7,7 +7,7 @@ import { Modal } from 'flowbite'
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 
 
 
@@ -41,6 +41,7 @@ newOrganisationId:number=0;
 idOrganisationAssign=new Assigne;
 proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
+
  constructor(private userService:UtilisateurService,
               private router:Router,
               private confirmationService: ConfirmationService,
@@ -269,6 +270,9 @@ eventModif(){
 
   console.log(this.procedureTru)
 }
+
+
+
 
 SaveAssigner(){
   console.log(this.userToAssign)

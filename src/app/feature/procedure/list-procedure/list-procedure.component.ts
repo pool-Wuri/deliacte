@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Organisation } from 'src/app/core/models/organisation.model';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 
@@ -19,6 +19,7 @@ title:string="";
 procedures=new Array <Procedure>();
 organisations=new Array <Organisation>();
 statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouillon"},{value:"PUBLISHED",label:"Publiée"}]
+statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
 
 procedure=new Procedure;
   constructor(
@@ -197,6 +198,7 @@ procedure=new Procedure;
   }
 
 
+
   publier(procedure:Procedure){
     console.log(procedure)
     this.confirmationService.confirm({
@@ -206,7 +208,7 @@ procedure=new Procedure;
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
-      procedure.status="PUBLISHED";
+     // procedure.status=this.ProcedureStatus.PUBLISHED;
       console.log(this.procedure.id)
       this.procedureService.updateProcedureStatus(this.procedure.status,this.procedure.id).subscribe({
         complete:()=>{},

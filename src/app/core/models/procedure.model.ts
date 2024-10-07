@@ -4,9 +4,14 @@ export class Procedure{
         public description?:string,
         public name?:string,
         public organisation?:any,
-        public status?:string,
+        public status?:ProcedureStatus,
         public organisationId?:number,
         public isActive?:boolean,
 
     ){}
+}
+export enum ProcedureStatus {
+    ARCHIVED = "Archivée",
+    DRAFT = "Brouillon",
+    PUBLISHED = "Publiée"
 }
