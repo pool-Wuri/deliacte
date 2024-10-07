@@ -10,6 +10,8 @@ import { Result } from 'postcss';
   styleUrls: ['./details-organisations.component.scss']
 })
 export class DetailsOrganisationsComponent {
+  organisationId!: number;
+  admins: any[] = [];
 
   id:number | undefined;
   organisation=new Organisation;
@@ -23,7 +25,19 @@ ngOnInit():void{
     this.id = params['id']; 
     console.log(this.id)
     this.getOrganisation(this.id)
+
+    // Récupérer l'ID de l'organisation à partir de l'URL
+    this.organisationId = +this.route.snapshot.paramMap.get('id')!;
+    this.getOrganisationAdmins(this.organisationId);
    }
+  );
+}
+
+
+getOrganisationAdmins(id: number): void {
+  this.organisationService.getAdminsByOrganisationId(id).subscribe(
+    (data: any[]) => this.admins = data,
+    (error) => console.error(error)
   );
 }
 

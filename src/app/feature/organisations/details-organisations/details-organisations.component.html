@@ -1,4 +1,4 @@
-<h1>Details Procédure</h1>
+<h1>Details Organisation</h1>
 
 <p-splitter [style]="{'height': '300px'}">
     <ng-template pTemplate>
@@ -35,3 +35,19 @@
         </div>
     </ng-template>
 </p-splitter>
+
+<div>
+    <h3>Les Administrateurs de l'Organisation {{ organisationId }}</h3>
+    <div *ngIf="admins.length > 0">
+      <h4>Administrateurs</h4>
+      <ul>
+        <li  class="propertyValue"  style="margin-top: 10px;" *ngFor="let admin of admins">
+          {{ admin.name }} - {{ admin.email }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="admins.length === 0">
+      <p class="propertyTitle">Aucun administrateur trouvé pour cette organisation.</p>
+    </div>
+  </div>
+  

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'; // Ajout de OnInit pour l'interface
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { Modal } from 'flowbite';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 
@@ -11,6 +11,9 @@ import { OrganisationService } from 'src/app/core/services/organisation.service'
   styleUrls: ['./list-organisations.component.scss']
 })
 export class ListOrganisationsComponent implements OnInit {
+
+  organisationId!: number;
+  admins: any[] = [];
 
   modal: Modal | undefined;
   addOrganisation: boolean = false;
@@ -29,6 +32,7 @@ export class ListOrganisationsComponent implements OnInit {
   constructor(
     private organisationService: OrganisationService,
     private router: Router,
+    private route: ActivatedRoute, 
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
@@ -36,6 +40,8 @@ export class ListOrganisationsComponent implements OnInit {
   ngOnInit(): void {
    this.searchOrganisation();
   }
+
+  
 
   searchOrganisation():void{
     this.organisationService.search_Organisations().subscribe({
