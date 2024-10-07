@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { User } from 'src/app/core/models/user.model';
+import { Assigne, ProcedurAssign, User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { Modal } from 'flowbite'
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
+import { ProcedureService } from 'src/app/core/services/procedure.service';
+import { Procedure } from 'src/app/core/models/procedure.model';
 
 
 
@@ -26,17 +28,25 @@ export class ListUtilisateurComponent {
   userToAssign=new User;
 userselect:any[] | undefined  ;
 organisation=new Organisation;
-roleUser=[{value:"ORG_ADMIN",label:"Administrateur d'organisation"},{value:"PROCEDURE_MANAGER",label:"Manager de procedure"},{value:"SUPER_ADMIN",label:"super admin"}]
+procedureTru:boolean=false;
+adminTrue:boolean=false;
+//roleUser=[{value:"ORG_ADMIN",label:"Administrateur d'organisation"},{value:"PROCEDURE_MANAGER",label:"Manager de procedure"},{value:"SUPER_ADMIN",label:"super admin"}]
+roleUser:any=["Administrateur d'organisation","Manager de procedure","super admin"]
 isModalOpen: boolean = false;
 modalVisible: boolean = false;
 assignModal:boolean=false;
 organisations:any[]=[];
 soumettre:boolean=false;
+newOrganisationId:number=0;
+idOrganisationAssign=new Assigne;
+proceduresid=new ProcedurAssign;
+procedures=new Array <Procedure>;
  constructor(private userService:UtilisateurService,
               private router:Router,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
-              private organisationService:OrganisationService
+              private organisationService:OrganisationService,
+              private procedureService:ProcedureService
  ){
     }
 
@@ -52,6 +62,21 @@ soumettre:boolean=false;
     next:(result)=>{
      // console.log(result+"User total");
       this.utilisateurs=result;
+      for(let i=0;i<this.utilisateurs.length;i++){
+        if(this.utilisateurs[i].role=="ORG_ADMIN"){
+          this.utilisateurs[i].role="Administrateur d'organisation"
+        }
+        else if(this.utilisateurs[i].role=="PROCEDURE_MANAGER")
+        {
+          this.utilisateurs[i].role="Manager de procedure"
+      
+        }
+        else if(this.utilisateurs[i].role=="SUPER_ADMIN")
+        {
+          this.utilisateurs[i].role="super admin"
+        }
+      }
+    
     },
     error:(error)=>{
       console.log(error);
@@ -66,20 +91,46 @@ soumettre:boolean=false;
   this.editbutt=false;
   this.title="Ajouter";
   this.utilisateur1={};
-  this.utilisateur1.role="ORG_ADMIN"
+  this.utilisateur1.role="Administrateur d'organisation"
   this.searchOrganisation();
+  console.log(this.utilisateur1.role)
  }
 
  fermerModal() {
   this.modalVisible = false; // Ferme le modal
 }
 
+searchProcedures(){
+  this.procedureService.search_Procedure("").subscribe(
+    {
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result+"Organisation total");
+        this.procedures=result;
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    }
+  )
+}
 
  saveUser(){ 
   this.soumettre=true;
-  console.log(this.utilisateur1)
-  if(this.utilisateur1.firstName && this.utilisateur1.lastName && this.utilisateur1.password && this.utilisateur1.role)
+  console.log(this.utilisateur1);
+  if(this.utilisateur1.role=="Administrateur d'organisation"){
+    this.utilisateur1.role="ORG_ADMIN"
+  }
+  else if(this.utilisateur1.role=="Manager de procedure")
   {
+    this.utilisateur1.role="PROCEDURE_MANAGER"
+
+  }
+  else if(this.utilisateur1.role=="super admin")
+  {
+    this.utilisateur1.role="SUPER_ADMIN"
+  }
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cet utilisateur?',
     header: 'Confirmation',
@@ -115,7 +166,7 @@ soumettre:boolean=false;
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
 });
-  }
+  
  }
 
 searchOrganisation(){
@@ -146,6 +197,19 @@ searchOrganisation(){
 
  validerModif(){
   console.log(this.utilisateur1)
+  if(this.utilisateur1.role=="Administrateur d'organisation"){
+    this.utilisateur1.role="ORG_ADMIN"
+  }
+  else if(this.utilisateur1.role=="Manager de procedure")
+  {
+    this.utilisateur1.role="PROCEDURE_MANAGER"
+
+  }
+  else if(this.utilisateur1.role=="super admin")
+  {
+    this.utilisateur1.role="SUPER_ADMIN"
+  }
+  this.utilisateur1.userOrganisationsIds?.push(this.newOrganisationId)
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier cet utilisateur?',
     header: 'Modification',
@@ -185,43 +249,130 @@ searchOrganisation(){
 
 assigne(utilisateur:any){
   this.searchOrganisation();
+  this.searchProcedures();
   this.assignModal=true;
   this.userToAssign=utilisateur
-  this.userToAssign.role="ORG_ADMIN"
-  console.log(utilisateur)
+  this.idOrganisationAssign={};
+  this.proceduresid={}
+}
+
+eventModif(){
+  console.log(this.userToAssign.role)
+  if(this.userToAssign.role=="Administrateur d'organisation" || this.userToAssign.role=="ORG_ADMIN" ){
+    this.procedureTru=false;
+    this.adminTrue=true;
+  }
+  else if(this.userToAssign.role=="PROCEDURE_MANAGER" || "Manager de procedure"){
+    this.procedureTru=true;
+    this.adminTrue=false;
+  }
+
+  console.log(this.procedureTru)
 }
 
 SaveAssigner(){
   console.log(this.userToAssign)
-  this.confirmationService.confirm({
-    message: 'confirmation ajout?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.assignModal=false;
-    this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result+"Utilisateur modifié avec succès");
-      },
-      error:(error)=>{
-        console.log(error);
-      }
-  
-    })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.assignModal=false;
-
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  console.log(this.newOrganisationId)
+  if(this.userToAssign.role=="Administrateur d'organisation"){
+    this.userToAssign.role="ORG_ADMIN"
   }
-});
+  else if(this.userToAssign.role=="Manager de procedure")
+  {
+    this.userToAssign.role="PROCEDURE_MANAGER"
+
+  }
+  else if(this.userToAssign.role=="super admin")
+  {
+    this.userToAssign.role="SUPER_ADMIN"
+  }
+console.log(this.userToAssign.role)
+  if(this.userToAssign.role=="ORG_ADMIN" || "Administrateur d'organisation"){
+    this.procedureTru=false;
+    this.adminTrue=true;
+    this.confirmationService.confirm({
+      message: 'confirmation ajout?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.assignModal=false;
+      this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"Utilisateur modifié avec succès");
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      })
+      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"User add");
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      })
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.assignModal=false;
+  
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+   });
+  }
+  else if (this.userToAssign.role=="PROCEDURE_MANAGER" || "Manager de procedure"){
+    this.procedureTru=true;
+    this.adminTrue=false;
+    this.confirmationService.confirm({
+      message: 'confirmation ajout?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.assignModal=false;
+      this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"Utilisateur modifié avec succès");
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      })
+      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"User add");
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      })
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.assignModal=false;
+  
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+  });
+  }
+
 }
 
 fermerAssign(){

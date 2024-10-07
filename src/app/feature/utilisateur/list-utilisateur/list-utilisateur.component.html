@@ -52,9 +52,8 @@
                 <th >Nom</th>
                 <th >Prenom</th>
                 <th >Email</th>
-                <th >Organisation</th>
                 <th >Role</th>
-                <th style="width: 350px;">Actions</th>
+                <th style="width: 250px;">Actions</th>
             </tr>
             
         </ng-template>
@@ -74,7 +73,7 @@
                     {{utilisateur.email}}
                 </td>
                 <td>
-                    {{utilisateur.userOrganisation?.name}}
+                    {{utilisateur.userOrganisation.name}}
                 </td>
                 <td>
                     {{utilisateur.role}}
@@ -150,23 +149,23 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">             
-                <form>
+
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="firstName" name="firstName" [(ngModel)]="utilisateur1.firstName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                            <input type="text"  [(ngModel)]="utilisateur1.firstName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
                             <!--div >
                                 <div class="text-rose-700">Ce champ est obligatoire</div>
                               </div-->
                         </div>
                         <div>
-                            <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
-                            <input type="text" id="lastName" name="lastName" [(ngModel)]="utilisateur1.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
+                            <input type="text"  [(ngModel)]="utilisateur1.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                             
                         </div>
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
-                            <input type="email" id="email" name="email"  [(ngModel)]="utilisateur1.email"
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+                            <input type="email"   [(ngModel)]="utilisateur1.email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
                             dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="john.doe@company.com" required />
@@ -174,38 +173,31 @@
                         </div>  
                        
                         <div >
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mot de passe</label>
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mot de passe</label>
                             <p-password 
-                            name="password"
+                           
                             [(ngModel)]="utilisateur1.password" 
                             [toggleMask]="true" 
                             placeholder="......"
-                            id="password">
+                            >
                             </p-password>
                             
                         </div> 
-                        <div>
-                            <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionner un rôle</label>
-                            <select id="role" name="role" [(ngModel)]="utilisateur1.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="" disabled selected>Sélectionner un rôle</option>
-                                <option *ngFor="let role of roleUser" [value]="role.value">{{role.label}}</option>
-                            </select>
-                                               
+                        <div class="role">
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionner un rôle</label>
+                            <p-dropdown [options]="roleUser" [(ngModel)]="utilisateur1.role" 
+                          ></p-dropdown>
+            
                         </div>
                        
-                        <div >
-                            <label for="userOrganisationId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
-                            <select id="userOrganisationId" name="userOrganisationId" [(ngModel)]="utilisateur1.userOrganisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option selected>Organisation</option>
-                                <option *ngFor="let organisation of organisations" [value]="organisation.id">{{organisation.name}}</option>
-
-                            </select>
-                            
-                        </div> 
+                        <!--div >
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
+                            <p-dropdown [options]="organisations" [(ngModel)]="newOrganisationId" optionLabel="name" optionValue="id"
+                            ></p-dropdown>
+                        </div--> 
                         
                      
                     </div>
-                </form>
             </div>
 
             <!-- Modal footer -->
@@ -248,26 +240,29 @@
             <div class="p-4 md:p-5 space-y-4">
                 <div class="grid gap-6 mb-6 md:grid-cols-2">
                     <div>
-                        <label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                        <input type="text" id="firstName" name="firstName" [disabled]="true"  [(ngModel)]="userToAssign.firstName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                        <input type="text" 
+                        [disabled]="true"  [(ngModel)]="userToAssign.firstName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
                     </div>
                     <div>
-                        <label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
-                        <input type="text" id="lastName" [disabled]="true" [(ngModel)]="userToAssign.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
+                        <input type="text"  [disabled]="true" [(ngModel)]="userToAssign.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                     </div>
                     <div>
-                        <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <select id="role" [(ngModel)]="userToAssign.role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Role</option>
-                        <option *ngFor="let role of roleUser" [value]="role.value">{{role.label}}</option>
-                        </select>                        
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
+                        <p-dropdown [options]="roleUser" [(ngModel)]="userToAssign.role" (onClick)="eventModif()"
+                          ></p-dropdown>
+                                   
                     </div>
-                    <div>
-                        <label for="organisation" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
-                        <select id="userOrganisationId" name="userOrganisationId" [(ngModel)]="userToAssign.userOrganisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected>Organisation</option>
-                            <option *ngFor="let organisation of organisations" [value]="organisation.id">{{organisation.name}}</option>
-                        </select>                      
+                    <div *ngIf="adminTrue">
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
+                        <p-multiSelect [options]="organisations" selectedItemsLabel="{0} items selected" [(ngModel)]="idOrganisationAssign.organisationIds" optionLabel="name" optionValue="id"
+                        ></p-multiSelect>        
+                    </div>
+                    <div *ngIf="procedureTru">
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedures</label>
+                        <p-multiSelect [options]="procedures"  selectedItemsLabel="{0} items selected" [(ngModel)]="proceduresid.userProcedureIds" optionLabel="name" optionValue="id"
+                        ></p-multiSelect>        
                     </div>
                    
                  </div>

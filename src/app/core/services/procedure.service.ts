@@ -4,7 +4,7 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
-
+const USER_API=environment.apiUrl + "/users"
 
 @Injectable({
   providedIn: 'root'
@@ -83,4 +83,36 @@ export class ProcedureService {
         )
       );
   }
+
+
+
+
+  public getUserById(id?:number): Observable<any> {
+    return this.http
+      .get(USER_API+ '/' + id +'/procedures', {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
+
+  public updateProcedureStatus(procedure:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(PROCEDURE_API+ '?'+ id +'/status',  procedure)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update-procedure> tap :', data);
+            })
+          );
+  }
+  
 }

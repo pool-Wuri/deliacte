@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Organisation } from 'src/app/core/models/organisation.model';
+import { Procedure } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 
@@ -11,6 +13,9 @@ import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 export class DetailsUtilisateurComponent {
   id:number | undefined;
   utilisateur=new User;
+  organisation=new Array <Organisation>();
+  procedure=new Array <Procedure>();
+
   constructor(private route:ActivatedRoute,
       private userService:UtilisateurService
   ){
@@ -26,16 +31,40 @@ export class DetailsUtilisateurComponent {
   }
 
   getUser(id?:number){
+
+    this.userService.userOrgaInfo(id).subscribe({
+      complete:()=>{},
+  next:(result)=>{
+    this.organisation=result;
+    console.log(this.organisation)
+  },
+  error:(error)=>{
+    console.log(error)
+  }
+    });
+    this.userService.procedureInfo(id).subscribe({
+      complete:()=>{},
+  next:(result)=>{
+    this.procedure=result;
+    console.log(this.procedure)
+  },
+  error:(error)=>{
+    console.log(error)
+  }
+    });
     this.userService.get_User(id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result)
         this.utilisateur=result;
+       
       },
       error:(error)=>{
         console.log(error)
       }
     })
   }
+
+
 
 }

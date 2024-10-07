@@ -1,7 +1,12 @@
 <h1>Details User</h1>
 
-
-<p-splitter [style]="{'height': '300px'}">
+<p-divider align="center">
+    <div class="inline-flex align-items-center" style="color:#060;">
+        <i class="pi pi-info-circle user"></i>
+        <b>User Infos</b>
+    </div>
+</p-divider>
+<p-splitter [style]="{'height': '100px'}">
     <ng-template pTemplate>
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
@@ -26,16 +31,151 @@
             <div class="p-fluid">
                 <div class="titleWrap">
                     <label for=""  style="margin-top: 10px;" class="propertyTitle">Email:</label>
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Organisation:</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Role:</label>
                     
                 </div>
                 <div class="valueWrap" >
                     <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{utilisateur.email}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="utilisateur.userOrganisation===undefined">" "</label>
-                    <label for=""  style="margin-top: 10px;" class="propertyValue"   *ngIf="utilisateur.userOrganisation!==undefined"> {{utilisateur.userOrganisation.name}}</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyValue"  > {{utilisateur.role}}</label>
 
                 </div>
             </div>
         </div>
     </ng-template>
 </p-splitter>
+
+
+<p-divider align="center">
+    <div class="inline-flex align-items-center" style="color:#060;">
+        <!--i class="pi pi-info-circle user"></i-->
+        <b>Organisation</b>
+    </div>
+</p-divider>
+
+<p-tabView>
+    <p-tabPanel header="Organisation">
+        <div class="card">
+            <p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
+            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [globalFilterFields]="['name']">
+        
+             <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                        <i class="pi pi-search" ></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            #searchInput 
+                            (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                            placeholder="      Rechercher" />
+                    </span>
+                </div>
+            </ng-template>
+            
+            <ng-template pTemplate="header">
+                <tr class="tableEnt">
+                    <!--th style="width: 4rem,">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th-->
+                    <th >Nom</th>
+                    <th >Organisation parent</th>
+                    <th >Description</th>
+                    <th >Statut</th>
+
+                </tr>
+        
+                
+            </ng-template>
+            <ng-template id="bodi" pTemplate="body" let-organisation>
+                <tr class="p-selectable-row tableContenu">
+                    <!--td>
+                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                    </td-->
+                    <td>
+                       {{organisation.name}}
+                    </td>
+                    <td *ngIf="organisation.parentOrganisation != null">
+                        {{ organisation.parentOrganisation.name }}
+                    </td>
+                    <td *ngIf="organisation.parentOrganisation == null">
+                         ""
+                    </td>
+                    <td>
+                        {{organisation.description}}
+                    </td>
+                    <td>
+                        {{organisation.isActive}}
+                    </td>
+                 
+                  
+                </tr>
+            </ng-template>
+            </p-table>
+        
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Procedure">
+        <div class="card">
+            <p-table #dt [value]="procedure"  styleClass="p-datatable-customers" [rowHover]="true" 
+            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [globalFilterFields]="['name']">
+        
+             <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                        <i class="pi pi-search" ></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder="      Rechercher" />
+                    </span>
+                </div>
+            </ng-template>
+            
+            <ng-template pTemplate="header">
+                <tr class="tableEnt">
+                    <!--th style="width: 4rem,">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th-->
+                    <th >Nom</th>
+                    <th >Organisation</th>
+                    <th >Statut</th>
+                    <th >Etat</th>
+
+                </tr>
+        
+                
+            </ng-template>
+            <ng-template id="bodi" pTemplate="body" let-procedure>
+                <tr class="p-selectable-row tableContenu">
+                    <!--td>
+                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                    </td-->
+                    <td>
+                       {{procedure.name}}
+                    </td>
+                    <td>
+                        {{procedure.organisation.name}}
+                    </td>
+                   
+                    <td>
+                        {{procedure.status}}
+                    </td>
+                   
+                    <td>
+                        {{procedure.isActive}}
+                    </td>
+                  
+                </tr>
+            </ng-template>
+            </p-table>
+        
+        </div>
+    </p-tabPanel>
+</p-tabView>
+

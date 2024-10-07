@@ -26,6 +26,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {SplitterModule} from 'primeng/splitter';
+import {TabViewModule} from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {SplitterModule} from 'primeng/splitter';
     DividerModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    SplitterModule
+    SplitterModule,
+    TabViewModule
     
   ],
   providers: [

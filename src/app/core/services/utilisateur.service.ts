@@ -4,6 +4,9 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const USER_API =environment.apiUrl +'/users';
+const ASSIGN_API=environment.apiUrl+'/organisations'
+const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
+
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +86,4 @@ export class UtilisateurService {
         )
       );
   }
-
-  
 }

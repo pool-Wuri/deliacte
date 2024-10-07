@@ -198,6 +198,7 @@ procedure=new Procedure;
 
 
   publier(procedure:Procedure){
+    console.log(procedure)
     this.confirmationService.confirm({
       message: 'Voulez-vous publier cette procedure',
       acceptLabel:'Oui',
@@ -206,10 +207,11 @@ procedure=new Procedure;
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       procedure.status="PUBLISHED";
-      this.procedureService.updateprocedure(this.procedure,this.procedure.id).subscribe({
+      console.log(this.procedure.id)
+      this.procedureService.updateProcedureStatus(this.procedure.status,this.procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"procedure add");
+          console.log(result+"procedure publié");
         },
         error:(error)=>{
           console.log(error);
