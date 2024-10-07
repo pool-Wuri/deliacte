@@ -94,6 +94,23 @@
     border-radius: 0.5rem;
     border-color: rgb(209 213 219);
 }
+:host ::ng-deep .p-dropdown {
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);
+    background-color: rgb(249 250 251);
+    border-color: rgb(209 213 219);
+    color: rgb(17 24 39);
+    width: 100%;
+    --tw-ring-color: rgb(59 130 246);
+
+}
+
+:host ::ng-deep .p-multiselect {
+    min-width: 15rem;
+    width: 18rem;
+    border-color: rgb(209 213 219);
+    background-color: rgb(249 250 251);
+}
 
 
 @media screen and (max-width: 960px) {

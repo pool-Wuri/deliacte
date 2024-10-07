@@ -4,6 +4,9 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const USER_API =environment.apiUrl +'/users';
+const ASSIGN_API=environment.apiUrl+'/organisations'
+const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
+
 
 @Injectable({
   providedIn: 'root'
@@ -83,4 +86,62 @@ export class UtilisateurService {
         )
       );
   }
+
+  public assigner(organisationIds:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
+  public assignerProcedure(procedureId:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-procedure', procedureId)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
+
+  userOrgaInfo(userId:any):Observable<any>{
+      return this.http
+    .get(ASSIGN_API+ '/' + userId + '/users', {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
+
+  procedureInfo(userId:any):Observable<any>{
+    return this.http
+  .get(ASSIGNPROCEDURE_API+ '/user/' + userId , {
+      headers: this.httpParams,
+      responseType: 'json',
+    })
+    .pipe(
+      retry(1),
+      tap((data: any) =>
+        console.log(
+          'api.service > get_formulaire > tap > server data :',
+          data
+        )     
+      )
+    );
+}
+
+
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Procedure } from 'src/app/core/models/procedure.model';
+import { User } from 'src/app/core/models/user.model';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 
 @Component({
@@ -12,8 +13,9 @@ export class DetailsProcedureComponent {
 
   id:number | undefined;
   procedure=new Procedure;
+  utilisateurs=new Array <User> ();
   constructor(private route:ActivatedRoute,
-      private provedureService:ProcedureService
+      private procedureService:ProcedureService
   ){
 
   }
@@ -27,7 +29,16 @@ export class DetailsProcedureComponent {
   }
 
   getProcedure(id?:number){
-    this.provedureService.get_Procedure(id).subscribe({
+    this.procedureService.getUserById(id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.utilisateurs=result;
+        console.log(this.utilisateurs)
+      },
+      error:(er)=>{console.log("get_error_User")}
+    })
+
+    this.procedureService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result)

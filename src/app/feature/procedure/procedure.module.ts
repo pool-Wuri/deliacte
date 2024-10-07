@@ -26,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsProcedureComponent } from './details-procedure/details-procedure.component';
+import {PanelModule} from 'primeng/panel';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { DetailsProcedureComponent } from './details-procedure/details-procedure
     DividerModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    SplitterModule
+    SplitterModule,
+    PanelModule
   ]
   ,
   providers: [
