@@ -25,6 +25,7 @@ import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import { DetailsOrganisationsComponent } from './details-organisations/details-organisations.component';
 import { SplitterModule } from 'primeng/splitter';
+import {PanelModule} from 'primeng/panel';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { SplitterModule } from 'primeng/splitter';
     ProgressBarModule,
     HttpClientModule,
     FormsModule,
-    FileUploadModule
+    FileUploadModule,
+    PanelModule
   ],
   providers: [
     ConfirmationService ,

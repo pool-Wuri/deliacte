@@ -5,20 +5,17 @@ import { environment } from 'src/environnements/environment';
 import { catchError } from 'rxjs/operators';
 
 const ORGANISATION_API =environment.apiUrl +'/organisations';
-
+const ORGANISATIONADMIN_API = environment.apiUrl + '/users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrganisationService {
 
-  private readonly ORGANISATIONADMIN_API = environment.apiUrl + '/users/1/organisations';
+  
   httpParams: HttpHeaders | undefined;
   constructor(private http: HttpClient,) { }
 
-
-
-  
   public search_Organisations(filterParam =''): Observable<any> {
     return this.http
     .get(ORGANISATION_API , {
@@ -92,9 +89,21 @@ export class OrganisationService {
   }
 
 
-  // Méthode pour récupérer les admins d'une organisation spécifique
-  getAdminsByOrganisationId(organisationId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.ORGANISATIONADMIN_API}/${organisationId}/ORG_ADMIN`);
+  public getUserById(id?:number): Observable<any> {
+    return this.http
+      .get(ORGANISATIONADMIN_API+ '/' + id +'/organisations', {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
   }
 
   
