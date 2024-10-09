@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Assigne, ProcedurAssign, User } from 'src/app/core/models/user.model';
+import { Assigne, ProcedurAssign, User, UserRole } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { Modal } from 'flowbite'
 import { Organisation } from 'src/app/core/models/organisation.model';
@@ -45,6 +45,7 @@ proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
 user: User | null = null;
 
+statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumération
 
  constructor(private userService:UtilisateurService,
               private router:Router,
@@ -58,58 +59,61 @@ user: User | null = null;
  
 
  ngOnInit(): void {
-  this.searchUser();
   const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
     console.log(this.user)
   }
+  this.searchUser();
+
  }
 
  searchUser():void{
-  this.userService.search_users().subscribe({
+  console.log(this.user?.role)
+  if(this.user?.role=="SUPER_ADMIN"){
+    this.userService.getUserByRole("ORG_ADMIN").subscribe({
+      next:(value)=>{
+        this.utilisateurs=value;
+        console.log(this.utilisateurs)
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    })
+   
+  }
+
+  if(this.user?.role=="ORG_ADMIN"){
+    this.userService.getUserByRole("PROCEDURE_MANAGER").subscribe({
+      next:(value)=>{
+        this.utilisateurs=value;
+        console.log(this.utilisateurs)
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    })
+   /* console.log(true)
+    this.utilisateurs = this.utilisateurs.filter(u => 
+      u.role === "PROCEDURE_MANAGER" || u.role === "Manager de procedure"
+    ); */
+  }
+
+ /*this.userService.search_users().subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result)
       this.utilisateurs=result;
-      if(this.user?.role=="SUPER_ADMIN"){
-        console.log(true)
-        this.utilisateurs = this.utilisateurs.filter(u => 
-          u.role === "ORG_ADMIN" || u.role === "Administrateur d'organisation"
-        ); 
-      }
-
-      if(this.user?.role=="ORG_ADMIN"){
-        console.log(true)
-        this.utilisateurs = this.utilisateurs.filter(u => 
-          u.role === "PROCEDURE_MANAGER" || u.role === "Manager de procedure"
-        ); 
-      }
-           
-      for(let i=0;i<this.utilisateurs.length;i++){
-        if(this.utilisateurs[i].role=="ORG_ADMIN"){
-          this.utilisateurs[i].role="Administrateur d'organisation"
-        }
-        else if(this.utilisateurs[i].role=="PROCEDURE_MANAGER")
-        {
-          this.utilisateurs[i].role="Manager de procedure"
-      
-        }
-        else if(this.utilisateurs[i].role=="SUPER_ADMIN")
-        {
-          this.utilisateurs[i].role="super admin"
-        }
-      }
-
-   
     
     },
     error:(error)=>{
       console.log(error);
     }
 
-  })
+  })*/
  }
+
+  parseStatus(status: string): string {
+    return UserRole[status as keyof typeof UserRole] || 'Statut inconnu';
+  }
 
  ajouter(){
   this.modalVisible = true; // Ouvre le modal
@@ -330,7 +334,7 @@ SaveAssigner(){
     this.userToAssign.role="SUPER_ADMIN"
   }
 console.log(this.userToAssign.role)
-  if(this.userToAssign.role=="ORG_ADMIN" || "Administrateur d'organisation"){
+  if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
     this.procedureTru=false;
     this.adminTrue=true;
     this.confirmationService.confirm({
@@ -373,7 +377,7 @@ console.log(this.userToAssign.role)
     }
    });
   }
-  else if (this.userToAssign.role=="PROCEDURE_MANAGER" || "Manager de procedure"){
+  else if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
     this.procedureTru=true;
     this.adminTrue=false;
     this.confirmationService.confirm({

@@ -48,12 +48,12 @@
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <!--i class="pi pi-info-circle user"></i-->
-        <b>Organisation</b>
+        <b>Historique</b>
     </div>
 </p-divider>
 
 <p-tabView>
-    <p-tabPanel  header="Organisation">
+    <p-tabPanel *ngIf="utilisateur && (utilisateur.role === ORG_ADMIN || utilisateur.role === 'Administrateur d\'organisation')" header="Organisation">
         <div class="card">
             <p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
@@ -116,7 +116,7 @@
         
         </div>
     </p-tabPanel>
-    <p-tabPanel header="Procedure">
+    <p-tabPanel *ngIf="utilisateur && (utilisateur.role === PROCEDURE_MANAGER || utilisateur.role === 'Manager de procedure')" header="Procedure">
         <div class="card">
             <p-table #dt [value]="procedure"  styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
@@ -164,7 +164,7 @@
                     </td>
                    
                     <td>
-                        {{procedure.status}}
+                        {{ parseStatus(procedure.status) }} 
                     </td>
                    
                     <td>

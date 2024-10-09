@@ -1,28 +1,24 @@
 <h1>Details Procédure</h1>
 
 
-<p-splitter [style]="{'height': '100px'}">
+<p-splitter [style]="{'height': '300px'}">
     <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
+        <div class="col-8 flex align-items-center justify-content-center">
             <div class="p-fluid">
-                <div class="titleWrap">
+                <div class="titleWrap" >
                     <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
                     <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
-
                 </div>
                 <div class="valueWrap" >
                     <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name===''"> </label>
                     <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name!==''"> {{procedure.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.description===''"> ""</label>
-
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{procedure.description}}</label>
-
+                    <label for=""  class="propertyValue"  style="inline-size: 100px; margin-top: 10px; word-break: break-all;"> {{procedure.description}}</label>
                 </div>
             </div>
         </div>    
     </ng-template>
     <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
+        <div class="col-8 flex align-items-center justify-content-center" >
             <div class="p-fluid">
                 <div class="titleWrap">
                     <label for=""  style="margin-top: 10px;" class="propertyTitle">Statut:</label>

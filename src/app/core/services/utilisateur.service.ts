@@ -7,6 +7,7 @@ const USER_API =environment.apiUrl +'/users';
 const ASSIGN_API=environment.apiUrl+'/organisations'
 const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
 const SAVE=environment.apiUrl + '/auth/register'
+const GET_Role=environment.apiUrl + '/users/role/';
 
 
 @Injectable({
@@ -144,5 +145,21 @@ export class UtilisateurService {
     );
 }
 
+getUserByRole(role?:string): Observable<any> {
+  return this.http
+    .get(GET_Role +role, {
+      headers: this.httpParams,
+      responseType: 'json',
+    })
+    .pipe(
+      retry(1),
+      tap((data) =>
+        console.log(
+          'api.service > get_formulaire > tap > server data :',
+          data
+        )
+      )
+    );
+}
 
 }

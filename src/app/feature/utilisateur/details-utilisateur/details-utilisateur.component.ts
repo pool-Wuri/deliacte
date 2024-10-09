@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Organisation } from 'src/app/core/models/organisation.model';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 
@@ -15,11 +15,20 @@ export class DetailsUtilisateurComponent {
   utilisateur=new User;
   organisation=new Array <Organisation>();
   procedure=new Array <Procedure>();
+ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
+SUPER_ADMIN= 'SUPER_ADMIN'
+PROCEDURE_MANAGER= 'PROCEDURE_MANAGER'
+statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
 
   constructor(private route:ActivatedRoute,
       private userService:UtilisateurService
   ){
 
+  }
+
+
+  parseStatus(status: string): string {
+    return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
   ngOnInit():void{
     this.route.params.subscribe(params => {
@@ -63,7 +72,5 @@ export class DetailsUtilisateurComponent {
       }
     })
   }
-
-
 
 }
