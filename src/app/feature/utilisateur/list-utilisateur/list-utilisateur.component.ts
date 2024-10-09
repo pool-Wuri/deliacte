@@ -30,6 +30,8 @@ userselect:any[] | undefined  ;
 organisation=new Organisation;
 procedureTru:boolean=false;
 adminTrue:boolean=false;
+  ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
+SUPER_ADMIN= 'SUPER_ADMIN'
 //roleUser=[{value:"ORG_ADMIN",label:"Administrateur d'organisation"},{value:"PROCEDURE_MANAGER",label:"Manager de procedure"},{value:"SUPER_ADMIN",label:"super admin"}]
 roleUser:any=["Administrateur d'organisation","Manager de procedure","super admin"]
 isModalOpen: boolean = false;
@@ -41,6 +43,8 @@ newOrganisationId:number=0;
 idOrganisationAssign=new Assigne;
 proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
+user: User | null = null;
+
 
  constructor(private userService:UtilisateurService,
               private router:Router,
@@ -55,14 +59,33 @@ procedures=new Array <Procedure>;
 
  ngOnInit(): void {
   this.searchUser();
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    this.user = JSON.parse(userData);
+    console.log(this.user)
+  }
  }
 
  searchUser():void{
   this.userService.search_users().subscribe({
     complete:()=>{},
     next:(result)=>{
-     // console.log(result+"User total");
+      console.log(result)
       this.utilisateurs=result;
+      if(this.user?.role=="SUPER_ADMIN"){
+        console.log(true)
+        this.utilisateurs = this.utilisateurs.filter(u => 
+          u.role === "ORG_ADMIN" || u.role === "Administrateur d'organisation"
+        ); 
+      }
+
+      if(this.user?.role=="ORG_ADMIN"){
+        console.log(true)
+        this.utilisateurs = this.utilisateurs.filter(u => 
+          u.role === "PROCEDURE_MANAGER" || u.role === "Manager de procedure"
+        ); 
+      }
+           
       for(let i=0;i<this.utilisateurs.length;i++){
         if(this.utilisateurs[i].role=="ORG_ADMIN"){
           this.utilisateurs[i].role="Administrateur d'organisation"
@@ -77,6 +100,8 @@ procedures=new Array <Procedure>;
           this.utilisateurs[i].role="super admin"
         }
       }
+
+   
     
     },
     error:(error)=>{
@@ -92,7 +117,14 @@ procedures=new Array <Procedure>;
   this.editbutt=false;
   this.title="Ajouter";
   this.utilisateur1={};
-  this.utilisateur1.role="Administrateur d'organisation"
+  if(this.user?.role=="ORG_ADMIN"){
+    this.utilisateur1.role="Manager de procedure"
+  }
+
+  if(this.user?.role=="SUPER_ADMIN"){
+    this.utilisateur1.role="Administrateur d'organisation"
+
+  }
   this.searchOrganisation();
   console.log(this.utilisateur1.role)
  }
@@ -253,6 +285,14 @@ assigne(utilisateur:any){
   this.searchProcedures();
   this.assignModal=true;
   this.userToAssign=utilisateur
+  if(this.user?.role=="ORG_ADMIN"){
+    this.utilisateur1.role="Manager de procedure"
+  }
+
+  if(this.user?.role=="SUPER_ADMIN"){
+    this.utilisateur1.role="Administrateur d'organisation"
+
+  }
   this.idOrganisationAssign={};
   this.proceduresid={}
 }

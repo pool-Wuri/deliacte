@@ -6,6 +6,7 @@ import { environment } from 'src/environnements/environment';
 const USER_API =environment.apiUrl +'/users';
 const ASSIGN_API=environment.apiUrl+'/organisations'
 const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
+const SAVE=environment.apiUrl + '/auth/register'
 
 
 @Injectable({
@@ -35,7 +36,7 @@ export class UtilisateurService {
   }
 
   public saveUsers(user:any):Observable<any>{
-    return this.http.post<any>(USER_API,user).pipe(
+    return this.http.post<any>(SAVE,user).pipe(
       tap((data)=>{
         console.log(data);
       })

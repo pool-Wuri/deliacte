@@ -31,7 +31,6 @@ export class DetailsUtilisateurComponent {
   }
 
   getUser(id?:number){
-
     this.userService.userOrgaInfo(id).subscribe({
       complete:()=>{},
   next:(result)=>{

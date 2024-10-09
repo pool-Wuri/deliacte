@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {Message,MessageService, PrimeNGConfig} from 'primeng/api';
+import { User } from 'src/app/core/models/user.model';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
 //import { AuthentificationService } from 'src/app/core/services/authentification.service';
 
 @Component({
@@ -15,11 +17,12 @@ export class SigninComponent {
   connexionEtat:any;
   mess:Message[] | undefined;
   mess1:Message[] | undefined;
+  formLogin:FormGroup<any> | undefined;
+  utilisateur= new User();
 constructor(
-  //private authentificationService: AuthentificationService,
+  private authentificationService: AuthentificationService,
   private formBuilder:FormBuilder,
   private router:Router,
-  private primengConfig:PrimeNGConfig
 ){}
 
 ngOnInit(): void {
@@ -35,46 +38,20 @@ initForm(){
 }
 
 onSubmit(){
-  this.loading=true;
-  this.mess=[];
-  this.mess1=[];
-  if(this.connexionForm){
-    console.log("connexionForm",this.connexionForm);
-    console.log("login",this.connexionForm.value["email"]);
-    console.log("password",this.connexionForm.value["password"]);
-    const parent = this;
-    parent.router.navigate(['/deliacte/dashboard']);
-
-  /*  if (this.connexionForm.status=='VALID'){
-      this.primengConfig.ripple=true;
-         this.connexionEtat=this.authentificationService.login(this.connexionForm.value["email"], this.connexionForm.value["password"]).subscribe({
-           complete: () => {  },
-           error: (err) => {
-             console.log('Error during authentification process: '+err);
-             this.loading=false;
-             this.mess1=[{severity:'error', summary:'Echec de connexion', detail:"Vérifiez vos identifiants ou votre connexion. Si le problème persiste veuillez contacter l'administrateur du site."}]
-           },
-             next: (response) => {
-               console.log('auth success: ', response);
-                 
-                     this.mess=[{severity:'success',summary:'Succès',detail:'Connexion réussie'}];
-                 
-                   setTimeout(()=>{
-                     parent.router.navigate(['/deliacte/dashboard']);
-                   },2000)
-           
-                 
-                   
-             },
-             
-             
-           });
-      //this.router.navigate(['/accueil']);
-     }*/
-  }
- 
-   
-   
+  this.utilisateur=this.connexionForm.value as User;
+  console.log(this.utilisateur)
+  this.authentificationService.authenticate(this.utilisateur).subscribe({
+    next: response => {
+      this.authentificationService.saveToken(response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+      this.router.navigate(['/deliacte/utilisateur']);
+    },
+    error: error => {
+      console.error('Erreur lors de l\'authentification', error);
+      //this.errorMessage = 'Identifiants invalides, veuillez réessayer.';
+    }
+  });
+  
 
  }
 

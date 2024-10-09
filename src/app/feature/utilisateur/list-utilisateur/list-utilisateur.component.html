@@ -252,12 +252,12 @@
                           ></p-dropdown>
                                    
                     </div>
-                    <div *ngIf="adminTrue">
+                    <div  *ngIf="user && user.role === SUPER_ADMIN ">
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
                         <p-multiSelect [options]="organisations" selectedItemsLabel="{0} items selected" [(ngModel)]="idOrganisationAssign.organisationIds" optionLabel="name" optionValue="id"
                         ></p-multiSelect>        
                     </div>
-                    <div *ngIf="procedureTru">
+                    <div  *ngIf="user && user.role === ORG_ADMIN ">
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedures</label>
                         <p-multiSelect [options]="procedures"  selectedItemsLabel="{0} items selected" [(ngModel)]="proceduresid.userProcedureIds" optionLabel="name" optionValue="id"
                         ></p-multiSelect>        

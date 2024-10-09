@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SigninComponent } from './feature/authentification/signin/signin.component';
 import { BaseLayoutComponent } from './feature/feature/base-layout/base-layout.component';
+import { LoginGuard } from './core/guard/login.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'deliacte' }, // Redirection vers 'dialecte'
@@ -18,6 +19,7 @@ const routes: Routes = [
 
   {
     path: 'deliacte',
+    canActivate:[LoginGuard],
     component: BaseLayoutComponent, // Assurez-vous que ce composant existe
     children: [
       { 
