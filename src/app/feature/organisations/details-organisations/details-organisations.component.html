@@ -5,8 +5,8 @@
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
-                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent:</label>
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom :</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent :</label>
 
                 </div>
                 <div class="valueWrap" >
@@ -24,7 +24,7 @@
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description:</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description :</label>
                    
                 </div>
                 <div class="valueWrap" >
@@ -37,12 +37,12 @@
 </p-splitter>
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
-        <!--i class="pi pi-info-circle user"></i-->
-        <b>Utilisateurs</b>
+        <i class="pi pi-info-circle user"></i>
+        <b>Administrateur d'organisation</b>
     </div>
 </p-divider>
 
-<p-panel header="Utilisateurs">
+<p-panel header="Administrateur d'organisation">
 
     <div class="card">
         <p-table #dt [value]="utilisateurs"  styleClass="p-datatable-customers" [rowHover]="true" 
@@ -73,8 +73,6 @@
                 <th >Prenom</th>
                 <th >Email</th>
                 <th >Statut</th>
-    
-    
             </tr>
     
             
