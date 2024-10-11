@@ -1,5 +1,35 @@
 @import "~primeicons/primeicons.css";
 
+.custom-button {
+    background-color: #e8e400; /* Couleur personnalisée */
+    color: rgb(39, 3, 246);
+  }
+  
+  .custom-button:hover {
+    background-color: #d4d400; /* Couleur sur hover */
+  }
+  
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    gap: 20px; /* Espacement entre les cartes */
+    padding: 20px;
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 colonnes pour les petits écrans */
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .card-grid {
+      grid-template-columns: 1fr; /* 1 colonne pour les très petits écrans */
+    }
+  }
+  
+
 :host::ng-deep .p-toolbar{
     background-color:rgb(252, 252, 252) ;
   }
@@ -172,5 +202,7 @@
             }
         }
     }
+
+    
 
 }
