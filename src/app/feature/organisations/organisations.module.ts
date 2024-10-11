@@ -26,6 +26,7 @@ import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import { DetailsOrganisationsComponent } from './details-organisations/details-organisations.component';
 import { SplitterModule } from 'primeng/splitter';
 import {PanelModule} from 'primeng/panel';
+import {TabViewModule} from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {PanelModule} from 'primeng/panel';
   ],
   imports: [
     CommonModule,
+    TabViewModule,
     ConfirmDialogModule,
     DividerModule,
     SplitterModule,

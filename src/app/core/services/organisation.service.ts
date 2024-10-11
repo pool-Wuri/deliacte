@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 const ORGANISATION_API =environment.apiUrl +'/organisations';
 const ORGANISATIONADMIN_API = environment.apiUrl + '/users';
+const PROCEDUREBYORGANISATION_API = environment.apiUrl + '/procedures/procedureByorganisation';
 
 @Injectable({
   providedIn: 'root'
@@ -100,6 +101,23 @@ export class OrganisationService {
         tap((data) =>
           console.log(
             'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
+  public getProcedureByOrg(id?:number): Observable<any> {
+    return this.http
+      .get(PROCEDUREBYORGANISATION_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_ProcedureByOrg > tap > server data :',
             data
           )
         )

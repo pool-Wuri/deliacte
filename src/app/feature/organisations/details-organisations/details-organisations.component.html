@@ -42,7 +42,10 @@
     </div>
 </p-divider>
 
-<p-panel header="Administrateur d'organisation">
+<p-tabView>
+  
+
+<p-tabPanel header="Administrateur">
 
     <div class="card">
         <p-table #dt [value]="utilisateurs"  styleClass="p-datatable-customers" [rowHover]="true" 
@@ -102,5 +105,68 @@
         </p-table>
     
     </div>
-</p-panel>
+</p-tabPanel>
+
+
+<p-tabPanel header="Procédure">
+
+    <div class="card">
+        <p-table #dt [value]="procedures"  styleClass="p-datatable-customers" [rowHover]="true" 
+        [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [globalFilterFields]="['name']">
+    
+         <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto cherch">
+                    <i class="pi pi-search" ></i>
+                    <input 
+                        pInputText 
+                        type="text" 
+                        #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder="      Rechercher" />
+                </span>
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="header">
+            <tr class="tableEnt">
+                <!--th style="width: 4rem,">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th-->
+                <th >Nom</th>
+                <th >Description</th>
+                <th >Status</th>
+                <th >IsActive</th>
+            </tr>
+    
+            
+        </ng-template>
+        <ng-template id="bodi" pTemplate="body" let-procedure>
+            <tr class="p-selectable-row tableContenu">
+                <!--td>
+                    <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                </td-->
+                <td>
+                   {{procedure.name}}
+                </td>
+                <td >
+                    {{ procedure.description }}
+                </td>
+               
+                <td>
+                    {{procedure.status}}
+                </td>
+                <td>
+                    {{procedure.isActive}}
+                </td>
+            </tr>
+        </ng-template>
+        </p-table>
+    
+    </div>
+</p-tabPanel>
+
+</p-tabView>
   

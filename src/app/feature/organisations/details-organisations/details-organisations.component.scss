@@ -140,15 +140,58 @@
     
 }
 
-:host ::ng-deep .p-panel-titlebar	 {
+
+@media screen and (max-width: 960px) {
+    :host ::ng-deep {
+        .p-datatable {
+            &.p-datatable-customers {
+                .p-datatable-thead > tr > th,
+                .p-datatable-tfoot > tr > td {
+                    display: none !important;
+                }
+    
+                .p-datatable-tbody > tr {
+                    border-bottom: 1px solid var(--layer-2);
+    
+                    > td {
+                        text-align: left;
+                        display: block;
+                        border: 0 none !important;
+                        width: 100% !important;
+                        float: left;
+                        clear: left;
+                        border: 0 none;
+    
+                        .p-column-title {
+                            padding: .4rem;
+                            min-width: 30%;
+                            display: inline-block;
+                            margin: -.4rem 1rem -.4rem -.4rem;
+                            font-weight: bold;
+                        }
+    
+                        .p-progressbar {
+                            margin-top: .5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
     background-color: #060;
     color: white;
     border-radius: 0%;
     }
-   
-    :host ::ng-deep .p-panel-title{
+    :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link{
+        background-color: transparent;
+        border: none;
         color: #060;
-        border-radius: 0%;
+        background:rgb(233,241,241);
     }
 @media screen and (max-width: 960px) {
     :host ::ng-deep {

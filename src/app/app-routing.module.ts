@@ -44,7 +44,11 @@ const routes: Routes = [
         loadChildren: () => import('./feature/type-operation/type-operation.module').then(m => m.TypeOperationModule) 
       },
       { path: 'operation',
-         loadChildren: () => import('./feature/operation/operation.module').then(m => m.OperationModule) },
+         loadChildren: () => import('./feature/operation/operation.module').then(m => m.OperationModule) 
+      },
+    //  { path: 'procedure-published', 
+     //     loadChildren: () => import('./feature/procedure-published/procedure-published.module').then(m => m.pro) 
+    //  },
     ]
   },
   
