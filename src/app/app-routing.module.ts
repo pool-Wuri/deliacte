@@ -12,6 +12,10 @@ const routes: Routes = [
     loadChildren: () => import('./feature/authentification/authentification.module').then(m => m.AuthentificationModule) 
   },
 
+  { path: 'deliacte/procedure-published', 
+    loadChildren: () => import('./feature/procedure-published/procedure-published.module').then(m => m.ProcedurePublishedModule) 
+  },
+
   { 
     path: 'baseLayout',
     loadChildren: () => import('./feature/feature/base-layout/base-layout.module').then(m => m.BaseLayoutModule) 
@@ -46,12 +50,11 @@ const routes: Routes = [
       { path: 'operation',
          loadChildren: () => import('./feature/operation/operation.module').then(m => m.OperationModule) 
       },
-    //  { path: 'procedure-published', 
-     //     loadChildren: () => import('./feature/procedure-published/procedure-published.module').then(m => m.pro) 
-    //  },
+      
     ]
   },
-  
+
+
   { path: '**', redirectTo: '' } // Route de secours pour gérer les URL non trouvées
 
 ]

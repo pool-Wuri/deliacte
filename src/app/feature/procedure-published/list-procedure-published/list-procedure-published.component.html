@@ -1,1 +1,107 @@
-<p>list-procedure-published works!</p>
+<div class="px-0 py-4 lg:px-0 lg:pl-0 " style="background-color: #060;;">
+    <div class="flex items-center justify-between ">
+        <div class="flex items-center justify-start rtl:justify-end" >
+            <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                <span class="sr-only">Open sidebar</span>
+                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                </svg>
+            </button>
+            <a class="flex items-center ms-2 md:me-24">
+                <img src="assets/img/burkina (1).png" class="h-16 w-17 me-3" alt="FlowBite Logo" /> <!-- Augmenter la taille de l'image -->
+                <span class="text-xl font-bold text-white">Deliacte</span> <!-- Styliser le texte -->
+            </a>
+           
+        </div>
+        <div class="mr-5">
+          <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+     
+      <button [routerLink]="'/deliacte/procedure-published'" routerLinkActive="active"
+        class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
+        focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100">
+       <span class="flex-1 ms-3 whitespace-nowrap">Procédures</span>
+      </button>
+      
+
+     <button [routerLink]="'/deliacte/login'" routerLinkActive="active"
+      class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
+          focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100" >
+          <span class="flex-1 ms-3 whitespace-nowrap">Se Connecter</span>
+        </button>
+    </div>
+    </div>
+  </div>
+
+<p-card header="Liste des procédures publiés">
+<div> 
+    
+    <div class="card">
+        <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
+        [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+         [globalFilterFields]="['firstName','lastName','email']">
+        
+         <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto cherch">
+                    <i class="pi pi-search" ></i>
+                    <input 
+                        pInputText 
+                        type="text" 
+                        #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder="      Rechercher" />
+                </span>
+            </div>
+        </ng-template>
+        
+        <ng-template pTemplate="header">
+            <tr class="tableEnt">
+                <!--th style="width: 4rem,">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th-->
+                <th >Nom</th>
+                <th >Organisation</th>
+                <th >Statut</th>
+                <th style="width: 350px;">Actions</th>
+            </tr>
+            
+        </ng-template>
+        <ng-template id="bodi" pTemplate="body" let-procedure>
+            <tr class="p-selectable-row tableContenu">
+                <!--td>
+                    <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                </td-->
+                <td>
+                    {{procedure.name}}
+                </td>
+                <td>
+                    {{procedure.organisation.name}}
+
+                </td>
+                <td>
+                    {{ parseStatus(procedure.status) }} 
+
+                </td>
+                <td>
+                <button  (click)="soumettre()" type="button"  title="Soumettre" style="background-color: #e8e400;"
+                class="text-white  from-teal-400 via-teal-500 to-teal-600 
+                focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" >
+               </button>
+               </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">Aucune procedure trouvée</td>
+            </tr>
+        </ng-template>
+        </p-table>
+    </div>
+
+ </div>
+</p-card>

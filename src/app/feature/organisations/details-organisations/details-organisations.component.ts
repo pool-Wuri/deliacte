@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Route, ActivatedRoute } from '@angular/router';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { Organisation } from 'src/app/core/models/organisation.model';
-import { Result } from 'postcss';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-details-organisations',
@@ -14,11 +14,21 @@ export class DetailsOrganisationsComponent {
   
   id:number | undefined;
   organisation=new Organisation;
-  utilisateurs=new Array <Organisation> ();
+  utilisateurs=new Array <User> ();
   procedures=new Array <Procedure> ();
+
+  ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
+  SUPER_ADMIN= 'SUPER_ADMIN'
+  PROCEDURE_MANAGER= 'PROCEDURE_MANAGER'
+  statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
+
   constructor(private route:ActivatedRoute, 
     private organisationService:OrganisationService){
 
+}
+
+parseStatus(status: string): string {
+  return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
 }
 
 ngOnInit():void{

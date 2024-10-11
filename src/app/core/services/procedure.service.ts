@@ -1,7 +1,10 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, retry, tap } from 'rxjs';
+import { Observable, retry, tap, of } from 'rxjs';
 import { environment } from 'src/environnements/environment';
+import { Procedure, ProcedureStatus } from '../models/procedure.model';
+import { catchError} from 'rxjs/operators';
+
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
 const USER_API=environment.apiUrl + "/users"
@@ -30,6 +33,7 @@ export class ProcedureService {
         )
       );
   }
+
 
   public saveProcedure(procedure:any):Observable<any>{
     return this.http.post<any>(PROCEDURE_API,procedure).pipe(
