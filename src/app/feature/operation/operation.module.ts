@@ -26,12 +26,15 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DetailsOperationComponent } from './details-operation/details-operation.component';
+import { PanelModule } from 'primeng/panel';
 
 
 @NgModule({
   declarations: [
     OperationComponent,
-    ListOperationComponent
+    ListOperationComponent,
+    DetailsOperationComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +60,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     OverlayPanelModule,
     ConfirmDialogModule,
     SplitterModule,
-    TabViewModule
+    TabViewModule,
+    PanelModule
   ],
   providers: [
     ConfirmationService ,

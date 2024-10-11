@@ -44,7 +44,7 @@ onSubmit(){
     next: response => {
       this.authentificationService.saveToken(response.token);
       localStorage.setItem('user', JSON.stringify(response.user));
-      this.router.navigate(['/deliacte/utilisateur']);
+      this.router.navigate(['/deliacte/dashboard/']);
     },
     error: error => {
       console.error('Erreur lors de l\'authentification', error);

@@ -1,0 +1,203 @@
+.propertyTitle {
+    display:block;
+        width: auto;
+        color: #060;
+       margin-left:20px;
+        font-weight: bold;
+        font-size:16px;
+        margin-right:30px;
+}
+.titleWrap{
+    display:inline-block;
+    margin-right: 20px;
+
+}
+
+.propertyValue {
+    display:block;
+    font-weight: bold;     
+   font-size:16px;
+}
+.valueWrap {
+    display:inline-block;
+}
+
+
+
+@import "~primeicons/primeicons.css";
+
+:host::ng-deep .p-toolbar{
+    background-color:rgb(252, 252, 252) ;
+  }
+  :host ::ng-deep {
+    .p-paginator {
+        .p-paginator-current {
+            margin-left: auto;
+        }
+    }
+    
+    .p-progressbar {
+        height: .5rem;
+        background-color: #D8DADC;
+    
+        .p-progressbar-value {
+            background-color: #607D8B;
+        }
+    }
+    
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .p-calendar .p-datepicker {
+        min-width: 25rem;
+    
+        td {
+            font-weight: 400;
+        }
+
+        .p-checkbox .p-checkbox-box .p-checkbox-icon {
+            transition-duration: 0.2s;
+            color: rgb(255, 255, 255);
+            font-size: 14px;
+        }
+    }
+    
+    .p-datatable.p-datatable-customers {
+        .p-datatable-header {
+            padding: 1rem;
+            text-align: left;
+            font-size: 1.5rem;
+        }
+    
+        .p-paginator {
+            padding: 1rem;
+        }
+    
+        .p-datatable-thead > tr > th {
+            text-align: left;
+        }
+    
+        .p-datatable-tbody > tr > td {
+            cursor: auto;
+        }
+    
+        .p-dropdown-label:not(.p-placeholder) {
+            text-transform: uppercase;
+        }
+    }
+    
+    /* Responsive */
+    .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
+        display: none;
+    }
+}
+
+.tableContenu{
+    background-color: #f5f7fa8f;
+}
+
+.tableEnt th{ 
+    background-color: #060;
+    color: aliceblue;
+}
+.custom-confirm-button {
+    margin-left: 30px; /* Espacement à droite du bouton Oui */
+}
+
+:host ::ng-deep .acceptButton {
+    margin-left: 10px; /* Essayer avec !important si nécessaire */
+    border-color: rgb(249 250 251);
+    background-attachment: fixed;
+}
+.cherch input{
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);}
+
+:host ::ng-deep .p-password input {
+    width: 18rem;
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);
+}
+:host ::ng-deep .p-dropdown {
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);
+    background-color: rgb(249 250 251);
+    border-color: rgb(209 213 219);
+    color: rgb(17 24 39);
+    width: 100%;
+
+}
+
+:host ::ng-deep .p-multiSelect {
+    border-radius: 0.5rem;
+    border-color: rgb(209 213 219);
+    background-color: rgb(249 250 251);
+    border-color: rgb(209 213 219);
+    color: rgb(17 24 39);
+    width: 100%;
+    
+}
+
+:host ::ng-deep .p-panel-titlebar	 {
+    background-color: #060;
+    color: white;
+    border-radius: 0%;
+    }
+   
+    :host ::ng-deep .p-panel-title{
+        color: #060;
+        border-radius: 0%;
+    }
+@media screen and (max-width: 960px) {
+    :host ::ng-deep {
+        .p-datatable {
+            &.p-datatable-customers {
+                .p-datatable-thead > tr > th,
+                .p-datatable-tfoot > tr > td {
+                    display: none !important;
+                }
+    
+                .p-datatable-tbody > tr {
+                    border-bottom: 1px solid var(--layer-2);
+    
+                    > td {
+                        text-align: left;
+                        display: block;
+                        border: 0 none !important;
+                        width: 100% !important;
+                        float: left;
+                        clear: left;
+                        border: 0 none;
+    
+                        .p-column-title {
+                            padding: .4rem;
+                            min-width: 30%;
+                            display: inline-block;
+                            margin: -.4rem 1rem -.4rem -.4rem;
+                            font-weight: bold;
+                        }
+    
+                        .p-progressbar {
+                            margin-top: .5rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+:host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    background-color: #060;
+    color: white;
+    border-radius: 0%;
+    }
+    :host ::ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link{
+        background-color: transparent;
+        border: none;
+        color: #060;
+        background:rgb(233,241,241);
+    }

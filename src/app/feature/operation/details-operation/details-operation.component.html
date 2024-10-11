@@ -1,0 +1,162 @@
+<h1>Details Procédure</h1>
+
+
+<p-splitter [style]="{'height': '300px'}">
+    <ng-template pTemplate>
+        <div class="col-8 flex align-items-center justify-content-center">
+            <div class="p-fluid">
+                <div class="titleWrap" >
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
+                </div>
+                <div class="valueWrap" >
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" > {{operation.description}} </label>
+
+                   </div>
+            </div>
+        </div>    
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="col-8 flex align-items-center justify-content-center" >
+            <div class="p-fluid">
+                <div class="titleWrap">
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Statut:</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Procedure:</label>
+                    
+                </div>
+                <div class="valueWrap" >
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.isActive}} </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure!==undefined"> {{operation.procedure.name}} </label>
+
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-splitter>
+<p-divider align="center">
+    <div class="inline-flex align-items-center" style="color:#060;">
+        <!--i class="pi pi-info-circle user"></i-->
+        <b>Historique</b>
+    </div>
+</p-divider>
+<p-tabView>
+    <p-tabPanel header="Procedures">
+
+        <div class="card">
+            <p-table #dt [value]="procedures"  styleClass="p-datatable-customers" [rowHover]="true" 
+            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [globalFilterFields]="['firstName']">
+        
+             <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                        <i class="pi pi-search" ></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            #searchInput 
+                            (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                            placeholder="      Rechercher" />
+                    </span>
+                </div>
+            </ng-template>
+            
+            <ng-template pTemplate="header">
+                <tr class="tableEnt">
+                    <!--th style="width: 4rem,">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th-->
+                    <th >Nom</th>
+                    <th >description</th>
+                    <th >Organisation</th>
+                    <th >Statut</th>
+        
+        
+                </tr>
+        
+                
+            </ng-template>
+            <ng-template id="bodi" pTemplate="body" let-procedure>
+                <tr class="p-selectable-row tableContenu">
+                    <!--td>
+                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                    </td-->
+                    <td>
+                        {{procedure.name}}
+                    </td>
+                    <td >
+                        {{procedure.description}}
+                    </td>
+                    {{procedure.organisation.name}}
+                    <td>
+                        {{procedure.status}}
+                    </td>
+                    
+                 
+                  
+                </tr>
+            </ng-template>
+            </p-table>
+        
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Champ">
+
+        <div class="card">
+            <p-table #dt [value]="champs"  styleClass="p-datatable-customers" [rowHover]="true" 
+            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+             [globalFilterFields]="['firstName']">
+        
+             <ng-template pTemplate="caption">
+                <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                        <i class="pi pi-search" ></i>
+                        <input 
+                            pInputText 
+                            type="text" 
+                            #searchInput 
+                            (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                            placeholder="      Rechercher" />
+                    </span>
+                </div>
+            </ng-template>
+            
+            <ng-template pTemplate="header">
+                <tr class="tableEnt">
+                    <!--th style="width: 4rem,">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th-->
+                    <th >Nom</th>
+                    <th >description</th>
+                    <th >Type</th>
+        
+        
+                </tr>
+        
+                
+            </ng-template>
+            <ng-template id="bodi" pTemplate="body" let-champ>
+                <tr class="p-selectable-row tableContenu">
+                    <!--td>
+                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                    </td-->
+                    <td>
+                        {{champ.name}}
+                    </td>
+                    <td >
+                        {{champ.description}}
+                    </td>
+                    {{champ.inputType}}
+                 
+                  
+                </tr>
+            </ng-template>
+            </p-table>
+        
+        </div>
+    </p-tabPanel>
+</p-tabView>
+

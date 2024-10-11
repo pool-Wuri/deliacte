@@ -1,0 +1,11 @@
+export class ChampOperation{
+    constructor(
+        public id?:number,
+        public name?:string,
+        public description?:string,
+        public inputType?:any,
+        public operationId?:number,
+        public operation?:any
+
+    ){}
+}

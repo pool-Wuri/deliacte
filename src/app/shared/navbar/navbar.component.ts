@@ -10,6 +10,7 @@ export class NavbarComponent {
   user: User | null = null;
   ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
 SUPER_ADMIN= 'SUPER_ADMIN'
+PROCEDURE_MANAGER='PROCEDURE_MANAGER'
 constructor(){
 
 }
