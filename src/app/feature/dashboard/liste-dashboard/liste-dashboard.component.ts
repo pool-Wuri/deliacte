@@ -113,7 +113,7 @@ export class ListeDashboardComponent {
 
 
 
-    this.DashboardService.getProBYOrgEvolution(this.id).subscribe((data) => {
+    this.DashboardService.getProBYOrgEvolution(1).subscribe((data) => {
       // Extraire les mois et les nombres des données API
       const labels = data.map((item: any) => {
         return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)

@@ -29,6 +29,6 @@ export class DashboardService {
   }
 
   getProBYOrgEvolution(id?:number): Observable<any> {
-    return this.http.get(this.USERSEVOLUTION_API+ '/' + id +'/procedures/evolution');
+    return this.http.get(this.PROBYORGEVOLUTION_API+ '/' + id +'/procedures/evolution');
   }
 }
