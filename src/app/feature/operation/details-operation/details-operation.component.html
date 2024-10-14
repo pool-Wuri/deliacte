@@ -41,7 +41,7 @@
     </div>
 </p-divider>
 <p-tabView>
-    <p-tabPanel header="Procedures">
+    <!--p-tabPanel header="Procedures">
 
         <div class="card">
             <p-table #dt [value]="procedures"  styleClass="p-datatable-customers" [rowHover]="true" 
@@ -65,9 +65,7 @@
             
             <ng-template pTemplate="header">
                 <tr class="tableEnt">
-                    <!--th style="width: 4rem,">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th-->
+                    
                     <th >Nom</th>
                     <th >description</th>
                     <th >Organisation</th>
@@ -80,9 +78,7 @@
             </ng-template>
             <ng-template id="bodi" pTemplate="body" let-procedure>
                 <tr class="p-selectable-row tableContenu">
-                    <!--td>
-                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                    </td-->
+                   
                     <td>
                         {{procedure.name}}
                     </td>
@@ -101,7 +97,7 @@
             </p-table>
         
         </div>
-    </p-tabPanel>
+    </p-tabPanel-->
     <p-tabPanel header="Champ">
 
         <div class="card">

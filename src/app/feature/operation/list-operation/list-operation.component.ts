@@ -36,6 +36,7 @@ constructor(
   private confirmationService:ConfirmationService,
   private messageService:MessageService,
   private router:Router,
+  
 
 
 ){
@@ -50,6 +51,7 @@ ngOnInit(): void {
     console.log(this.user)
   }
   this.searchOperation();
+  this.searchtypeoperation();
 }
 
 

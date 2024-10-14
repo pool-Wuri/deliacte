@@ -20,6 +20,7 @@ export class DetailsOperationComponent {
     private procedureService:ProcedureService,
     private operationService:OperationService
 ){
+  
 
 }
 ngOnInit():void{

@@ -138,6 +138,16 @@
             <div class="p-4 md:p-5 space-y-4">             
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type operation</label>
+                            <p-dropdown [options]="typeoperations" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                        <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ordre</label>
+                            <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                        <div>
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
                             <input type="text" id="name" name="name" [(ngModel)]="operation.name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 

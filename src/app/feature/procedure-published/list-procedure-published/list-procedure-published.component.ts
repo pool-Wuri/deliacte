@@ -4,6 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
+import { OperationService } from 'src/app/core/services/operation.service';
+import { ChampType, Operation } from 'src/app/core/models/operation.model';
+import { ChampOperation } from 'src/app/core/models/champOperation.model';
 
 @Component({
   selector: 'app-list-procedure-published',
@@ -19,7 +22,12 @@ export class ListProcedurePublishedComponent {
 
  
   ProcedureStatus: any;
+  demandeFor:boolean=false;
   procedure: Procedure[] = [];
+  selectProcedure=new Procedure;
+  operations=new Array<Operation>();
+  champs=new Array <ChampOperation>();
+  operation=new Operation;
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
@@ -29,7 +37,9 @@ export class ListProcedurePublishedComponent {
     private router: Router,
     private route: ActivatedRoute, 
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private operationService:OperationService,
+
   ) {}
 
 
@@ -51,12 +61,48 @@ export class ListProcedurePublishedComponent {
       }
   
     })
+
+   
    }
 
-  
+   fermerModel(){
+    this.demandeFor=false;
+  }
 
    soumettre(): void {
     
    }
+
+   faireDemande(procedure:any){
+    this.demandeFor=true;
+    console.log(procedure);
+    this.searchOperation();
+   }
+
+   searchOperation():void{
+    this.operationService.search_Procedure("").subscribe({
+      next:(value)=>{
+        this.operations=value;
+        this.operations=this.operations.filter(u=>u.name === "SOUMISSION");
+        this.operation=this.operations[0]
+        console.log(this.operations);
+        this.operationService.searchChamp("").subscribe({
+          next:(value)=>{
+            this.champs=value;
+            //this.champs=this.champs.filter(u=>u.operationId===1)
+            console.log(this.champs);
+         
+          },
+          complete:()=>{},
+          error:(err)=>{}
+        })
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    });
+   
+   
+  }
+
 
 }
