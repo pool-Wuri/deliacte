@@ -8,6 +8,8 @@ import { DashboardService } from 'src/app/core/services/dashboard.service';
 })
 export class ListeDashboardComponent {
 
+  id:number | undefined;
+
   basicData: any;
   basicOptions: any;
 
@@ -111,7 +113,7 @@ export class ListeDashboardComponent {
 
 
 
-    this.DashboardService.getProBYOrgEvolution().subscribe((data) => {
+    this.DashboardService.getProBYOrgEvolution(this.id).subscribe((data) => {
       // Extraire les mois et les nombres des données API
       const labels = data.map((item: any) => {
         return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)

@@ -46,8 +46,8 @@ getOrganisation(id?:number){
   this.organisationService.getProcedureByOrg(id).subscribe({
     complete:()=>{},
     next:(result)=>{
-      this.utilisateurs=result;
-      console.log(this.utilisateurs)
+      this.procedures=result;
+      console.log(this.procedures)
     },
     error:(er)=>{console.log("get_error")}
   })
