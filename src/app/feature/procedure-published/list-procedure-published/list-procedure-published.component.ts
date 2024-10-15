@@ -75,7 +75,9 @@ export class ListProcedurePublishedComponent {
 
    faireDemande(procedure:any){
     this.demandeFor=true;
-    console.log(procedure);
+    console.log(procedure.id);
+    this.router.navigate(['/deliacte/procedure-published/demandePage',procedure.id])
+
     this.searchOperation();
    }
 

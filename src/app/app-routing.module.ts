@@ -15,7 +15,6 @@ const routes: Routes = [
   { path: 'deliacte/procedure-published', 
     loadChildren: () => import('./feature/procedure-published/procedure-published.module').then(m => m.ProcedurePublishedModule) 
   },
-
   { 
     path: 'baseLayout',
     loadChildren: () => import('./feature/feature/base-layout/base-layout.module').then(m => m.BaseLayoutModule) 

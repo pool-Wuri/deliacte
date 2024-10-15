@@ -17,7 +17,7 @@ export class DetailsOperationComponent {
   id:number | undefined;
   procedures=new Array<Procedure>();
   operation=new Operation
-  champs=new Array <ChampType>();
+  champs=new Array <ChampOperation>();
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -34,7 +34,7 @@ ngOnInit():void{
     this.getProcedure(this.id)
    }
   );
-  this.searchChamp();
+ // this.searchChamp();
 }
 
 getProcedure(id?:number){
@@ -42,7 +42,24 @@ getProcedure(id?:number){
     complete:()=>{},
     next:(result)=>{
      this.operation=result;
-     this.procedureService.search_Procedure().subscribe({
+     this.operationService.searchChamp("").subscribe({
+      next:(value)=>{
+        this.champs=value;
+        this.champs=this.champs.filter(u=>u.operationId==id)
+        console.log(this.champs);
+     
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    })
+     this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.operation.procedure=result;
+      console.log(result)    },
+      error:(er)=>{console.log("get_error_User")}
+    })
+   /*  this.procedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result)
@@ -54,7 +71,7 @@ getProcedure(id?:number){
       error:(error)=>{
         console.log(error)
       }
-    })
+    })*/
     },
     error:(er)=>{console.log("get_error_User")}
   })
@@ -66,6 +83,7 @@ searchChamp(){
   this.operationService.searchChamp("").subscribe({
     next:(value)=>{
       this.champs=value;
+      this.champs=this.champs.filter(u=>u.operationId==this.id)
       console.log(this.champs);
    
     },

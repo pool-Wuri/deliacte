@@ -28,11 +28,13 @@ import { SplitterModule } from 'primeng/splitter';
 import {PanelModule} from 'primeng/panel';
 import {TabViewModule} from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
+import { DemandePageComponent } from './demande-page/demande-page.component';
 
 @NgModule({
   declarations: [
     ProcedurePublishedComponent,
     ListProcedurePublishedComponent,
+    DemandePageComponent,
   ],
   imports: [
     CommonModule,

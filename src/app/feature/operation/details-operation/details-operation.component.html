@@ -12,7 +12,7 @@
                 </div>
                 <div class="valueWrap" >
                     <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" > {{operation.description}} </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" > {{operation.description}} ""</label>
 
                    </div>
             </div>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="valueWrap" >
                     <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.isActive}} </label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure!==undefined"> {{operation.procedure.name}} </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure"> {{operation.procedure.name}} </label>
 
                 </div>
             </div>

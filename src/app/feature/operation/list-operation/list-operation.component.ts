@@ -116,11 +116,29 @@ searchtypeoperation():void{
   })
  }
 
+ getProcedure(id?:number){
+  this.procedureService.get_Procedure(id).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+console.log(result)    },
+    error:(er)=>{console.log("get_error_User")}
+  })
+}
+
  searchOperation():void{
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
         this.operations=value;
-        console.log(this.operations);
+        this.operations.reverse();
+        for(let i=0;i<this.operations.length;i++){
+          this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              this.operations[i].procedure=result;
+        console.log(result)    },
+            error:(er)=>{console.log("get_error_User")}
+          })
+        }
      
       },
       complete:()=>{},
@@ -128,6 +146,8 @@ searchtypeoperation():void{
     })
    
   }
+
+  
 
 ajouter(){
   this.addboutton=true;
@@ -146,9 +166,9 @@ fermerModal(){
   this.adddoctype=false;
  }
 
-
  saveOperation(){
   this.operation.isActive=false;
+  
   console.log(this.operation)
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cette opération?',
@@ -212,7 +232,7 @@ fermerModal(){
     this.addboutton=false;
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
-});
+  });
  }
 
  edit(operation:Operation){

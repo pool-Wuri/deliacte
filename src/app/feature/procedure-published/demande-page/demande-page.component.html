@@ -1,0 +1,60 @@
+<div class="px-0 py-4 lg:px-0 lg:pl-0 " style="background-color: #060;;">
+    <div class="flex items-center justify-between ">
+        <div class="flex items-center justify-start rtl:justify-end" >
+            <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                <span class="sr-only">Open sidebar</span>
+                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                </svg>
+            </button>
+            <a class="flex items-center ms-2 md:me-24">
+                <img src="assets/img/burkina (1).png" class="h-16 w-17 me-3" alt="FlowBite Logo" /> <!-- Augmenter la taille de l'image -->
+                <span class="text-xl font-bold text-white">Deliacte</span> <!-- Styliser le texte -->
+            </a>
+           
+        </div>
+        <div class="mr-5">
+          <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
+     
+      <button [routerLink]="'/deliacte/procedure-published'" routerLinkActive="active"
+        class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
+        focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100">
+       <span class="flex-1 ms-3 whitespace-nowrap">Acceuil</span>
+      </button>
+      
+
+     <button [routerLink]="'/deliacte/login'" routerLinkActive="active"
+      class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
+          focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100" >
+          <span class="flex-1 ms-3 whitespace-nowrap">Se Connecter</span>
+        </button>
+    </div>
+    </div>
+  </div>
+
+
+<p>Faire une demande</p>
+
+
+<div class="card">
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+            <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Demande formulaire</h2>
+        </div>  
+
+    <div class="grid gap-6 mb-6 md:grid-cols-2" *ngFor="let champ of champs">
+        <div>
+            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{champ.name}}</label>
+            <input [type]="champ.inputType"   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required />
+        </div>
+      
+    </div>
+   
+    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+       
+    </div>
+</div>
