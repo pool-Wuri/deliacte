@@ -5,7 +5,11 @@ export class Operation{
         public description?:string,
         public isActive?:boolean,
         public procedureId?:any,
-        public procedure?:any
+        public procedure?:any,
+        public typeOperationId?:number,
+        public typeOperation?:any,
+        public numeroOrdre?:number
+
 
     ){
         

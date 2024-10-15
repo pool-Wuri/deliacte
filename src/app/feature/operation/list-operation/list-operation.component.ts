@@ -9,6 +9,7 @@ import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeOperationService } from 'src/app/core/services/type-operation.service';
+import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 
 @Component({
   selector: 'app-list-operation',
@@ -27,7 +28,20 @@ procedures=new Array<Procedure>();
 procedure=new Procedure;
 user: User | null = null;
 addchamp:boolean=false;
+adddoctype:boolean=false;
+champ=new ChampOperation;
+
 types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
+disable:boolean=true;
+selectedOperation=new Array <Operation>();
+utilisateurs=new Array <User>()
+usergroup=new Array <User>()
+
+
+listeUser:boolean=false;
+list1: any[] | undefined;
+
+list2: any[] | undefined;
 
 constructor(
   private TypeOperationService: TypeOperationService,
@@ -36,6 +50,7 @@ constructor(
   private confirmationService:ConfirmationService,
   private messageService:MessageService,
   private router:Router,
+  private userService:UtilisateurService,
   
 
 
@@ -43,8 +58,7 @@ constructor(
 
 }
 
-ngOnInit(): void {  
- // this.searchtypeoperation();
+ngOnInit(): void {   
  const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
@@ -52,8 +66,24 @@ ngOnInit(): void {
   }
   this.searchOperation();
   this.searchtypeoperation();
+  this.searchUser();
+
 }
 
+searchUser(){
+  this.userService.search_users().subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result)
+      this.utilisateurs=result;
+    
+    },
+    error:(error)=>{
+      console.log(error);
+    }
+
+  })
+}
 
 
 searchtypeoperation():void{
@@ -98,6 +128,7 @@ searchtypeoperation():void{
     })
    
   }
+
 ajouter(){
   this.addboutton=true;
     this.addUser=true;
@@ -111,23 +142,77 @@ fermerModal(){
   this.addboutton=false;
   this.addUser=false;
   this.editbutt=false;
-  this.addchamp=false
+  this.addchamp=false;
+  this.adddoctype=false;
  }
 
 
  saveOperation(){
-  this.operation.isActive=true;
-  this.operationService.saveProcedure(this.operation).subscribe({
-    next:(value)=>{
-      console.log(value)
-      this.addboutton=false;
+  this.operation.isActive=false;
+  console.log(this.operation)
+  this.confirmationService.confirm({
+    message: 'Voulez-vous enregistrer cette opération?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.operationService.saveProcedure(this.operation).subscribe({
+      next:(value)=>{
+        console.log(value)
+        this.addboutton=false;
+  
+      },
+      complete:()=>{},
+      error:(erreur)=>{
+        console.log(erreur)
+      }
+    })
+  
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+    this.addboutton=false;
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+});
+ }
 
-    },
-    complete:()=>{},
-    error:(erreur)=>{
-      console.log(erreur)
-    }
-  })
+ saveEdit(){
+  this.operation.isActive=false;
+  this.confirmationService.confirm({
+    message: 'Voulez-vous modifier cette opération?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.operationService.updateprocedure(this.operation).subscribe({
+      next:(value)=>{
+        console.log(value)
+        this.addboutton=false;
+        this.editbutt=false;
+  
+      },
+      complete:()=>{},
+      error:(erreur)=>{
+        console.log(erreur)
+      }
+    })
+  
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+    this.addboutton=false;
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+});
  }
 
  edit(operation:Operation){
@@ -171,12 +256,17 @@ fermerModal(){
   this.router.navigate(['/deliacte/operation/details',operation.id])
   }
 
-champ=new ChampOperation;
   ajouterChamp(operation:any){
     this.addchamp=true
-    this.title="ajouter";
+    this.title="Ajouter champ";
     this.champ={};
     this.champ.operationId=operation.id;
+  }
+
+  ajouterTypeDoc(operation:any){
+    this.adddoctype=true
+    this.title="Ajouter type document";
+   
   }
 
   saveChamp(){
@@ -190,6 +280,13 @@ champ=new ChampOperation;
         console.log(err)
       }
     })
+  }
+
+
+  groupeUser(){
+    this.disable=false;
+    console.log(this.selectedOperation);
+    this.listeUser=true;
   }
 
 }

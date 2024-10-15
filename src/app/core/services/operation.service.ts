@@ -113,4 +113,22 @@ export class OperationService {
         )
       );
   }
+
+
+  public delete_Champ(champId?: number): Observable<any> {
+    return this.http
+      .delete(CHAMP + '/' + champId, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > delete_procedurechamp > tap > server data :',
+            data
+          )
+        )
+      );
+  }
 }

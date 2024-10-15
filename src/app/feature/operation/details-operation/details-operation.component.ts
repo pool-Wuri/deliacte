@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
 import { OperationService } from 'src/app/core/services/operation.service';
@@ -18,9 +20,11 @@ export class DetailsOperationComponent {
   champs=new Array <ChampType>();
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
-    private operationService:OperationService
+    private operationService:OperationService,
+    private confirmationService:ConfirmationService,
+  private messageService:MessageService,
 ){
-  
+
 
 }
 ngOnInit():void{
@@ -69,6 +73,35 @@ searchChamp(){
     error:(err)=>{}
   })
  
+}
+
+supprimerChamp(champ:ChampOperation){
+  console.log(champ)
+  this.confirmationService.confirm({
+    message: 'Voulez-vous vraiment supprimer ce champ?',
+    header: 'Suppression',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.operationService.delete_Champ(champ.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+       this.searchChamp();
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    })
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+  },
+  reject:()=>{
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+});
+
 }
 
 }
