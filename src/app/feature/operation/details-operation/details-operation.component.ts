@@ -49,7 +49,8 @@ getProcedure(id?:number){
      this.operationService.searchChamp("").subscribe({
       next:(value)=>{
         this.champs=value;
-        this.champs=this.champs.filter(u=>u.operationId==id)
+        this.champs=this.champs.filter(u=>u.operationId==id);
+        this.champs.reverse()
         console.log(this.champs);
      
       },
@@ -89,6 +90,7 @@ searchChamp(){
       this.champs=value;
       this.champs=this.champs.filter(u=>u.operationId==this.id)
       console.log(this.champs);
+      this.champs.reverse()
    
     },
     complete:()=>{},

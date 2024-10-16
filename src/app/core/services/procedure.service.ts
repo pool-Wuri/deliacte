@@ -7,7 +7,9 @@ import { catchError} from 'rxjs/operators';
 
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
-const USER_API=environment.apiUrl + "/users"
+const USER_API=environment.apiUrl + "/users";
+const DEMANDE_API=environment.apiUrl + "/dossiers/citoyen"
+
 
 @Injectable({
   providedIn: 'root'
@@ -119,4 +121,13 @@ export class ProcedureService {
           );
   }
   
+
+
+  public saveDemande(demande:any[]):Observable<any>{
+    return this.http.post<any>(DEMANDE_API,demande).pipe(
+      tap((data)=>{
+        console.log(data);
+      })
+    )
+  }
 }

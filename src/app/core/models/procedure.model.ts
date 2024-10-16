@@ -15,3 +15,12 @@ export enum ProcedureStatus {
     DRAFT = "Brouillon",
     PUBLISHED = "Publiée"
 }
+
+
+export class DemandeProcedur{
+    constructor(
+        public champOperationId?:number,
+        public citoyenId?:number,
+        public name?:string,
+    ){}
+}

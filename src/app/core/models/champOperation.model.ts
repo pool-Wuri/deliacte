@@ -5,7 +5,8 @@ export class ChampOperation{
         public description?:string,
         public inputType?:any,
         public operationId?:number,
-        public operation?:any
+        public operation?:any,
+        public isRequired?:boolean
 
     ){}
 }
