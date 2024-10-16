@@ -198,7 +198,7 @@ fermerModal(){
     this.addboutton=false;
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
-});
+  });
  }
 
  saveEdit(){
@@ -290,16 +290,34 @@ fermerModal(){
   }
 
   saveChamp(){
-    this.operationService.ajouterChamp(this.champ).subscribe({
-      next:(value)=>{
-        console.log(value)
-        this.addchamp=false;
-      },
-      complete:()=>{},
-      error:(err)=>{
-        console.log(err)
-      }
-    })
+    this.confirmationService.confirm({
+      message: 'Voulez-vous sauvegarder ce champ?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.operationService.ajouterChamp(this.champ).subscribe({
+        next:(value)=>{
+          console.log(value)
+          this.addchamp=false;
+        },
+        complete:()=>{},
+        error:(err)=>{
+          console.log(err)
+        }
+      })
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.addboutton=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+    });
+   
   }
 
 

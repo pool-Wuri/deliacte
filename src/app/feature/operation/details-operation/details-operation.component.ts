@@ -18,6 +18,10 @@ export class DetailsOperationComponent {
   procedures=new Array<Procedure>();
   operation=new Operation
   champs=new Array <ChampOperation>();
+  addchamp:boolean=false;
+  champ= new ChampOperation;
+  types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
+
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -122,4 +126,42 @@ supprimerChamp(champ:ChampOperation){
 
 }
 
+editChamp(champ:ChampOperation){
+  this.addchamp=true;
+  this.champ=champ
+}
+
+fermerModal(){
+  this.addchamp=false;
+}
+
+saveChamp(){
+  this.confirmationService.confirm({
+    message: 'Voulez-vous modifier ce champ?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.operationService.updateChamp(this.champ,this.champ.id).subscribe({
+      next:(value)=>{
+        console.log(value)
+        this.addchamp=false;
+      },
+      complete:()=>{},
+      error:(err)=>{
+        console.log(err)
+      }
+    })
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+    this.addchamp=false;
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+  });
+}
 }

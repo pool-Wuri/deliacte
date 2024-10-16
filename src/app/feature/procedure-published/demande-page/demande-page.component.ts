@@ -17,7 +17,8 @@ export class DemandePageComponent {
   operations=new Array<Operation>();
   champs=new Array <ChampOperation>();
   operation=new Operation;
-
+  TEXT="TEXT";
+  CHECKBOX="CHECKBOX"
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -32,7 +33,7 @@ ngOnInit():void{
     this.getProcedure(this.id)
    }
   );
-  this.searchChamp()
+ // this.searchChamp()
 }
 
 getProcedure(id?:number){
@@ -47,15 +48,19 @@ getProcedure(id?:number){
           this.operations=this.operations.filter(u=>u.procedureId==this.id);
           this.operations=this.operations.filter(u=>u.name=="SOUMISSION");
           console.log(this.operations);
-          this.operationService.searchChamp("").subscribe({
-            next:(value)=>{
-              this.champs=value;
-              this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
-           
-            },
-            complete:()=>{},
-            error:(err)=>{}
-          })
+          if(this.operations[0]){
+            this.operationService.searchChamp("").subscribe({
+              next:(value)=>{
+                this.champs=value;
+                this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
+                console.log(this.champs)
+              },
+              complete:()=>{},
+              error:(err)=>{}
+            })
+          }
+          console.log(this.champs)
+       
         
         },
         complete:()=>{},
