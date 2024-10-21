@@ -7,6 +7,9 @@ import { ListeDashboardComponent } from './liste-dashboard/liste-dashboard.compo
 import { ChartModule } from 'primeng/chart';
 import {PanelModule} from 'primeng/panel';
 import {CalendarModule} from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms'; // Pour ngModel
+
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import {CalendarModule} from 'primeng/calendar';
     DashboardRoutingModule,
     ChartModule,
     PanelModule,
-    CalendarModule
+    CalendarModule,
+    DropdownModule,
+    FormsModule,
+   
   ]
 })
 export class DashboardModule { }

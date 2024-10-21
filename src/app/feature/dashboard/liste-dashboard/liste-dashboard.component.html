@@ -2,7 +2,17 @@
 
 <p-chart *ngIf="user && (user.role === SUPER_ADMIN)" type="line" [data]="basicData1" [options]="basicOptions1"></p-chart>
 
-<p-chart *ngIf="user && (user.role === ORG_ADMIN)" type="line" [data]="basicData2" [options]="basicOptions2"></p-chart>
+<div *ngIf="user && (user.role === ORG_ADMIN)" class="none">
+    <p-dropdown 
+    [options]="organisation" 
+    optionLabel="name"  
+    [(ngModel)]="selectedOrganisation" 
+    placeholder="Choisir une organisation" 
+    styleClass="mb-2 md:mb-0"
+    (onChange)="onOrganisationChange($event)">
+</p-dropdown>
 
+<p-chart  type="line" [data]="basicData2" [options]="basicOptions2"></p-chart>
 
+</div>
 
