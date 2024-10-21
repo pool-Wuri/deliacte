@@ -37,6 +37,8 @@
     
      <ng-template pTemplate="caption">
         <div class="flex">
+            <p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+
             <span class="p-input-icon-left ml-auto cherch">
                 <i class="pi pi-search" ></i>
                 <input 
@@ -56,7 +58,7 @@
             </th>
             <th >Nom</th>
             <th >Description</th>
-            <th >Procedure</th>
+            <!--th >Procedure</th-->
             <th >Statut</th>
             <th style="width: 350px;">Actions</th>
         </tr>
@@ -73,12 +75,12 @@
             <td>
                 {{operation.description}}
             </td>
-            <td *ngIf="operation.procedure">
+            <!--td *ngIf="operation.procedure">
                 {{operation.procedure.name}}
             </td>
             <td *ngIf="!operation.procedure">
                 ""
-            </td>
+            </td-->
             <td>
                 {{operation.isActive}}
 
@@ -90,7 +92,7 @@
                 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-eye"></button>
 
-                <button type="button"   style="background-color: rgba(0, 102, 0, 0.298);" (click)="ajouterChamp(operation)" title="ajouter champ"
+                <!--button type="button"   style="background-color: rgba(0, 102, 0, 0.298);" (click)="ajouterChamp(operation)" title="ajouter champ"
                 class="text-white from-green-400 via-green-500  
                 to-green-600 hover:bg-gradient-to-br focus:ring-4 
                 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
@@ -100,7 +102,7 @@
                 style="background-color: #e8e400;"
                 class="text-white  from-teal-400 via-teal-500 to-teal-600 
                focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                text-sm p-2.5 text-center inline-flex items-center mx-1	pi  pi pi-plus-circle"></button>
+                text-sm p-2.5 text-center inline-flex items-center mx-1	pi  pi pi-plus-circle"></button-->
 
                
                 <button type="button" title="Modifier"   style="background-color: #060;" (click)="edit(operation)"
@@ -125,6 +127,7 @@
     </ng-template>
     </p-table>
 </div>
+
 
 <div id="addoper" 
      [ngClass]="{'hidden': !addboutton}" 
@@ -170,7 +173,7 @@
                             <p-dropdown [options]="[1,2,3,4,5]"  [(ngModel)]="operation.numeroOrdre" 
                           ></p-dropdown>
                         </div> 
-                        <div>
+                        <div [class.disabled]="true">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedure</label>
                             <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>

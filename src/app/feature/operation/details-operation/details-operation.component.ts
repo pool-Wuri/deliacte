@@ -21,7 +21,9 @@ export class DetailsOperationComponent {
   addchamp:boolean=false;
   champ= new ChampOperation;
   types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
-
+  title:string="";
+  addbutton:boolean=false;
+  editbutton:boolean=false;
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -129,6 +131,9 @@ supprimerChamp(champ:ChampOperation){
 }
 
 editChamp(champ:ChampOperation){
+  this.title="Modifier champ";
+  this.editbutton=true;
+  this.addbutton=false;
   this.addchamp=true;
   this.champ=champ
 }
@@ -137,7 +142,7 @@ fermerModal(){
   this.addchamp=false;
 }
 
-saveChamp(){
+saveChampEdit(){
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier ce champ?',
     header: 'Confirmation',
@@ -150,10 +155,14 @@ saveChamp(){
       next:(value)=>{
         console.log(value)
         this.addchamp=false;
+        this.editbutton=false;
+        this.addbutton=false;
       },
       complete:()=>{},
       error:(err)=>{
         console.log(err)
+        this.editbutton=false;
+        this.addbutton=false;
       }
     })
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
@@ -166,4 +175,49 @@ saveChamp(){
   }
   });
 }
+
+ajouterChamp(operation:any){
+  this.addchamp=true
+  this.title="Ajouter champ";
+  this.champ={};
+  this.editbutton=false;
+  this.addbutton=true;
+  this.champ.operationId=operation.id;
+}
+
+saveChamps(){
+  this.confirmationService.confirm({
+    message: 'Voulez-vous sauvegarder ce champ?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.operationService.ajouterChamp(this.champ).subscribe({
+      next:(value)=>{
+        console.log(value)
+        this.searchChamp();
+        this.addchamp=false;
+        this.editbutton=false;
+        this.addbutton=false;
+      },
+      complete:()=>{},
+      error:(err)=>{
+        console.log(err);
+        this.editbutton=false;
+        this.addbutton=false;
+      }
+    })
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+  });
+ 
+}
+
 }

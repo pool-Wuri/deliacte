@@ -4,6 +4,7 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const TYPEDOC_API=environment.apiUrl +"/type-documents";
+const DOSSIER=environment.apiUrl+"/citoyen"
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +81,24 @@ export class TypeDocService {
             'api.service > get_formulaire > tap > server data :',
             data
           )
+        )
+      );
+  }
+
+
+  public searchDoosier(filterParam =''): Observable<any> {
+    return this.http
+    .get(DOSSIER , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
         )
       );
   }

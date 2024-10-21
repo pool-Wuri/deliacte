@@ -29,6 +29,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsOperationComponent } from './details-operation/details-operation.component';
 import { PanelModule } from 'primeng/panel';
 import {PickListModule} from 'primeng/picklist';
+import {DataViewModule} from 'primeng/dataview';
 
 
 @NgModule({
@@ -63,7 +64,9 @@ import {PickListModule} from 'primeng/picklist';
     SplitterModule,
     TabViewModule,
     PanelModule,
-    PickListModule
+    PickListModule,
+    DataViewModule
+    
   ],
   providers: [
     ConfirmationService ,

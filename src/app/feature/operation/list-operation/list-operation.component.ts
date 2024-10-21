@@ -42,7 +42,10 @@ listeUser:boolean=false;
 list1: any[] | undefined;
 
 list2: any[] | undefined;
+  sortOrder!: number;
 
+  sortField!: string;
+  procedurechoisi=new Procedure;
 constructor(
   private TypeOperationService: TypeOperationService,
   private operationService:OperationService,
@@ -62,11 +65,12 @@ ngOnInit(): void {
  const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-    console.log(this.user)
+   // console.log(this.user)
   }
-  this.searchOperation();
+  //this.searchOperation();
   this.searchtypeoperation();
   this.searchUser();
+  this.search_Procedure();
 
 }
 
@@ -74,7 +78,7 @@ searchUser(){
   this.userService.search_users().subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result)
+     // console.log(result)
       this.utilisateurs=result;
     
     },
@@ -135,7 +139,8 @@ console.log(result)    },
             complete:()=>{},
             next:(result)=>{
               this.operations[i].procedure=result;
-        console.log(result)    },
+        //console.log(result)    
+      },
             error:(er)=>{console.log("get_error_User")}
           })
         }
@@ -155,6 +160,7 @@ ajouter(){
     this.editbutt=false;
     this.title="Ajouter";
     this.operation={};
+    this.operation.procedureId=this.procedurechoisi.id;
     this.search_Procedure();
 }
 
@@ -180,7 +186,27 @@ fermerModal(){
   accept: () => {
     this.operationService.saveProcedure(this.operation).subscribe({
       next:(value)=>{
-        console.log(value)
+        console.log(value);
+        this.operationService.search_Procedure("").subscribe({
+          next:(value)=>{
+            this.operations=value;
+         //   console.log(value.id)
+           this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
+            this.operations.reverse();
+            for(let i=0;i<this.operations.length;i++){
+              this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operations[i].procedure=result;
+          },
+                error:(er)=>{console.log("get_error_User")}
+              })
+            }
+         
+          },
+          complete:()=>{},
+          error:(err)=>{}
+        })
         this.addboutton=false;
   
       },
@@ -246,6 +272,7 @@ fermerModal(){
  }
 
  deleteOperation(operation:Operation){
+ // console.log(this.procedurechoisi)
   this.confirmationService.confirm({
      message: 'Voulez-vous vraiment supprimer cette opération?',
      header: 'Suppression',
@@ -257,7 +284,27 @@ fermerModal(){
      this.operationService.delete_operation(operation.id).subscribe({
        complete:()=>{},
        next:(result)=>{
-        this.searchOperation();
+        //this.searchOperation();
+        this.operationService.search_Procedure("").subscribe({
+          next:(value)=>{
+            this.operations=value;
+         //   console.log(value.id)
+           this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
+            this.operations.reverse();
+            for(let i=0;i<this.operations.length;i++){
+              this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operations[i].procedure=result;
+          },
+                error:(er)=>{console.log("get_error_User")}
+              })
+            }
+         
+          },
+          complete:()=>{},
+          error:(err)=>{}
+        })
        },
        error:(error)=>{
          console.log(error);
@@ -319,6 +366,33 @@ fermerModal(){
     });
    
   }
+
+
+  onSortChange(event: { value: any; }) {
+    let proced = event.value;
+  //  console.log(proced)
+    this.operationService.search_Procedure("").subscribe({
+      next:(value)=>{
+        this.operations=value;
+        console.log(value.id)
+       this.operations=this.operations.filter(u=>u.procedureId===proced.id);
+        this.operations.reverse();
+        for(let i=0;i<this.operations.length;i++){
+          this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              this.operations[i].procedure=result;
+        console.log(result)    },
+            error:(er)=>{console.log("get_error_User")}
+          })
+        }
+     
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    })
+    }
+
 
 
   groupeUser(){

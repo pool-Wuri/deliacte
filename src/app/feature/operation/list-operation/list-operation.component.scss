@@ -192,6 +192,11 @@
 
 }
 
+.disabled {
+    pointer-events: none; /* Prevent interaction */
+    opacity: 0.5; /* Make it look disabled */
+  }
+  
 .product-item {
     display: flex;
     align-items: center;
