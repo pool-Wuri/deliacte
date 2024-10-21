@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { Organisation } from 'src/app/core/models/organisation.model';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-liste-dashboard',
@@ -9,6 +10,12 @@ import { Organisation } from 'src/app/core/models/organisation.model';
   styleUrls: ['./liste-dashboard.component.scss']
 })
 export class ListeDashboardComponent {
+
+  user: User | null = null;
+  ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
+  SUPER_ADMIN= 'SUPER_ADMIN'
+  PROCEDURE_MANAGER='PROCEDURE_MANAGER'
+  CITOYEN='CITOYEN';
 
   organisationIds: number[] = []; // Tableau pour stocker les IDs des organisations
   orgId!: number; // Variable pour chaque ID d'organisation
@@ -24,6 +31,10 @@ export class ListeDashboardComponent {
   basicData1: any;
   basicOptions1: any;
 
+  basicData2: any;
+  basicOptions2: any;
+
+
   data: any;
   options: any;
   value!: Date;
@@ -33,6 +44,14 @@ export class ListeDashboardComponent {
   ) {}
 
   ngOnInit(): void {
+
+
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+      console.log(this.user)
+    }
+
     this.DashboardService.getOrganizationEvolution().subscribe((data) => {
       // Extraire les mois et les nombres des données API
       // Extraire le mois et l'année (si disponible) pour les labels
@@ -131,30 +150,34 @@ export class ListeDashboardComponent {
       });
       const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
   
-      // Configuration des données du graphique en secteurs
-      this.data = {
-        labels: labels,  // Mois et année pour chaque segment
+       // Configuration du graphique
+       this.basicData2 = {
+        labels: labels,
         datasets: [
           {
-            data: values,  // Valeurs associées à chaque mois
-            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+            label: 'Évolution des procedures par organisation',
+            backgroundColor: '#060',
+            data: values,
           },
         ],
       };
-  
-      // Options de personnalisation du graphique
-      this.options = {
+
+      this.basicOptions2 = {
         responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Mois - Année',
+            },
           },
-          tooltip: {
-            callbacks: {
-              label: function (tooltipItem: any) {
-                return tooltipItem.label + ': ' + tooltipItem.raw;
-              },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Nombre de procedures',
             },
           },
         },

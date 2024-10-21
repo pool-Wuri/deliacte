@@ -1,8 +1,8 @@
-<p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
+<p-chart *ngIf="user && (user.role === SUPER_ADMIN)" type="line" [data]="basicData" [options]="basicOptions"></p-chart>
 
-<p-chart type="line" [data]="basicData1" [options]="basicOptions1"></p-chart>
+<p-chart *ngIf="user && (user.role === SUPER_ADMIN)" type="line" [data]="basicData1" [options]="basicOptions1"></p-chart>
 
-<p-chart type="pie" [data]="data" [options]="options" />
+<p-chart *ngIf="user && (user.role === ORG_ADMIN)" type="line" [data]="basicData2" [options]="basicOptions2"></p-chart>
 
 
 
