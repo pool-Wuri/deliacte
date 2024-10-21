@@ -316,8 +316,6 @@ eventModif(){
 }
 
 
-
-
 SaveAssigner(){
   console.log(this.userToAssign)
   console.log(this.newOrganisationId)
@@ -429,7 +427,7 @@ fermerAssign(){
 }
 
 detailsUser(user:User){
-this.router.navigate(['/deliacte/utilisateur/details',user.id])
+  this.router.navigate(['/deliacte/utilisateur/details',user.id])
 }
 
 deleteUser(user:User){
@@ -491,4 +489,5 @@ revoquerAdmin(user:User){
 });
 
 }
+
 }

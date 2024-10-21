@@ -47,7 +47,16 @@
 <p-tabView>
 
     <p-tabPanel header="Champ">
-
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="right">
+                <button   style="background-color: #060;" (click)="ajouterChamp(operation)"
+                class="text-white  from-green-400 via-green-500 to-green-600 
+                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
+                    Ajouter
+                </button>
+            </ng-template>
+        </p-toolbar>
         <div class="card">
             <p-table #dt [value]="champs"  styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
@@ -115,7 +124,6 @@
                 </tr>
             </ng-template>
             </p-table>
-        
         </div>
     </p-tabPanel>
     <p-tabPanel header="Type document">
@@ -302,8 +310,15 @@
 
             <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button"   style="background-color: #060;" (click)="saveChamp()"
-                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
+                <button type="button"   style="background-color: #060;" (click)="saveChamps()" *ngIf="addbutton"
+                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 
+                font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 
+                dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+                <button type="button"   style="background-color: #060;" (click)="saveChampEdit()" *ngIf="editbutton"
+                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 
+                focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center 
+                me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
 
                 <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" 
                 class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>

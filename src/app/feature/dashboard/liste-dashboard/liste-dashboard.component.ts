@@ -18,6 +18,7 @@ export class ListeDashboardComponent {
 
   data: any;
   options: any;
+  value!: Date;
 
   constructor(private DashboardService: DashboardService) {}
 
