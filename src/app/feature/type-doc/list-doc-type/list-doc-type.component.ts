@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Operation } from 'src/app/core/models/operation.model';
+import { Procedure } from 'src/app/core/models/procedure.model';
 import { TypeDoc } from 'src/app/core/models/typeDoc-model';
+import { OperationService } from 'src/app/core/services/operation.service';
+import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
 
 @Component({
@@ -17,17 +21,26 @@ typeDoc=new TypeDoc;
 title:string="";
 modifBut:boolean=false;
 validButtn:boolean=false;
+procedurechoisi=new Procedure;
+procedures=new Array<Procedure>();
+operations=new Array <Operation>();
 
 constructor(
   private typeDocService:TypeDocService,
   private router:Router,
   private confirmationService: ConfirmationService,
   private messageService: MessageService,
+  private procedureService:ProcedureService,
+  private operationService:OperationService,
+
+
 ){
 }
 
 ngOnInit(): void {
   this.searchType();
+  this.getDossier();
+  this.search_Procedure();
  }
 
  searchType():void{
@@ -162,5 +175,62 @@ ngOnInit(): void {
  detailsType(Typedoc: TypeDoc) {
   this.router.navigate(['/deliacte/typeDoc/details', Typedoc.id]);
 }
+
+getDossier(){
+  this.typeDocService.searchDoosier("").subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result+" total");
+    },
+    error:(error)=>{
+      console.log(error);
+    }
+
+  })
+}
+
+searchOperation():void{
+  this.operationService.search_Procedure("").subscribe({
+    next:(value)=>{
+      this.operations=value;
+      this.operations.reverse();
+      for(let i=0;i<this.operations.length;i++){
+        this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.operations[i].procedure=result;
+      //console.log(result)    
+    },
+          error:(er)=>{console.log("get_error_User")}
+        })
+      }
+   
+    },
+    complete:()=>{},
+    error:(err)=>{}
+  })
+ 
+}
+
+search_Procedure():void{
+  this.procedureService.search_Procedure().subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result+"procedure total");
+      this.procedures=result;
+    
+    },
+    error:(error)=>{
+      console.log(error);
+    }
+
+  })
+ }
+
+ onSortChange(event: { value: any; }) {
+  let proced = event.value;
+//  console.log(proced)
+ 
+  }
 
 }
