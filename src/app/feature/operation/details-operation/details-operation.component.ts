@@ -24,6 +24,10 @@ export class DetailsOperationComponent {
   title:string="";
   addbutton:boolean=false;
   editbutton:boolean=false;
+  optionsChamp:string[]=[];
+  newOption: string = '';
+  optionAdd:any;
+
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -143,6 +147,8 @@ fermerModal(){
 }
 
 saveChampEdit(){
+  console.log(this.champ.options);
+
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier ce champ?',
     header: 'Confirmation',
@@ -186,6 +192,7 @@ ajouterChamp(operation:any){
 }
 
 saveChamps(){
+  console.log(this.champ)
   this.confirmationService.confirm({
     message: 'Voulez-vous sauvegarder ce champ?',
     header: 'Confirmation',
@@ -206,6 +213,7 @@ saveChamps(){
       error:(err)=>{
         console.log(err);
         this.editbutton=false;
+        this.addchamp=false;
         this.addbutton=false;
       }
     })
@@ -218,6 +226,27 @@ saveChamps(){
   }
   });
  
+}
+
+addOption() {
+  this.optionAdd={
+    name:this.newOption,
+    champOperationId:this.champ.id
+  }
+  this.operationService.addOption(this.optionAdd).subscribe({
+    next:(result)=>{
+      console.log(result);
+      this.searchChamp();
+    },
+    complete:()=>{},
+    error:(err)=>{
+      console.log(err)
+    }
+  })
+
+ console.log(this.champ.options)
+ this.newOption='';
+ console.log(this.champ.options)
 }
 
 }

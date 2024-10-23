@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { Operation } from 'src/app/core/models/operation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
 import { TypeDoc } from 'src/app/core/models/typeDoc-model';
+import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
@@ -24,6 +26,10 @@ validButtn:boolean=false;
 procedurechoisi=new Procedure;
 procedures=new Array<Procedure>();
 operations=new Array <Operation>();
+user: User | null = null;
+doosierUser:any;
+procedure=new Procedure;
+  champs=new Array <ChampOperation>();
 
 constructor(
   private typeDocService:TypeDocService,
@@ -38,8 +44,13 @@ constructor(
 }
 
 ngOnInit(): void {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    this.user = JSON.parse(userData);
+    console.log(this.user)
+  }
   this.searchType();
-  this.getDossier();
+ // this.getDossier();
   this.search_Procedure();
  }
 
@@ -177,10 +188,12 @@ ngOnInit(): void {
 }
 
 getDossier(){
-  this.typeDocService.searchDoosier("").subscribe({
+  this.typeDocService.searchDoosier(this.procedurechoisi.id,this.user?.id).subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result+" total");
+      this.doosierUser=result;
+      console.log(this.doosierUser);
     },
     error:(error)=>{
       console.log(error);
@@ -229,8 +242,50 @@ search_Procedure():void{
 
  onSortChange(event: { value: any; }) {
   let proced = event.value;
-//  console.log(proced)
- 
+  console.log(this.procedurechoisi);
+   this.getProcedure();
+   this.getDossier();
+
+  }
+
+
+  
+  getProcedure(id?:number){
+    this.procedureService.get_Procedure(this.procedurechoisi.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result)
+        this.procedure=result;
+        this.operationService.search_Procedure("").subscribe({
+          next:(value)=>{
+            this.operations=value;
+            this.operations=this.operations.filter(u=>u.procedureId==this.procedurechoisi.id);
+            this.operations=this.operations.filter(u=>u.name=="SOUMISSION");
+            if(this.operations[0]){
+              this.operationService.searchChamp("").subscribe({
+                next:(value)=>{
+                  this.champs=value;
+                  this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
+                  console.log(this.champs)
+                   
+              
+                },
+                complete:()=>{},
+                error:(err)=>{}
+              })
+            }
+           
+          
+          },
+          complete:()=>{},
+          error:(err)=>{}
+        });
+       
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    })
   }
 
 }

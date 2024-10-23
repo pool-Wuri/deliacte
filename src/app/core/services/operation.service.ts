@@ -6,7 +6,9 @@ import { environment } from 'src/environnements/environment';
 
 const PROCEDURE_API=environment.apiUrl +"/operations";
 const USER_API=environment.apiUrl + "/users"
-const CHAMP=environment.apiUrl+ "/champ-operations"
+const CHAMP=environment.apiUrl+ "/champ-operations";
+const CHAMPOption=environment.apiUrl+ "/option-champ-operation"
+
 
 @Injectable({
   providedIn: 'root'
@@ -140,5 +142,14 @@ export class OperationService {
           )
         )
       );
+  }
+
+
+  addOption(option:any):Observable<any>{
+    return this.http.post<any>(CHAMPOption,option).pipe(
+      tap((data)=>{
+        console.log(data);
+      })
+    )
   }
 }

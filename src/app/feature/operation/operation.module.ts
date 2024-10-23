@@ -30,6 +30,7 @@ import { DetailsOperationComponent } from './details-operation/details-operation
 import { PanelModule } from 'primeng/panel';
 import {PickListModule} from 'primeng/picklist';
 import {DataViewModule} from 'primeng/dataview';
+import {ListboxModule} from 'primeng/listbox';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import {DataViewModule} from 'primeng/dataview';
     TabViewModule,
     PanelModule,
     PickListModule,
-    DataViewModule
+    DataViewModule,
+    ListboxModule
     
   ],
   providers: [

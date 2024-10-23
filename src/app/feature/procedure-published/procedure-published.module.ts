@@ -29,6 +29,7 @@ import {PanelModule} from 'primeng/panel';
 import {TabViewModule} from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { DemandePageComponent } from './demande-page/demande-page.component';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { DemandePageComponent } from './demande-page/demande-page.component';
     HttpClientModule,
     FormsModule,
     FileUploadModule,
-    PanelModule
+    PanelModule,
+    RadioButtonModule
   ],
   providers: [
     ConfirmationService ,

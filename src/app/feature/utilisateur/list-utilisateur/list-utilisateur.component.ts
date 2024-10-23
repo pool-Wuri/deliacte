@@ -288,13 +288,15 @@ assigne(utilisateur:any){
   this.searchOrganisation();
   this.searchProcedures();
   this.assignModal=true;
-  this.userToAssign=utilisateur
+  this.userToAssign=utilisateur;
+  console.log(this.utilisateur1);
+  console.log(this.user)
   if(this.user?.role=="ORG_ADMIN"){
-    this.utilisateur1.role="Manager de procedure"
+    this.userToAssign.role="Manager de procedure"
   }
 
   if(this.user?.role=="SUPER_ADMIN"){
-    this.utilisateur1.role="Administrateur d'organisation"
+    this.userToAssign.role="Administrateur d'organisation"
 
   }
   this.idOrganisationAssign={};

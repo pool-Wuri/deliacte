@@ -291,6 +291,24 @@
                             optionLabel="name"
                           ></p-dropdown>
                         </div> 
+                        <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT'">
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saisir options</label>
+                            <div class="flex items-center">
+                                <input 
+                                  [(ngModel)]="newOption" 
+                                  placeholder="Entrez une option"  
+                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                         focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 
+                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                />
+                                <button 
+                                  (click)="addOption()" 
+                                  class="ml-2 p-2 bg-green-700 text-white rounded-lg">
+                                  Ajouter
+                                </button>
+                              </div>                       
+                        </div> 
                         <div>
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Requis</label>
                             <div class="flex" style="margin-top: 15px;" >
@@ -303,6 +321,11 @@
                                     <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Non</label>
                                 </div>
                             </div>
+                        </div> 
+                        <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT' ">
+                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Options disponible</label>
+                            <p-listbox [options]="champ.options ?? []"  optionLabel="name"></p-listbox>
+
                         </div> 
                                               
                     </div>

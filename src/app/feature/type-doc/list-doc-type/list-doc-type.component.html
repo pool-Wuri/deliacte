@@ -24,7 +24,7 @@
 </p-toolbar>
 
 <div class="card">
-    <p-table #dt  [value]="typeDcs" styleClass="p-datatable-customers" [rowHover]="true" 
+    <p-table #dt  [value]="doosierUser" styleClass="p-datatable-customers" [rowHover]="true" 
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
     [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
      [globalFilterFields]="['firstName','lastName','email']">
@@ -33,9 +33,9 @@
      <ng-template pTemplate="caption">
         <div class="flex space-x-4">
         
-            <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+            <p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
             <span class="space-x-0.5 "></span>
-            <p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown-->
+            <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown-->
 
             <span class="p-input-icon-left ml-auto cherch">
                 <i class="pi pi-search" ></i>
@@ -50,44 +50,36 @@
     </ng-template>
     
     <ng-template pTemplate="header">
-        <tr class="tableEnt">
+        <tr class="tableEnt" >
             <!--th style="width: 4rem,">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th-->
-            <th>Nom</th>
-            <th >Procedure</th>
-            <th >Citoyen</th>
-            <th >Statut</th>
-            <th style="width: 350px;">Action</th>
+            <th *ngFor="let champ of champs; let i = index"> {{champ.name}}</th>
+            <th>Actions</th>
         </tr>
         
     </ng-template>
-    <ng-template id="bodi" pTemplate="body" let-type>
-        <tr class="p-selectable-row tableContenu">
+    <ng-template id="bodi" pTemplate="body" >
+        <tr class="p-selectable-row tableContenu"  >
             <!--td>
                 <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
             </td-->
+            <td *ngFor="let dossier of doosierUser; let i = index">{{ dossier.name || '"""' }}</td> 
             <td>
-                {{type.name}}
-            </td>
-            <td>
-                {{type.description}}
-            </td>
-            <td>
-                <button type="button"  style="color: #060;" title="visualiser" (click)="detailsType(type)"
+                <button type="button"  style="color: #060;" title="visualiser" 
                 class=" bg-white from-green-500 via-green-600 t
                 o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
                 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center me-1 mb-1  pi pi-eye"></button>
 
-                <button type="button" title="Modifier"   style="background-color: #060;" (click)="edit(type)"
+                <button type="button" title="Modifier"   style="background-color: #060;" 
                 class="text-white from-green-400 via-green-500 
                 to-green-600 hover:bg-gradient-to-br focus:ring-4 
                 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center me-1 mb-1 pi pi-pencil"></button>
 
               
-                <button type="button"  title="Supprimer" (click)="supprimerType(type)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                <button type="button"  title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
                 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center 
                 me-1 mb-1  pi pi-eraser">
@@ -98,7 +90,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="8"> Aucun type</td>
+            <td colspan="8"> Aucun dossier</td>
         </tr>
     </ng-template>
  </p-table>

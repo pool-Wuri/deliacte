@@ -181,12 +181,12 @@
                             </p-password>
                             
                         </div> 
-                        <div class="role">
+                        <!--div class="role">
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionner un rôle</label>
                             <p-dropdown [options]="roleUser" [(ngModel)]="utilisateur1.role" 
                           ></p-dropdown>
             
-                        </div>
+                        </div-->
                        
                         <!--div >
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
@@ -246,9 +246,9 @@
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
                         <input type="text"  [disabled]="true" [(ngModel)]="userToAssign.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                     </div>
-                    <div>
+                    <div >
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                        <p-dropdown [options]="roleUser" [(ngModel)]="userToAssign.role" (onClick)="eventModif()"
+                        <p-dropdown [options]="roleUser" [(ngModel)]="userToAssign.role" (onClick)="eventModif()"  [disabled]="true" 
                           ></p-dropdown>
                                    
                     </div>
