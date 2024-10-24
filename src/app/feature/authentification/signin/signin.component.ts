@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ConfirmationService, Message,MessageService, PrimeNGConfig} from 'primeng/api';
 import { User } from 'src/app/core/models/user.model';
@@ -16,8 +16,8 @@ export class SigninComponent {
   connexionForm: FormGroup = new FormGroup({});
   loading=false;
   connexionEtat:any;
-  mess:Message[] | undefined;
-  mess1:Message[] | undefined;
+  mess:Message[] =[];
+  mess1:Message[] =[];
   formLogin:FormGroup<any> | undefined;
   utilisateur= new User();
   utilisateur1 =new User;
@@ -45,7 +45,13 @@ initForm(){
   )
 }
 
+submitted:boolean=false;
+
+get f(): { [key: string]: AbstractControl } {
+  return this.connexionForm.controls;
+}
 onSubmit(){
+  this.submitted=true;
   this.utilisateur=this.connexionForm.value as User;
   console.log(this.utilisateur)
   this.authentificationService.authenticate(this.utilisateur).subscribe({
@@ -53,6 +59,7 @@ onSubmit(){
       this.authentificationService.saveToken(response.token);
       localStorage.setItem('user', JSON.stringify(response.user));
       const userData = localStorage.getItem('user');
+      this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
       if (userData) {
         this.user = JSON.parse(userData);
         console.log(this.user)
@@ -65,6 +72,10 @@ onSubmit(){
     },
     error: error => {
       console.error('Erreur lors de l\'authentification', error);
+      this.loading=false;
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Veuillez verifier vos identifiants'});
+
+   //   this.mess1=[{severity:'error', summary:'Echec de connexion', detail:"Vérifiez vos identifiants ou votre connexion. Si le problème persiste veuillez contacter l'administrateur du site."}]
       //this.errorMessage = 'Identifiants invalides, veuillez réessayer.';
     }
   });

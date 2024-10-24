@@ -58,7 +58,7 @@
             </th>
             <th >Nom</th>
             <th >Description</th>
-            <!--th >Procedure</th-->
+            <th >Ordre</th>
             <th >Statut</th>
             <th style="width: 350px;">Actions</th>
         </tr>
@@ -74,6 +74,9 @@
             </td>
             <td>
                 {{operation.description}}
+            </td>
+            <td>
+                {{operation.numeroOrdre}}
             </td>
             <!--td *ngIf="operation.procedure">
                 {{operation.procedure.name}}
