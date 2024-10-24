@@ -146,9 +146,8 @@ fermerModal(){
   this.addchamp=false;
 }
 
+optionResult:any;
 saveChampEdit(){
-  console.log(this.champ.options);
-
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier ce champ?',
     header: 'Confirmation',
@@ -157,9 +156,28 @@ saveChampEdit(){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
+    this.optionResult=this.champ.options;
     this.operationService.updateChamp(this.champ,this.champ.id).subscribe({
       next:(value)=>{
-        console.log(value)
+        console.log(value);
+        if(value){
+          value.options=this.optionResult;
+          console.log(value)
+          for(let i=0;i<value.options.length;i++){
+            value.options[i].champOperationId=value.id;
+            this.operationService.addOption(value.options[i]).subscribe({
+              next:(result)=>{
+                console.log(result);
+                this.searchChamp();
+              },
+              complete:()=>{},
+              error:(err)=>{
+                console.log(err)
+              }
+            })
+          }
+       
+        }
         this.addchamp=false;
         this.editbutton=false;
         this.addbutton=false;
@@ -186,6 +204,7 @@ ajouterChamp(operation:any){
   this.addchamp=true
   this.title="Ajouter champ";
   this.champ={};
+  this.champ.options=[];
   this.editbutton=false;
   this.addbutton=true;
   this.champ.operationId=operation.id;
@@ -201,9 +220,27 @@ saveChamps(){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
+    this.optionResult=this.champ.options;
     this.operationService.ajouterChamp(this.champ).subscribe({
       next:(value)=>{
         console.log(value)
+        if(value){
+          value.options=this.optionResult;
+          for(let i=0;i<value.options.length;i++){
+            value.options[i].champOperationId=value.id;
+            this.operationService.addOption(value.options[i]).subscribe({
+              next:(result)=>{
+                console.log(result);
+                this.searchChamp();
+              },
+              complete:()=>{},
+              error:(err)=>{
+                console.log(err)
+              }
+            })
+          }
+       
+        }
         this.searchChamp();
         this.addchamp=false;
         this.editbutton=false;
@@ -233,7 +270,11 @@ addOption() {
     name:this.newOption,
     champOperationId:this.champ.id
   }
-  this.operationService.addOption(this.optionAdd).subscribe({
+  console.log(this.optionAdd)
+  this.optionAdd;
+  this.champ.options.push(this.optionAdd)
+  console.log(this.optionAdd)
+  /*this.operationService.addOption(this.optionAdd).subscribe({
     next:(result)=>{
       console.log(result);
       this.searchChamp();
@@ -242,7 +283,7 @@ addOption() {
     error:(err)=>{
       console.log(err)
     }
-  })
+  })*/
 
  console.log(this.champ.options)
  this.newOption='';

@@ -111,6 +111,7 @@ searchtypeoperation():void{
     next:(result)=>{
       console.log(result+"procedure total");
       this.procedures=result;
+      console.log(this.procedures)
     
     },
     error:(error)=>{
@@ -370,7 +371,7 @@ fermerModal(){
 
   onSortChange(event: { value: any; }) {
     let proced = event.value;
-  //  console.log(proced)
+    console.log(proced)
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
         this.operations=value;
