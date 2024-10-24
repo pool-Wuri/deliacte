@@ -1,4 +1,6 @@
-<h1>Mes dossiers</h1>
+
+<h1>Liste des dossiers</h1>
+
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
         <button type="button" 
@@ -14,12 +16,12 @@
     </ng-template>
 
     <ng-template pTemplate="right">
-        <button    style="background-color: #060;" (click)="ajouter()"
+        <!--button    style="background-color: #060;" (click)="ajouter()"
         class="text-white  from-green-400 via-green-500 to-green-600 
         focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
         dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
             Ajouter
-        </button>
+        </button-->
     </ng-template>
 </p-toolbar>
 
@@ -37,7 +39,7 @@
             <span class="space-x-0.5 "></span>
             <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown-->
 
-            <span class="p-input-icon-left ml-auto cherch">
+            <!--span class="p-input-icon-left ml-auto cherch">
                 <i class="pi pi-search" ></i>
                 <input 
                     pInputText 
@@ -45,7 +47,7 @@
                     #searchInput 
                     (input)="dt.filterGlobal(searchInput.value, 'contains')" 
                     placeholder="      Rechercher" />
-            </span>
+            </span-->
         </div>
     </ng-template>
     
@@ -59,14 +61,16 @@
         </tr>
         
     </ng-template>
-    <ng-template id="bodi" pTemplate="body" >
+    <ng-template id="bodi" pTemplate="body" let-doss>
         <tr class="p-selectable-row tableContenu"  >
             <!--td>
                 <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
             </td-->
-            <td *ngFor="let dossier of doosierUser; let i = index">{{ dossier.name || '"""' }}</td> 
+            <td *ngFor="let dossier of dossierAff; let i = index">
+                    {{ dossier.name || '"""' }}
+               </td> 
             <td>
-                <button type="button"  style="color: #060;" title="visualiser" 
+                <button type="button"  style="color: #060;" title="visualiser"  (click)="detailsType(doss)"
                 class=" bg-white from-green-500 via-green-600 t
                 o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
                 font-medium rounded-full 

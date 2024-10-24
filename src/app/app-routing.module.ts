@@ -40,7 +40,7 @@ const routes: Routes = [
       { path: 'procedure', 
         loadChildren: () => import('./feature/procedure/procedure.module').then(m => m.ProcedureModule) 
       },
-      { path: 'typeDoc', loadChildren: () => import('./feature/type-doc/type-doc.module').then(m => m.TypeDocModule)
+      { path: 'dossier', loadChildren: () => import('./feature/type-doc/type-doc.module').then(m => m.TypeDocModule)
         
        },
       { path: 'type-operation', 

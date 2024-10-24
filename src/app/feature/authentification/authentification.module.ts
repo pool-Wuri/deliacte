@@ -26,7 +26,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     OverlayPanelModule,
     ConfirmDialogModule,
     SplitterModule,
-    TabViewModule
+    TabViewModule,
+    MessagesModule,
+    MessageModule
   ],
 
   providers: [

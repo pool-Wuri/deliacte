@@ -164,6 +164,7 @@ onOptionChange(option: string, index: number) {
   console.log(index)
   console.log('Option sélectionnée:', option);
   this.selectedOption = option;
+  console.log(option)
   this.demandeFor[index].name = option;
   console.log(this.demandeFor[index])
   // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
@@ -197,7 +198,7 @@ finDemande(){
         console.log(error);
       }
     });
-    this.router.navigate(['/deliacte/typeDoc/list'])
+    this.router.navigate(['/deliacte/dossier/list'])
 
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       //Actual logic to perform a confirmation

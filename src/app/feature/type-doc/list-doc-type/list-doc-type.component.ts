@@ -28,6 +28,8 @@ procedures=new Array<Procedure>();
 operations=new Array <Operation>();
 user: User | null = null;
 doosierUser:any;
+dossierAff:any;
+
 procedure=new Procedure;
   champs=new Array <ChampOperation>();
 
@@ -183,9 +185,11 @@ ngOnInit(): void {
  }
 
 
- detailsType(Typedoc: TypeDoc) {
-  this.router.navigate(['/deliacte/typeDoc/details', Typedoc.id]);
+ detailsType(dossier: any) {
+  console.log(dossier)
+  this.router.navigate(['/deliacte/dossier/details', this.procedurechoisi.id]);
 }
+
 
 getDossier(){
   this.typeDocService.searchDoosier(this.procedurechoisi.id,this.user?.id).subscribe({
@@ -193,6 +197,8 @@ getDossier(){
     next:(result)=>{
       console.log(result+" total");
       this.doosierUser=result;
+      this.dossierAff=result;
+      this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
       console.log(this.doosierUser);
     },
     error:(error)=>{
