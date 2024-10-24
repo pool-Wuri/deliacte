@@ -85,6 +85,7 @@ if (this.id !== undefined) {
           {
             label: 'Évolution des organisations',
             backgroundColor: '#060',
+            borderColor: '#060',
             data: evolutionData,
           },
         ],
@@ -105,7 +106,7 @@ if (this.id !== undefined) {
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Nombre d\'organisations',
+             
             },
           },
         },
@@ -131,6 +132,7 @@ if (this.id !== undefined) {
           {
             label: 'Évolution des utilisateurs',
             backgroundColor: '#060',
+            borderColor: '#060',
             data: evolutionData,
           },
         ],
@@ -151,7 +153,7 @@ if (this.id !== undefined) {
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Nombre d\'utilisateurs',
+              
             },
           },
         },
@@ -187,6 +189,7 @@ if (this.id !== undefined) {
             {
               label: 'Évolution des procédures',
               backgroundColor: '#060',
+              borderColor: '#060',
               data: values,
             },
           ],
@@ -207,7 +210,7 @@ if (this.id !== undefined) {
               beginAtZero: true,
               title: {
                 display: true,
-                text: 'Nombre de procedures',
+               
               },
             },
           },
