@@ -44,6 +44,7 @@ idOrganisationAssign=new Assigne;
 proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
 user: User | null = null;
+procedureAdd:any
 
 statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumération
 
@@ -86,6 +87,7 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
     this.userService.getUserByRole("PROCEDURE_MANAGER").subscribe({
       next:(value)=>{
         this.utilisateurs=value;
+        this.utilisateurs.reverse();
         console.log(this.utilisateurs)
       },
       complete:()=>{},
@@ -211,8 +213,8 @@ searchOrganisation(){
     {
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"Organisation total");
         this.organisations=result;
+        console.log(this.organisations+"Organisation total");
       },
       error:(error)=>{
         console.log(error);
@@ -292,7 +294,10 @@ assigne(utilisateur:any){
   console.log(this.utilisateur1);
   console.log(this.user)
   if(this.user?.role=="ORG_ADMIN"){
-    this.userToAssign.role="Manager de procedure"
+    this.userToAssign.role="Manager de procedure";
+    this.procedureAdd={};
+    console.log(this.proceduresid)
+
   }
 
   if(this.user?.role=="SUPER_ADMIN"){
@@ -380,6 +385,7 @@ console.log(this.userToAssign.role)
   else if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
     this.procedureTru=true;
     this.adminTrue=false;
+    console.log(this.proceduresid)
     this.confirmationService.confirm({
       message: 'confirmation ajout?',
       header: 'Confirmation',
