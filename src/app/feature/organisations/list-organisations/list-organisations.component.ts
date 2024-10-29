@@ -75,7 +75,7 @@ export class ListOrganisationsComponent implements OnInit {
   saveOrganisation(){ 
     this.soumettre=true;
     console.log(this.organisation1)
-    if(this.organisation1.name && this.organisation1.parentOrganisationId && this.organisation1.description)
+    if(this.organisation1.name && this.organisation1.description)
     {
     this.confirmationService.confirm({
       message: 'Voulez-vous enregistrer cette organisation?',
