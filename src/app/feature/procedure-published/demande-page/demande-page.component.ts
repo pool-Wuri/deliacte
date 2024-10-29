@@ -118,6 +118,7 @@ getProcedure(id?:number){
 
 onFileChange(event: any, index: number) {
   const file = event.target.files[0];
+  console.log(file)
   // Traitement du fichier, par exemple :
 }
 
@@ -179,7 +180,7 @@ updateCheckbox(index: number) {
 
 finDemande(){
   console.log(this.demandeFor)
-  this.confirmationService.confirm({
+ /* this.confirmationService.confirm({
     message: 'Voulez-vous vraiment lui retirer ce droit?',
     header: 'Confirmation',
     acceptLabel:'Oui',
@@ -208,7 +209,7 @@ finDemande(){
 
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
-});
+});*/
 
 }
 
