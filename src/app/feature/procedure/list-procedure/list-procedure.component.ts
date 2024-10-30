@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
+import { User } from 'src/app/core/models/user.model';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
+import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 
 @Component({
   selector: 'app-list-procedure',
@@ -20,15 +22,17 @@ procedures=new Array <Procedure>();
 organisations=new Array <Organisation>();
 statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouillon"},{value:"PUBLISHED",label:"Publiée"}]
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
-
 procedure=new Procedure;
   ProcedureStatus: any;
+  user: User | null = null;
+
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private procedureService:ProcedureService,
-    private organisationService:OrganisationService
+    private organisationService:OrganisationService,
+    private userService:UtilisateurService
   ){}
 
   parseStatus(status: string): string {
@@ -37,6 +41,11 @@ procedure=new Procedure;
 
   ngOnInit(): void {
     this.search_Procedure();
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+      console.log(this.user)
+    }
    }
 
    search_Procedure():void{
@@ -109,7 +118,17 @@ procedure=new Procedure;
    }
   
   searchOrganisation(){
-    this.organisationService.search_Organisations("").subscribe(
+    this.userService.userOrgaInfo(this.user?.id).subscribe({
+      complete:()=>{},
+  next:(result)=>{
+    this.organisations=result.data;
+    console.log(this.organisations)
+  },
+  error:(error)=>{
+    console.log(error)
+  }
+    });
+  /*  this.organisationService.search_Organisations("").subscribe(
       {
         complete:()=>{},
         next:(result)=>{
@@ -121,7 +140,7 @@ procedure=new Procedure;
         }
     
       }
-    )
+    )*/
   }
   
    editProcedure(procedure:Procedure){

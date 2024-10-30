@@ -14,6 +14,7 @@ export class DetailsProcedureComponent {
   id:number | undefined;
   procedure=new Procedure;
   utilisateurs=new Array <User> ();
+  
   constructor(private route:ActivatedRoute,
       private procedureService:ProcedureService
   ){
