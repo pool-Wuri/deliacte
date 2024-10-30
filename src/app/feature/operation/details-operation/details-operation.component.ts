@@ -51,7 +51,7 @@ getProcedure(id?:number){
   this.operationService.get_Procedure(id).subscribe({
     complete:()=>{},
     next:(result)=>{
-     this.operation=result;
+     this.operation=result.data;
      this.operationService.searchChamp("").subscribe({
       next:(value)=>{
         this.champs=value;
@@ -66,7 +66,7 @@ getProcedure(id?:number){
      this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.operation.procedure=result;
+        this.operation.procedure=result.data;
       console.log(result)    },
       error:(er)=>{console.log("get_error_User")}
     })

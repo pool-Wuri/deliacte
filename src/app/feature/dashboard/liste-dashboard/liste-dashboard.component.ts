@@ -225,7 +225,7 @@ if (this.id !== undefined) {
     this.userService.userOrgaInfo(id).subscribe({
       complete:()=>{},
   next:(result)=>{
-    this.organisation=result;
+    this.organisation=result.data;
     console.log(this.organisation)
   },
   error:(error)=>{

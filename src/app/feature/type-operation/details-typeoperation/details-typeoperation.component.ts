@@ -31,7 +31,8 @@ getTypeoperation(id?:number){
     complete:()=>{},
     next:(result)=>{
       console.log(result)
-      this.TypeOperation=result;
+      this.TypeOperation=result.data
+      ;
     },
     error:(error)=>{
       console.log(error)

@@ -32,7 +32,7 @@ export class DetailsProcedureComponent {
     this.procedureService.getUserById(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.utilisateurs=result;
+        this.utilisateurs=result.date;
         console.log(this.utilisateurs)
       },
       error:(er)=>{console.log("get_error_User")}
@@ -42,7 +42,7 @@ export class DetailsProcedureComponent {
       complete:()=>{},
       next:(result)=>{
         console.log(result)
-        this.procedure=result;
+        this.procedure=result.data;
       },
       error:(error)=>{
         console.log(error)

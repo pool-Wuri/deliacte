@@ -75,7 +75,7 @@ export class DetailsTypeDocComponent {
       complete:()=>{},
       next:(result)=>{
         console.log(result+" total");
-       this.dossier=result;
+       this.dossier=result.data;
        console.log(result)
       },
       error:(error)=>{
@@ -91,7 +91,7 @@ export class DetailsTypeDocComponent {
       complete:()=>{},
       next:(result)=>{
         console.log(result)
-        this.procedure=result;
+        this.procedure=result.data;
         this.operationService.search_Procedure("").subscribe({
           next:(value)=>{
             this.operations=value;
@@ -114,7 +114,7 @@ export class DetailsTypeDocComponent {
                     complete:()=>{},
                     next:(result)=>{
                       console.log(result+" total");
-                     this.dossier=result;
+                     this.dossier=result.data;
                      for(let i=0;i<this.dossier.length;i++){
                       this.demandeFor[i].name=this.dossier[i].name
                      }

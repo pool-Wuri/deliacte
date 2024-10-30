@@ -44,7 +44,7 @@ procedure=new Procedure;
       complete:()=>{},
       next:(result)=>{
         console.log(result+"procedure total");
-        this.procedures=result;
+        this.procedures=result.data;
       },
       error:(error)=>{
         console.log(error);
@@ -114,7 +114,7 @@ procedure=new Procedure;
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Organisation total");
-          this.organisations=result;
+          this.organisations=result.data;
         },
         error:(error)=>{
           console.log(error);

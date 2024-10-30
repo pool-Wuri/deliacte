@@ -45,7 +45,7 @@ proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
 user: User | null = null;
 procedureAdd:any
-
+loading:boolean=false;
 statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumération
 
  constructor(private userService:UtilisateurService,
@@ -71,7 +71,7 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
 
  searchUser():void{
   console.log(this.user?.role)
-  if(this.user?.role=="SUPER_ADMIN"){
+ /* if(this.user?.role=="SUPER_ADMIN"){
     this.userService.getUserByRole("ORG_ADMIN").subscribe({
       next:(value)=>{
         this.utilisateurs=value;
@@ -93,24 +93,24 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
       complete:()=>{},
       error:(err)=>{}
     })
-   /* console.log(true)
     this.utilisateurs = this.utilisateurs.filter(u => 
       u.role === "PROCEDURE_MANAGER" || u.role === "Manager de procedure"
-    ); */
-  }
+    ); 
+  }*/
 
- /*this.userService.search_users().subscribe({
+ this.userService.search_users().subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result)
-      this.utilisateurs=result;
+      this.utilisateurs=result.data;
+      console.log(this.utilisateurs)
     
     },
     error:(error)=>{
       console.log(error);
     }
 
-  })*/
+  })
  }
 
   parseStatus(status: string): string {
@@ -213,7 +213,7 @@ searchOrganisation(){
     {
       complete:()=>{},
       next:(result)=>{
-        this.organisations=result;
+        this.organisations=result.data;
         console.log(this.organisations+"Organisation total");
       },
       error:(error)=>{
@@ -405,7 +405,7 @@ console.log(this.userToAssign.role)
         }
     
       })
-      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+    /*  this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User add");
@@ -414,7 +414,7 @@ console.log(this.userToAssign.role)
           console.log(error);
         }
     
-      })
+      })*/
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         

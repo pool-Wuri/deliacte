@@ -43,7 +43,7 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
     this.userService.userOrgaInfo(id).subscribe({
       complete:()=>{},
   next:(result)=>{
-    this.organisation=result;
+    this.organisation=result.data;
     console.log(this.organisation)
   },
   error:(error)=>{
@@ -53,7 +53,7 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
     this.userService.procedureInfo(id).subscribe({
       complete:()=>{},
   next:(result)=>{
-    this.procedure=result;
+    this.procedure=result.data;
     console.log(this.procedure)
   },
   error:(error)=>{
@@ -64,7 +64,7 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
       complete:()=>{},
       next:(result)=>{
         console.log(result)
-        this.utilisateur=result;
+        this.utilisateur=result.data;
        
       },
       error:(error)=>{

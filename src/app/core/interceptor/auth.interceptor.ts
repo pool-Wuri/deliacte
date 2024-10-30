@@ -14,11 +14,12 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authentificationService:AuthentificationService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token=this.authentificationService.getToken();
+    const token=this.authentificationService.getAccessToken();
+    console.log(token)
     if(token!=null && !request.url.includes("/auth/authenticate")){
       request=request.clone({
         setHeaders:{
-          Authorization:`Beazer ${token}`
+          Authorization:`Bearer ${token}`
         }
       })
     }

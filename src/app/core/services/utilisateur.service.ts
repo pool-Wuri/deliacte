@@ -4,6 +4,8 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const USER_API =environment.apiUrl +'/users';
+const USER_API_FILTER =environment.apiUrl +'/users/mysUsers';
+
 const ASSIGN_API=environment.apiUrl+'/organisations'
 const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
 const SAVE=environment.apiUrl + '/auth/register'
@@ -21,7 +23,7 @@ export class UtilisateurService {
 
   public search_users(filterParam =''): Observable<any> {
     return this.http
-    .get(USER_API , {
+    .get(USER_API_FILTER, {
         headers: this.httpParams,
         responseType: 'json',
       })
