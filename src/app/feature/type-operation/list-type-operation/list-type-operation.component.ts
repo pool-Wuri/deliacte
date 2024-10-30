@@ -18,7 +18,7 @@ export class ListTypeOperationComponent implements OnInit {
   addTypeOperation: boolean = false;
   editbutt: boolean = false;
   addtypeOperation: any;
-  title: string = '';
+  title:string = "";
   typeoperations=new Array <TypeOperation>()
   typeoperation1 = new TypeOperation;
   typeoperationToAssign = new TypeOperation();
@@ -40,7 +40,6 @@ export class ListTypeOperationComponent implements OnInit {
    }
 
    searchtypeoperation():void{
-
     this.TypeOperationService.search_Typeoperation().subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -56,14 +55,10 @@ export class ListTypeOperationComponent implements OnInit {
    }
 
    ajouter(){
-
     this.modalVisible = true;
     this.addTypeOperation = true;
     this.editbutt = false;
     this.title = 'Formulaire d\'ajout d\'un type d\'opération ';
-   // this.typeoperation1 ={};
-   // this.searchtypeoperation();
-
    }
 
    fermerModal() {
@@ -87,7 +82,6 @@ export class ListTypeOperationComponent implements OnInit {
       this.modalVisible = false; // Ouvre le modal 
       this.addTypeOperation=false;
       this.editbutt=false;
-      //this.typeoperation1.isActive=true;
       console.log(this.typeoperation1)
       this.TypeOperationService.saveTypeoperation(this.typeoperation1).subscribe({
         complete:()=>{},
