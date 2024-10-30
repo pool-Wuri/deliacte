@@ -52,7 +52,7 @@ export class ListProcedurePublishedComponent {
       complete:()=>{},
       next:(result)=>{
         console.log(result+"procedure total");
-        this.procedures=result;
+        this.procedures=result.data;
         this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
         console.log(this.procedures);
       },

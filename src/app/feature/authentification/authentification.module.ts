@@ -70,7 +70,8 @@ import {MessageModule} from 'primeng/message';
 
   providers: [
     ConfirmationService ,
-    MessageService // Add the ConfirmationService here
+    MessageService ,
+    
   ]
 })
 export class AuthentificationModule { }

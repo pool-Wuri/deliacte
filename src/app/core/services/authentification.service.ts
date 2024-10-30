@@ -3,39 +3,75 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { environment } from 'src/environnements/environment';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { JwToken } from '../models/jwt-token.module';
+import { Token } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
+  private readonly TOKEN_KEY = 'TOKEN';
   API_URL=environment.apiUrl;
-TOKEN_KEY="JWT_TOKEN";
-  constructor(
-    private http:HttpClient,
-    private router:Router
-  ) { }
 
-  authenticate(login: User): Observable<{ token: string; user: User }> {
-    return this.http.post<{ token: string; user: User }>(`${this.API_URL}/auth/authenticate`, login);
+  constructor(private http: HttpClient, private router: Router) {}
+
+  authenticate(login: User): Observable<{ token: string; user: User, }> {
+    return this.http.post<{ user: User; access_token: string; refresh_token: string }>(`${this.API_URL}/auth/authenticate`, login).pipe(
+      map(response => {
+        // Renommer access_token en token
+        return {
+          token: response.access_token,
+          user: response.user,
+          refresh_token: response.refresh_token
+        };
+      }),
+      tap(({ token, user ,refresh_token}) => {
+        console.log(user)
+        console.log(token)
+        console.log(refresh_token)
+        this.saveToken(token);
+        this.saveRefreshToken(refresh_token); // Vous pouvez ajouter un saveRefreshToken si besoin
+        localStorage.setItem('USER', JSON.stringify(user));
+      }),
+      catchError(err => {
+        // Gérer les erreurs ici
+        return throwError(err);
+      })
+    );
+}
+
+
+
+ saveToken(token: string): void {
+    localStorage.setItem('ACCESS_TOKEN', token);
+}
+
+ saveRefreshToken(token: string): void {
+    localStorage.setItem('REFRESH_TOKEN', token);
+}
+
+getAccessToken(): string | null {
+    return localStorage.getItem('ACCESS_TOKEN');
+}
+
+getRefreshToken(): string | null {
+    return localStorage.getItem('REFRESH_TOKEN');
+}
+
+  logOut(): void {
+    localStorage.removeItem('ACCESS_TOKEN');
+    localStorage.removeItem('REFRESH_TOKEN');
+    localStorage.removeItem('USER');
+    this.router.navigate(['/deliacte/login']);
   }
 
-saveToken(token:string):void{
-  localStorage.setItem(this.TOKEN_KEY,token);
-}
+  getUser(): User | null {
+    const user = localStorage.getItem("USER");
+    return user ? JSON.parse(user) : null;
+  }
 
-getToken():string  | null{
-  return localStorage.getItem(this.TOKEN_KEY);
-}
-
-logOut(){
-  localStorage.clear();
-  this.router.navigate(['/deliacte/login'])
-}
-
-getUser(){
-  return localStorage.getItem("USER");
-}
-
+  isLoggedIn(): boolean {
+    return !!this.getAccessToken();
+  }
 }

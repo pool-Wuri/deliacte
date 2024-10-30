@@ -75,7 +75,7 @@ getProcedure(id?:number){
     complete:()=>{},
     next:(result)=>{
       console.log(result)
-      this.procedure=result;
+      this.procedure=result.data;
       this.operationService.search_Procedure("").subscribe({
         next:(value)=>{
           this.operations=value;

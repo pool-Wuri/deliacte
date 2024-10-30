@@ -48,7 +48,7 @@ export class ListOrganisationsComponent implements OnInit {
       complete:()=>{},
       next:(result)=>{
         console.log(result+"Organisation total");
-        this.organisations=result;
+        this.organisations=result.data;
       },
       error:(error)=>{
         console.log(error);

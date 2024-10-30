@@ -69,7 +69,7 @@ ngOnInit(): void {
   }
   //this.searchOperation();
   this.searchtypeoperation();
-  this.searchUser();
+  //this.searchUser();
   this.search_Procedure();
 
 }
@@ -79,7 +79,7 @@ searchUser(){
     complete:()=>{},
     next:(result)=>{
      // console.log(result)
-      this.utilisateurs=result;
+      this.utilisateurs=result.data;
     
     },
     error:(error)=>{
@@ -95,7 +95,7 @@ searchtypeoperation():void{
     complete:()=>{},
     next:(result)=>{
       console.log(result+"Type opération total");
-      this.typeoperations=result;
+      this.typeoperations=result.data;
     },
     error:(error)=>{
       console.log(error);
@@ -110,7 +110,7 @@ searchtypeoperation():void{
     complete:()=>{},
     next:(result)=>{
       console.log(result+"procedure total");
-      this.procedures=result;
+      this.procedures=result.data;
       console.log(this.procedures)
     
     },
@@ -139,7 +139,7 @@ console.log(result)    },
           this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
             complete:()=>{},
             next:(result)=>{
-              this.operations[i].procedure=result;
+              this.operations[i].procedure=result.data;
         //console.log(result)    
       },
             error:(er)=>{console.log("get_error_User")}
@@ -198,7 +198,7 @@ fermerModal(){
               this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
                 complete:()=>{},
                 next:(result)=>{
-                  this.operations[i].procedure=result;
+                  this.operations[i].procedure=result.data;
           },
                 error:(er)=>{console.log("get_error_User")}
               })
@@ -296,7 +296,7 @@ fermerModal(){
               this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
                 complete:()=>{},
                 next:(result)=>{
-                  this.operations[i].procedure=result;
+                  this.operations[i].procedure=result.data;
           },
                 error:(er)=>{console.log("get_error_User")}
               })
@@ -382,7 +382,7 @@ fermerModal(){
           this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
             complete:()=>{},
             next:(result)=>{
-              this.operations[i].procedure=result;
+              this.operations[i].procedure=result.data;
         console.log(result)    },
             error:(er)=>{console.log("get_error_User")}
           })

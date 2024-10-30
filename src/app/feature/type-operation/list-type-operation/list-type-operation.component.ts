@@ -44,7 +44,7 @@ export class ListTypeOperationComponent implements OnInit {
       complete:()=>{},
       next:(result)=>{
         console.log(result+"Type opération total");
-        this.typeoperations=result;
+        this.typeoperations=result.data;
       },
       error:(error)=>{
         console.log(error);
