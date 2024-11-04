@@ -145,7 +145,7 @@ searchProcedures(){
       complete:()=>{},
       next:(result)=>{
         console.log(result+"Organisation total");
-        this.procedures=result;
+        this.procedures=result.data;
       },
       error:(error)=>{
         console.log(error);
@@ -299,13 +299,30 @@ assigne(utilisateur:any){
     console.log(this.proceduresid)
 
   }
-
   if(this.user?.role=="SUPER_ADMIN"){
     this.userToAssign.role="Administrateur d'organisation"
-
   }
+
+  this.userService.procedureInfo(this.userToAssign.id).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result.data)
+      for (let i = 0; i < result.data.length; i++) {
+        if (!this.proceduresid.userProcedureIds) {
+          this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+        }
+        
+        this.proceduresid.userProcedureIds.push(result.data[i].id);
+        console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+      }
+      //console.log( this.proceduresid.userProcedureIds)
+    },
+    error:(error)=>{
+      console.log(error)
+    }
+  });
   this.idOrganisationAssign={};
-  this.proceduresid={}
+ 
 }
 
 eventModif(){
@@ -354,7 +371,7 @@ console.log(this.userToAssign.role)
       this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"Utilisateur modifié avec succès");
+          console.log(result.data+"Utilisateur modifié avec succès");
         },
         error:(error)=>{
           console.log(error);
@@ -385,7 +402,7 @@ console.log(this.userToAssign.role)
   else if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
     this.procedureTru=true;
     this.adminTrue=false;
-    console.log(this.proceduresid)
+    
     this.confirmationService.confirm({
       message: 'confirmation ajout?',
       header: 'Confirmation',
@@ -395,6 +412,8 @@ console.log(this.userToAssign.role)
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.assignModal=false;
+      console.log(this.proceduresid)
+    console.log(this.userToAssign)
       this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -404,8 +423,8 @@ console.log(this.userToAssign.role)
           console.log(error);
         }
     
-      })
-    /*  this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+      });
+     /* this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User add");

@@ -14,6 +14,8 @@
         </div>
         <div class="flex justify-between items-center pl-4 mx-8">
             <p class="text-xl font-bold text-white mx-4 transition-sneak">{{ user?.firstName }} {{ user?.lastName }}</p>
+            <button pButton pRipple type="button" icon="pi pi-user" class="p-button-rounded p-button-info"></button>
+
             <button class="flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none pi pi-share focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100" 
                   (click)="deconnecter()" 
                   aria-label="Deconnexion">

@@ -161,6 +161,7 @@ ajouter(){
     this.editbutt=false;
     this.title="Ajouter";
     this.operation={};
+    console.log(this.procedurechoisi)
     this.operation.procedureId=this.procedurechoisi.id;
     this.search_Procedure();
 }
@@ -374,7 +375,7 @@ fermerModal(){
     console.log(proced)
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
-        this.operations=value;
+        this.operations=value.data;
         console.log(value.id)
        this.operations=this.operations.filter(u=>u.procedureId===proced.id);
         this.operations.reverse();

@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, retry, tap } from 'rxjs';
+import { catchError, Observable, of, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
+import { AuthentificationService } from './authentification.service';
 
 const USER_API =environment.apiUrl +'/users';
 const USER_API_FILTER =environment.apiUrl +'/users/mysUsers';
@@ -18,7 +19,7 @@ const GET_Role=environment.apiUrl + '/users/role/';
 
 export class UtilisateurService {
   httpParams: HttpHeaders | undefined;
-  constructor(private http: HttpClient,) { }
+  constructor(private http: HttpClient,private authService: AuthentificationService) { }
 
 
   public search_users(filterParam =''): Observable<any> {
@@ -39,11 +40,19 @@ export class UtilisateurService {
   }
 
   public saveUsers(user:any):Observable<any>{
-    return this.http.post<any>(SAVE,user).pipe(
-      tap((data)=>{
-        console.log(data);
+    const token = this.authService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}` // Ajoutez le token dans les en-têtes
+    });
+    return this.http.post<any>(USER_API, user, { headers }).pipe(
+      tap((data) => {
+        console.log('User saved:', data);
+      }),
+      catchError((error) => {
+        console.error('Error saving user:', error);
+        return of(null); // Gestion des erreurs
       })
-    )
+    );
   }
 
   public updateUser(user:any,id?:number):Observable<any>{
