@@ -71,16 +71,16 @@ ngOnInit(): void {
   this.searchtypeoperation();
   //this.searchUser();
   this.search_Procedure();
-
+  this.searchUser();
 }
 
 searchUser(){
-  this.userService.search_users().subscribe({
+  this.userService.allUser().subscribe({
     complete:()=>{},
     next:(result)=>{
-     // console.log(result)
+     console.log(result)
       this.utilisateurs=result.data;
-    
+      console.log(this.utilisateurs)
     },
     error:(error)=>{
       console.log(error);
@@ -133,9 +133,11 @@ console.log(result)    },
  searchOperation():void{
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
+        console.log(value)
         this.operations=value;
         this.operations.reverse();
         for(let i=0;i<this.operations.length;i++){
+          
           this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
             complete:()=>{},
             next:(result)=>{
@@ -143,7 +145,14 @@ console.log(result)    },
         //console.log(result)    
       },
             error:(er)=>{console.log("get_error_User")}
-          })
+          });
+          this.operationService.get_Procedure(this.operations[i].id).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+             console.log(result)
+            }
+          }
+        );
         }
      
       },
@@ -153,7 +162,16 @@ console.log(result)    },
    
   }
 
-  
+  getOperation(operationId:any):string{
+    this.operationService.get_Procedure(operationId).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+       console.log(result)
+      }
+    }
+  );
+    return "";
+  }
 
 ajouter(){
   this.addboutton=true;
@@ -191,8 +209,8 @@ fermerModal(){
         console.log(value);
         this.operationService.search_Procedure("").subscribe({
           next:(value)=>{
-            this.operations=value;
-         //   console.log(value.id)
+            this.operations=value.data;
+           console.log(value)
            this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
             this.operations.reverse();
             for(let i=0;i<this.operations.length;i++){
@@ -386,7 +404,41 @@ fermerModal(){
               this.operations[i].procedure=result.data;
         console.log(result)    },
             error:(er)=>{console.log("get_error_User")}
-          })
+          });
+        
+
+        if(this.operations[i].operationNextId){
+          this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              this.operations[i].operationNextId=result.data;
+             console.log(result)
+            }
+          }
+        );
+        }
+        else
+        {
+          this.operations[i].operationNextId="";
+
+        }
+
+        if(this.operations[i].operationPreviousId){
+          this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              this.operations[i].operationPreviousId=result.data;
+             console.log(result)
+            }
+          }
+        );
+        }
+        else
+        {
+          this.operations[i].operationPreviousId="";
+
+        }
+       
         }
      
       },
@@ -395,12 +447,32 @@ fermerModal(){
     })
     }
 
-
-
   groupeUser(){
     this.disable=false;
     console.log(this.selectedOperation);
+
     this.listeUser=true;
+  }
+
+  fermer(){
+    this.listeUser=false;
+
+  }
+
+  userSelet(){
+    this.listeUser=false;
+    this.selectedOperation[0].intervenants=this.usergroup;
+    console.log(this.selectedOperation);
+    this.operationService.updateprocedure(this.selectedOperation[0],this.selectedOperation[0].id).subscribe({
+      next:(value)=>{
+        console.log(value)
+      },
+      complete:()=>{},
+      error:(erreur)=>{
+        console.log(erreur)
+      }
+    })
+  
   }
 
 }

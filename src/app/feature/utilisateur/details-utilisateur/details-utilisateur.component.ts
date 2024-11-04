@@ -19,6 +19,7 @@ ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
 SUPER_ADMIN= 'SUPER_ADMIN'
 PROCEDURE_MANAGER= 'PROCEDURE_MANAGER'
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
+user: User | null = null;
 
   constructor(private route:ActivatedRoute,
       private userService:UtilisateurService
@@ -31,6 +32,11 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
   ngOnInit():void{
+    const userData = localStorage.getItem('user');
+  if (userData) {
+    this.user = JSON.parse(userData);
+    console.log(this.user)
+  }
     this.route.params.subscribe(params => {
       this.id = params['id']; 
       console.log(this.id)
@@ -40,26 +46,34 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
   }
 
   getUser(id?:number){
-    this.userService.userOrgaInfo(id).subscribe({
-      complete:()=>{},
-  next:(result)=>{
-    this.organisation=result.data;
-    console.log(this.organisation)
-  },
-  error:(error)=>{
-    console.log(error)
-  }
-    });
-    this.userService.procedureInfo(id).subscribe({
-      complete:()=>{},
-  next:(result)=>{
-    this.procedure=result.data;
-    console.log(this.procedure)
-  },
-  error:(error)=>{
-    console.log(error)
-  }
-    });
+    if(this.user?.role=="ORG_ADMIN"){
+      this.userService.procedureInfo(id).subscribe({
+        complete:()=>{},
+    next:(result)=>{
+      this.procedure=result.data;
+      console.log(this.procedure)
+    },
+    error:(error)=>{
+      console.log(error)
+    }
+      });
+   
+     
+    }
+
+    if(this.user?.role=="SUPER_ADMIN"){
+      this.userService.userOrgaInfo(id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          this.organisation=result.data;
+          console.log(this.organisation)
+        },
+        error:(error)=>{
+          console.log(error)
+    }
+      });
+    }
+
     this.userService.get_User(id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -71,6 +85,8 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
         console.log(error)
       }
     })
+   
+   
   }
 
 }

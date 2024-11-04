@@ -296,32 +296,48 @@ assigne(utilisateur:any){
   if(this.user?.role=="ORG_ADMIN"){
     this.userToAssign.role="Manager de procedure";
     this.procedureAdd={};
-    console.log(this.proceduresid)
-
+    this.userService.procedureInfo(this.userToAssign.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        for (let i = 0; i < result.data.length; i++) {
+          if (!this.proceduresid.userProcedureIds) {
+            this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+          }
+          
+          this.proceduresid.userProcedureIds.push(result.data[i].id);
+          console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+        }
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    });
   }
   if(this.user?.role=="SUPER_ADMIN"){
-    this.userToAssign.role="Administrateur d'organisation"
-  }
-
-  this.userService.procedureInfo(this.userToAssign.id).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      console.log(result.data)
-      for (let i = 0; i < result.data.length; i++) {
-        if (!this.proceduresid.userProcedureIds) {
-          this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+    this.userToAssign.role="Administrateur d'organisation";
+    this.userService.userOrgaInfo(this.userToAssign.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result.data)
+        for (let i = 0; i < result.data.length; i++) {
+          if (!this.idOrganisationAssign.organisationIds) {
+            this.idOrganisationAssign.organisationIds = []; // Initialiser si nécessaire
+          }
+          
+          this.idOrganisationAssign.organisationIds.push(result.data[i].id);
+          console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
         }
-        
-        this.proceduresid.userProcedureIds.push(result.data[i].id);
-        console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+        //console.log( this.proceduresid.userProcedureIds)
+      },
+      error:(error)=>{
+        console.log(error)
       }
-      //console.log( this.proceduresid.userProcedureIds)
-    },
-    error:(error)=>{
-      console.log(error)
-    }
-  });
-  this.idOrganisationAssign={};
+    });
+   
+    
+  }
+ 
+
  
 }
 
@@ -355,7 +371,6 @@ SaveAssigner(){
   {
     this.userToAssign.role="SUPER_ADMIN"
   }
-console.log(this.userToAssign.role)
   if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
     this.procedureTru=false;
     this.adminTrue=true;
@@ -371,14 +386,15 @@ console.log(this.userToAssign.role)
       this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result.data+"Utilisateur modifié avec succès");
+          console.log(result+"Utilisateur modifié avec succès");
+          this.searchUser()
         },
         error:(error)=>{
           console.log(error);
         }
     
       })
-      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+     /* this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User add");
@@ -387,7 +403,7 @@ console.log(this.userToAssign.role)
           console.log(error);
         }
     
-      })
+      })*/
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         
@@ -418,6 +434,7 @@ console.log(this.userToAssign.role)
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Utilisateur modifié avec succès");
+          this.searchUser();
         },
         error:(error)=>{
           console.log(error);

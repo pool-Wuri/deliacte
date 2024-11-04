@@ -60,10 +60,17 @@ getRefreshToken(): string | null {
 }
 
   logOut(): void {
-    localStorage.removeItem('ACCESS_TOKEN');
-    localStorage.removeItem('REFRESH_TOKEN');
-    localStorage.removeItem('USER');
-    this.router.navigate(['/deliacte/login']);
+    try {
+      localStorage.removeItem('ACCESS_TOKEN');
+      this.getAccessToken();
+      localStorage.removeItem('REFRESH_TOKEN');
+      localStorage.removeItem('USER');
+      this.router.navigate(['/deliacte/login']).catch(err => {
+        console.error('Navigation error:', err);
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   }
 
   getUser(): User | null {

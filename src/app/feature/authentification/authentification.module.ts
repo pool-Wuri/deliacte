@@ -28,6 +28,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
+import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -65,13 +66,14 @@ import {MessageModule} from 'primeng/message';
     SplitterModule,
     TabViewModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    ProgressSpinnerModule
   ],
 
   providers: [
     ConfirmationService ,
     MessageService ,
-    
+
   ]
 })
 export class AuthentificationModule { }

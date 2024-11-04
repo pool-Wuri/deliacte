@@ -58,8 +58,10 @@
             </th>
             <th >Nom</th>
             <th >Description</th>
-            <th >Ordre</th>
+            <!--th >Ordre</th-->
             <th >Statut</th>
+            <th >Suivant</th>
+            <th >Précedent</th>
             <th style="width: 350px;">Actions</th>
         </tr>
         
@@ -75,9 +77,9 @@
             <td>
                 {{operation.description}}
             </td>
-            <td>
+            <!--td>
                 {{operation.numeroOrdre}}
-            </td>
+            </td-->
             <!--td *ngIf="operation.procedure">
                 {{operation.procedure.name}}
             </td>
@@ -88,6 +90,16 @@
                 {{operation.isActive}}
 
             </td>
+            <td >
+                {{operation.operationNextId.name}}
+
+            </td> 
+           
+            <td >
+                {{operation.operationPreviousId.name}}
+
+            </td>
+           
             <td>
                 <button type="button"   style="color: #060;" title="visualiser" (click)="detailsOperation(operation)"
                 class=" bg-white from-green-500 via-green-600 t
@@ -171,16 +183,28 @@
                             <p-dropdown [options]="typeoperations"  [(ngModel)]="operation.typeOperationId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
                         </div> 
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero d'ordre</label>
-                            <p-dropdown [options]="[1,2,3,4,5]"  [(ngModel)]="operation.numeroOrdre" 
-                          ></p-dropdown>
-                        </div> 
                         <div [class.disabled]="true">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedure</label>
                             <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
                         </div> 
+                        <!--div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero d'ordre</label>
+                            <p-dropdown [options]="[1,2,3,4,5]"  [(ngModel)]="operation.numeroOrdre" 
+                          ></p-dropdown>
+                        </div--> 
+                        <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suivant</label>
+                            <p-dropdown [options]="operations"  [(ngModel)]="operation.operationNextId" optionValue="id"  optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                        <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precedent</label>
+                            <p-dropdown [options]="operations"  [(ngModel)]="operation.operationPreviousId" optionValue="id"  optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                       
+                      
                         <!--div  >
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Intervenants</label>
                             <p-multiSelect [options]="[1]" selectedItemsLabel="{0} items selected" 
@@ -361,15 +385,14 @@
             <div class="product-list-detail">
                 <h5 class="mb-2">{{user.firstName}}</h5>
                 <span class="product-category">Prenom: {{user.lastName}}</span>
-                <h5 class="mb-2"></h5>
+                <h5 class="mb-2">{{user.role}}</h5>
               </div>
         </div>
     </ng-template>
     </p-pickList>
     <ng-template pTemplate="footer">
       <button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text" ></button>
-      <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text"  ></button>
-
+      <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text"  (click)="userSelet()"></button>
     </ng-template>
   </p-dialog>
 
