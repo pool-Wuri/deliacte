@@ -47,9 +47,10 @@ export class ListeDashboardComponent {
   basicData4: any;
   basicOptions4: any;
 
-  data: any;
-  options: any;
-  value!: Date;
+  basicData5: any;
+  basicOptions5: any;
+
+ 
 
   constructor(private DashboardService: DashboardService,
     private organisationService: OrganisationService,
@@ -232,6 +233,7 @@ if (this.id !== undefined) {
       const organisationId = this.selectedOrganisation.id; // Récupérer l'ID de l'organisation sélectionnée
       console.log('ID de l\'organisation sélectionnée:', organisationId);
 
+      //nombre de procédure par organisation
       this.DashboardService.getProBYOrgEvolution(organisationId).subscribe((data) => {
         // Extraire les mois et les nombres des données API
         const labels = data.map((item: any) => {
@@ -253,6 +255,51 @@ if (this.id !== undefined) {
         };
   
         this.basicOptions2 = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Mois - Année',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+               
+              },
+            },
+          },
+        };
+      });
+
+
+
+      //nombre de d'utilisateur par organisation
+      this.DashboardService.getUserBYOrgEvolution(organisationId).subscribe((data) => {
+        // Extraire les mois et les nombres des données API
+        const labels = data.map((item: any) => {
+          return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
+        });
+        const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
+    
+         // Configuration du graphique
+         this.basicData5 = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Évolution du nombre de procédures',
+              backgroundColor: '#060',
+              borderColor: '#060',
+              data: values,
+            },
+          ],
+        };
+  
+        this.basicOptions5 = {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
