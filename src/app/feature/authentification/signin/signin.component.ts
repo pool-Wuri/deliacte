@@ -53,11 +53,13 @@ get f(): { [key: string]: AbstractControl } {
 
 onSubmit(){
   this.submitted=true;
+  this.loading=true;
   this.utilisateur=this.connexionForm.value as User;
   console.log(this.utilisateur)
   this.authentificationService.authenticate(this.utilisateur).subscribe({
     next: response => {
       console.log(response)
+      this.loading=false;
       this.authentificationService.saveToken(response.token);
       localStorage.setItem('user', JSON.stringify(response.user));
       const userData = localStorage.getItem('user');
@@ -70,7 +72,9 @@ onSubmit(){
         this.router.navigate(['/deliacte/procedure-published/list']);
       }
       else
-       this.router.navigate(['/deliacte/dashboard/']);
+      setTimeout(()=>{
+        this.router.navigate(['/deliacte/dashboard/']);
+      },2000)
     },
     error: error => {
       console.error('Erreur lors de l\'authentification', error);
@@ -91,7 +95,7 @@ onSubmit(){
   this.addUser=true;
 
  }
- 
+
  saveUser(){
   this.utilisateur1.role="CITOYEN";
   console.log(this.utilisateur1)

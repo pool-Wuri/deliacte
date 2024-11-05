@@ -8,7 +8,10 @@ export class Operation{
         public procedure?:any,
         public typeOperationId?:number,
         public typeOperation?:any,
-        public numeroOrdre?:number
+        public numeroOrdre?:number,
+        public operationNextId?:any,
+        public operationPreviousId?:any,
+        public intervenants?:any[]
 
 
     ){

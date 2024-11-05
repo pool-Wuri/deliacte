@@ -22,6 +22,23 @@ export class UtilisateurService {
   constructor(private http: HttpClient,private authService: AuthentificationService) { }
 
 
+  public allUser(filterParam =''): Observable<any> {
+    return this.http
+    .get(USER_API, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
   public search_users(filterParam =''): Observable<any> {
     return this.http
     .get(USER_API_FILTER, {

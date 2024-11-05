@@ -41,59 +41,71 @@ ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 
     console.log(this.id)
-    this.getProcedure(this.id)
+    if(this.id){
+      this.getProcedure(this.id)
+
+    }
    }
   );
  // this.searchChamp();
 }
 
 getProcedure(id?:number){
-  this.operationService.get_Procedure(id).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-     this.operation=result.data;
-     this.operationService.searchChamp("").subscribe({
-      next:(value)=>{
-        this.champs=value;
-        this.champs=this.champs.filter(u=>u.operationId==id);
-        this.champs.reverse()
-        console.log(this.champs);
-     
-      },
-      complete:()=>{},
-      error:(err)=>{}
-    })
-     this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        this.operation.procedure=result.data;
-      console.log(result)    },
-      error:(er)=>{console.log("get_error_User")}
-    })
-   /*  this.procedureService.search_Procedure().subscribe({
+  console.log(id)
+    this.operationService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result)
-        this.procedures=result;
-        console.log(this.operation.procedureId)
-        this.procedures = this.procedures.filter(u => u.id === this.operation.procedureId);
-        console.log(this.procedures)
-      },
-      error:(error)=>{
-        console.log(error)
+       this.operation=result.data;
+       console.log(this.operation)
+       this.operationService.searchChamp("").subscribe({
+        next:(value)=>{
+          console.log(value)
+          this.champs=value.data;
+          if(this.champs){
+            this.champs=this.champs.filter(u=>u.operationId==id);
+            this.champs.reverse()
+            console.log(this.champs);
+          }
+        
+       
+        },
+        complete:()=>{},
+        error:(err)=>{}
+      });
+      console.log(this.operation)
+      if(this.operation.procedure){
+        this.procedureService.get_Procedure(this.operation.procedure.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.operation.procedure=result.data;
+          console.log(result)    },
+          error:(er)=>{console.log("get_error_User")}
+        })
       }
-    })*/
-    },
-    error:(er)=>{console.log("get_error_User")}
-  })
-
-  
+     
+     /*  this.procedureService.search_Procedure().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result)
+          this.procedures=result;
+          console.log(this.operation.procedureId)
+          this.procedures = this.procedures.filter(u => u.id === this.operation.procedureId);
+          console.log(this.procedures)
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      })*/
+      },
+      error:(er)=>{console.log("get_error_User")}
+    })
 }
 
 searchChamp(){
   this.operationService.searchChamp("").subscribe({
     next:(value)=>{
-      this.champs=value;
+      this.champs=value.data;
       this.champs=this.champs.filter(u=>u.operationId==this.id)
       console.log(this.champs);
       this.champs.reverse()
@@ -160,12 +172,12 @@ saveChampEdit(){
     this.operationService.updateChamp(this.champ,this.champ.id).subscribe({
       next:(value)=>{
         console.log(value);
-        if(value){
-          value.options=this.optionResult;
+        if(value.data){
+          value.data.options=this.optionResult;
           console.log(value)
-          for(let i=0;i<value.options.length;i++){
-            value.options[i].champOperationId=value.id;
-            this.operationService.addOption(value.options[i]).subscribe({
+          for(let i=0;i<value.data.options.length;i++){
+            value.data.options[i].champOperationId=value.data.id;
+            this.operationService.addOption(value.data.options[i]).subscribe({
               next:(result)=>{
                 console.log(result);
                 this.searchChamp();
@@ -224,11 +236,11 @@ saveChamps(){
     this.operationService.ajouterChamp(this.champ).subscribe({
       next:(value)=>{
         console.log(value)
-        if(value){
-          value.options=this.optionResult;
-          for(let i=0;i<value.options.length;i++){
-            value.options[i].champOperationId=value.id;
-            this.operationService.addOption(value.options[i]).subscribe({
+        if(value.data){
+          value.data.options=this.optionResult;
+          for(let i=0;i<value.data.options.length;i++){
+            value.data.options[i].champOperationId=value.data.id;
+            this.operationService.addOption(value.data.options[i]).subscribe({
               next:(result)=>{
                 console.log(result);
                 this.searchChamp();
@@ -266,6 +278,7 @@ saveChamps(){
 }
 
 addOption() {
+  console.log(this.champ)
   this.optionAdd={
     name:this.newOption,
     champOperationId:this.champ.id
