@@ -4,10 +4,13 @@
   
  </div>
  <br>
+
  <div class="card" *ngIf="user && (user.role === SUPER_ADMIN)">
    
     <p-chart  type="line" [data]="basicData1" [options]="basicOptions1"></p-chart>
  </div>
+
+ 
 
  <p-dropdown *ngIf="user && (user.role === ORG_ADMIN)"
     [options]="organisation" 
@@ -20,6 +23,28 @@
 <div *ngIf="user && (user.role === ORG_ADMIN)" class="card">
    
 <p-chart  type="line" [data]="basicData2" [options]="basicOptions2"></p-chart>
+
+</div>
+<br>
+<div class="card" *ngIf="user && (user.role === SUPER_ADMIN)">
+   <p-chart  type="line" [data]="basicData3" [options]="basicOptions3"></p-chart>
+ 
+</div>
+
+<br>
+
+
+<p-dropdown *ngIf="user && (user.role === SUPER_ADMIN)"
+[options]="procedure" 
+optionLabel="name"  
+[(ngModel)]="selectedProcedure" 
+placeholder="Choisir une procédure" 
+styleClass="mb-2 md:mb-0"
+(onChange)="onProcedureChange($event)">
+</p-dropdown>
+
+<div *ngIf="user && (user.role === SUPER_ADMIN)" class="card">
+<p-chart  type="line" [data]="basicData4" [options]="basicOptions4"></p-chart>
 
 </div>
 

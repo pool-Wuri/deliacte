@@ -5,6 +5,8 @@ import { OrganisationService } from 'src/app/core/services/organisation.service'
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { ProcedureService } from 'src/app/core/services/procedure.service'; 
+import { Procedure } from 'src/app/core/models/procedure.model';
 
 @Component({
   selector: 'app-liste-dashboard',
@@ -21,6 +23,9 @@ export class ListeDashboardComponent {
   organisation=new Array <Organisation>();
   organisations=new Organisation;
   selectedOrganisation=new Organisation;
+  procedure=new Array <Procedure>();
+  procedures=new Procedure;
+  selectedProcedure=new Procedure;
   utilisateur=new User;
   
   isLoading: boolean = false;
@@ -36,6 +41,11 @@ export class ListeDashboardComponent {
   basicData2: any;
   basicOptions2: any;
 
+  basicData3: any;
+  basicOptions3: any;
+
+  basicData4: any;
+  basicOptions4: any;
 
   data: any;
   options: any;
@@ -43,12 +53,14 @@ export class ListeDashboardComponent {
 
   constructor(private DashboardService: DashboardService,
     private organisationService: OrganisationService,
-    private userService:UtilisateurService,private route:ActivatedRoute,
+    private userService:UtilisateurService,
+    private route:ActivatedRoute,
+    private ProcedureService:ProcedureService,
   ) {}
 
   ngOnInit(): void {
 
-
+   this.search_Procedure();
     const userData = localStorage.getItem('user');
 
 // Récupérer les données de l'utilisateur depuis le LocalStorage
@@ -114,7 +126,8 @@ if (this.id !== undefined) {
     });
 
 
-    
+
+   
 
 
     this.DashboardService.getUserEvolution().subscribe((data) => {
@@ -161,6 +174,50 @@ if (this.id !== undefined) {
     });
 
 
+
+    this.DashboardService.getDossierEvolution().subscribe((data) => {
+      // Extraire les mois et les nombres des données API
+      // Extraire le mois et l'année (si disponible) pour les labels
+      const labels = data.map((item: any) => {
+        return item.year ? `${item.month} ${item.year}` : item.month; // Concatène mois et année si disponible
+      });
+      const evolutionData = data.map((item: any) => item.nombre); // Récupère les valeurs
+
+      // Configuration du graphique
+      this.basicData3 = {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Évolution du nombre de dossiers du système',
+            backgroundColor: '#060',
+            borderColor: '#060',
+            data: evolutionData,
+          },
+        ],
+      };
+
+      this.basicOptions3 = {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Mois - Année',
+            },
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+             
+            },
+          },
+        },
+      };
+    });
+    
    
   }
 
@@ -187,7 +244,7 @@ if (this.id !== undefined) {
           labels: labels,
           datasets: [
             {
-              label: 'Évolution des procédures',
+              label: 'Évolution du nombre de procédures',
               backgroundColor: '#060',
               borderColor: '#060',
               data: values,
@@ -196,6 +253,63 @@ if (this.id !== undefined) {
         };
   
         this.basicOptions2 = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Mois - Année',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+               
+              },
+            },
+          },
+        };
+      });
+
+    }
+  }
+
+
+
+  onProcedureChange(event: { value: any; }) {
+      
+    // Récupérer l'organisation sélectionnée
+    this.selectedProcedure = event.value; // event.value contient l'objet de l'organisation sélectionnée
+
+    // Vérifiez que l'organisation sélectionnée n'est pas null
+    if (this.selectedProcedure) {
+      const ProcedureId = this.selectedProcedure.id; // Récupérer l'ID de l'organisation sélectionnée
+      console.log('ID de l\'organisation sélectionnée:', ProcedureId);
+
+      this.DashboardService.getDossierByProcedure(ProcedureId).subscribe((data) => {
+        // Extraire les mois et les nombres des données API
+        const labels = data.map((item: any) => {
+          return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
+        });
+        const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
+    
+         // Configuration du graphique
+         this.basicData4 = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Évolution du nombre de demande de procédures',
+              backgroundColor: '#060',
+              borderColor: '#060',
+              data: values,
+            },
+          ],
+        };
+  
+        this.basicOptions4 = {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
@@ -233,7 +347,20 @@ if (this.id !== undefined) {
   }
     });
    
-   
   }
+
+  search_Procedure():void{
+    this.ProcedureService.search_Procedure().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result+"procedure total");
+        this.procedure=result.data;
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    })
+   }
   
 }
