@@ -261,10 +261,11 @@ searchOrganisation(){
     this.addUser=false;
     this.editbutt=false;
     this.utilisateur1.isActive=true;
+    console.log(this.utilisateur1)
     this.userService.updateUser(this.utilisateur1,this.utilisateur1.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"User add");
+        console.log(result+"User modifier");
       },
       error:(error)=>{
         console.log(error);
@@ -510,8 +511,66 @@ revoquerAdmin(user:User){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
-    user.role="";
-    this.userService.updateUser(user,user.id).subscribe({
+    if(this.user?.role=="SUPER_ADMIN"){
+      this.userService.userOrgaInfo(user.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result.data)
+          for (let i = 0; i < result.data.length; i++) {
+            if (!this.idOrganisationAssign.organisationIds) {
+              this.idOrganisationAssign.organisationIds = []; // Initialiser si nécessaire
+            }
+            console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
+            this.userService.revoquer(this.idOrganisationAssign,user.id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result+"Utilisateur modifié avec succès");
+                this.searchUser()
+              },
+              error:(error)=>{
+                console.log(error);
+              }
+          
+            })
+          }
+          //console.log( this.proceduresid.userProcedureIds)
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+    }
+    if(this.user?.role=="ORG_ADMIN"){
+      this.procedureAdd={};
+      this.userService.procedureInfo(user.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          for (let i = 0; i < result.data.length; i++) {
+            if (!this.proceduresid.userProcedureIds) {
+              this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+            }
+            console.log(this.proceduresid.userProcedureIds); // Affiche l'ID
+
+            this.userService.revoquerProc(this.proceduresid,user.id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result+"droit retiré avec succès");
+                this.searchUser()
+              },
+              error:(error)=>{
+                console.log(error);
+              }
+          
+            })
+          }
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+    }
+   
+  /*  this.userService.updateUser(user,user.id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result+"Utilisateur modifié avec succès");
@@ -520,7 +579,7 @@ revoquerAdmin(user:User){
         console.log(error);
       }
   
-    })
+    })*/
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       //Actual logic to perform a confirmation
       

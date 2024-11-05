@@ -110,7 +110,7 @@ onSubmit(){
     this.addUser=false;
     this.utilisateur1.isActive=true;
     console.log(this.utilisateur1)
-    this.userService.saveUsers(this.utilisateur1).subscribe({
+    this.userService.saveCitoyens(this.utilisateur1).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result+"User add");

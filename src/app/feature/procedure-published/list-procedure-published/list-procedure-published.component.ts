@@ -48,12 +48,12 @@ export class ListProcedurePublishedComponent {
    }
 
    search_Procedure():void{
-    this.ProcedureService.search_Procedure().subscribe({
+    this.ProcedureService.search_ProcedurePublier("PUBLISHED").subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result+"procedure total");
         this.procedures=result.data;
-        this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
+       // this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
         console.log(this.procedures);
       },
       error:(error)=>{

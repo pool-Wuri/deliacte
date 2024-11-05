@@ -7,8 +7,12 @@ import { catchError} from 'rxjs/operators';
 
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
+const CHAMP_API=environment.apiUrl +"/champ-operations/champByProcedure";
+
+const PROCEDURE_PUBLIE_API=environment.apiUrl +"/procedures/status/";
+
 const USER_API=environment.apiUrl + "/users";
-const DEMANDE_API=environment.apiUrl + "/dossiers/citoyen"
+const DEMANDE_API=environment.apiUrl + "/dossiers/citoyen/"
 
 
 @Injectable({
@@ -22,6 +26,23 @@ export class ProcedureService {
   public search_Procedure(filterParam =''): Observable<any> {
     return this.http
     .get(PROCEDURE_API , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
+  public search_ProcedurePublier(statut =''): Observable<any> {
+    return this.http
+    .get(PROCEDURE_PUBLIE_API + statut, {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -123,11 +144,30 @@ export class ProcedureService {
   
 
 
-  public saveDemande(demande:any[]):Observable<any>{
-    return this.http.post<any>(DEMANDE_API,demande).pipe(
+  public saveDemande(demande:any[],message:any):Observable<any>{
+    return this.http.post<any>(DEMANDE_API+message,demande).pipe(
       tap((data)=>{
         console.log(data);
       })
     )
   }
+
+  public get_Champ(id?:number): Observable<any> {
+    return this.http
+      .get(CHAMP_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
+
 }

@@ -1,5 +1,5 @@
 
-<h1>Liste des dossiers</h1>
+<h1>Liste de mes dossiers</h1>
 
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
@@ -35,8 +35,8 @@
      <ng-template pTemplate="caption">
         <div class="flex space-x-4">
         
-            <p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
-            <span class="space-x-0.5 "></span>
+            <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+            <span class="space-x-0.5 "></span-->
             <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown-->
 
             <!--span class="p-input-icon-left ml-auto cherch">
@@ -56,8 +56,11 @@
             <!--th style="width: 4rem,">
                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th-->
-            <th *ngFor="let champ of champs; let i = index"> {{champ.name}}</th>
-            <th>Actions</th>
+            <!--th *ngFor="let champ of champs; let i = index"> {{champ.name}}</th-->
+            <th>Numero dossier</th>
+            <th>Date</th>
+            <th>Action</th>
+
         </tr>
         
     </ng-template>
@@ -66,8 +69,12 @@
             <!--td>
                 <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
             </td-->
-            <td *ngFor="let dossier of dossierAff; let i = index">
-                    {{ dossier.name || '"""' }}
+            
+            <td>
+                    {{ doss.numeroDossier || '"""' }}
+               </td> 
+               <td> 
+                ""
                </td> 
             <td>
                 <button type="button"  style="color: #060;" title="visualiser"  (click)="detailsType(doss)"

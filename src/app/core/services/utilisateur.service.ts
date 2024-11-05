@@ -72,6 +72,22 @@ export class UtilisateurService {
     );
   }
 
+  public saveCitoyens(user:any):Observable<any>{
+    const token = this.authService.getAccessToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}` // Ajoutez le token dans les en-têtes
+    });
+    return this.http.post<any>(SAVE, user, { headers }).pipe(
+      tap((data) => {
+        console.log('User saved:', data);
+      }),
+      catchError((error) => {
+        console.error('Error saving user:', error);
+        return of(null); // Gestion des erreurs
+      })
+    );
+  }
+
   public updateUser(user:any,id?:number):Observable<any>{
     return this.http
           .put<any>(USER_API+'?'+id, user)
@@ -120,6 +136,26 @@ export class UtilisateurService {
   public assigner(organisationIds:any,id?:number):Observable<any>{
     return this.http
           .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
+  public revoquer(organisationIds:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
+  public revoquerProc(procedureId:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-procedure', procedureId)
           .pipe(
             tap((data) => {
               console.log('api.service > update_user> tap :', data);

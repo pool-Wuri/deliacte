@@ -51,8 +51,8 @@ ngOnInit(): void {
     this.user = JSON.parse(userData);
     console.log(this.user)
   }
-  this.searchType();
- // this.getDossier();
+  //this.searchType();
+  this.getDossier();
   this.search_Procedure();
  }
 
@@ -187,7 +187,7 @@ ngOnInit(): void {
 
  detailsType(dossier: any) {
   console.log(dossier)
-  this.router.navigate(['/deliacte/dossier/details', this.procedurechoisi.id]);
+  this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
 }
 
 
@@ -195,17 +195,18 @@ getDossier(){
   this.typeDocService.searchDoosier(this.procedurechoisi.id,this.user?.id).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result+" total");
-      this.doosierUser=result;
-      this.dossierAff=result;
-      this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
+      console.log(result.data+" total");
+      this.doosierUser=result.data;
+     // this.dossierAff=result;
+   //   this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
       console.log(this.doosierUser);
     },
     error:(error)=>{
       console.log(error);
     }
 
-  })
+  });
+  
 }
 
 searchOperation():void{
@@ -232,7 +233,7 @@ searchOperation():void{
 }
 
 search_Procedure():void{
-  this.procedureService.search_Procedure().subscribe({
+ /* this.procedureService.search_Procedure().subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result+"procedure total");
@@ -243,7 +244,7 @@ search_Procedure():void{
       console.log(error);
     }
 
-  })
+  })*/
  }
 
  onSortChange(event: { value: any; }) {

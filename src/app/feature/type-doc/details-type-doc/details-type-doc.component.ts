@@ -64,14 +64,14 @@ export class DetailsTypeDocComponent {
       this.id = params['id']; 
       console.log(this.id)
      this.getDossier(this.id)
-     this.getProcedure(this.id)
+    /// this.getProcedure(this.id)
 
      }
     );
   }
 
   getDossier(id?:number){
-    this.typeDocService.searchDoosier(id,this.user?.id).subscribe({
+    this.typeDocService.getDossier(id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result+" total");

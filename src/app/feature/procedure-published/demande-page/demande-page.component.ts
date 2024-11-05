@@ -21,6 +21,7 @@ export class DemandePageComponent {
   operation=new Operation;
   demandeFor= new Array<DemandeProcedur>();
   demandeInfos=new DemandeProcedur;
+  selectedOption: string | null = null; // Option sélectionnée
 
   TEXT="TEXT";
   CHECKBOX="CHECKBOX"
@@ -71,7 +72,25 @@ ngOnInit():void{
 }
 
 getProcedure(id?:number){
-  this.procedureService.get_Procedure(id).subscribe({
+  this.procedureService.get_Champ(id).subscribe({
+    next:(result)=>{
+      console.log(result)
+      this.champs=result.data;
+      console.log(this.champs)
+      this.demandeFor = this.champs.map(champ => ({
+        name: '',
+       // citoyenId: this.user?.id,
+        champOperationId: champ.id // ou une autre logique
+      }));
+      console.log('Champs:', this.champs);
+      console.log('DemandeFor:', this.demandeFor);
+    },
+    complete:()=>{},
+    error:(error)=>{
+      console.log(error)
+    }
+  });
+/* this.procedureService.get_Procedure(id).subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result)
@@ -113,7 +132,7 @@ getProcedure(id?:number){
     error:(error)=>{
       console.log(error)
     }
-  })
+  });*/
 }
 
 onFileChange(event: any, index: number) {
@@ -159,7 +178,6 @@ searchChamp(){
  
 }
 
-selectedOption: string | null = null; // Option sélectionnée
 
 onOptionChange(option: string, index: number) {
   console.log(index)
@@ -180,26 +198,51 @@ updateCheckbox(index: number) {
 
 finDemande(){
   console.log(this.demandeFor)
- /* this.confirmationService.confirm({
-    message: 'Voulez-vous vraiment lui retirer ce droit?',
+ 
+  this.confirmationService.confirm({
+    message: 'Voulez-vous vraiment soumettre ce dossier?',
     header: 'Confirmation',
     acceptLabel:'Oui',
     rejectLabel:'Non',
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
-    this.procedureService.saveDemande(this.demandeFor).subscribe({
+    this.procedureService.get_Procedure(this.id).subscribe({
+      complete:()=>{},
       next:(result)=>{
-        console.log(result);
-      },
-      complete:()=>{
-  
+        console.log(result)
+        this.procedure=result.data;
+        console.log(this.procedure)
+        this.procedureService.get_Champ(this.id).subscribe({
+          next:(result)=>{
+            console.log(result)
+            this.procedureService.saveDemande(this.demandeFor,result.message).subscribe({
+              next:(result)=>{
+                console.log(result);
+                this.router.navigate(['/deliacte/dossier/list']);
+
+              },
+              complete:()=>{
+          
+              },
+              error:(error)=>{
+                console.log(error);
+              }
+            });
+          },
+          complete:()=>{},
+          error:(error)=>{
+            console.log(error)
+          }
+        })
+
+       
       },
       error:(error)=>{
-        console.log(error);
+        console.log(error)
       }
     });
-    this.router.navigate(['/deliacte/dossier/list'])
+   
 
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       //Actual logic to perform a confirmation
@@ -209,7 +252,7 @@ finDemande(){
 
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
-});*/
+});
 
 }
 

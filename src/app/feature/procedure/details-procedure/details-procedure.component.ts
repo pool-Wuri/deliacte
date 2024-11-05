@@ -33,7 +33,8 @@ export class DetailsProcedureComponent {
     this.procedureService.getUserById(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.utilisateurs=result.date;
+        console.log(result)
+        this.utilisateurs=result.data;
         console.log(this.utilisateurs)
       },
       error:(er)=>{console.log("get_error_User")}
