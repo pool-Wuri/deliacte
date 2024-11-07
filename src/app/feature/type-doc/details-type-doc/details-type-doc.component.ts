@@ -110,7 +110,7 @@ export class DetailsTypeDocComponent {
                     citoyenId: this.user?.id,
                     champOperationId: champ.id // ou une autre logique
                   }));
-                  this.typeDocService.searchDoosier(id,this.user?.id).subscribe({
+                  this.typeDocService.searchDoosier().subscribe({
                     complete:()=>{},
                     next:(result)=>{
                       console.log(result+" total");

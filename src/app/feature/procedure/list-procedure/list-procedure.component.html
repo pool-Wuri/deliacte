@@ -73,25 +73,30 @@
 
                 </td>
                 <td>
-                    <button type="button"   style="color: #060;" title="visualiser" (click)="detailsProcedure(procedure)"
+                    <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
                     class=" bg-white from-green-500 via-green-600 t
                     o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
                     font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
 
-                    <button type="button" title="Modifier"  (click)="editProcedure(procedure)" style="background-color: #060;"
+                    <button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
                     class="text-white from-green-400 via-green-500 
                     to-green-600 hover:bg-gradient-to-br focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
 
-                    <button type="button" title="Publier"  (click)="publier(procedure)"style="background-color: #e8e400;"
+                    <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" class="text-white bg-green-700 
+                    hover:bg-green-800 focus:outline-none focus:ring-4 
+                    focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
+                    ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
+
+                    <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
                     class="text-white  from-teal-400 via-teal-500 to-teal-600 
                    focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button>
+                    text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
 
 
-                    <button type="button"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                    <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
                     via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                     text-sm p-2.5 text-center inline-flex items-center 
                     mx-0 pi pi-eraser">

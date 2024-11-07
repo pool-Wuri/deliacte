@@ -25,7 +25,9 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
 procedure=new Procedure;
   ProcedureStatus: any;
   user: User | null = null;
-
+  ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
+  SUPER_ADMIN= 'SUPER_ADMIN'
+  PROCEDURE_MANAGER='PROCEDURE_MANAGER'
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,

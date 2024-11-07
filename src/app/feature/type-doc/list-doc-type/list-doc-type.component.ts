@@ -192,7 +192,7 @@ ngOnInit(): void {
 
 
 getDossier(){
-  this.typeDocService.searchDoosier(this.procedurechoisi.id,this.user?.id).subscribe({
+  this.typeDocService.searchDoosier().subscribe({
     complete:()=>{},
     next:(result)=>{
       console.log(result.data+" total");
@@ -206,7 +206,7 @@ getDossier(){
     }
 
   });
-  
+
 }
 
 searchOperation():void{

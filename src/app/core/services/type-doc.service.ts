@@ -88,7 +88,7 @@ export class TypeDocService {
   }
 
 
-  public searchDoosier(procedureId?:number,citoyenId?:number): Observable<any> {
+  public searchDoosier(): Observable<any> {
     return this.http
     .get(DOSSIER, {
         headers: this.httpParams,
