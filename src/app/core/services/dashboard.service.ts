@@ -18,7 +18,7 @@ export class DashboardService {
   private DOSSIEREVOLUTION_API=environment.apiUrl +"/statistiques/dossierEvolution";
   private DOSSIERBYPROCEDURE_API=environment.apiUrl +"/statistiques/dossierEvolutionByProcedure";
   private USERBYORGANISATION_API=environment.apiUrl +"/organizations";
-
+  private DOSSIERBYORGANISATION_API=environment.apiUrl +"/statistiques/dossierEvolutionByOrganisation";
 
   constructor(private http: HttpClient) { }
 
@@ -40,6 +40,10 @@ export class DashboardService {
 
   getDossierByProcedure(id?:number): Observable<any>{
     return this.http.get(this.DOSSIERBYPROCEDURE_API+ '/' + id);
+  }
+
+  getDossierByOrganisation(id?:number): Observable<any>{
+    return this.http.get(this.DOSSIERBYORGANISATION_API+ '/' + id);
   }
 
   getUserBYOrgEvolution(id?:number): Observable<any> {

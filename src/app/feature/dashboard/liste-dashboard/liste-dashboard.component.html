@@ -28,6 +28,13 @@
 <br>
 <div *ngIf="user && (user.role === ORG_ADMIN)" class="card">
    
+   <p-chart  type="line" [data]="basicData6" [options]="basicOptions6"></p-chart>
+   
+</div>
+
+<br>
+<div *ngIf="user && (user.role === ORG_ADMIN)" class="card">
+   
    <p-chart  type="line" [data]="basicData5" [options]="basicOptions5"></p-chart>
    
 </div>

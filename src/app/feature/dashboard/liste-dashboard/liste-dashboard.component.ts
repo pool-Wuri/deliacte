@@ -50,6 +50,9 @@ export class ListeDashboardComponent {
   basicData5: any;
   basicOptions5: any;
 
+  basicData6: any;
+  basicOptions6: any;
+
  
 
   constructor(private DashboardService: DashboardService,
@@ -300,6 +303,50 @@ if (this.id !== undefined) {
         };
   
         this.basicOptions5 = {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: 'Mois - Année',
+              },
+            },
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+               
+              },
+            },
+          },
+        };
+      });
+
+
+      //nombre de d'utilisateur par organisation
+      this.DashboardService.getDossierByOrganisation(organisationId).subscribe((data) => {
+        // Extraire les mois et les nombres des données API
+        const labels = data.map((item: any) => {
+          return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
+        });
+        const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
+    
+         // Configuration du graphique
+         this.basicData6 = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Évolution du nombre de dossiers par organisation',
+              backgroundColor: '#060',
+              borderColor: '#060',
+              data: values,
+            },
+          ],
+        };
+  
+        this.basicOptions6 = {
           responsive: true,
           maintainAspectRatio: false,
           scales: {
