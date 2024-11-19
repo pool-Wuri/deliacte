@@ -44,4 +44,6 @@ export class User{
     ORG_ADMIN = 'Administrateur d\'organisation',
     PROCEDURE_MANAGER = 'Manager de procedure',
     SUPER_ADMIN = 'super admin',
+    AGENT = 'AGENT',
+
   }

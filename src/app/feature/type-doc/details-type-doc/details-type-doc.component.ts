@@ -25,6 +25,7 @@ export class DetailsTypeDocComponent {
   operation=new Operation;
   demandeFor= new Array<DemandeProcedur>();
   demandeInfos=new DemandeProcedur;
+  selectedOption: string | null = null; // Option sélectionnée
 
   TEXT="TEXT";
   CHECKBOX="CHECKBOX"
@@ -146,7 +147,6 @@ export class DetailsTypeDocComponent {
       }
     })
   }
-  selectedOption: string | null = null; // Option sélectionnée
 
 onOptionChange(option: string, index: number) {
   console.log(index)

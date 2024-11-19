@@ -136,9 +136,26 @@ getProcedure(id?:number){
 }
 
 onFileChange(event: any, index: number) {
+  const data: FormData = new FormData();
+  this.demandeFor[index].champOperationId
   const file = event.target.files[0];
-  console.log(file)
+  console.log(  this.demandeFor[index].champOperationId
+  )
   // Traitement du fichier, par exemple :
+    if (file) {
+
+
+      data.append('file', file, file.name );
+
+      
+      data.append('champOperationId', new Blob([JSON.stringify(this.demandeFor[index].champOperationId)], {type: 'application/json'}));
+      console.log(data)
+      //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
+  } else {
+    console.log('Aucun fichier sélectionné');
+  }
+
+
 }
 
 searchOperation():void{
@@ -198,8 +215,8 @@ updateCheckbox(index: number) {
 
 finDemande(){
   console.log(this.demandeFor)
- 
-  this.confirmationService.confirm({
+  const data: FormData = new FormData();
+ this.confirmationService.confirm({
     message: 'Voulez-vous vraiment soumettre ce dossier?',
     header: 'Confirmation',
     acceptLabel:'Oui',
@@ -245,7 +262,6 @@ finDemande(){
    
 
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
       
   },
   reject:()=>{

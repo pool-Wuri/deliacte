@@ -123,14 +123,14 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
   this.editbutt=false;
   this.title="Ajouter";
   this.utilisateur1={};
-  if(this.user?.role=="ORG_ADMIN"){
+ /* if(this.user?.role=="ORG_ADMIN"){
     this.utilisateur1.role="Manager de procedure"
   }
 
   if(this.user?.role=="SUPER_ADMIN"){
     this.utilisateur1.role="Administrateur d'organisation"
 
-  }
+  }*/
   this.searchOrganisation();
   console.log(this.utilisateur1.role)
  }
@@ -158,7 +158,7 @@ searchProcedures(){
  saveUser(){ 
   this.soumettre=true;
   console.log(this.utilisateur1);
-  if(this.utilisateur1.role=="Administrateur d'organisation"){
+  /*if(this.utilisateur1.role=="Administrateur d'organisation"){
     this.utilisateur1.role="ORG_ADMIN"
   }
   else if(this.utilisateur1.role=="Manager de procedure")
@@ -169,7 +169,7 @@ searchProcedures(){
   else if(this.utilisateur1.role=="super admin")
   {
     this.utilisateur1.role="SUPER_ADMIN"
-  }
+  }*/
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cet utilisateur?',
     header: 'Confirmation',
@@ -204,7 +204,7 @@ searchProcedures(){
     this.editbutt=false;
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
-});
+  });
   
  }
 
@@ -236,7 +236,7 @@ searchOrganisation(){
 
  validerModif(){
   console.log(this.utilisateur1)
-  if(this.utilisateur1.role=="Administrateur d'organisation"){
+  /*if(this.utilisateur1.role=="Administrateur d'organisation"){
     this.utilisateur1.role="ORG_ADMIN"
   }
   else if(this.utilisateur1.role=="Manager de procedure")
@@ -247,7 +247,7 @@ searchOrganisation(){
   else if(this.utilisateur1.role=="super admin")
   {
     this.utilisateur1.role="SUPER_ADMIN"
-  }
+  }*/
   this.utilisateur1.userOrganisationsIds?.push(this.newOrganisationId)
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier cet utilisateur?',
@@ -395,7 +395,7 @@ SaveAssigner(){
         }
     
       })
-     /* this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User add");
@@ -404,7 +404,7 @@ SaveAssigner(){
           console.log(error);
         }
     
-      })*/
+      })
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         
@@ -442,7 +442,7 @@ SaveAssigner(){
         }
     
       });
-     /* this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User add");
@@ -451,7 +451,7 @@ SaveAssigner(){
           console.log(error);
         }
     
-      })*/
+      })
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         

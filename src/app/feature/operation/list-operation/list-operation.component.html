@@ -90,16 +90,22 @@
                 {{operation.isActive}}
 
             </td>
-            <td >
+            <td *ngIf="operation.operationNextId">
                 {{operation.operationNextId.name}}
 
             </td> 
+            <td *ngIf="!operation.operationNextId">
+                ""
+            </td> 
            
-            <td >
+            <td *ngIf="operation.operationPreviousId">
                 {{operation.operationPreviousId.name}}
 
             </td>
-           
+            <td *ngIf="!operation.operationPreviousId">
+               ""
+
+            </td> 
             <td>
                 <button type="button"   style="color: #060;" title="visualiser" (click)="detailsOperation(operation)"
                 class=" bg-white from-green-500 via-green-600 t
@@ -391,8 +397,14 @@
     </ng-template>
     </p-pickList>
     <ng-template pTemplate="footer">
-      <button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text" ></button>
-      <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text"  (click)="userSelet()"></button>
+      
+        <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+        class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+        <button type="button" style="background-color: #060;" (click)="userSelet()"
+        class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+      <!--button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text"  style="background-color: #ff0000;"></button>
+      <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text" style="background-color: #060;" (click)="userSelet()"></button-->
     </ng-template>
   </p-dialog>
 

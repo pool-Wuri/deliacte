@@ -71,7 +71,6 @@ ngOnInit(): void {
   this.searchtypeoperation();
   //this.searchUser();
   this.search_Procedure();
-  this.searchUser();
 }
 
 searchUser(){
@@ -450,6 +449,7 @@ fermerModal(){
   groupeUser(){
     this.disable=false;
     console.log(this.selectedOperation);
+    this.searchUser();
 
     this.listeUser=true;
   }
@@ -461,9 +461,16 @@ fermerModal(){
 
   userSelet(){
     this.listeUser=false;
-    this.selectedOperation[0].intervenants=this.usergroup;
+    console.log(this.usergroup)
+    this.selectedOperation[0].intervenants=[];
+    for(let i=0;i<this.usergroup.length;i++){
+      this.selectedOperation[0].intervenants?.push(this.usergroup[i].id);
+      console.log(this.selectedOperation[0].intervenants)
+
+    }
+   // this.selectedOperation[0].intervenants=this.usergroup;
     console.log(this.selectedOperation);
-    this.operationService.updateprocedure(this.selectedOperation[0],this.selectedOperation[0].id).subscribe({
+   this.operationService.updateprocedure(this.selectedOperation[0],this.selectedOperation[0].id).subscribe({
       next:(value)=>{
         console.log(value)
       },

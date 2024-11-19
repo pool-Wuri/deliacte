@@ -112,7 +112,14 @@
         </div>
         
    
-
-       
+        <div *ngIf="user?.role!=='CITOYEN'" class="flex p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
+            <button type="button" style="background-color: #060;"
+                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+        
+            <button type="button" style="background-color: #ff0000;"
+                class="text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ms-3 mb-2">Rejeter</button>
+        </div>
+        
+        
     </div>
 </div>
