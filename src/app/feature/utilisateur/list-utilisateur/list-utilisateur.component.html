@@ -125,7 +125,6 @@
 <div id="adduser" 
      [ngClass]="{'hidden': !modalVisible}" 
      tabindex="-1" 
-     [attr.aria-hidden]="!modalVisible" 
      class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -282,7 +281,6 @@
 <div id="assigner"
         [ngClass]="{'hidden': !assignModal}" 
         tabindex="-1" 
-        [attr.aria-hidden]="!assignModal" 
         class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -290,7 +288,7 @@
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Choisir operation
+                    {{titleAssig}}
                 </h3>
                 <button type="button" (click)="fermerAssign()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -311,11 +309,16 @@
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Prenom</label>
                         <input type="text"  [disabled]="true" [(ngModel)]="userToAssign.lastName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required />
                     </div>
-                    <div >
+                    <div  *ngIf="user && user.role !== PROCEDURE_MANAGER ">
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
                         <p-dropdown [options]="roleUser" [(ngModel)]="userToAssign.role" (onClick)="eventModif()"  [disabled]="true" 
                           ></p-dropdown>
                                    
+                    </div>
+                    <div  *ngIf="user && user.role === PROCEDURE_MANAGER ">
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedures</label>
+                        <p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+      
                     </div>
                     <div  *ngIf="user && user.role === SUPER_ADMIN ">
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
@@ -325,6 +328,11 @@
                     <div  *ngIf="user && user.role === ORG_ADMIN ">
                         <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedures</label>
                         <p-multiSelect [options]="procedures"  selectedItemsLabel="{0} items selected" [(ngModel)]="proceduresid.userProcedureIds" optionLabel="name" optionValue="id"
+                        ></p-multiSelect>        
+                    </div>
+                    <div  *ngIf="user && user.role === PROCEDURE_MANAGER ">
+                        <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Operations</label>
+                        <p-multiSelect [options]="operations"  selectedItemsLabel="{0} items selected"  optionLabel="name" optionValue="id" [(ngModel)]="operationsIds.operationsIds"
                         ></p-multiSelect>        
                     </div>
                    

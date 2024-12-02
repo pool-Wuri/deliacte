@@ -92,14 +92,35 @@
                 </div>
             
                 <div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.champOperation.inputType)" class="col-span-1">
-                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
-                    <input 
-                    class="block w-full text-sm text-gray-900 border border-gray-300 
-                    rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
-                    dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input_{{i}}" 
-                    type="file" (change)="onFileChange($event, i)">
-                </div>
-            
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                      {{ champ.champOperation.name }}
+                    </label>
+                    
+                    <!-- Conteneur flex pour l'input et le bouton -->
+                    <div class="flex items-center space-x-2">
+                      <!-- Input de fichier -->
+                      <input 
+                        class="block w-full text-sm text-gray-900 border border-gray-300 
+                        rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none 
+                        dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                        id="file_input_{{i}}" 
+                        type="file" 
+                        (change)="onFileChange($event, i)">
+                      
+                      <!-- Bouton -->
+                      <button (click)="voirDoc(champ.name)"
+                        type="button" style="background-color: #060;"
+                        class="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                        Voir
+                      </button>
+                    </div>
+                  
+                    <!-- Affichage du fichier sélectionné -->
+                    <div *ngIf="champ.name">
+                      <p>Fichier sélectionné : {{ champ.name }}</p>
+                    </div>
+                  </div>
+                  
                 <div *ngIf="champ.champOperation.inputType === 'SELECT'" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
                     <select [id]="'select-' + i" [(ngModel)]="champ.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -108,7 +129,6 @@
                     </select>
                 </div>
             </ng-container>
-            
         </div>
         
    
@@ -123,3 +143,8 @@
         
     </div>
 </div>
+
+<p-dialog header="Document Viewer" [(visible)]="displayPosition" [modal]="true" [position]="'right'"  [closable]="true" [responsive]="true" [style]="{width: '70vw'}">
+  <!-- Display the image if imageUrl is set -->
+  <img *ngIf="imageUrl" [src]="imageUrl" alt="Document Image" width="100%" />
+</p-dialog>

@@ -8,6 +8,8 @@ const PROCEDURE_API=environment.apiUrl +"/operations";
 const USER_API=environment.apiUrl + "/users"
 const CHAMP=environment.apiUrl+ "/champ-operations";
 const CHAMPOption=environment.apiUrl+ "/option-champ-operation"
+const RESPONSABLE_API=environment.apiUrl+ "/option-champ-operation"
+const OPERATION_BYPROCEDURE_API=environment.apiUrl +"/operations/procedure";
 
 
 @Injectable({
@@ -90,6 +92,23 @@ export class OperationService {
       );
   }
 
+  public get_Operation(id?:number): Observable<any> {
+    return this.http
+      .get(OPERATION_BYPROCEDURE_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
   ajouterChamp(champ:any):Observable<any>{
     return this.http.post<any>(CHAMP,champ).pipe(
       tap((data)=>{
@@ -152,4 +171,22 @@ export class OperationService {
       })
     )
   }
+
+  searchResponsable(idOperation:number): Observable<any> {
+    return this.http
+    .get(USER_API + '/'+ idOperation+'/operations', {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
 }

@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Assigne, ProcedurAssign, User, UserRole } from 'src/app/core/models/user.model';
+import { Assigne, OperationAssign, ProcedurAssign, User, UserRole } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { Modal } from 'flowbite'
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
+import { OperationService } from 'src/app/core/services/operation.service';
+import { Operation } from 'src/app/core/models/operation.model';
 
 
 
@@ -32,6 +34,7 @@ procedureTru:boolean=false;
 adminTrue:boolean=false;
   ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
 SUPER_ADMIN= 'SUPER_ADMIN'
+PROCEDURE_MANAGER='PROCEDURE_MANAGER';
 //roleUser=[{value:"ORG_ADMIN",label:"Administrateur d'organisation"},{value:"PROCEDURE_MANAGER",label:"Manager de procedure"},{value:"SUPER_ADMIN",label:"super admin"}]
 roleUser:any=["Administrateur d'organisation","Manager de procedure","super admin"]
 isModalOpen: boolean = false;
@@ -41,19 +44,26 @@ organisations:any[]=[];
 soumettre:boolean=false;
 newOrganisationId:number=0;
 idOrganisationAssign=new Assigne;
+operationsIds=new OperationAssign;
+
 proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
 user: User | null = null;
 procedureAdd:any
 loading:boolean=false;
 statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumération
+titleAssig:string='';
+procedurechoisi=new Procedure;
+operations=new Array <Operation>();
 
  constructor(private userService:UtilisateurService,
               private router:Router,
               private confirmationService: ConfirmationService,
               private messageService: MessageService,
               private organisationService:OrganisationService,
-              private procedureService:ProcedureService
+              private procedureService:ProcedureService,
+              private operationService:OperationService,
+
  ){
     }
 
@@ -66,6 +76,7 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
     console.log(this.user)
   }
   this.searchUser();
+  this.searchProcedures();
 
  }
 
@@ -139,6 +150,35 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
   this.modalVisible = false; // Ferme le modal
 }
 
+
+onSortChange(event: { value: any; }) {
+  let proced = event.value;
+  console.log(proced)
+  this.operationService.search_Procedure("").subscribe({
+    next:(value)=>{
+      this.operations=value.data;
+      console.log(this.operations)
+     this.operations=this.operations.filter(u=>u.procedureId===proced.id);
+      this.operations.reverse();
+      for(let i=0;i<this.operations.length;i++){
+        this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.operations[i].procedure=result.data;
+         console.log(result)    },
+          error:(er)=>{console.log("get_error_User")}
+        });
+      
+
+     
+      }
+   
+    },
+    complete:()=>{},
+    error:(err)=>{}
+  })
+  }
+
 searchProcedures(){
   this.procedureService.search_Procedure("").subscribe(
     {
@@ -146,13 +186,14 @@ searchProcedures(){
       next:(result)=>{
         console.log(result+"Organisation total");
         this.procedures=result.data;
+        console.log(this.procedures);
       },
       error:(error)=>{
         console.log(error);
       }
   
     }
-  )
+  );
 }
 
  saveUser(){ 
@@ -292,10 +333,11 @@ assigne(utilisateur:any){
   this.searchProcedures();
   this.assignModal=true;
   this.userToAssign=utilisateur;
-  console.log(this.utilisateur1);
+  console.log(this.userToAssign);
   console.log(this.user)
   if(this.user?.role=="ORG_ADMIN"){
     this.userToAssign.role="Manager de procedure";
+    this.titleAssig="Choisir la procedure";
     this.procedureAdd={};
     this.userService.procedureInfo(this.userToAssign.id).subscribe({
       complete:()=>{},
@@ -316,6 +358,8 @@ assigne(utilisateur:any){
   }
   if(this.user?.role=="SUPER_ADMIN"){
     this.userToAssign.role="Administrateur d'organisation";
+    this.titleAssig="Choisir l'organisation"
+
     this.userService.userOrgaInfo(this.userToAssign.id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -337,6 +381,32 @@ assigne(utilisateur:any){
    
     
   }
+  /*
+  if(this.user?.role=="PROCEDURE_MANAGER"){
+    this.userToAssign.role="AGENT";
+    this.titleAssig="Choisir l'opération"
+
+    this.userService.operationInfo(this.userToAssign.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result.data)
+        for (let i = 0; i < result.data.length; i++) {
+          if (!this.operationsIds.operationsIds) {
+            this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+          }
+          
+          this.operationsIds.operationsIds.push(result.data[i].id);
+          console.log( this.operationsIds.operationsIds); // Affiche l'ID
+        }
+        //console.log( this.proceduresid.userProcedureIds)
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    });
+   
+    
+  }*/
  
 
  
@@ -360,19 +430,20 @@ eventModif(){
 SaveAssigner(){
   console.log(this.userToAssign)
   console.log(this.newOrganisationId)
-  if(this.userToAssign.role=="Administrateur d'organisation"){
+/*  if(this.userToAssign.role=="Administrateur d'organisation"){
     this.userToAssign.role="ORG_ADMIN"
   }
-  else if(this.userToAssign.role=="Manager de procedure")
+  if(this.userToAssign.role=="Manager de procedure")
   {
     this.userToAssign.role="PROCEDURE_MANAGER"
 
   }
-  else if(this.userToAssign.role=="super admin")
+  if(this.userToAssign.role=="super admin")
   {
     this.userToAssign.role="SUPER_ADMIN"
-  }
+  }*/
   if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
+    this.userToAssign.role="ORG_ADMIN";
     this.procedureTru=false;
     this.adminTrue=true;
     this.confirmationService.confirm({
@@ -416,7 +487,61 @@ SaveAssigner(){
     }
    });
   }
-  else if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
+  if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
+    this.procedureTru=true;
+    console.log(this.userToAssign)
+    this.adminTrue=false;
+    this.userToAssign.role="PROCEDURE_MANAGER";
+  ///  this.userToAssign.role="PROCEDURE_MANAGER";
+    this.confirmationService.confirm({
+      message: 'confirmation ajout?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.assignModal=false;
+      console.log(this.proceduresid)
+      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"User update");
+          if(result){
+            this.searchUser();
+
+          }
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      });
+      this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"Utilisateur modifié avec succès");
+          this.searchUser();
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      });
+     
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.assignModal=false;
+  
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+  });
+  }
+  /*
+  else if (this.user?.role=="PROCEDURE_MANAGER" || this.user?.role=="Manager de procedure"){
     this.procedureTru=true;
     this.adminTrue=false;
     
@@ -429,9 +554,9 @@ SaveAssigner(){
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.assignModal=false;
-      console.log(this.proceduresid)
+      console.log(this.operationsIds)
     console.log(this.userToAssign)
-      this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
+      this.userService.assigneroperation(this.operationsIds,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Utilisateur modifié avec succès");
@@ -462,7 +587,7 @@ SaveAssigner(){
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
   });
-  }
+  }*/
 
 }
 
@@ -488,6 +613,7 @@ deleteUser(user:User){
     this.userService.delete_usert(user.id).subscribe({
       complete:()=>{},
       next:(result)=>{
+        this.searchUser();
       },
       error:(error)=>{
         console.log(error);
@@ -545,12 +671,15 @@ revoquerAdmin(user:User){
       this.userService.procedureInfo(user.id).subscribe({
         complete:()=>{},
         next:(result)=>{
+          console.log(result.data)
           for (let i = 0; i < result.data.length; i++) {
             if (!this.proceduresid.userProcedureIds) {
+              console.log(this.proceduresid.userProcedureIds); // Affiche l'ID
               this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
             }
-            console.log(this.proceduresid.userProcedureIds); // Affiche l'ID
+            this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
 
+            console.log(this.proceduresid + "ou "+this.proceduresid.userProcedureIds ); // Affiche l'ID
             this.userService.revoquerProc(this.proceduresid,user.id).subscribe({
               complete:()=>{},
               next:(result)=>{

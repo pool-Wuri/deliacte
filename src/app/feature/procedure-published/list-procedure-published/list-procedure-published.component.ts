@@ -78,13 +78,15 @@ export class ListProcedurePublishedComponent {
     console.log(procedure.id);
     this.router.navigate(['/deliacte/procedure-published/demandePage',procedure.id])
 
-    this.searchOperation();
+  //  this.searchOperation();
    }
 
    searchOperation():void{
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
         this.operations=value;
+        console.log(this.operations);
+
         this.operations=this.operations.filter(u=>u.name === "SOUMISSION");
         this.operation=this.operations[0]
         console.log(this.operations);

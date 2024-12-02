@@ -185,7 +185,7 @@
     <p-tabPanel header="Groupe Utilisateur">
 
         <div class="card">
-            <p-table #dt [value]="procedures"  styleClass="p-datatable-customers" [rowHover]="true" 
+            <p-table #dt [value]="responsUsers"  styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
             [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              [globalFilterFields]="['firstName']">
@@ -208,7 +208,7 @@
                 <tr class="tableEnt">
                     
                     <th >Nom</th>
-                    <th >Membre</th>
+                    <th >Prenom</th>
                    <th>Action</th>
         
         
@@ -216,14 +216,16 @@
         
                 
             </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-procedure>
+            <ng-template id="bodi" pTemplate="body" let-utilisateur>
                 <tr class="p-selectable-row tableContenu">
                    
                     <td>
-                        {{procedure.name}}
+                        {{utilisateur.firstName}}
                     </td>
-                    <td >
+                    <td>
+                        {{utilisateur.lastName}}
                     </td>
+                   
                  <td>
                     <button type="button" title="Modifier"   style="background-color: #060;" 
                     class="text-white from-green-400 via-green-500  

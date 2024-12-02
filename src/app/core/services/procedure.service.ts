@@ -13,6 +13,7 @@ const PROCEDURE_PUBLIE_API=environment.apiUrl +"/procedures/status/";
 
 const USER_API=environment.apiUrl + "/users";
 const DEMANDE_API=environment.apiUrl + "/dossiers/citoyen/"
+const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/"
 
 
 @Injectable({
@@ -167,6 +168,14 @@ export class ProcedureService {
           )
         )
       );
+  }
+
+  public saveDoc(doc:any,numDossier:number):Observable<any>{
+    return this.http.post<any>(DOSSIERBYCITOYEN+numDossier,doc).pipe(
+      tap((data)=>{
+        console.log(data);
+      })
+    )
   }
 
 

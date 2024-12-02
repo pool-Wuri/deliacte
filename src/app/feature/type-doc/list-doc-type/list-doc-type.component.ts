@@ -32,6 +32,9 @@ dossierAff:any;
 
 procedure=new Procedure;
   champs=new Array <ChampOperation>();
+operationTrou=new Array <Operation>();
+proceduresTrou=new Array<Procedure>();
+PROCEDURE_MANAGER='PROCEDURE_MANAGER';
 
 constructor(
   private typeDocService:TypeDocService,
@@ -192,21 +195,49 @@ ngOnInit(): void {
 
 
 getDossier(){
-  this.typeDocService.searchDoosier().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      console.log(result.data+" total");
-      this.doosierUser=result.data;
-     // this.dossierAff=result;
-   //   this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
-      console.log(this.doosierUser);
-    },
-    error:(error)=>{
-      console.log(error);
-    }
-
-  });
-
+  if(this.user?.role=="CITOYEN"){
+    this.typeDocService.searchDoosier().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.doosierUser=result.data;
+       // this.dossierAff=result;
+     //   this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
+        console.log(this.doosierUser);
+    /*    for(let i=0;i<this.doosierUser.length;i++){
+          this.operationService.get_Procedure(this.doosierUser[i].champOperation.operationId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+             // console.log(result.data+" total");
+              this.operationTrou.push(result.data);
+              if(this.operationTrou){
+                this.procedureService.get_Procedure(this.operationTrou[i].procedureId).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    console.log(result.data+" total");
+                    this.proceduresTrou.push(result.data);
+                   // console.log(this.proceduresTrou)
+                  },
+                    error:(error)=>{
+                      console.log(error);
+                    }
+  
+                })
+              }
+              console.log(this.operationTrou)
+            },
+              error:(error)=>{
+                console.log(error);
+              }
+          })
+        }*/
+       
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    });
+  }
 }
 
 searchOperation():void{
@@ -233,28 +264,43 @@ searchOperation():void{
 }
 
 search_Procedure():void{
- /* this.procedureService.search_Procedure().subscribe({
+  if(this.user?.role=="PROCEDURE_MANAGER"){
+    this.procedureService.search_Procedure().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        if(result){
+          this.procedures=result.data;
+          console.log(this.procedures[0]+"procedure total");  
+        }
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    })
+  }
+ 
+ }
+
+ onSortChange(event: { value: any; }) {
+  let proced = event.value;
+  console.log(this.procedurechoisi);
+  this.getProcedure();
+  this.typeDocService.searchDoosierByProcedure(this.procedurechoisi.id || 0).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result+"procedure total");
-      this.procedures=result;
+   //   console.log(result.data+" total");
+      this.doosierUser=result.data;
+      console.log(this.doosierUser);
     
     },
     error:(error)=>{
       console.log(error);
     }
 
-  })*/
- }
-
- onSortChange(event: { value: any; }) {
-  let proced = event.value;
-  console.log(this.procedurechoisi);
-   this.getProcedure();
-   this.getDossier();
+  });
 
   }
-
 
   
   getProcedure(id?:number){

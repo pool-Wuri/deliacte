@@ -8,6 +8,7 @@ import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { Operation } from 'src/app/core/models/operation.model';
 import { Procedure, DemandeProcedur } from 'src/app/core/models/procedure.model';
+import { environment } from 'src/environnements/environment';
 
 @Component({
   selector: 'app-details-type-doc',
@@ -26,7 +27,9 @@ export class DetailsTypeDocComponent {
   demandeFor= new Array<DemandeProcedur>();
   demandeInfos=new DemandeProcedur;
   selectedOption: string | null = null; // Option sélectionnée
+  displayPosition!: boolean;
 
+  imageUrl!: string 
   TEXT="TEXT";
   CHECKBOX="CHECKBOX"
   TEXTAREA="TEXTAREA"
@@ -161,6 +164,15 @@ onOptionChange(option: string, index: number) {
 onFileChange(event: any, index: number) {
   const file = event.target.files[0];
   // Traitement du fichier, par exemple :
+}
+
+voirDoc(name:string){
+  this.displayPosition = true;
+this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
+console.log(this.imageUrl)
+  
+
+  
 }
 
  /* getTypedoc(id?:number){

@@ -383,7 +383,7 @@
 </div>
 
 <p-dialog  [(visible)]="listeUser" [style]="{width: '900px'}" modal="true" styleClass="p-fluid" >
-    <p-pickList [source]="utilisateurs" [target]="usergroup" sourceHeader="Choisir utilisateur" targetHeader="utilisateurs choisis choisi" [dragdrop]="true"
+    <p-pickList [source]="usergroup1" [target]="usergroup" sourceHeader="Choisir utilisateur" targetHeader="utilisateurs choisis choisi" [dragdrop]="true"
     [responsive]="true" [sourceStyle]="{'height':'30rem'}" [targetStyle]="{'height':'30rem'}" filterBy="nomStructure"
     sourceFilterPlaceholder="Rechercher" targetFilterPlaceholder="Rechercher">
     <ng-template let-user pTemplate="item">

@@ -6,6 +6,9 @@ import { environment } from 'src/environnements/environment';
 const TYPEDOC_API=environment.apiUrl +"/type-documents";
 const DOSSIER=environment.apiUrl+"/dossiers/userConnectedDossier";
 const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/dossierByNumero/"
+const DOCUMENTAPI=environment.mockApiUrl+"/uploads/"
+const DOSSIERBYPROCEDURE=environment.apiUrl+"/dossiers/dossierByProcedure/";
+
 
 
 @Injectable({
@@ -105,6 +108,23 @@ export class TypeDocService {
       );
   }
 
+  public searchDoosierByProcedure(id:number): Observable<any> {
+    return this.http
+    .get(DOSSIERBYPROCEDURE +id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
   getDossier(id?:number): Observable<any> {
     return this.http
       .get(DOSSIERBYCITOYEN+ id, {
@@ -122,5 +142,19 @@ export class TypeDocService {
       );
   }
 
+
+  public voirDoc(name:string): Observable<string> {
+    return this.http
+      .get<string>(DOCUMENTAPI+name)
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
 
 }

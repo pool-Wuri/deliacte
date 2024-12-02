@@ -44,6 +44,12 @@ export class DemandePageComponent {
   HIDDEN="HIDDEN";
   user: User | null = null;
 
+  data: FormData = new FormData();
+  file:any;
+  indexchamp!:number;
+  numDossier!:number;
+  indexSave:number[]=[];
+ champOperationId!:any;
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -75,6 +81,7 @@ getProcedure(id?:number){
   this.procedureService.get_Champ(id).subscribe({
     next:(result)=>{
       console.log(result)
+      this.numDossier=result.message;
       this.champs=result.data;
       console.log(this.champs)
       this.demandeFor = this.champs.map(champ => ({
@@ -136,26 +143,56 @@ getProcedure(id?:number){
 }
 
 onFileChange(event: any, index: number) {
-  const data: FormData = new FormData();
-  this.demandeFor[index].champOperationId
-  const file = event.target.files[0];
-  console.log(  this.demandeFor[index].champOperationId
-  )
-  // Traitement du fichier, par exemple :
-    if (file) {
-
-
-      data.append('file', file, file.name );
-
-      
-      data.append('champOperationId', new Blob([JSON.stringify(this.demandeFor[index].champOperationId)], {type: 'application/json'}));
-      console.log(data)
-      //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
-  } else {
-    console.log('Aucun fichier sélectionné');
+  console.log(index)
+  if(this.demandeFor[index]){
+   console.log(this.demandeFor[index].champOperationId) 
+   this.champOperationId= this.demandeFor[index]?.champOperationId;
+    console.log(this.champOperationId)
   }
+  const file = event.target.files[0];
+  console.log( this.numDossier)
+    this.indexchamp=index;
+    console.log(this.indexchamp)
+  // Traitement du fichier, par exemple :
+ if (file) {
+   this.file=file;
+    //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
+} else {
+  console.log('Aucun fichier sélectionné');
+}
 
 
+}
+
+saveFile(){
+  console.log(this.file);
+  console.log(this.numDossier)
+  console.log(this.champOperationId)
+  this.data.append('file', this.file, this.file.name );
+  this.data.append('champOperationId', this.champOperationId.toString());
+  console.log(this.data)
+  this.procedureService.saveDoc(this.data,this.numDossier).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result)
+      if(result){
+        this.indexSave.push(this.indexchamp);
+       // this.demandeFor.splice(this.indexchamp,1);
+        this.file={};
+     //  this.indexchamp=0;
+        console.log(this.demandeFor);
+        console.log(this.indexSave)
+        this.data.delete('file');
+        this.data.delete('champOperationId');
+      }
+      alert("succès enrégistrement fichier");
+
+    },
+    error:(err)=>{
+      console.log(err)
+    }
+  
+  })
 }
 
 searchOperation():void{
@@ -214,8 +251,14 @@ updateCheckbox(index: number) {
 }
 
 finDemande(){
+  console.log(this.file)
   console.log(this.demandeFor)
-  const data: FormData = new FormData();
+  this.indexSave.sort((a, b) => b - a);
+
+  for(let i=0;i<this.indexSave.length;i++){
+    this.demandeFor.splice(this.indexSave[i],1);
+  }
+  //const data: FormData = new FormData();
  this.confirmationService.confirm({
     message: 'Voulez-vous vraiment soumettre ce dossier?',
     header: 'Confirmation',
@@ -233,9 +276,10 @@ finDemande(){
         this.procedureService.get_Champ(this.id).subscribe({
           next:(result)=>{
             console.log(result)
-            this.procedureService.saveDemande(this.demandeFor,result.message).subscribe({
+            this.procedureService.saveDemande(this.demandeFor,this.numDossier).subscribe({
               next:(result)=>{
-                console.log(result);
+                console.log(result.data);
+               
                 this.router.navigate(['/deliacte/dossier/list']);
 
               },

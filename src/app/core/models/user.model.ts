@@ -11,6 +11,7 @@ export class User{
         public isActive?:boolean,
         public userOrganisationsIds?:any[],
         public userProceduresIds?:any[],
+        public userOperationsIds?:any[],
         accountNonExpired?:boolean,
         accountNonLocked?:boolean,
         authorities?:any[], 
@@ -35,6 +36,12 @@ export class User{
 
    export class ProcedurAssign{
     public userProcedureIds?:number[];
+
+
+   }
+
+   export class OperationAssign{
+    public operationsIds?:number[];
 
 
    }

@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
+import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 
@@ -27,6 +28,8 @@ export class DetailsOperationComponent {
   optionsChamp:string[]=[];
   newOption: string = '';
   optionAdd:any;
+  optionResult:any;
+responsUsers=new Array<User>();
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
@@ -43,7 +46,7 @@ ngOnInit():void{
     console.log(this.id)
     if(this.id){
       this.getProcedure(this.id)
-
+      this.searchRespon(this.id);
     }
    }
   );
@@ -158,7 +161,6 @@ fermerModal(){
   this.addchamp=false;
 }
 
-optionResult:any;
 saveChampEdit(){
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier ce champ?',
@@ -302,5 +304,19 @@ addOption() {
  this.newOption='';
  console.log(this.champ.options)
 }
+
+searchRespon(idOperation:number){
+  this.operationService.searchResponsable(idOperation).subscribe({
+    next:(result)=>{
+      console.log(result)
+      this.responsUsers=result.data
+    },
+    complete:()=>{},
+    error:(error)=>{
+      console.log(error);
+    }
+  })
+}
+
 
 }

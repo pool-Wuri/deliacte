@@ -97,7 +97,7 @@ onSubmit(){
  }
 
  saveUser(){
-  this.utilisateur1.role="CITOYEN";
+ // this.utilisateur1.role="CITOYEN";
   console.log(this.utilisateur1)
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cet utilisateur?',

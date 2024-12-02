@@ -5,7 +5,7 @@ import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
 import { TypeOperation } from 'src/app/core/models/type-operation';
-import { User } from 'src/app/core/models/user.model';
+import { OperationAssign, User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeOperationService } from 'src/app/core/services/type-operation.service';
@@ -25,7 +25,7 @@ export class ListOperationComponent {
   operations=new Array <Operation>();
 operation=new Operation;
 procedures=new Array<Procedure>();
-procedure=new Procedure;
+procedure=new Procedure; 
 user: User | null = null;
 addchamp:boolean=false;
 adddoctype:boolean=false;
@@ -36,6 +36,7 @@ disable:boolean=true;
 selectedOperation=new Array <Operation>();
 utilisateurs=new Array <User>()
 usergroup=new Array <User>()
+usergroup1=new Array <User>()
 
 
 listeUser:boolean=false;
@@ -43,6 +44,7 @@ list1: any[] | undefined;
 
 list2: any[] | undefined;
   sortOrder!: number;
+  operationsIds=new OperationAssign;
 
   sortField!: string;
   procedurechoisi=new Procedure;
@@ -67,7 +69,7 @@ ngOnInit(): void {
     this.user = JSON.parse(userData);
    // console.log(this.user)
   }
-  //this.searchOperation();
+ // this.searchOperation(2);
   this.searchtypeoperation();
   //this.searchUser();
   this.search_Procedure();
@@ -124,13 +126,13 @@ searchtypeoperation():void{
   this.procedureService.get_Procedure(id).subscribe({
     complete:()=>{},
     next:(result)=>{
-console.log(result)    },
+    console.log(result)    },
     error:(er)=>{console.log("get_error_User")}
   })
 }
 
- searchOperation():void{
-    this.operationService.search_Procedure("").subscribe({
+ searchOperation(procedureId:number):void{
+    this.operationService.get_Operation(procedureId).subscribe({
       next:(value)=>{
         console.log(value)
         this.operations=value;
@@ -193,7 +195,6 @@ fermerModal(){
 
  saveOperation(){
   this.operation.isActive=false;
-  
   console.log(this.operation)
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cette opération?',
@@ -261,6 +262,7 @@ fermerModal(){
         console.log(value)
         this.addboutton=false;
         this.editbutt=false;
+       // this.searchOperation(this.procedurechoisi.id || 0);
   
       },
       complete:()=>{},
@@ -390,12 +392,12 @@ fermerModal(){
   onSortChange(event: { value: any; }) {
     let proced = event.value;
     console.log(proced)
-    this.operationService.search_Procedure("").subscribe({
+    this.operationService.get_Operation(proced.id).subscribe({
       next:(value)=>{
         this.operations=value.data;
-        console.log(value.id)
-       this.operations=this.operations.filter(u=>u.procedureId===proced.id);
-        this.operations.reverse();
+        console.log(value.data)
+      // this.operations=this.operations.filter(u=>u.procedureId===proced.id);
+      //  this.operations.reverse();
         for(let i=0;i<this.operations.length;i++){
           this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
             complete:()=>{},
@@ -446,11 +448,25 @@ fermerModal(){
     })
     }
 
+
+
   groupeUser(){
     this.disable=false;
     console.log(this.selectedOperation);
-    this.searchUser();
-
+    //this.searchUser();
+    this.userService.userOrganisation().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+       console.log(result)
+        this.usergroup1=result.data;
+        console.log(this.usergroup1)
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+  
+    });
+    this.operationsIds={};
     this.listeUser=true;
   }
 
@@ -459,27 +475,36 @@ fermerModal(){
 
   }
 
+
+
   userSelet(){
     this.listeUser=false;
     console.log(this.usergroup)
-    this.selectedOperation[0].intervenants=[];
     for(let i=0;i<this.usergroup.length;i++){
-      this.selectedOperation[0].intervenants?.push(this.usergroup[i].id);
-      console.log(this.selectedOperation[0].intervenants)
+      console.log(this.usergroup[i])
+      if(this.usergroup[i].id){
+        this.operationsIds.operationsIds = []; // Initialiser si nécessaire
 
-    }
-   // this.selectedOperation[0].intervenants=this.usergroup;
-    console.log(this.selectedOperation);
-   this.operationService.updateprocedure(this.selectedOperation[0],this.selectedOperation[0].id).subscribe({
-      next:(value)=>{
-        console.log(value)
-      },
-      complete:()=>{},
-      error:(erreur)=>{
-        console.log(erreur)
+        this.operationsIds.operationsIds.push(this.selectedOperation[0].id || 0)
+
+        this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            console.log(result+"Utilisateur modifié avec succès");
+           // this.searchUser();
+          },
+          error:(error)=>{
+            console.log(error);
+          }
+      
+        });
       }
-    })
-  
+      console.log(this.selectedOperation);
+
+      console.log( this.operationsIds.operationsIds);   
+      
+   
+    }
   }
 
 }

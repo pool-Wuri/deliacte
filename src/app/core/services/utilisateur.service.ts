@@ -5,10 +5,14 @@ import { environment } from 'src/environnements/environment';
 import { AuthentificationService } from './authentification.service';
 
 const USER_API =environment.apiUrl +'/users';
+const USERBYORGANISATION_API =environment.apiUrl +'/users/MyOrganisationOrProcedureUsers';
+
 const USER_API_FILTER =environment.apiUrl +'/users/mysUsers';
 
 const ASSIGN_API=environment.apiUrl+'/organisations'
-const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures'
+const ASSIGNPROCEDURE_API=environment.apiUrl+'/procedures';
+const ASSIGNOPERATION_API=environment.apiUrl+'/operations'
+
 const SAVE=environment.apiUrl + '/auth/register'
 const GET_Role=environment.apiUrl + '/users/role/';
 
@@ -25,6 +29,23 @@ export class UtilisateurService {
   public allUser(filterParam =''): Observable<any> {
     return this.http
     .get(USER_API, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )     
+        )
+      );
+  }
+
+  public userOrganisation(filterParam =''): Observable<any> {
+    return this.http
+    .get(USERBYORGANISATION_API, {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -77,7 +98,7 @@ export class UtilisateurService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}` // Ajoutez le token dans les en-têtes
     });
-    return this.http.post<any>(SAVE, user, { headers }).pipe(
+    return this.http.post<any>(USER_API, user).pipe(
       tap((data) => {
         console.log('User saved:', data);
       }),
@@ -143,6 +164,16 @@ export class UtilisateurService {
           );
   }
 
+  public assignerOperation(operationIds:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-operations', operationIds)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
   public revoquer(organisationIds:any,id?:number):Observable<any>{
     return this.http
           .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
@@ -166,6 +197,16 @@ export class UtilisateurService {
   public assignerProcedure(procedureId:any,id?:number):Observable<any>{
     return this.http
           .put<any>(USER_API+'/'+id+'/admin-procedure', procedureId)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
+
+  public assigneroperation(operationId:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-operation', operationId)
           .pipe(
             tap((data) => {
               console.log('api.service > update_user> tap :', data);
@@ -207,6 +248,23 @@ export class UtilisateurService {
         )     
       )
     );
+}
+
+operationInfo(userId:any):Observable<any>{
+  return this.http
+.get(ASSIGNOPERATION_API+ '/user/' + userId , {
+    headers: this.httpParams,
+    responseType: 'json',
+  })
+  .pipe(
+    retry(1),
+    tap((data: any) =>
+      console.log(
+        'api.service > get_formulaire > tap > server data :',
+        data
+      )     
+    )
+  );
 }
 
 getUserByRole(role?:string): Observable<any> {

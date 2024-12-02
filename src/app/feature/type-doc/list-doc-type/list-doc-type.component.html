@@ -37,7 +37,7 @@
         
             <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
             <span class="space-x-0.5 "></span-->
-            <!--p-dropdown  [options]="procedures" optionLabel="name"  [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown-->
+            <p-dropdown  [options]="procedures" optionLabel="name"   *ngIf="user && user.role === PROCEDURE_MANAGER " [(ngModel)]="procedurechoisi" placeholder="Choisir operation" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
 
             <!--span class="p-input-icon-left ml-auto cherch">
                 <i class="pi pi-search" ></i>
@@ -58,24 +58,27 @@
             </th-->
             <!--th *ngFor="let champ of champs; let i = index"> {{champ.name}}</th-->
             <th>Numero dossier</th>
-            <th>Date</th>
+            <!--<th>Procedure</th>-->
+
+            <th>Date de soumission</th>
             <th>Action</th>
 
         </tr>
         
     </ng-template>
-    <ng-template id="bodi" pTemplate="body" let-doss>
+    <ng-template id="bodi" pTemplate="body" let-doss >
         <tr class="p-selectable-row tableContenu"  >
             <!--td>
                 <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
             </td-->
             
-            <td>
+                <td>
                     {{ doss.numeroDossier || '"""' }}
                </td> 
+               
                <td> 
-                ""
-               </td> 
+                {{ doss.updatedAt | date:'dd/MM/yyyy'}}
+            </td> 
             <td>
                 <button type="button"  style="color: #060;" title="visualiser"  (click)="detailsType(doss)"
                 class=" bg-white from-green-500 via-green-600 t
