@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { Operation } from 'src/app/core/models/operation.model';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { DemandeProcedur, Procedure } from 'src/app/core/models/procedure.model';
 import { TypeDoc } from 'src/app/core/models/typeDoc-model';
 import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
+import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { environment } from 'src/environnements/environment';
 
 @Component({
   selector: 'app-list-doc-type',
@@ -35,6 +37,35 @@ procedure=new Procedure;
 operationTrou=new Array <Operation>();
 proceduresTrou=new Array<Procedure>();
 PROCEDURE_MANAGER='PROCEDURE_MANAGER';
+dossier:any;
+displayBasic: boolean=false;
+
+
+demandeFor= new Array<DemandeProcedur>();
+demandeInfos=new DemandeProcedur;
+selectedOption: string | null = null; // Option sélectionnée
+displayPosition!: boolean;
+imageUrl!: string 
+TEXT="TEXT";
+CHECKBOX="CHECKBOX"
+TEXTAREA="TEXTAREA"
+RADIO="RADIO"
+SELECT="SELECT"
+FILE="FILE"
+IMAGE="IMAGE"
+PDF="PDF"
+PASSWORD="PASSWORD"
+EMAIL="EMAIL"
+NUMBER="NUMBER"
+RANGE="RANGE"
+DATE="DATE"
+TIME="TIME"
+DATETIME_LOCAL="DATETIME_LOCAL"
+MONTH="MONTH"
+WEEK="WEEK"
+SEARCH="SEARCH"
+HIDDEN="HIDDEN";
+
 
 constructor(
   private typeDocService:TypeDocService,
@@ -43,6 +74,7 @@ constructor(
   private messageService: MessageService,
   private procedureService:ProcedureService,
   private operationService:OperationService,
+  private userService:UtilisateurService
 
 
 ){
@@ -73,118 +105,8 @@ ngOnInit(): void {
   })
  }
 
- ajouter(){
-  this.addbutton=true;
-  this.typeDoc={};
-  this.modifBut=false;
-  this.validButtn=true;
-  this.title="Ajouter"
- }
-
- saveType(){
-  this.confirmationService.confirm({
-    message: 'Voulez-vous enregistrer cet type de document?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.addbutton=false;
-    this.modifBut=false;
-    this.validButtn=false;
-    this.typeDocService.saveTypeDoc(this.typeDoc).subscribe(
-      {
-        next:(result)=>{console.log(result)},
-        complete:()=>{},
-        error:(error)=>{console.log(error)}
-      }
-    );
-    this.searchType();
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.addbutton=false;
-    this.modifBut=false;
-    this.validButtn=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-  }
-  });
- }
-
- edit(type:TypeDoc){
-  this.title="Modifier"
-  this.typeDoc=type;
-  this.addbutton=true;
-  this.modifBut=true;
-  this.validButtn=false;
-
- }
-
-
- modifier(){
- this.confirmationService.confirm({
-    message: 'Voulez-vous modifier cet type de document?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.addbutton=false;
-    this.modifBut=false;
-    this.validButtn=false;
-    this.typeDocService.updateTypeDoc(this.typeDoc).subscribe(
-      {
-        next:(result)=>{console.log(result)},
-        complete:()=>{},
-        error:(error)=>{console.log(error)}
-      }
-    )
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.addbutton=false;
-    this.modifBut=false;
-    this.validButtn=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-  }
-});
-
- }
-
  fermerModal(){
   this.addbutton=false;
- }
-
- supprimerType(type:TypeDoc){
-  this.confirmationService.confirm({
-    message: 'Voulez-vous vraiment supprimer cet type?',
-    header: 'Suppression',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.typeDocService.delete_typeDoc(type.id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-      },
-      error:(error)=>{
-        console.log(error);
-      }
-    });
-    this.searchType();
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
-  },
-  reject:()=>{
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-  }
-});
  }
 
 
@@ -194,49 +116,62 @@ ngOnInit(): void {
 }
 
 
+modifierDossier(dossier: any) {
+  console.log(dossier)
+  this.displayBasic=true;
+  this.typeDocService.getDossier(dossier.numeroDossier).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result+" total");
+     this.dossier=result.data;
+     console.log(result)
+    },
+    error:(error)=>{
+      console.log(error);
+    }
+
+  })
+ // this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
+}
+
+editDossier(){
+
+}
+
 getDossier(){
   if(this.user?.role=="CITOYEN"){
     this.typeDocService.searchDoosier().subscribe({
       complete:()=>{},
       next:(result)=>{
         this.doosierUser=result.data;
-       // this.dossierAff=result;
-     //   this.doosierUser=this.doosierUser.filter((u: { id: any; })=>u.id==this.doosierUser[0].id)
         console.log(this.doosierUser);
-    /*    for(let i=0;i<this.doosierUser.length;i++){
-          this.operationService.get_Procedure(this.doosierUser[i].champOperation.operationId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-             // console.log(result.data+" total");
-              this.operationTrou.push(result.data);
-              if(this.operationTrou){
-                this.procedureService.get_Procedure(this.operationTrou[i].procedureId).subscribe({
-                  complete:()=>{},
-                  next:(result)=>{
-                    console.log(result.data+" total");
-                    this.proceduresTrou.push(result.data);
-                   // console.log(this.proceduresTrou)
-                  },
-                    error:(error)=>{
-                      console.log(error);
-                    }
-  
-                })
-              }
-              console.log(this.operationTrou)
-            },
-              error:(error)=>{
-                console.log(error);
-              }
-          })
-        }*/
-       
       },
       error:(error)=>{
         console.log(error);
       }
-  
     });
+  }
+  else{
+    this.userService.operationInfo(this.user?.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result.data);
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    });
+    this.typeDocService.getDossierAtraiter().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.doosierUser=result.data;
+        console.log(this.doosierUser);
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    });
+    
   }
 }
 
@@ -340,5 +275,33 @@ search_Procedure():void{
       }
     })
   }
+  
+
+onOptionChange(option: string, index: number) {
+  console.log(index)
+  console.log('Option sélectionnée:', option);
+  this.selectedOption = option;
+  console.log(option)
+  this.demandeFor[index].name = option;
+  console.log(this.demandeFor[index])
+  // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
+}
+
+
+
+onFileChange(event: any, index: number) {
+  const file = event.target.files[0];
+  // Traitement du fichier, par exemple :
+}
+
+voirDoc(name:string){
+  this.displayPosition = true;
+this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
+console.log(this.imageUrl)
+  
+
+  
+}
+
 
 }

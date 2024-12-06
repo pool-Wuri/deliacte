@@ -32,7 +32,7 @@ adddoctype:boolean=false;
 champ=new ChampOperation;
 
 types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
-disable:boolean=true;
+disable:boolean=false;;
 selectedOperation=new Array <Operation>();
 utilisateurs=new Array <User>()
 usergroup=new Array <User>()
@@ -403,7 +403,7 @@ fermerModal(){
             complete:()=>{},
             next:(result)=>{
               this.operations[i].procedure=result.data;
-        console.log(result)    },
+              console.log(result)    },
             error:(er)=>{console.log("get_error_User")}
           });
         
@@ -445,29 +445,52 @@ fermerModal(){
       },
       complete:()=>{},
       error:(err)=>{}
-    })
+    });
     }
 
-
-
   groupeUser(){
-    this.disable=false;
+   // this.disable=false;
+   // console.log(this.disable)
     console.log(this.selectedOperation);
-    //this.searchUser();
-    this.userService.userOrganisation().subscribe({
-      complete:()=>{},
-      next:(result)=>{
-       console.log(result)
-        this.usergroup1=result.data;
-        console.log(this.usergroup1)
-      },
-      error:(error)=>{
-        console.log(error);
-      }
-  
-    });
-    this.operationsIds={};
-    this.listeUser=true;
+
+    if (!this.selectedOperation || this.selectedOperation.length === 0) {
+      console.log(this.disable)
+      this.messageService.add({severity:'error', summary: 'error', detail: ' Sélectionner d\'abord une opération', life: 3000});
+      this.disable=true;
+    }
+    else{
+      this.userService.userOrganisation().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+         console.log(result)
+          this.usergroup1=result.data;
+          if(this.usergroup1){
+            this.operationService.searchResponsable(this.selectedOperation[0].id || 0).subscribe({
+              next:(result)=>{
+                this.usergroup=result.data;
+                if(this.usergroup){
+                  this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
+                  console.log(this.usergroup);
+                  console.log(this.usergroup1)
+                }
+              
+              },
+              complete:()=>{},
+              error:(error)=>{
+                console.log(error);
+              }
+            })
+          }
+       
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+      });
+      this.operationsIds={};
+      this.listeUser=true;
+    }   
+   
   }
 
   fermer(){
@@ -479,29 +502,43 @@ fermerModal(){
 
   userSelet(){
     this.listeUser=false;
-    console.log(this.usergroup)
+    console.log(this.usergroup);
+    this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
     for(let i=0;i<this.usergroup.length;i++){
       console.log(this.usergroup[i])
       if(this.usergroup[i].id){
-        this.operationsIds.operationsIds = []; // Initialiser si nécessaire
-
-        this.operationsIds.operationsIds.push(this.selectedOperation[0].id || 0)
-
-        this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-            console.log(result+"Utilisateur modifié avec succès");
-           // this.searchUser();
-          },
-          error:(error)=>{
-            console.log(error);
+      this.userService.operationInfo(this.usergroup[i].id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result.data);
+          for(let i=0;i<result.data.length;i++){
+            this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+            console.log(this.operationsIds)
           }
-      
-        });
-      }
-      console.log(this.selectedOperation);
+          this.operationsIds.operationsIds?.push(this.selectedOperation[0].id || 0);
+          console.log(this.operationsIds);
+          this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              console.log(result +"Utilisateur modifié avec succès");
+             // this.searchUser();
+            },
+            error:(error)=>{
+              console.log(error);
+            }
+        
+          });
 
-      console.log( this.operationsIds.operationsIds);   
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+      });
+       
+      }
+    //  console.log(this.selectedOperation);
+
+   //   console.log( this.operationsIds.operationsIds);   
       
    
     }

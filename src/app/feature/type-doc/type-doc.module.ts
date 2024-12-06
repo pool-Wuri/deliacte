@@ -26,6 +26,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsTypeDocComponent } from './details-type-doc/details-type-doc.component';
+import {TimelineModule} from 'primeng/timeline';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { DetailsTypeDocComponent } from './details-type-doc/details-type-doc.com
     DividerModule,
     OverlayPanelModule,
     ConfirmDialogModule,
-    SplitterModule
+    SplitterModule,
+    TimelineModule
   ]
   ,
   providers: [

@@ -214,6 +214,15 @@ export class UtilisateurService {
           );
   }
 
+  public revoquerOperation(operationIds:any,id?:number):Observable<any>{
+    return this.http
+          .put<any>(USER_API+'/'+id+'/admin-operation', operationIds)
+          .pipe(
+            tap((data) => {
+              console.log('api.service > update_user> tap :', data);
+            })
+          );
+  }
 
   userOrgaInfo(userId:any):Observable<any>{
       return this.http

@@ -4,9 +4,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
-import { User } from 'src/app/core/models/user.model';
+import { OperationAssign, User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
+import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 
 @Component({
   selector: 'app-details-operation',
@@ -30,12 +31,15 @@ export class DetailsOperationComponent {
   optionAdd:any;
   optionResult:any;
 responsUsers=new Array<User>();
+operationsIds=new OperationAssign;
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
     private confirmationService:ConfirmationService,
-  private messageService:MessageService,
+   private messageService:MessageService,
+   private userService:UtilisateurService
+
 ){
 
 
@@ -308,8 +312,9 @@ addOption() {
 searchRespon(idOperation:number){
   this.operationService.searchResponsable(idOperation).subscribe({
     next:(result)=>{
-      console.log(result)
-      this.responsUsers=result.data
+      this.responsUsers=result.data;
+      console.log(this.responsUsers)
+
     },
     complete:()=>{},
     error:(error)=>{
@@ -318,5 +323,66 @@ searchRespon(idOperation:number){
   })
 }
 
+
+
+retirerUser(user:User){
+  console.log(user);
+  console.log(this.id)
+  this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+  this.confirmationService.confirm({
+    message: 'Voulez-vous vraiment lui retirer de cette opération?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => { 
+   /* this.operationService.searchResponsable(this.id  || 0).subscribe({
+      next:(result)=>{
+        this.responsUsers=result.data;
+        console.log(this.responsUsers);
+        this.responsUsers=this.responsUsers.filter(u=>u.id!==user.id);
+        console.log(this.responsUsers);
+        for(let i=0;i<this.responsUsers.length;i++){
+          console.log(this.responsUsers[i])
+          this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+
+          if(this.responsUsers[i].id){
+    
+            this.operationsIds.operationsIds.push(this.id || 0)
+            console.log(this.operationsIds);
+            this.userService.assigneroperation(this.operationsIds,this.responsUsers[i].id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result+"Utilisateur modifié avec succès");
+               // this.searchUser();
+              },
+              error:(error)=>{
+                console.log(error);
+              }
+          
+            });
+          }    
+          console.log( this.operationsIds.operationsIds);   
+          
+       
+        }
+      },
+      complete:()=>{},
+      error:(error)=>{
+        console.log(error);
+      }
+    })*/
+    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+
+    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  }
+  });
+
+}
 
 }

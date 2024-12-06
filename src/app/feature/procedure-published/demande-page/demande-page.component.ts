@@ -43,7 +43,9 @@ export class DemandePageComponent {
   SEARCH="SEARCH"
   HIDDEN="HIDDEN";
   user: User | null = null;
-
+  infosDonnéAtraiter:any;
+  traitement:any;
+  data1:any;
   data: FormData = new FormData();
   file:any;
   indexchamp!:number;
@@ -78,12 +80,18 @@ ngOnInit():void{
 }
 
 getProcedure(id?:number){
+  this.traitement={}
   this.procedureService.get_Champ(id).subscribe({
     next:(result)=>{
       console.log(result)
       this.numDossier=result.message;
       this.champs=result.data;
+     
       console.log(this.champs)
+      this.traitement.operationId=this.champs[0].operationId;
+      this.traitement.commentaire="";
+      this.traitement.isActive=false;
+
       this.demandeFor = this.champs.map(champ => ({
         name: '',
        // citoyenId: this.user?.id,
@@ -91,6 +99,8 @@ getProcedure(id?:number){
       }));
       console.log('Champs:', this.champs);
       console.log('DemandeFor:', this.demandeFor);
+      console.log('DemandeFor:', this.traitement);
+
     },
     complete:()=>{},
     error:(error)=>{
@@ -250,14 +260,22 @@ updateCheckbox(index: number) {
   this.demandeFor[index].name = "";
 }
 
-finDemande(){
-  console.log(this.file)
-  console.log(this.demandeFor)
-  this.indexSave.sort((a, b) => b - a);
 
+
+finDemande(){
+  console.log(this.champs)
+  console.log(this.demandeFor);
+  this.indexSave.sort((a, b) => b - a);
   for(let i=0;i<this.indexSave.length;i++){
     this.demandeFor.splice(this.indexSave[i],1);
   }
+  
+    this.data1 = {
+      traitement: this.traitement,
+      dossiers: this.demandeFor
+  }
+ 
+  console.log(this.data1)  
   //const data: FormData = new FormData();
  this.confirmationService.confirm({
     message: 'Voulez-vous vraiment soumettre ce dossier?',
@@ -276,7 +294,7 @@ finDemande(){
         this.procedureService.get_Champ(this.id).subscribe({
           next:(result)=>{
             console.log(result)
-            this.procedureService.saveDemande(this.demandeFor,this.numDossier).subscribe({
+            this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
               next:(result)=>{
                 console.log(result.data);
                
@@ -303,8 +321,6 @@ finDemande(){
         console.log(error)
       }
     });
-   
-
     this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       
   },

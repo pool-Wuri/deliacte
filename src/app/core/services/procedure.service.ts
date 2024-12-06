@@ -12,7 +12,7 @@ const CHAMP_API=environment.apiUrl +"/champ-operations/champByProcedure";
 const PROCEDURE_PUBLIE_API=environment.apiUrl +"/procedures/status/";
 
 const USER_API=environment.apiUrl + "/users";
-const DEMANDE_API=environment.apiUrl + "/dossiers/citoyen/"
+const DEMANDE_API=environment.apiUrl + "/dossiers/traitement/"
 const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/"
 
 
@@ -145,7 +145,7 @@ export class ProcedureService {
   
 
 
-  public saveDemande(demande:any[],message:any):Observable<any>{
+  public saveDemande(demande:any,message:any):Observable<any>{
     return this.http.post<any>(DEMANDE_API+message,demande).pipe(
       tap((data)=>{
         console.log(data);
@@ -169,6 +169,7 @@ export class ProcedureService {
         )
       );
   }
+
 
   public saveDoc(doc:any,numDossier:number):Observable<any>{
     return this.http.post<any>(DOSSIERBYCITOYEN+numDossier,doc).pipe(

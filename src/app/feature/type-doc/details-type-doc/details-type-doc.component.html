@@ -36,7 +36,37 @@
   </div>
 
 
+  <div class="card" *ngIf="user?.role=='CITOYEN'" >
+    <p-divider align="center">
+        <div class="inline-flex align-items-center" style="color:#060;">
+            <i class="pi pi-info-circle user"></i>
+            <b>Etat de mon dossier</b>
+        </div>
+    </p-divider>
+    <p-timeline [value]="events2" layout="horizontal" align="top">
+        <ng-template pTemplate="marker" let-event>
+            <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
+                <i [ngClass]="event.icon"></i>
+            </span>
+        </ng-template>
+        <ng-template pTemplate="content" let-event>
+            {{event.status}}
+        </ng-template>
+    </p-timeline>
+  </div>
+
+
+ 
+
 <div class="card">
+
+    <p-divider align="center">
+        <div class="inline-flex align-items-center" style="color:#060;">
+            <i class="pi pi-info-circle user"></i>
+            <b>Mes informations</b>
+        </div>
+    </p-divider>
+
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"></h2>
@@ -129,17 +159,95 @@
                     </select>
                 </div>
             </ng-container>
+            <ng-container *ngFor="let champ of champs; let i = index">
+                <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
+                    <input [type]="champ.inputType" [id]="'input-' + i" [(ngModel)]="demandeFor[i].name" 
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                           required />
+                </div>
+            
+                <div *ngIf="champ.inputType === 'TEXTAREA'" class="col-span-1">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
+                    <textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name"   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                </div>
+            
+                <div *ngIf="['RADIO'].includes(champ.inputType)" class="col-span-1">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
+                    <div class="flex flex-wrap" *ngIf="champ.options">
+                        <div *ngFor="let option of champ.options; let j = index"> 
+                            <div class="flex items-center me-4">
+                                <input 
+                                    [id]="'option-' + i + '-' + j" 
+                                    type="RADIO" 
+                                    [value]="option.name" 
+                                    [(ngModel)]="demandeFor[i].name"                  
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="['CHECKBOX'].includes(champ.inputType)" class="col-span-1">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
+                    <div class="flex flex-wrap" *ngIf="champ.options">
+                        <div *ngFor="let option of champ.options; let j = index"> 
+                            <div class="flex items-center me-4">
+                                <input 
+                                    [id]="'option-' + i + '-' + j" 
+                                    type="CHECKBOX" 
+                                    [value]="option.name" 
+                                    [(ngModel)]="demandeFor[i].name" 
+                                    (change)="onOptionChange(option, i)" 
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.inputType)" class="col-span-1">
+                    <!-- Label for the input field, placed above the input and button -->
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.name }}
+                    </label>
+                
+                    <!-- Container for input and save button, placed in the same line -->
+                    <div class="flex items-center space-x-4">
+                        <!-- File input element -->
+                        <input class="block w-4/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                            id="file_input_{{i}}" 
+                            type="file" 
+                            (change)="onFileChange($event, i)">
+                
+                        <!-- Save Button -->
+                        <button  style="background-color: #060;"  class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            Save
+                        </button>
+                    </div>
+                </div>
+                
+                
+            
+                <div *ngIf="champ.inputType === 'SELECT'" class="col-span-1">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
+                    <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Choisir {{ champ.name }}</option>
+                        <option *ngFor="let option of champ.options" [value]="option.name">{{ option.name }}</option>
+                    </select>
+                </div>
+            </ng-container>
+
         </div>
-        
-   
+
+
         <div *ngIf="user?.role!=='CITOYEN'" class="flex p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
-            <button type="button" style="background-color: #060;"
+            <button type="button" style="background-color: #060;" (click)="validerDossier(dossier[0].numeroDossier)"
                 class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
         
             <button type="button" style="background-color: #ff0000;"
                 class="text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ms-3 mb-2">Rejeter</button>
         </div>
-        
         
     </div>
 </div>
@@ -148,3 +256,5 @@
   <!-- Display the image if imageUrl is set -->
   <img *ngIf="imageUrl" [src]="imageUrl" alt="Document Image" width="100%" />
 </p-dialog>
+
+<p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

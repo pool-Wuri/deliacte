@@ -10,7 +10,8 @@ const CHAMP=environment.apiUrl+ "/champ-operations";
 const CHAMPOption=environment.apiUrl+ "/option-champ-operation"
 const RESPONSABLE_API=environment.apiUrl+ "/option-champ-operation"
 const OPERATION_BYPROCEDURE_API=environment.apiUrl +"/operations/procedure";
-
+const CHAMP_API=environment.apiUrl +"/champ-operations/champByOperation";
+const OPERATIONNextBYID=environment.apiUrl +"/operations/previousAndNextOperation";
 
 @Injectable({
   providedIn: 'root'
@@ -109,6 +110,23 @@ export class OperationService {
       );
   }
 
+  public get_OperationNext(id?:number): Observable<any> {
+    return this.http
+      .get(OPERATIONNextBYID+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
   ajouterChamp(champ:any):Observable<any>{
     return this.http.post<any>(CHAMP,champ).pipe(
       tap((data)=>{
@@ -185,6 +203,25 @@ export class OperationService {
             'api.service > get_formulaire > tap > server data :',
             data
           )     
+        )
+      );
+  }
+
+
+
+  public get_ChampByOperation(id?:number): Observable<any> {
+    return this.http
+      .get(CHAMP_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
         )
       );
   }

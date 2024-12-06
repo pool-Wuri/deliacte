@@ -8,6 +8,8 @@ const DOSSIER=environment.apiUrl+"/dossiers/userConnectedDossier";
 const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/dossierByNumero/"
 const DOCUMENTAPI=environment.mockApiUrl+"/uploads/"
 const DOSSIERBYPROCEDURE=environment.apiUrl+"/dossiers/dossierByProcedure/";
+const DOSSIERAtraiter=environment.apiUrl+"/dossiers/userConnectedDossierATraiter";
+const DOSSIERTraitements=environment.apiUrl+"/dossiers/dossierTraiterByNumero";
 
 
 
@@ -128,6 +130,40 @@ export class TypeDocService {
   getDossier(id?:number): Observable<any> {
     return this.http
       .get(DOSSIERBYCITOYEN+ id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
+  getDossierAtraiter(): Observable<any> {
+    return this.http
+      .get(DOSSIERAtraiter, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+          console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )
+        )
+      );
+  }
+
+  getDossierPour(numDossier?:number): Observable<any> {
+    return this.http
+      .get(DOSSIERTraitements+"/"+numDossier, {
         headers: this.httpParams,
         responseType: 'json',
       })
