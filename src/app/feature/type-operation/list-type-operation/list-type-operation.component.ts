@@ -114,9 +114,8 @@ export class ListTypeOperationComponent implements OnInit {
   }
 
   editTypeoperation(typeoperation:TypeOperation){
-
-    this.modalVisible = true;
     this.typeoperation1 = typeoperation;
+    this.modalVisible = true;
     this.addTypeOperation = false;
     this.editbutt = true;
     this.title = 'Formulaire de modification d\'un type d\'opération';

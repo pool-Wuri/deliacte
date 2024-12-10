@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TypeDoc } from 'src/app/core/models/typeDoc-model';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
-import { Route, ActivatedRoute } from '@angular/router';
+import { Route, ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
@@ -56,7 +56,9 @@ export class DetailsTypeDocComponent {
   dossier:any;
 
   events1!: any[];
-    
+  operationPrecedent=new Operation;
+  operationnow=new Operation;
+
     events2!: any[];
     data1:any;
     indexchamp!:number;
@@ -71,6 +73,7 @@ export class DetailsTypeDocComponent {
       private userService:UtilisateurService,
       private confirmationService: ConfirmationService,
       private messageService: MessageService,
+      private router: Router,
 
   ){}
 
@@ -95,15 +98,73 @@ export class DetailsTypeDocComponent {
 
   }
 
+
   getDossier(id?:number){
+    let limit: number | null = null;
     if(this.user?.role==="CITOYEN"){
       this.typeDocService.getDossierPour(id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result.data.traitement+" total");
          this.dossier=result.data.dossiers;
-         console.log(this.dossier);
-         this.getOperation(this.dossier[0].champOperation.operationId)
+         console.log(result.data);
+         this.traitement=result.data.traitement;
+         console.log(this.traitement)
+      //  console.log(this.getOperation(this.dossier[0].champOperation.operationId)) 
+      this.operationService.get_Procedure(this.dossier[0].champOperation.operationId).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result.data)
+        this.procedureService.get_Procedure(result.data.procedureId).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            console.log(result.data);
+            this.operationService.get_Operation(result.data.id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result.data);
+                this.operations=result.data;
+                this.events2= this.operations.map(operation => ({
+                  status: operation.verbeOperation,
+                  icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
+                  color: "#c8c8c8", // Gris par défaut
+                }));
+  
+                 for (let i = 0; i < this.events2.length; i++) {
+
+                  if(this.events2[i].status==this.traitement.status){
+                    this.events2[i].color = '#4caf50';
+                    limit = i;
+                    console.log(limit)
+                  }
+                };
+                if (limit !== null) {
+                  for (let i = 0; i <= limit; i++) {
+                    // Appliquer la même couleur aux événements avant le statut trouvé
+                    if (this.events2[i].color == '#c8c8c8') {  // Si la couleur a été modifiée
+                      this.events2[i].color = this.events2[limit].color;
+                    }
+                  }
+                }
+                console.log(this.events2)
+
+              },
+              error:(error)=>{
+                console.log(error)
+              }
+            });
+          },
+            error:(error)=>{
+              console.log(error)
+            }
+  
+        })
+         
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
         },
         error:(error)=>{
           console.log(error);
@@ -112,31 +173,110 @@ export class DetailsTypeDocComponent {
       });
     }
    else if(this.user?.role!=="CITOYEN"){
-    this.traitement={}
+    this.traitement={};
+    this.operationPrecedent={};
+    this.operationnow={};
     this.typeDocService.getDossierPour(id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result.data+" total");
        this.dossier=result.data.dossiers;
        console.log(this.dossier)
-       this.idOperationNow=this.dossier[0].champOperation.operationId;
-       console.log(this.idOperationNow)
+       this.idOperationNow=result.data.traitement.operationId;;
+       console.log(this.idOperationNow);
        this.userService.operationInfo(this.user?.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(this.idOperationNow);
-       /*   this.operationService.get_OperationNext(this.idOperationNow).subscribe({
+        this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
-              console.log(result.data)
-           
+              console.log(result.data.length);
+              if(result.data.length>1)
+              {
+                console.log(result.data);
+
+                if(result.data[0].operationPreviousId==this.idOperationNow){
+                  this.operationPrecedent=result.data[1];
+                  this.operationnow=result.data[0];
+                }
+                else{
+                  this.operationPrecedent=result.data[0];
+                  this.operationnow=result.data[1];
+                }
+                this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
+                  next:(result)=>{
+                    console.log(result)
+                   // this.numDossier=result.message;
+                    this.champs=result.data;
+                    console.log(this.champs)
+                    if (this.champs){
+                      this.traitement.operationId=this.champs[0].operationId;
+                      this.demandeFor = this.champs.map(champ => ({
+                        name: '',
+                        champOperationId: champ.id // ou une autre logique
+                      }));
+                    }
+                  
+                    console.log('Champs:', this.champs);
+                    console.log('DemandeFor:', this.demandeFor);
+                    console.log('DemandeFor:', this.traitement);
+                    console.log('Champs:', this.champs);
+                    //console.log('DemandeFor:', this.demandeFor);
+                  },
+                  complete:()=>{},
+                  error:(error)=>{
+                    console.log(error)
+                  }
+                });
+              }
+              else{
+                console.log(result.data);
+                if(result.data[0].operationPreviousId==this.idOperationNow){
+                  this.operationnow=result.data[0];
+                  this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
+                    next:(result)=>{
+                      this.operationPrecedent=result.data;
+                    },
+                    complete:()=>{},
+                    error:(err)=>{}
+                  })
+                  this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
+                    next:(result)=>{
+                      console.log(result)
+                     // this.numDossier=result.message;
+                      this.champs=result.data;
+                      console.log(this.champs)
+                      this.traitement.operationId=this.champs[0].operationId;
+                      this.demandeFor = this.champs.map(champ => ({
+                        name: '',
+                        champOperationId: champ.id // ou une autre logique
+                      }));
+                      console.log('Champs:', this.champs);
+                      console.log('DemandeFor:', this.demandeFor);
+                      console.log('DemandeFor:', this.traitement);
+                      console.log('Champs:', this.champs);
+                      //console.log('DemandeFor:', this.demandeFor);
+                    },
+                    complete:()=>{},
+                    error:(error)=>{
+                      console.log(error)
+                    }
+                  });
+                }
+                else{
+                  this.operationPrecedent=result.data[0];
+                  console.log("Fin operation traitement")
+                }
+              
+              }
+             
             },
             complete:()=>{},
             error:(error)=>{
               console.log(error)
             }
-          });*/
+          });
           console.log(result.data);
-         if(result.data[0].operationPreviousId==this.idOperationNow){
+       /*  if(result.data[0].operationPreviousId==this.idOperationNow){
             this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
               next:(result)=>{
                 console.log(result)
@@ -159,7 +299,7 @@ export class DetailsTypeDocComponent {
                 console.log(error)
               }
             });
-          }
+          }*/
        
         },
         error:(error)=>{
@@ -179,6 +319,7 @@ export class DetailsTypeDocComponent {
 
 
   getOperation(id?:number){
+    let limit: number | null = null;
     this.operationService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -193,18 +334,33 @@ export class DetailsTypeDocComponent {
               console.log(result.data);
               this.operations=result.data;
               this.events2= this.operations.map(operation => ({
-                status: operation.name,
-                icon:PrimeIcons.CHECK,
-                color: '#607D8B'
+                status: operation.verbeOperation,
+                icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
+                color: "#c8c8c8", // Gris par défaut
               }));
               console.log(this.events2)
+
+               for (let i = 0; i < this.events2.length; i++) {
+                limit = i;
+              };
+
+              if (limit !== null) {
+                for (let i = 0; i <= limit; i++) {
+                  // Appliquer la même couleur aux événements avant le statut trouvé
+                  if (this.events2[i].color !== '#c8c8c8') {  // Si la couleur a été modifiée
+                    this.events2[i].color = this.events2[limit].color;
+                  }
+                }
+              }
+              console.log(limit)
+              console.log(this.events2)
+              return this.events2,limit;
             },
             error:(error)=>{
               console.log(error)
             }
           });
         },
-
           error:(error)=>{
             console.log(error)
           }
@@ -215,15 +371,19 @@ export class DetailsTypeDocComponent {
       error:(error)=>{
         console.log(error)
       }
-    })
+    });
+    return limit;
   }
  
   validerDossier(numDossier:number){
     console.log(numDossier);
+    console.log(this.operationnow);
+    console.log(this.operationPrecedent);
+    this.traitement.status=this.operationnow.verbeOperation;
     this.traitement.commentaire="dossier validé";
     this.traitement.isActive=true;
     this.traitement.numDossier=numDossier;
-    this.typeDocService.getDossierPour(numDossier).subscribe({
+  /*  this.typeDocService.getDossierPour(numDossier).subscribe({
       complete:()=>{},
       next:(result)=>{
        console.log(result.data)
@@ -232,7 +392,7 @@ export class DetailsTypeDocComponent {
         console.log(error);
       }
   
-    });
+    });*/
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
       this.demandeFor.splice(this.indexSave[i],1);
@@ -258,6 +418,8 @@ export class DetailsTypeDocComponent {
       this.procedureService.saveDemande(this.data1,numDossier).subscribe({
         next:(result)=>{
           console.log(result.data);
+          this.router.navigate(['/deliacte/dossier/list']);
+
         },
         complete:()=>{
     
@@ -266,31 +428,7 @@ export class DetailsTypeDocComponent {
           console.log(error);
         }
       });
-     /* this.procedureService.get_Procedure(this.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result)
-          this.procedure=result.data;
-          console.log(this.procedure)
-          this.procedureService.get_Champ(this.id).subscribe({
-            next:(result)=>{
-              console.log(result)
-            
-            },
-            complete:()=>{},
-            error:(error)=>{
-              console.log(error)
-            }
-          })
-  
-         
-        },
-        error:(error)=>{
-          console.log(error)
-        }
-      });*/
-     
-  
+    
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         
     },
@@ -299,6 +437,12 @@ export class DetailsTypeDocComponent {
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
   });
+  }
+
+
+  rejetterDossier(){
+      console.log(this.operationnow);
+      console.log(this.operationPrecedent)
   }
 
 onOptionChange(option: string, index: number) {

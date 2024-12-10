@@ -89,6 +89,16 @@ getProcedure(id?:number){
      
       console.log(this.champs)
       this.traitement.operationId=this.champs[0].operationId;
+      this.operationService.get_Procedure(this.champs[0].operationId).subscribe({
+        next:(result)=>{
+          console.log(result);
+          this.traitement.status=result.data.verbeOperation;
+        },
+        complete:()=>{},
+        error:(err)=>{
+
+        }
+      })
       this.traitement.commentaire="";
       this.traitement.isActive=false;
 
@@ -265,6 +275,7 @@ updateCheckbox(index: number) {
 finDemande(){
   console.log(this.champs)
   console.log(this.demandeFor);
+  this.traitement.status="Soumis"
   this.indexSave.sort((a, b) => b - a);
   for(let i=0;i<this.indexSave.length;i++){
     this.demandeFor.splice(this.indexSave[i],1);
@@ -295,9 +306,7 @@ finDemande(){
           next:(result)=>{
             console.log(result)
             this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
-              next:(result)=>{
-                console.log(result.data);
-               
+              next:(result)=>{               
                 this.router.navigate(['/deliacte/dossier/list']);
 
               },

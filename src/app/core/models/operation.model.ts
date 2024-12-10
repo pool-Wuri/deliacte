@@ -1,3 +1,5 @@
+import { publishFacade } from "@angular/compiler";
+
 export class Operation{
     constructor(
         public id?:number,
@@ -11,8 +13,8 @@ export class Operation{
         public numeroOrdre?:number,
         public operationNextId?:any,
         public operationPreviousId?:any,
-        public intervenants?:any[]
-
+        public intervenants?:any[],
+        public verbeOperation?:string
 
     ){
         
