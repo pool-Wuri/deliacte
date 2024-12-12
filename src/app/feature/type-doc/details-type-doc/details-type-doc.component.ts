@@ -268,7 +268,6 @@ export class DetailsTypeDocComponent {
                 }
               
               }
-             
             },
             complete:()=>{},
             error:(error)=>{
