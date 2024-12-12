@@ -508,7 +508,18 @@ SaveAssigner(){
         next:(result)=>{
           console.log(result+"User update");
           if(result){
-            this.searchUser();
+            this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result+"Utilisateur modifié avec succès");
+                this.searchUser();
+              },
+              error:(error)=>{
+                console.log(error);
+              }
+          
+            });
+            //this.searchUser();
 
           }
         },
@@ -517,17 +528,7 @@ SaveAssigner(){
         }
     
       });
-      this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"Utilisateur modifié avec succès");
-          this.searchUser();
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      });
+     
      
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
