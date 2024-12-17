@@ -164,6 +164,9 @@
                     </select>
                 </div>
             </ng-container>
+        </div>
+       
+        <div class="grid gap-6 mb-6 md:grid-cols-2" >
             <ng-container *ngFor="let champ of champs; let i = index">
                 <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
@@ -171,12 +174,10 @@
                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                            required />
                 </div>
-            
                 <div *ngIf="champ.inputType === 'TEXTAREA'" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
                     <textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name"   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                 </div>
-            
                 <div *ngIf="['RADIO'].includes(champ.inputType)" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
                     <div class="flex flex-wrap" *ngIf="champ.options">
@@ -193,7 +194,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div *ngIf="['CHECKBOX'].includes(champ.inputType)" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
                     <div class="flex flex-wrap" *ngIf="champ.options">
@@ -231,9 +231,6 @@
                         </button>
                     </div>
                 </div>
-                
-                
-            
                 <div *ngIf="champ.inputType === 'SELECT'" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
                     <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -242,17 +239,27 @@
                     </select>
                 </div>
             </ng-container>
-
         </div>
 
-
-        <div *ngIf="user?.role!=='CITOYEN'" class="flex p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
-            <button type="button" style="background-color: #060;" (click)="validerDossier(dossier[0].numeroDossier)"
+        <div *ngIf="user?.role!=='CITOYEN'" >
+                <div class="card" >
+                    <p-divider align="center">
+                        <span class="p-tag">Traitement infos</span>
+                    </p-divider>
+                </div>
+            <div class="card">
+                        <label [for]="'input-' + 1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Commentaire</label>
+                        <textarea id="message" rows="4" [(ngModel)]="traitement.commentaire"  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+            </div>
+              <div class="flex p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
+                <button type="button" style="background-color: #060;" (click)="validerDossier(dossier[0].numeroDossier)"
                 class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
         
-            <button type="button" style="background-color: #ff0000;" (click)="rejetterDossier()"
+                <button type="button" style="background-color: #ff0000;" (click)="rejetterDossier(dossier[0].numeroDossier)"
                 class="text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ms-3 mb-2">Rejeter</button>
-        </div>
+       
+              </div>
+            </div>
         
     </div>
 </div>

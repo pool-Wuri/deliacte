@@ -27,6 +27,7 @@ export class ListTypeOperationComponent implements OnInit {
   assignModal:boolean=false;
   modalVisible: boolean = false;
   soumettre:boolean=false;
+  submitted: boolean=false;
 
   constructor(
     private TypeOperationService: TypeOperationService,
@@ -59,6 +60,8 @@ export class ListTypeOperationComponent implements OnInit {
     this.addTypeOperation = true;
     this.editbutt = false;
     this.title = 'Formulaire d\'ajout d\'un type d\'opération ';
+    this.submitted = false;
+
    }
 
    fermerModal() {
@@ -66,8 +69,7 @@ export class ListTypeOperationComponent implements OnInit {
   }
 
   saveTypeoperation(){
-
-    this.soumettre=true;
+    this.submitted = true;
     console.log(this.typeoperation1)
     if(this.typeoperation1.name && this.typeoperation1.description)
     {

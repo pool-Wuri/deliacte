@@ -275,7 +275,7 @@ updateCheckbox(index: number) {
 finDemande(){
   console.log(this.champs)
   console.log(this.demandeFor);
-  this.traitement.status="Soumis"
+  this.traitement.isActive=true;
   this.indexSave.sort((a, b) => b - a);
   for(let i=0;i<this.indexSave.length;i++){
     this.demandeFor.splice(this.indexSave[i],1);

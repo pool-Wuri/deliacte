@@ -127,8 +127,12 @@
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="nom" name="nom" [(ngModel)]="organisation1.name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le nom de l'organisation" required />
+                            <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de l'organisation</label>
+                            <input type="text" id="nom" name="nom" [(ngModel)]="organisation1.name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block 
+                            w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                            dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le libellé de l'organisation" required />
+                            <small class="p-error" *ngIf="submitted && !organisation1.name">Ajouter le libéllé de l'organisation.</small>
+
                         </div>
                         
                         <div>
@@ -136,7 +140,8 @@
                             <select id="parentOrganisation" name="parentOrganisation" [(ngModel)]="organisation1.parentOrganisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Organisation parent</option>
                                 <option *ngFor="let organisation of organisations" [value]="organisation.id">{{organisation.name}}</option>
-                            </select>        
+                            </select>    
+    
                         </div> 
  
                     </div>
@@ -148,6 +153,8 @@
                                 rows="4" cols="50"
                                 class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                 placeholder="Entrer la description" required></textarea>
+                                <small class="p-error" *ngIf="submitted && !organisation1.description">la description de l'organisation .</small>
+
                         </div>
                     </div>
                 </form>

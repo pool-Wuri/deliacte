@@ -185,14 +185,17 @@
                            
                         </div-->
                         <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type operation</label>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de l'opération</label>
                             <p-dropdown [options]="typeoperations"  [(ngModel)]="operation.typeOperationId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
+                          <small class="p-error" *ngIf="submitted && !operation.typeOperationId">choisir le libéllé de l'opération .</small>
+
                         </div> 
                         <div [class.disabled]="true">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedure</label>
                             <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
+                          
                         </div> 
                         <!--div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero d'ordre</label>

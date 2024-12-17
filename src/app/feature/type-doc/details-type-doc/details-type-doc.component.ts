@@ -378,10 +378,10 @@ export class DetailsTypeDocComponent {
     console.log(numDossier);
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
-    this.traitement.status=this.operationnow.verbeOperation;
-    this.traitement.commentaire="dossier validé";
+   // this.traitement.status=this.operationnow.verbeOperation;
+   // this.traitement.commentaire="dossier validé";
     this.traitement.isActive=true;
-    this.traitement.numDossier=numDossier;
+   // this.traitement.numeroDossier=numDossier;
   /*  this.typeDocService.getDossierPour(numDossier).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -439,9 +439,50 @@ export class DetailsTypeDocComponent {
   }
 
 
-  rejetterDossier(){
+  rejetterDossier(numDossier:number){
       console.log(this.operationnow);
-      console.log(this.operationPrecedent)
+      console.log(this.operationPrecedent);
+      this.traitement.isActive=false;
+      this.traitement.operationId=this.operationnow.id;
+     // this.traitement.numDossier=numDossier;
+      console.log(this.traitement);
+      this.data1 = {
+        traitement: this.traitement,
+        dossiers: []
+    }
+    console.log(this.data1)  
+    console.log(numDossier)
+    this.confirmationService.confirm({
+      message: 'Voulez-vous rejeter ce dossier?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+
+      this.procedureService.saveDemande(this.data1,numDossier).subscribe({
+        next:(result)=>{
+          console.log(result.data);
+          this.router.navigate(['/deliacte/dossier/list']);
+
+        },
+        complete:()=>{
+    
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+      });
+    
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        
+    },
+    reject:()=>{
+  
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+  });
   }
 
 onOptionChange(option: string, index: number) {

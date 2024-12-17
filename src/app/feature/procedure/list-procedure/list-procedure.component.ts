@@ -26,8 +26,10 @@ procedure=new Procedure;
   ProcedureStatus: any;
   user: User | null = null;
   ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
-  SUPER_ADMIN= 'SUPER_ADMIN'
-  PROCEDURE_MANAGER='PROCEDURE_MANAGER'
+  SUPER_ADMIN= 'SUPER_ADMIN';
+  PROCEDURE_MANAGER='PROCEDURE_MANAGER';
+  submitted: boolean=false;
+
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,
@@ -70,6 +72,7 @@ procedure=new Procedure;
     this.addUser=true;
     this.editbutt=false;
     this.title="Ajouter";
+    this.procedure.status="DRAFT";
     this.searchOrganisation();
    }
 
@@ -81,7 +84,10 @@ procedure=new Procedure;
 
    saveProcedure(){ 
    // this.soumettre=true;
+   this.submitted=true;
+
    console.log(this.procedure)
+   if(this.procedure.name && this.procedure.description && this.procedure.organisationId){
     this.confirmationService.confirm({
       message: 'Voulez-vous enregistrer cette procedure?',
       header: 'Confirmation',
@@ -116,6 +122,8 @@ procedure=new Procedure;
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
   });
+   }
+  
     
    }
   

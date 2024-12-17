@@ -140,16 +140,16 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">             
-                <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de la procedure</label>
                             <input type="text" id="name" name="name" [(ngModel)]="procedure.name" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="nom" />
-                           
+                            dark:focus:border-blue-500" placeholder="Libelle de la procedure" />
+                            <small class="p-error" *ngIf="submitted && !procedure.name">Ajouter le libellé de la procedure.</small>
+
                         </div>
                         <div>
                             <label for="organisationId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
@@ -157,7 +157,9 @@
                                 <option selected>Organisation</option>
                                 <option *ngFor="let organi of organisations" [value]="organi.id">{{organi.name}}</option>
     
-                            </select>                      
+                            </select>       
+                            <small class="p-error" *ngIf="submitted && !procedure.organisationId">Choisir l'organisation.</small>
+               
                         </div>
                         <div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -166,7 +168,9 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="description"/>
+                            dark:focus:border-blue-500" placeholder="description de la procedure"/>
+                            <small class="p-error" *ngIf="submitted && !procedure.description">Décrire la procedure.</small>
+
                         </div> 
                         <div>
                             <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
@@ -175,9 +179,9 @@
                                 <option *ngFor="let statut of statuses" [value]="statut[0]">{{statut[1]}}</option>
     
                             </select>     
+                            
                         </div>                          
                     </div>
-                </form>
             </div>
 
             <!-- Modal footer -->

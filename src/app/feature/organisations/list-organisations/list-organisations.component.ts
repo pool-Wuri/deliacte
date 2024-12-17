@@ -28,6 +28,7 @@ export class ListOrganisationsComponent implements OnInit {
   assignModal:boolean=false;
   modalVisible: boolean = false;
   soumettre:boolean=false;
+  submitted: boolean=false;
 
   constructor(
     private organisationService: OrganisationService,
@@ -64,6 +65,7 @@ export class ListOrganisationsComponent implements OnInit {
     this.title = 'Formulaire d\'ajout d\'une organisation ';
     this.organisation1 ={};
     this.searchOrganisation();
+    this.submitted=false;
   }
 
   fermerModal() {
@@ -73,7 +75,8 @@ export class ListOrganisationsComponent implements OnInit {
   
 
   saveOrganisation(){ 
-    this.soumettre=true;
+    //this.soumettre=true;
+    this.submitted=true;
     console.log(this.organisation1)
     if(this.organisation1.name && this.organisation1.description)
     {

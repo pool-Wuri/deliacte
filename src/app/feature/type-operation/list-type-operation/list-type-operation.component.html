@@ -123,12 +123,21 @@
                 <form>
                     <div class="grid gap-6 mb-6 md:grid-cols-0">
                         <div>
-                            <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="nom" name="nom" [(ngModel)]="typeoperation1.name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le nom du type de l'operation" required />
+                            <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé</label>
+                            <input type="text" id="nom" name="nom" 
+                            [(ngModel)]="typeoperation1.name"  
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm 
+                            rounded-lg focus:ring-blue-500 focus:border-blue-500 block 
+                            w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le nom du type de l'operation" required />
+                            <small class="p-error" *ngIf="submitted && !typeoperation1.name">Le libéllé est requis.</small>
+
                         </div>
                         <div>
                             <label for="nom" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Verbe </label>
                             <input type="text" id="nom" name="nom" [(ngModel)]="typeoperation1.verbeOperation"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Entrer le statut associé" required />
+                            <small class="p-error" *ngIf="submitted && !typeoperation1.verbeOperation">Le verbe est requis.</small>
+
                         </div>
 
                     </div>
@@ -139,6 +148,8 @@
                                 rows="4" cols="50"
                                 class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                                 placeholder="Entrer la description de l'operation" required></textarea>
+                                <small class="p-error" *ngIf="submitted && !typeoperation1.description">Ajouter une description de l'operation.</small>
+
                         </div>
                     </div>
                 </form>

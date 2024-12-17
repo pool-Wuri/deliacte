@@ -48,6 +48,8 @@ list2: any[] | undefined;
 
   sortField!: string;
   procedurechoisi=new Procedure;
+  submitted: boolean=false;
+
 constructor(
   private TypeOperationService: TypeOperationService,
   private operationService:OperationService,
@@ -183,6 +185,7 @@ ajouter(){
     console.log(this.procedurechoisi)
     this.operation.procedureId=this.procedurechoisi.id;
     this.search_Procedure();
+    this.submitted=false;
 }
 
 fermerModal(){
@@ -195,56 +198,60 @@ fermerModal(){
 
  saveOperation(){
   this.operation.isActive=false;
+  this.submitted=true;
   console.log(this.operation)
-  this.confirmationService.confirm({
-    message: 'Voulez-vous enregistrer cette opération?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.operationService.saveProcedure(this.operation).subscribe({
-      next:(value)=>{
-        console.log(value);
-        this.operationService.search_Procedure("").subscribe({
-          next:(value)=>{
-            this.operations=value.data;
-           console.log(value)
-           this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
-            this.operations.reverse();
-            for(let i=0;i<this.operations.length;i++){
-              this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-                complete:()=>{},
-                next:(result)=>{
-                  this.operations[i].procedure=result.data;
-          },
-                error:(er)=>{console.log("get_error_User")}
-              })
-            }
-         
-          },
-          complete:()=>{},
-          error:(err)=>{}
-        })
-        this.addboutton=false;
-  
-      },
-      complete:()=>{},
-      error:(erreur)=>{
-        console.log(erreur)
-      }
-    })
-  
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.addboutton=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+  if(this.operation.typeOperationId){
+    this.confirmationService.confirm({
+      message: 'Voulez-vous enregistrer cette opération?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.operationService.saveProcedure(this.operation).subscribe({
+        next:(value)=>{
+          console.log(value);
+          this.operationService.search_Procedure("").subscribe({
+            next:(value)=>{
+              this.operations=value.data;
+             console.log(value)
+             this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
+              this.operations.reverse();
+              for(let i=0;i<this.operations.length;i++){
+                this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    this.operations[i].procedure=result.data;
+            },
+                  error:(er)=>{console.log("get_error_User")}
+                })
+              }
+           
+            },
+            complete:()=>{},
+            error:(err)=>{}
+          })
+          this.addboutton=false;
+    
+        },
+        complete:()=>{},
+        error:(erreur)=>{
+          console.log(erreur)
+        }
+      })
+    
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.addboutton=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+    });
   }
-  });
+  
  }
 
  saveEdit(){
@@ -497,7 +504,6 @@ fermerModal(){
     this.listeUser=false;
 
   }
-
 
 
   userSelet(){

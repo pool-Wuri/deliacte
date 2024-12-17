@@ -55,6 +55,7 @@ statuses = Object.entries(UserRole); // Récupérer les valeurs de l'énumérati
 titleAssig:string='';
 procedurechoisi=new Procedure;
 operations=new Array <Operation>();
+submitted: boolean=false;
 
  constructor(private userService:UtilisateurService,
               private router:Router,
@@ -134,6 +135,7 @@ operations=new Array <Operation>();
   this.editbutt=false;
   this.title="Ajouter";
   this.utilisateur1={};
+  this.submitted=false;
  /* if(this.user?.role=="ORG_ADMIN"){
     this.utilisateur1.role="Manager de procedure"
   }
@@ -197,7 +199,8 @@ searchProcedures(){
 }
 
  saveUser(){ 
-  this.soumettre=true;
+  //this.soumettre=true;
+  this.submitted=true;
   console.log(this.utilisateur1);
   /*if(this.utilisateur1.role=="Administrateur d'organisation"){
     this.utilisateur1.role="ORG_ADMIN"
@@ -211,6 +214,7 @@ searchProcedures(){
   {
     this.utilisateur1.role="SUPER_ADMIN"
   }*/
+ if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email && this.utilisateur1.password){
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cet utilisateur?',
     header: 'Confirmation',
@@ -247,6 +251,8 @@ searchProcedures(){
   }
   });
   
+ }
+ 
  }
 
 searchOrganisation(){
