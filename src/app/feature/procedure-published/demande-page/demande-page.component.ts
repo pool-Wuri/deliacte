@@ -22,6 +22,7 @@ export class DemandePageComponent {
   demandeFor= new Array<DemandeProcedur>();
   demandeInfos=new DemandeProcedur;
   selectedOption: string | null = null; // Option sélectionnée
+  submitted: boolean=false;
 
   TEXT="TEXT";
   CHECKBOX="CHECKBOX"
@@ -52,6 +53,8 @@ export class DemandePageComponent {
   numDossier!:number;
   indexSave:number[]=[];
  champOperationId!:any;
+ indexRequis:number[]=[];
+
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -271,12 +274,30 @@ updateCheckbox(index: number) {
 }
 
 
-
 finDemande(){
-  console.log(this.champs)
+  this.indexRequis=[];
+  console.log(this.champs);
+  for(let i=0;i<this.champs.length;i++){
+    if(this.champs[i].isRequired){
+      this.indexRequis.push(i);
+    }
+    console.log(this.indexRequis)
+  }
+  let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais
+  for(let i=0;i<this.indexRequis.length;i++){
+    if(this.demandeFor[this.indexRequis[i]].name){
+      console.log(this.demandeFor[this.indexRequis[i]].name)
+      tousVrais = true;  // Si un élément est faux, on met tousVrais à false
+      break;  //
+
+    }
+  }
+  console.log(tousVrais)
+
   console.log(this.demandeFor);
   this.traitement.isActive=true;
   this.indexSave.sort((a, b) => b - a);
+  this.submitted=true;
   for(let i=0;i<this.indexSave.length;i++){
     this.demandeFor.splice(this.indexSave[i],1);
   }
@@ -288,56 +309,59 @@ finDemande(){
  
   console.log(this.data1)  
   //const data: FormData = new FormData();
- this.confirmationService.confirm({
-    message: 'Voulez-vous vraiment soumettre ce dossier?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.procedureService.get_Procedure(this.id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result)
-        this.procedure=result.data;
-        console.log(this.procedure)
-        this.procedureService.get_Champ(this.id).subscribe({
-          next:(result)=>{
-            console.log(result)
-            this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
-              next:(result)=>{               
-                this.router.navigate(['/deliacte/dossier/list']);
-
-              },
-              complete:()=>{
-          
-              },
-              error:(error)=>{
-                console.log(error);
-              }
-            });
-          },
-          complete:()=>{},
-          error:(error)=>{
-            console.log(error)
-          }
-        })
-
-       
-      },
-      error:(error)=>{
-        console.log(error)
-      }
-    });
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      
-  },
-  reject:()=>{
-
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-  }
-});
+    if(tousVrais){
+     this.confirmationService.confirm({
+      message: 'Voulez-vous vraiment soumettre ce dossier?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.procedureService.get_Procedure(this.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result)
+          this.procedure=result.data;
+          console.log(this.procedure)
+          this.procedureService.get_Champ(this.id).subscribe({
+            next:(result)=>{
+              console.log(result)
+              this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
+                next:(result)=>{               
+                  this.router.navigate(['/deliacte/dossier/list']);
+  
+                },
+                complete:()=>{
+            
+                },
+                error:(error)=>{
+                  console.log(error);
+                }
+              });
+            },
+            complete:()=>{},
+            error:(error)=>{
+              console.log(error)
+            }
+          })
+  
+         
+        },
+        error:(error)=>{
+          console.log(error)
+        }
+      });
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        
+    },
+    reject:()=>{
+  
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+      });
+    }
+  
 
 }
 

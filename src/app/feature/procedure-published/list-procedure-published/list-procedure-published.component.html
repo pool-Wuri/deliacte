@@ -1,15 +1,18 @@
-<div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0" style="background-color: #060; z-index: 1000;">
+
+<div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" style="background-color: #060; z-index: 1000;">
   <div class="flex items-center justify-between ">
-      <div class="flex items-center justify-start rtl:justify-end" >
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+      <div class="flex items-center justify-start rtl:justify-end h-24" >
+          <button  type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
               <span class="sr-only">Open sidebar</span>
               <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
               </svg>
           </button>
-          <a class="flex items-center ms-2 md:me-24">
-              <img src="assets/img/burkina (1).png" class="h-16 w-17 me-3" alt="FlowBite Logo" /> <!-- Augmenter la taille de l'image -->
-              <span class="text-xl font-bold text-white">Deliacte</span> <!-- Styliser le texte -->
+         <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="assets/img/burkina (1).png" class="h24 w-24 me-3" alt="FlowBite Logo" />
+            <div class="w-80">
+              <h5>Ministère de la Transition Digitale, des Postes et des Communications Électroniques</h5>
+          </div>
           </a>
          
       </div>
@@ -19,23 +22,20 @@
     <span class="example-spacer"></span>
     <span class="example-spacer"></span>
    
-    <button [routerLink]="'/deliacte/dossier'" routerLinkActive="active"
-      class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
-      focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100">
-     <span class="flex-1 ms-3 whitespace-nowrap">Voir dossier</span>
-    </button>
-    
-
-   <button [routerLink]="'/deliacte/login'" routerLinkActive="active" style="margin-left: 10px;"
-    class="p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none 
-        focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:bg-gray-100 bg-gray-100" >
-        <span class="flex-1 ms-3 whitespace-nowrap">Se Connecter</span>
-    </button>
-  </div>
+    <button type="button" [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 
+    focus:outline-none bg-white rounded-full border border-gray-200 
+    hover:bg-Green-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 
+    dark:bg-green-800 dark:text-green-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-green-700">Voir dossier</button>
+    <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none 
+    bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:bg-gray-100 focus:z-10 
+    focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 
+    dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Se Connecter</button>
+      </div>
   </div>
 </div>
 
-<div class="card-grid mt-16 p-4" >
+
+<div class="card-grid mt-24">
 <div *ngFor="let procedure of procedures" (click)="faireDemande(procedure)">
     <p-card [header]="procedure.name" [subheader]="procedure.description" [style]="{ width: '360px' }" >
       <ng-template pTemplate="header">
@@ -65,6 +65,8 @@
   </div>
 </div>
   
+
+
 <div id="adduser" 
      [ngClass]="{'hidden': !demandeFor}" 
      tabindex="-1" 
@@ -129,3 +131,4 @@
         </div>
     </div>
 </div>
+

@@ -29,6 +29,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -47,13 +48,13 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     ButtonModule,
     TableModule,
     CalendarModule,
-		SliderModule,
-		DialogModule,
-		MultiSelectModule,
-		ContextMenuModule,
-		DropdownModule,
-		ButtonModule,
-		ToastModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    ToastModule,
     InputTextModule,
     ProgressBarModule,
     HttpClientModule,
@@ -67,8 +68,9 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
     TabViewModule,
     MessagesModule,
     MessageModule,
-    ProgressSpinnerModule
-  ],
+    ProgressSpinnerModule,
+    SharedModule
+],
 
   providers: [
     ConfirmationService ,

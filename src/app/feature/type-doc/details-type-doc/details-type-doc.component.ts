@@ -181,7 +181,7 @@ export class DetailsTypeDocComponent {
       next:(result)=>{
         console.log(result.data+" total");
        this.dossier=result.data.dossiers;
-       console.log(this.dossier)
+    //   this.traitement=result.data.traitement;
        this.idOperationNow=result.data.traitement.operationId;;
        console.log(this.idOperationNow);
        this.userService.operationInfo(this.user?.id).subscribe({
@@ -189,7 +189,6 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
         this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
-              console.log(result.data.length);
               if(result.data.length>1)
               {
                 console.log(result.data);
@@ -197,10 +196,13 @@ export class DetailsTypeDocComponent {
                 if(result.data[0].operationPreviousId==this.idOperationNow){
                   this.operationPrecedent=result.data[1];
                   this.operationnow=result.data[0];
+                  this.traitement.operationId=this.operationnow.id;
                 }
                 else{
                   this.operationPrecedent=result.data[0];
                   this.operationnow=result.data[1];
+                  this.traitement.operationId=this.operationnow.id;
+
                 }
                 this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                   next:(result)=>{
@@ -209,7 +211,7 @@ export class DetailsTypeDocComponent {
                     this.champs=result.data;
                     console.log(this.champs)
                     if (this.champs){
-                      this.traitement.operationId=this.champs[0].operationId;
+                    //  this.traitement.operationId=this.champs[0].operationId;
                       this.demandeFor = this.champs.map(champ => ({
                         name: '',
                         champOperationId: champ.id // ou une autre logique
@@ -235,24 +237,31 @@ export class DetailsTypeDocComponent {
                   this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
                     next:(result)=>{
                       this.operationPrecedent=result.data;
+                    
+                    console.log(this.operationPrecedent);
                     },
                     complete:()=>{},
                     error:(err)=>{}
-                  })
+                  });
+                  this.traitement.operationId=result.data[0].id;
+                  console.log('DemandeFor:', this.traitement);
+
                   this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
                     next:(result)=>{
                       console.log(result)
                      // this.numDossier=result.message;
+                     if(result){
                       this.champs=result.data;
                       console.log(this.champs)
-                      this.traitement.operationId=this.champs[0].operationId;
+                    // this.traitement.operationId=this.champs[0].operationId;
+                     }
+                    
                       this.demandeFor = this.champs.map(champ => ({
                         name: '',
                         champOperationId: champ.id // ou une autre logique
                       }));
                       console.log('Champs:', this.champs);
                       console.log('DemandeFor:', this.demandeFor);
-                      console.log('DemandeFor:', this.traitement);
                       console.log('Champs:', this.champs);
                       //console.log('DemandeFor:', this.demandeFor);
                     },
