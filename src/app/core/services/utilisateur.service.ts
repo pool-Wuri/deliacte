@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, retry, tap } from 'rxjs';
+import { catchError, Observable, of, retry, tap, throwError } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 import { AuthentificationService } from './authentification.service';
+import { MessageService } from 'primeng/api';
 
 const USER_API =environment.apiUrl +'/users';
 const USERBYORGANISATION_API =environment.apiUrl +'/users/MyOrganisationOrProcedureUsers';
@@ -23,7 +24,8 @@ const GET_Role=environment.apiUrl + '/users/role/';
 
 export class UtilisateurService {
   httpParams: HttpHeaders | undefined;
-  constructor(private http: HttpClient,private authService: AuthentificationService) { }
+  constructor(private http: HttpClient,private authService: AuthentificationService,private messageService: MessageService  // Injection de MessageService
+  ) { }
 
 
   public allUser(filterParam =''): Observable<any> {
@@ -87,12 +89,13 @@ export class UtilisateurService {
         console.log('User saved:', data);
       }),
       catchError((error) => {
-        console.error('Error saving user:', error);
-        return of(null); // Gestion des erreurs
+        // Utiliser le service ErrorHandler pour gérer l'erreur
+        return this.handleError(error);  // Appel au service d'erreur
       })
     );
   }
 
+  
   public saveCitoyens(user:any):Observable<any>{
     const token = this.authService.getAccessToken();
     const headers = new HttpHeaders({
@@ -291,6 +294,26 @@ getUserByRole(role?:string): Observable<any> {
         )
       )
     );
+}
+
+
+private handleError(error: HttpErrorResponse) {
+  let errorMessage = 'Une erreur s\'est produite. Veuillez réessayer plus tard ou vérifier les informations saisies.';
+  if (error.status === 500) {
+    errorMessage = 'l\'utilisateiur existe déja';
+  } else if (error.status === 0) {
+    errorMessage = 'Impossible de se connecter au serveur. Vérifiez votre connexion Internet.';
+  }
+
+  // Utiliser MessageService pour afficher l'erreur
+  this.messageService.add({ 
+    severity: 'error', 
+    summary: 'Erreur', 
+    detail: errorMessage 
+  });
+  console.log(this.messageService)
+
+  return throwError(() => new Error(errorMessage));
 }
 
 }

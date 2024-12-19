@@ -5,18 +5,18 @@
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom :</label>
-                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent :</label>
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom : <p>{{organisation.name}}</p> </label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent : <p> {{organisation.parentOrganisation?.name}} </p> </label>
 
                 </div>
-                <div class="valueWrap" >
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.name===''"> </label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.name!==''"> {{organisation.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="organisation.parentOrganisation?.name===''"> ""</label>
+                <!--div class="valueWrap" >
+                    <label for=""  class="propertyValue"   *ngIf="organisation.name!==''"> {{organisation.name}}</label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="!organisation.name"> </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="!organisation.parentOrganisationId"> ""</label>
 
                     <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{organisation.parentOrganisation?.name}}</label>
 
-                </div>
+                </div-->
             </div>
         </div>    
     </ng-template>
@@ -24,13 +24,13 @@
         <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
             <div class="p-fluid">
                 <div class="titleWrap">
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description :</label>
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description : <p> {{organisation.description}}</p> </label>
                    
                 </div>
-                <div class="valueWrap" >
+                <!--div class="valueWrap" >
                     <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{organisation.description}}</label>
                    
-                </div>
+                </div-->
             </div>
         </div>
     </ng-template>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Procedure } from 'src/app/core/models/procedure.model';
+import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 
@@ -29,6 +29,9 @@ export class DetailsProcedureComponent {
     );
   }
 
+  parseStatus(status: string): string {
+    return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
+  }
   getProcedure(id?:number){
     this.procedureService.getUserById(id).subscribe({
       complete:()=>{},

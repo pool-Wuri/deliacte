@@ -177,7 +177,8 @@ searchtypeoperation():void{
   }
 
 ajouter(){
-  this.addboutton=true;
+  if(this.procedurechoisi.id){
+    this.addboutton=true;
     this.addUser=true;
     this.editbutt=false;
     this.title="Ajouter";
@@ -186,6 +187,12 @@ ajouter(){
     this.operation.procedureId=this.procedurechoisi.id;
     this.search_Procedure();
     this.submitted=false;
+  }
+  else{
+    this.messageService.add({severity:'error', summary: 'error', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
+
+  }
+ 
 }
 
 fermerModal(){

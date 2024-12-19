@@ -68,8 +68,8 @@ onSubmit(){
         this.user = JSON.parse(userData);
         console.log(this.user)
       }    
-      if(this.user.role=="CITOYEN"){
-        this.router.navigate(['/deliacte/procedure-published/list']);
+      if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
+        this.router.navigate(['/deliacte/dossier/list']);
       }
       else
       setTimeout(()=>{

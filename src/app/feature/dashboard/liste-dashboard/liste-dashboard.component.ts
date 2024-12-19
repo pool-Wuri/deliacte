@@ -179,7 +179,7 @@ if (this.id !== undefined) {
 
 
 
-    this.DashboardService.getDossierEvolution().subscribe((data) => {
+/*    this.DashboardService.getDossierEvolution().subscribe((data) => {
       // Extraire les mois et les nombres des données API
       // Extraire le mois et l'année (si disponible) pour les labels
       const labels = data.map((item: any) => {
@@ -220,7 +220,7 @@ if (this.id !== undefined) {
           },
         },
       };
-    });
+    });*/
     
    
   }
@@ -287,6 +287,8 @@ if (this.id !== undefined) {
         const labels = data.map((item: any) => {
           return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
         });
+
+        console.log(labels)
         const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
     
          // Configuration du graphique
@@ -329,10 +331,11 @@ if (this.id !== undefined) {
       this.DashboardService.getDossierByOrganisation(organisationId).subscribe((data) => {
         // Extraire les mois et les nombres des données API
         const labels = data.map((item: any) => {
-          return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
+          return item.year ? `${item.month} ` : item.month; // Mois + Année (si disponible)
         });
+        console.log(labels)
         const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
-    
+        console.log(values)
          // Configuration du graphique
          this.basicData6 = {
           labels: labels,

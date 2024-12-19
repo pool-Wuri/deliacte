@@ -6,13 +6,15 @@
         <div class="col-8 flex align-items-center justify-content-center">
             <div class="p-fluid">
                 <div class="titleWrap" >
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
                     <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
+
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
                 </div>
                 <div class="valueWrap" >
+                    <label for=""  class="propertyValue"  style="inline-size: 100px; margin-top: 10px; word-break: break-all;"> {{procedure.description}}</label>
+
                     <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name===''"> </label>
                     <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name!==''"> {{procedure.name}}</label>
-                    <label for=""  class="propertyValue"  style="inline-size: 100px; margin-top: 10px; word-break: break-all;"> {{procedure.description}}</label>
                 </div>
             </div>
         </div>    
@@ -26,7 +28,7 @@
                     
                 </div>
                 <div class="valueWrap" >
-                    <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{procedure.status}}</label>
+                    <label for=""  style="margin-top: 10px;"  class="propertyValue" >  {{ parseStatus(procedure.status) }} </label>
                     <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.organisation===undefined">" "</label>
                     <label for=""  style="margin-top: 10px;" class="propertyValue"   *ngIf="procedure.organisation!==undefined"> {{procedure.organisation.name}}</label>
 

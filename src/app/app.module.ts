@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './core/interceptor/auth.interceptor';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -18,10 +19,12 @@ import { AuthInterceptor } from './core/interceptor/auth.interceptor';
     BrowserAnimationsModule
   ],
   providers: [
+    MessageService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
+      
     }
   ],
   bootstrap: [AppComponent]

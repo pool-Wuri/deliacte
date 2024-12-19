@@ -10,6 +10,8 @@ import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { Operation } from 'src/app/core/models/operation.model';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 
 
@@ -232,14 +234,17 @@ searchProcedures(){
       complete:()=>{},
       next:(result)=>{
         console.log(result+"User add");
+        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+
         this.searchUser();
       },
       error:(error)=>{
         console.log(error);
+        this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
+
       }
   
     })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       //Actual logic to perform a confirmation
       
   },
@@ -729,4 +734,37 @@ revoquerAdmin(user:User){
 
 }
 
+generatePDF() {
+  // Create a new PDF document.
+  const doc = new jsPDF();
+
+  // Add content to the PDF.
+  doc.setFontSize(16);
+  doc.text('My Angular PDF Generator', 10, 10);
+  doc.setFontSize(12);
+  doc.text(
+    'This is a comprehensive guide on generating PDFs with Angular.',
+    10,
+    20,
+  );
+
+  // Create a table using `jspdf-autotable`.
+  const headers = [['Nom', 'Prenom', 'Mail',"Telephone"]];
+  const data = [
+    ['David', 'david@example.com', 'Sweden'],
+    ['Castille', 'castille@example.com', 'Spain'],
+    // ...
+  ];
+	autoTable(doc, {
+    head: headers,
+    body: data,
+    startY: 30, // Adjust the `startY` position as needed.
+  });
+
+  
+  // Save the PDF.
+  doc.save('table.pdf');
 }
+
+}
+

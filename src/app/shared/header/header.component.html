@@ -11,7 +11,7 @@
             </button>
            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
               <img src="assets/img/burkina (1).png" class="h24 w-24 me-3" alt="FlowBite Logo" />
-              <div class="w-80">
+              <div class="w-80 text-white">
                 <h5>Ministère de la Transition Digitale, des Postes et des Communications Électroniques</h5>
             </div>
             </a>
@@ -22,14 +22,18 @@
       <span class="example-spacer"></span>
       <span class="example-spacer"></span>
       <span class="example-spacer"></span>
-     
+        <div class="flex justify-between items-center pl-4 mx-8">
+          <p class="text-xl font-bold text-white mx-4 transition-sneak">{{ user?.firstName }} {{ user?.lastName }}</p>
        <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none 
       bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:bg-gray-100 focus:z-10 
       focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 
       dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"  (click)="deconnecter()" 
       aria-label="Deconnexion">
         <i class="pi pi-sign-out mr-1"></i>
-        Deconnexion</button>
+        Se deconnecter</button>
+        </div>
+
+      
         </div>
     </div>
   </div>

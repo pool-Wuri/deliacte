@@ -13,6 +13,19 @@
 
 }
 
+.propertyTitle {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+  }
+  
+  .propertyTitle p {
+    margin: 0;
+    padding: 0;
+    color: black;
+  }
+
 .propertyValue {
     display:block;
     font-weight: bold;     

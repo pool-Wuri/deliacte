@@ -7,3 +7,10 @@ a.active {
  a.active svg{
   color: white;
 }
+
+
+:host ::ng-deep .p-password input {
+  width: 18rem;
+  border-radius: 0.5rem;
+  border-color: rgb(209 213 219);
+}

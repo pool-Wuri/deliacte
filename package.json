@@ -23,6 +23,8 @@
     "autoprefixer": "^10.4.20",
     "chart.js": "^4.4.4",
     "flowbite": "^2.5.1",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
     "postcss": "^8.4.44",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.9",

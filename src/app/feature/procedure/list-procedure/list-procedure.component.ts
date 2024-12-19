@@ -234,33 +234,41 @@ procedure=new Procedure;
 
   publier(procedure:Procedure){
     console.log(procedure)
-    this.confirmationService.confirm({
-      message: 'Voulez-vous publier cette procedure',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      header: 'Publication',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      console.log(procedure.id)
-      procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
-
-      this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"procedure publié");
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
-    },
-    reject:()=>{
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    if(procedure.status!="PUBLISHED")
+    {
+      this.confirmationService.confirm({
+        message: 'Voulez-vous publier cette procedure',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        header: 'Publication',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        console.log(procedure.id)
+        procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
+  
+        this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            console.log(result+"procedure publié");
+          },
+          error:(error)=>{
+            console.log(error);
+          }
+      
+        })
+        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      }
+    });
     }
-  });
+    else{
+      this.messageService.add({severity:'error', summary: 'error', detail: 'Procedure déja publiée', life: 3000});
+
+    }
+   
   }
 
    getStatusKey(status: ProcedureStatus): string {

@@ -31,6 +31,7 @@ import { PanelModule } from 'primeng/panel';
 import {PickListModule} from 'primeng/picklist';
 import {DataViewModule} from 'primeng/dataview';
 import {ListboxModule} from 'primeng/listbox';
+import {TreeModule} from 'primeng/tree';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import {ListboxModule} from 'primeng/listbox';
     PanelModule,
     PickListModule,
     DataViewModule,
-    ListboxModule
+    ListboxModule,
+    TreeModule
     
   ],
   providers: [
