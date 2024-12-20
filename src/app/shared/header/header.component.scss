@@ -1,0 +1,50 @@
+.flex-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 16px;
+    margin: 0 32px;
+   // background-color: lightgray; /* Pour mieux visualiser le conteneur */
+    width: 100%;
+    height: 50px; /* Hauteur du div pour contenir l'animation */
+    overflow: hidden; /* Cache le texte qui dépasse */
+}
+
+/* Texte animé */
+.animated-text {
+    font-size: 1.25rem; /* Taille du texte */
+    font-weight: bold;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    white-space: nowrap; /* Empêche le texte de se casser */
+    margin-left: 16px; /* Marge à gauche pour espacer du bouton */
+    animation: scroll-text 10s linear infinite; /* Animation de défilement */
+}
+
+/* Animation pour faire défiler le texte de droite à gauche */
+@keyframes scroll-text {
+    0% {
+        transform: translateX(10%); /* Commence à droite, juste après le bouton */
+    }
+    100% {
+        transform: translateX(-100%); /* Va jusqu'à la gauche du div */
+    }
+}
+
+/* Bouton de déconnexion */
+.btn-logout {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: medium;
+    background-color: white;
+    border-radius: 9999px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.3s ease;
+    margin-left: 25px;
+}
+
+.btn-logout:hover {
+    background-color: #F3F4F6;
+    border-color: #E5E7EB;
+}
