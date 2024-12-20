@@ -415,7 +415,7 @@ export class DetailsTypeDocComponent {
     console.log(numDossier)
     //const data: FormData = new FormData();
    this.confirmationService.confirm({
-      message: 'Voulez-vous vraiment soumettre ce dossier?',
+      message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',

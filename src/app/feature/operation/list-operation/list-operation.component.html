@@ -24,7 +24,7 @@
         class="text-white  from-green-400 via-green-500 to-green-600 
         focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
         dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
-            Ajouter
+            Ajouter une opération
         </button>
     </ng-template>
 </p-toolbar>
@@ -386,13 +386,13 @@
 </div>
 
 <p-dialog  [(visible)]="listeUser" [style]="{width: '900px'}" modal="true" styleClass="p-fluid" >
-    <p-pickList [source]="usergroup1" [target]="usergroup" sourceHeader="Choisir utilisateur" targetHeader="utilisateurs choisis choisi" [dragdrop]="true"
+    <p-pickList [source]="usergroup1" [target]="usergroup" sourceHeader="Choisir utilisateur" targetHeader="Utilisateurs choisis" [dragdrop]="true"
     [responsive]="true" [sourceStyle]="{'height':'30rem'}" [targetStyle]="{'height':'30rem'}" filterBy="nomStructure"
     sourceFilterPlaceholder="Rechercher" targetFilterPlaceholder="Rechercher">
     <ng-template let-user pTemplate="item">
         <div class="product-item">
             <div class="product-list-detail">
-                <h5 class="mb-2">{{user.firstName}}</h5>
+                <h5 class="mb-2">Nom: {{user.firstName}}</h5>
                 <span class="product-category">Prenom: {{user.lastName}}</span>
                 <h5 class="mb-2">{{user.role}}</h5>
               </div>

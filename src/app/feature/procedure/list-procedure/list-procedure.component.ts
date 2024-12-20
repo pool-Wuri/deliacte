@@ -71,7 +71,7 @@ procedure=new Procedure;
     this.addboutton=true;
     this.addUser=true;
     this.editbutt=false;
-    this.title="Ajouter";
+    this.title="Formulaire d'ajout d'une procedure";
     this.procedure.status="DRAFT";
     this.searchOrganisation();
    }
@@ -159,7 +159,7 @@ procedure=new Procedure;
     this.procedure=procedure;
     this.addUser=false;
     this.editbutt=true;
-    this.title="Modifier";
+    this.title="Modifier la procedure";
     console.log(this.procedure)
    }
   

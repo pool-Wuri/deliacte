@@ -181,7 +181,7 @@ ajouter(){
     this.addboutton=true;
     this.addUser=true;
     this.editbutt=false;
-    this.title="Ajouter";
+    this.title="Formulaire d'ajout d'une opération";
     this.operation={};
     console.log(this.procedurechoisi)
     this.operation.procedureId=this.procedurechoisi.id;
@@ -201,6 +201,7 @@ fermerModal(){
   this.editbutt=false;
   this.addchamp=false;
   this.adddoctype=false;
+  this.listeUser=false;
  }
 
  saveOperation(){
@@ -300,7 +301,7 @@ fermerModal(){
   this.addboutton = true; // Ouvre le modal
   this.addUser=false;
   this.editbutt=true;
-  this.title="Modifier";
+  this.title="Modifier opération";
   this.operation=operation;
   this.search_Procedure();
   console.log(this.operation)

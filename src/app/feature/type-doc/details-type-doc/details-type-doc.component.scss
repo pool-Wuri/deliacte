@@ -26,6 +26,12 @@
 
 }
 
+:host ::ng-deep .acceptButton {
+  margin-left: 10px; /* Essayer avec !important si nécessaire */
+  border-color: rgb(249 250 251);
+  background-attachment: fixed;
+}
+
 .custom-marker {
     display: flex;
     width: 2rem;
