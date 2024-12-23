@@ -24,96 +24,377 @@
             </button>
         </ng-template>
     </p-toolbar>
-    <div class="card">
-        <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
-        [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-         [globalFilterFields]="['firstName','lastName','email']">
-        
-         <ng-template pTemplate="caption">
-            <div class="flex">
-                <span class="p-input-icon-left ml-auto cherch">
-                    <i class="pi pi-search" ></i>
-                    <input 
-                        pInputText 
-                        type="text" 
-                        #searchInput 
-                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                        placeholder="      Rechercher" />
-                </span>
-            </div>
-        </ng-template>
-        
-        <ng-template pTemplate="header">
-            <tr class="tableEnt">
-                <!--th style="width: 4rem,">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th-->
-                <th >Nom</th>
-                <th >Organisation</th>
-                <th >Statut</th>
-                <th style="width: 350px;">Actions</th>
-            </tr>
-            
-        </ng-template>
-        <ng-template id="bodi" pTemplate="body" let-procedure>
-            <tr class="p-selectable-row tableContenu">
-                <!--td>
-                    <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                </td-->
-                <td>
-                    {{procedure.name}}
-                </td>
-                <td>
-                    {{procedure.organisation.name}}
-
-                </td>
-                <td>
-                    {{ parseStatus(procedure.status) }} 
-
-                </td>
-                <td>
-                    <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
-                    class=" bg-white from-green-500 via-green-600 t
-                    o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
-                    font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
-
-                    <button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
-                    class="text-white from-green-400 via-green-500 
-                    to-green-600 hover:bg-gradient-to-br focus:ring-4 
-                    focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
-
-                    <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  (click)="publier(procedure)" class="text-white bg-green-700 
-                    hover:bg-green-800 focus:outline-none focus:ring-4 
-                    focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
-                    ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
-
-                    <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
-                    class="text-white  from-teal-400 via-teal-500 to-teal-600 
-                   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
-
-
-                    <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
-                    via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center 
-                    mx-0 pi pi-eraser">
-                    </button>
-                   
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="8">Aucune procedure trouvée</td>
-            </tr>
-        </ng-template>
-        </p-table>
-    </div>
    
 </div>
+
+<div *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  class="card">
+    <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
+    [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+     [globalFilterFields]="['firstName','lastName','email']">
+    
+     <ng-template pTemplate="caption">
+        <div class="flex">
+            <span class="p-input-icon-left ml-auto cherch">
+                <i class="pi pi-search" ></i>
+                <input 
+                    pInputText 
+                    type="text" 
+                    #searchInput 
+                    (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                    placeholder="      Rechercher" />
+            </span>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="header">
+        <tr class="tableEnt">
+            <!--th style="width: 4rem,">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th-->
+            <th >Nom</th>
+            <th >Organisation</th>
+            <th >Statut</th>
+            <th style="width: 350px;">Actions</th>
+        </tr>
+        
+    </ng-template>
+    <ng-template id="bodi" pTemplate="body" let-procedure>
+        <tr class="p-selectable-row tableContenu">
+            <!--td>
+                <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+            </td-->
+            <td>
+                {{procedure.name}}
+            </td>
+            <td>
+                {{procedure.organisation.name}}
+
+            </td>
+            <td>
+                {{ parseStatus(procedure.status) }} 
+
+            </td>
+            <td>
+                <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
+                class=" bg-white from-green-500 via-green-600 t
+                o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
+
+                <button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
+                class="text-white from-green-400 via-green-500 
+                to-green-600 hover:bg-gradient-to-br focus:ring-4 
+                focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
+
+                <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  (click)="publier(procedure)" class="text-white bg-green-700 
+                hover:bg-green-800 focus:outline-none focus:ring-4 
+                focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
+                ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
+
+                <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
+                class="text-white  from-teal-400 via-teal-500 to-teal-600 
+               focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
+
+
+                <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center 
+                mx-0 pi pi-eraser">
+                </button>
+               
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="8">Aucune procedure trouvée</td>
+        </tr>
+    </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="user && user.role !== 'PROCEDURE_MANAGER'">
+    <p-tabView>
+        <p-tabPanel header="Brouillon">
+            <div class="card">
+                <p-table #dt  [value]="proceduresBrouillon" styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['firstName','lastName','email']">
+                
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
+                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                                placeholder="      Rechercher" />
+                        </span>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Organisation</th>
+                        <th >Statut</th>
+                        <th style="width: 350px;">Actions</th>
+                    </tr>
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-procedure>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                            {{procedure.name}}
+                        </td>
+                        <td>
+                            {{procedure.organisation.name}}
+        
+                        </td>
+                        <td>
+                            {{ parseStatus(procedure.status) }} 
+        
+                        </td>
+                        <td>
+                            <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
+                            class=" bg-white from-green-500 via-green-600 t
+                            o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                            font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
+        
+                            <button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
+                            class="text-white from-green-400 via-green-500 
+                            to-green-600 hover:bg-gradient-to-br focus:ring-4 
+                            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
+        
+                            <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  (click)="publier(procedure)" class="text-white bg-green-700 
+                            hover:bg-green-800 focus:outline-none focus:ring-4 
+                            focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
+                            ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
+        
+                            <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
+                            class="text-white  from-teal-400 via-teal-500 to-teal-600 
+                           focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
+        
+        
+                            <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center 
+                            mx-0 pi pi-eraser">
+                            </button>
+                           
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Aucune procedure trouvée</td>
+                    </tr>
+                </ng-template>
+                </p-table>
+            </div>
+           
+        </p-tabPanel>
+        <p-tabPanel header="Archivée">
+            <div class="card">
+                <p-table #dt  [value]="proceduresArchiv" styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['firstName','lastName','email']">
+                
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
+                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                                placeholder="      Rechercher" />
+                        </span>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Organisation</th>
+                        <th >Statut</th>
+                        <th style="width: 350px;">Actions</th>
+                    </tr>
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-procedure>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                            {{procedure.name}}
+                        </td>
+                        <td>
+                            {{procedure.organisation.name}}
+        
+                        </td>
+                        <td>
+                            {{ parseStatus(procedure.status) }} 
+        
+                        </td>
+                        <td>
+                            <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
+                            class=" bg-white from-green-500 via-green-600 t
+                            o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                            font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
+        
+                            <button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
+                            class="text-white from-green-400 via-green-500 
+                            to-green-600 hover:bg-gradient-to-br focus:ring-4 
+                            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
+        
+                            <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  (click)="publier(procedure)" class="text-white bg-green-700 
+                            hover:bg-green-800 focus:outline-none focus:ring-4 
+                            focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
+                            ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
+        
+                            <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
+                            class="text-white  from-teal-400 via-teal-500 to-teal-600 
+                           focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
+        
+        
+                            <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center 
+                            mx-0 pi pi-eraser">
+                            </button>
+                           
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Aucune procedure trouvée</td>
+                    </tr>
+                </ng-template>
+                </p-table>
+            </div>
+           
+        </p-tabPanel>
+        <p-tabPanel header="Publiée">
+            <div class="card">
+                <p-table #dt  [value]="proceduresPublie" styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['firstName','lastName','email']">
+                
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
+                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                                placeholder="      Rechercher" />
+                        </span>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Organisation</th>
+                        <th >Statut</th>
+                        <th style="width: 350px;">Actions</th>
+                    </tr>
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-procedure>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                            {{procedure.name}}
+                        </td>
+                        <td>
+                            {{procedure.organisation.name}}
+        
+                        </td>
+                        <td>
+                            {{ parseStatus(procedure.status) }} 
+        
+                        </td>
+                        <td>
+                            <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
+                            class=" bg-white from-green-500 via-green-600 t
+                            o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                            font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye"></button>
+        
+                            <!--button type="button" title="Modifier" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
+                            class="text-white from-green-400 via-green-500 
+                            to-green-600 hover:bg-gradient-to-br focus:ring-4 
+                            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button-->
+        
+                            <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  (click)="publier(procedure)" class="text-white bg-green-700 
+                            hover:bg-green-800 focus:outline-none focus:ring-4 
+                            focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
+                            ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
+        
+                            <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
+                            class="text-white  from-teal-400 via-teal-500 to-teal-600 
+                           focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
+        
+        
+                            <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
+                            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                            text-sm p-2.5 text-center inline-flex items-center 
+                            mx-0 pi pi-eraser">
+                            </button>
+                           
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Aucune procedure trouvée</td>
+                    </tr>
+                </ng-template>
+                </p-table>
+            </div>
+           
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+
 
 <div id="adduser" 
      [ngClass]="{'hidden': !addboutton}" 

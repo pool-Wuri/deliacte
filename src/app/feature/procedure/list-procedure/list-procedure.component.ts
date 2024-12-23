@@ -19,6 +19,10 @@ addUser:boolean=false;
 editbutt:boolean=false;
 title:string="";
 procedures=new Array <Procedure>();
+proceduresBrouillon=new Array <Procedure>();
+proceduresArchiv=new Array <Procedure>();
+proceduresPublie=new Array <Procedure>();
+
 organisations=new Array <Organisation>();
 statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouillon"},{value:"PUBLISHED",label:"Publiée"}]
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
@@ -58,6 +62,11 @@ procedure=new Procedure;
       next:(result)=>{
         console.log(result+"procedure total");
         this.procedures=result.data;
+        console.log(this.procedures)
+        this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
+        this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
+        this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
+
       },
       error:(error)=>{
         console.log(error);

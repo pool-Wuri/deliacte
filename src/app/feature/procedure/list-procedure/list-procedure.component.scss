@@ -66,7 +66,51 @@
     .p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
         display: none;
     }
+
+
+    .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+        background: #E30613;
+        //border-color: #06e30d;
+        color: white;
+        border-radius: 1px;
+        height: 34px;
+    }
+    
+    .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+        border: none;
+        border-width: 0 0 1px 0;
+      //  border-color: transparent transparent #e306e3 transparent;
+        background: transparent;
+        color: #E30613;
+        padding: 1rem 1.125rem;
+        font-weight: 18px;
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+        transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, outline-color 0.2s;
+        margin: 10px 15px -1px 0;
+    }
+    .p-tabview-nav-link {
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        position: relative;
+        text-decoration: none;
+        overflow: hidden;
+    }
+    
+    .p-tabview-nav {
+        display: inline-flex;
+        min-width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        flex: 1 1 auto;
+    }
 }
+
+
 
 .tableContenu{
     background-color: #f5f7fa8f;

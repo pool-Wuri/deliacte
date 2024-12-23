@@ -27,6 +27,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsProcedureComponent } from './details-procedure/details-procedure.component';
 import {PanelModule} from 'primeng/panel';
+import {TabViewModule} from 'primeng/tabview';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {PanelModule} from 'primeng/panel';
     OverlayPanelModule,
     ConfirmDialogModule,
     SplitterModule,
-    PanelModule
+    PanelModule,
+    TabViewModule
   ]
   ,
   providers: [
