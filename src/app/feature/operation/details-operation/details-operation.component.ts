@@ -33,6 +33,15 @@ export class DetailsOperationComponent {
 responsUsers=new Array<User>();
 operationsIds=new OperationAssign;
 
+listeUser:boolean=false;
+list1: any[] | undefined;
+usergroup=new Array <User>()
+usergroup1=new Array <User>()
+list2: any[] | undefined;
+  sortOrder!: number;
+  selectedOperation=new Array <Operation>();
+  disable:boolean=false;;
+
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -163,6 +172,7 @@ editChamp(champ:ChampOperation){
 
 fermerModal(){
   this.addchamp=false;
+  this.listeUser=false;
 }
 
 saveChampEdit(){
@@ -384,5 +394,93 @@ retirerUser(user:User){
   });
 
 }
+
+
+groupeUser(operation:any){
+  // this.disable=false;
+  // console.log(this.disable)
+ this.operation=operation;
+ console.log(this.operation);
+
+     this.userService.userOrganisation().subscribe({
+       complete:()=>{},
+       next:(result)=>{
+        console.log(result)
+         this.usergroup1=result.data;
+         if(this.usergroup1){
+           this.operationService.searchResponsable(this.operation.id || 0).subscribe({
+             next:(result)=>{
+               this.usergroup=result.data;
+               if(this.usergroup){
+                 this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
+                 console.log(this.usergroup);
+                 console.log(this.usergroup1)
+               }
+             
+             },
+             complete:()=>{},
+             error:(error)=>{
+               console.log(error);
+             }
+           })
+         }
+      
+       },
+       error:(error)=>{
+         console.log(error);
+       }
+     });
+     this.operationsIds={};
+     this.listeUser=true;
+    
+  
+ }
+
+
+ userSelet(){
+  this.listeUser=false;
+  console.log(this.usergroup);
+  this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
+  for(let i=0;i<this.usergroup.length;i++){
+    console.log(this.usergroup[i])
+    if(this.usergroup[i].id){
+    this.userService.operationInfo(this.usergroup[i].id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result.data);
+        for(let i=0;i<result.data.length;i++){
+          this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+          console.log(this.operationsIds)
+        }
+        this.operationsIds.operationsIds?.push(this.operation.id || 0);
+        console.log(this.operationsIds);
+        this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            console.log(result +"Utilisateur modifié avec succès");
+           // this.searchUser();
+          },
+          error:(error)=>{
+            console.log(error);
+          }
+      
+        });
+
+      },
+      error:(error)=>{
+        console.log(error);
+      }
+    });
+     
+    }
+  //  console.log(this.selectedOperation);
+
+ //   console.log( this.operationsIds.operationsIds);   
+    
+ 
+  }
+}
+
+
 
 }

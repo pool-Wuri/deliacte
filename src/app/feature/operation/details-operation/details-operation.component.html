@@ -183,7 +183,16 @@
         </div>
     </p-tabPanel-->
     <p-tabPanel header="Groupe Utilisateur">
-
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="right">
+                <button   style="background-color: #060;" (click)="groupeUser(operation)"
+                class="text-white  from-green-400 via-green-500 to-green-600 
+                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
+                    Ajouter utilisateur
+                </button>
+            </ng-template>
+        </p-toolbar>
         <div class="card">
             <p-table #dt [value]="responsUsers"  styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
@@ -225,13 +234,12 @@
                     <td>
                         {{utilisateur.lastName}}
                     </td>
-                   
                  <td>
-                    <button type="button" title="Modifier"   style="background-color: #060;" 
+                    <!--button type="button" title="Modifier"   style="background-color: #060;" 
                     class="text-white from-green-400 via-green-500  
                     to-green-600 hover:bg-gradient-to-br focus:ring-4 
                     focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                    text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button>
+                    text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button-->
                     <button   type="button"  title="retirer utilisateur" (click)="retirerUser(utilisateur)"
                     style="background-color: #ff0000;" class="text-white  from-red-400 
                     via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
@@ -358,3 +366,29 @@
     </div>
 </div>
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+<p-dialog  [(visible)]="listeUser" [style]="{width: '900px'}" modal="true" styleClass="p-fluid" >
+    <p-pickList [source]="usergroup1" [target]="usergroup" sourceHeader="Choisir utilisateur" targetHeader="Utilisateurs choisis" [dragdrop]="true"
+    [responsive]="true" [sourceStyle]="{'height':'30rem'}" [targetStyle]="{'height':'30rem'}" filterBy="nomStructure"
+    sourceFilterPlaceholder="Rechercher" targetFilterPlaceholder="Rechercher">
+    <ng-template let-user pTemplate="item">
+        <div class="product-item">
+            <div class="product-list-detail">
+                <h5 class="mb-2">Nom: {{user.firstName}}</h5>
+                <span class="product-category">Prenom: {{user.lastName}}</span>
+                <h5 class="mb-2">{{user.role}}</h5>
+              </div>
+        </div>
+    </ng-template>
+    </p-pickList>
+    <ng-template pTemplate="footer">
+      
+        <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+        class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+        <button type="button" style="background-color: #060;" (click)="userSelet()"
+        class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+      <!--button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text"  style="background-color: #ff0000;"></button>
+      <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text" style="background-color: #060;" (click)="userSelet()"></button-->
+    </ng-template>
+  </p-dialog>
