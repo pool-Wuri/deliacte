@@ -22,7 +22,7 @@ const routes: Routes = [
 
   {
     path: 'deliacte',
-    canActivate:[LoginGuard],
+   canActivate:[LoginGuard],
     component: BaseLayoutComponent, // Assurez-vous que ce composant existe
     children: [
       { 

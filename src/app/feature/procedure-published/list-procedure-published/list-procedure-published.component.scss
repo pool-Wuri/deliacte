@@ -223,3 +223,25 @@
     
 
 }
+
+/* Texte animé */
+.animated-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap; /* Empêche le texte de se couper */
+    position: absolute; /* Permet de contrôler le positionnement du texte */
+    left: 0; /* Positionne le texte à partir du côté gauche du conteneur */
+    animation: scroll-left-right 10s linear infinite; /* Animation de défilement */
+  }
+  
+  /* Animation du texte : gauche vers droite */
+  @keyframes scroll-left-right {
+    0% {
+      transform: translateX(-100%); /* Commence hors du conteneur à gauche */
+    }
+    100% {
+      transform: translateX(200%); /* Termine hors du conteneur à droite */
+    }
+  }
+  

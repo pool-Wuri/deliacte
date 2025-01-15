@@ -22,7 +22,7 @@
     <span class="example-spacer"></span>
     <span class="example-spacer"></span>
    
-    <button type="button" [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 
+    <button type="button"  [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 
     focus:outline-none bg-white rounded-full border border-gray-200 
     hover:bg-Green-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 
     dark:bg-green-800 dark:text-green-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-green-700">Voir dossier</button>
@@ -33,9 +33,16 @@
       </div>
   </div>
 </div>
+<div
+  class="card-grid mt-24"
+  *ngIf="procedures.length === 0"
+  style="background-color: #ff0000; padding: 16px; border-radius: 8px; text-align: center; position: relative; overflow: hidden;"
+>
+  <p class="animated-text">Aucune procédure disponible</p>
+</div>
 
 
-<div class="card-grid mt-24">
+<div class="card-grid mt-24" *ngIf="procedures" >
 <div *ngFor="let procedure of procedures" (click)="faireDemande(procedure)">
     <p-card [header]="procedure.name" [subheader]="procedure.description" [style]="{ width: '360px' }" >
       <ng-template pTemplate="header">

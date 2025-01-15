@@ -189,7 +189,7 @@ ajouter(){
     this.submitted=false;
   }
   else{
-    this.messageService.add({severity:'error', summary: 'error', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
 
   }
  
@@ -249,13 +249,13 @@ fermerModal(){
         }
       })
     
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      this.messageService.add({severity:'success', summary: 'Reussie', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         
     },
     reject:()=>{
       this.addboutton=false;
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'Erreur', summary: 'Erreur', detail: ' non ok', life: 3000});
     }
     });
   }
@@ -470,7 +470,7 @@ fermerModal(){
 
     if (!this.selectedOperation || this.selectedOperation.length === 0) {
       console.log(this.disable)
-      this.messageService.add({severity:'error', summary: 'error', detail: ' Sélectionner d\'abord une opération', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: ' Sélectionner d\'abord une opération', life: 3000});
       this.disable=true;
     }
     else{
