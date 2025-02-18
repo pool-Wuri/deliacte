@@ -30,6 +30,10 @@ import {TabViewModule} from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { DemandePageComponent } from './demande-page/demande-page.component';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import { TreeModule } from 'primeng/tree';
+//import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ProductService } from './ProductService';
+import { DragDropModule } from 'primeng/dragdrop';
 
 @NgModule({
   declarations: [
@@ -65,11 +69,14 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     FormsModule,
     FileUploadModule,
     PanelModule,
-    RadioButtonModule
-  ],
+    RadioButtonModule,
+    TreeModule,
+    DragDropModule
+    ],
   providers: [
     ConfirmationService ,
-    MessageService // Add the ConfirmationService here
+    MessageService,
+    ProductService // Add the ConfirmationService here
   ]
 })
 export class ProcedurePublishedModule { }

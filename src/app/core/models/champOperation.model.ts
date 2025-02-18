@@ -1,7 +1,7 @@
 export class ChampOperation{
     constructor(
         public id?:number,
-        public name?:string,
+        public name?:string | null,
         public description?:string,
         public inputType?:any,
         public operationId?:number,

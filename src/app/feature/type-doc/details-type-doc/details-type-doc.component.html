@@ -37,7 +37,7 @@
             <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Mes informations</h2>
         </div>  
 
-        <div class="grid gap-6 mb-6 md:grid-cols-2" >
+        <div class="grid gap-6 mb-6 md:grid-cols-2 disabled-section" [class.disabled]="isDisabled">
             <ng-container *ngFor="let champ of dossier; let i = index">
                 <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.champOperation.inputType)" class="col-span-1">
                     <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
@@ -60,7 +60,8 @@
                                     [id]="'option-' + i + '-' + j" 
                                     type="RADIO" 
                                     [value]="option.name" 
-                                    [(ngModel)]="champ.name"                          
+                                    [(ngModel)]="champ.name"  
+                                    name="radio-group-{{i}}"                        
                                     class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                 <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
                             </div>
@@ -126,87 +127,89 @@
             </ng-container>
         </div>
 
-    
-
         <div *ngIf="user?.role!=='CITOYEN'" >
             <hr class="border-t border-gray-300 my-6">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm" >
                 <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> Traitement infos</h2>
             </div>  
-            <div class="grid gap-6 mb-6 md:grid-cols-2" >
-                <ng-container *ngFor="let champ of champs; let i = index">
-                    <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
-                        <input [type]="champ.inputType" [id]="'input-' + i" [(ngModel)]="demandeFor[i].name" 
-                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                               required />
+            <div class="bg-gray-200 p-6 rounded-lg">
+                <div *ngIf="operationnow && operationnow.name"
+                    >
+                    <hr class="border-t border-gray-300 my-4">
+                
+                    <!-- Conteneur pour bien centrer le titre -->
+                    <div class="w-full flex justify-center">
+                        <h2 class="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                            Opération de {{operationnow.name}}
+                        </h2>
                     </div>
-                    <div *ngIf="champ.inputType === 'TEXTAREA'" class="col-span-1">
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
-                        <textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name"   class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                    </div>
-                    <div *ngIf="['RADIO'].includes(champ.inputType)" class="col-span-1">
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
-                        <div class="flex flex-wrap" *ngIf="champ.options">
-                            <div *ngFor="let option of champ.options; let j = index"> 
-                                <div class="flex items-center me-4">
-                                    <input 
-                                        [id]="'option-' + i + '-' + j" 
-                                        type="RADIO" 
-                                        [value]="option.name" 
-                                        [(ngModel)]="demandeFor[i].name"                  
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
+                    
+                    <hr class="border-t border-gray-300 my-4">
+                    
+                </div>
+             
+                <!-- Grille pour aligner tous les champs correctement -->
+                <div class="grid gap-4 md:grid-cols-2">
+                    <ng-container *ngFor="let champ of champs; let i = index">
+                        <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
+                            <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <input [type]="champ.inputType" [id]="'input-' + i" [(ngModel)]="demandeFor[i].name" 
+                                   class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required />
+                        </div>
+            
+                        <div *ngIf="champ.inputType === 'TEXTAREA'" class="col-span-1">
+                            <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name"   
+                                      class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                      placeholder="Écrivez ici..."></textarea>
+                        </div>
+            
+                        <div *ngIf="champ.inputType === 'SELECT'" class="col-span-1">
+                            <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name"  
+                                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option selected>Choisir {{ champ.name }}</option>
+                                <option *ngFor="let option of champ.options" [value]="option.name">{{ option.name }}</option>
+                            </select>
+                        </div>
+            
+                        <div *ngIf="['RADIO'].includes(champ.inputType)" class="col-span-1">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <div class="flex flex-wrap">
+                                <div *ngFor="let option of champ.options; let j = index" class="flex items-center mr-4">
+                                    <input [id]="'option-' + i + '-' + j" type="radio" [value]="option.name"  [(ngModel)]="champ.name"  
+                                    name="radio-group-{{i}}"
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                    <label [for]="'option-' + i + '-' + j" class="ml-2 text-sm text-gray-900">{{ option.name }}</label>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div *ngIf="['CHECKBOX'].includes(champ.inputType)" class="col-span-1">
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
-                        <div class="flex flex-wrap" *ngIf="champ.options">
-                            <div *ngFor="let option of champ.options; let j = index"> 
-                                <div class="flex items-center me-4">
-                                    <input 
-                                        [id]="'option-' + i + '-' + j" 
-                                        type="CHECKBOX" 
-                                        [value]="option.name" 
-                                        [(ngModel)]="demandeFor[i].name" 
-                                        (change)="onOptionChange(option, i)" 
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
+            
+                        <div *ngIf="['CHECKBOX'].includes(champ.inputType)" class="col-span-1">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <div class="flex flex-wrap">
+                                <div *ngFor="let option of champ.options; let j = index" class="flex items-center mr-4">
+                                    <input [id]="'option-' + i + '-' + j" type="checkbox" [value]="option.name" [(ngModel)]="demandeFor[i].name"
+                                           (change)="onOptionChange(option, i)" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                                    <label [for]="'option-' + i + '-' + j" class="ml-2 text-sm text-gray-900">{{ option.name }}</label>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.inputType)" class="col-span-1">
-                        <!-- Label for the input field, placed above the input and button -->
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            {{ champ.name }}
-                        </label>
-                    
-                        <!-- Container for input and save button, placed in the same line -->
-                        <div class="flex items-center space-x-4">
-                            <!-- File input element -->
-                            <input class="block w-4/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                id="file_input_{{i}}" 
-                                type="file" 
-                                (change)="onFileChange($event, i)">
-                    
-                            <!-- Save Button -->
-                            <button  style="background-color: #060;"  class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                Save
-                            </button>
+            
+                        <div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.inputType)" class="col-span-1">
+                            <label class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                            <div class="flex items-center space-x-4">
+                                <input class="w-4/5 p-2 border border-gray-300 rounded-lg cursor-pointer" 
+                                       id="file_input_{{i}}" type="file" (change)="onFileChange($event, i)">
+                                <button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+                                    Voir
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div *ngIf="champ.inputType === 'SELECT'" class="col-span-1">
-                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}</label>
-                        <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option selected>Choisir {{ champ.name }}</option>
-                            <option *ngFor="let option of champ.options" [value]="option.name">{{ option.name }}</option>
-                        </select>
-                    </div>
-                </ng-container>
+                    </ng-container>
+                </div>
             </div>
+            
             <div class="card">
                         <label [for]="'input-' + 1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Commentaire</label>
                         <textarea id="message" rows="4" [(ngModel)]="traitement.commentaire"  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="commentaire"></textarea>
@@ -219,7 +222,7 @@
                 class="text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ms-3 mb-2">Rejeter</button>
        
               </div>
-            </div>
+        </div>
         
     </div>
 </div>

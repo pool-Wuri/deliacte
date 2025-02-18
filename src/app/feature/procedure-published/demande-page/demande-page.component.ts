@@ -293,7 +293,7 @@ finDemande(){
     }
   }
   console.log(tousVrais)
-
+console.log(this.traitement)
   console.log(this.demandeFor);
   this.traitement.isActive=true;
   this.indexSave.sort((a, b) => b - a);

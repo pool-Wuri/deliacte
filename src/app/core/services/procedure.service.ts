@@ -4,6 +4,7 @@ import { Observable, retry, tap, of } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 import { Procedure, ProcedureStatus } from '../models/procedure.model';
 import { catchError} from 'rxjs/operators';
+import { TreeNode } from 'primeng/api';
 
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
@@ -179,5 +180,17 @@ export class ProcedureService {
     )
   }
 
+
+  getFiles() {
+    return this.http.get<any>('assets/files.json')
+      .toPromise()
+      .then(res => <TreeNode[]>res.data);
+    }
+
+    getLazyFiles() {
+    return this.http.get<any>('assets/files-lazy.json')
+      .toPromise()
+      .then(res => <TreeNode[]>res.data);
+    }
 
 }

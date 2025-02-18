@@ -65,6 +65,8 @@ export class DetailsTypeDocComponent {
     numDossier!:number;
     indexSave:number[]=[];
     traitement:any;
+    isDisabled = true; // Mettre à false pour réactiver
+    radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
 
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
@@ -95,6 +97,16 @@ export class DetailsTypeDocComponent {
     this.events2 = [
       "2020", "2021", "2022", "2023"
   ];
+
+
+  this.champs.forEach(champ => {
+    if (champ.inputType === 'RADIO') {
+        champ.name = null; // Valeur unique pour chaque champ radio
+    }
+    if (champ.inputType === 'CHECKBOX') {
+        champ.name = ""; // Liste pour les cases à cocher
+    }
+});
 
   }
 
@@ -176,6 +188,7 @@ export class DetailsTypeDocComponent {
     this.traitement={};
     this.operationPrecedent={};
     this.operationnow={};
+    console.log(this.operationnow)
     this.typeDocService.getDossierPour(id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -206,6 +219,7 @@ export class DetailsTypeDocComponent {
                 }
                 this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                   next:(result)=>{
+                    console.log(this.operationnow)
                     console.log(result)
                    // this.numDossier=result.message;
                     this.champs=result.data;
