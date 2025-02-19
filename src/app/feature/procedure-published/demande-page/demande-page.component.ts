@@ -54,6 +54,8 @@ export class DemandePageComponent {
   indexSave:number[]=[];
  champOperationId!:any;
  indexRequis:number[]=[];
+isDisabled=false;
+
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
@@ -83,13 +85,13 @@ ngOnInit():void{
 }
 
 getProcedure(id?:number){
-  this.traitement={}
+  this.traitement={};
+  console.log(id)
   this.procedureService.get_Champ(id).subscribe({
     next:(result)=>{
       console.log(result)
       this.numDossier=result.message;
       this.champs=result.data;
-     
       console.log(this.champs)
       this.traitement.operationId=this.champs[0].operationId;
       this.operationService.get_Procedure(this.champs[0].operationId).subscribe({
@@ -120,6 +122,7 @@ getProcedure(id?:number){
       console.log(error)
     }
   });
+
 /* this.procedureService.get_Procedure(id).subscribe({
     complete:()=>{},
     next:(result)=>{
@@ -163,6 +166,10 @@ getProcedure(id?:number){
       console.log(error)
     }
   });*/
+}
+
+infosVerifier(){
+  this.isDisabled=!this.isDisabled;
 }
 
 onFileChange(event: any, index: number) {

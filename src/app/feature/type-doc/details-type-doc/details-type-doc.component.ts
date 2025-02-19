@@ -119,7 +119,7 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
           console.log(result.data.traitement+" total");
          this.dossier=result.data.dossiers;
-         console.log(result.data);
+         console.log(this.dossier);
          this.traitement=result.data.traitement;
          console.log(this.traitement)
       //  console.log(this.getOperation(this.dossier[0].champOperation.operationId)) 
@@ -194,6 +194,11 @@ export class DetailsTypeDocComponent {
       next:(result)=>{
         console.log(result.data+" total");
        this.dossier=result.data.dossiers;
+       for(let i=0;i<this.dossier.length;i++){
+
+       }
+       console.log(this.dossier)
+      // console.log(this.dossier.filter((u: { champOperation: { operationId: any; }; })=>u.champOperation.operationId!==1))
     //   this.traitement=result.data.traitement;
        this.idOperationNow=result.data.traitement.operationId;;
        console.log(this.idOperationNow);
@@ -335,8 +340,6 @@ export class DetailsTypeDocComponent {
   
     });
    }
-  
-
   }
 
 
@@ -401,6 +404,7 @@ export class DetailsTypeDocComponent {
     console.log(numDossier);
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
+    console.log(this.demandeFor)
    // this.traitement.status=this.operationnow.verbeOperation;
    // this.traitement.commentaire="dossier validé";
     this.traitement.isActive=true;
