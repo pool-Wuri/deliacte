@@ -55,6 +55,7 @@ export class DemandePageComponent {
  champOperationId!:any;
  indexRequis:number[]=[];
 isDisabled=false;
+radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
 
 
   constructor(private route:ActivatedRoute,

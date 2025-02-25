@@ -207,10 +207,10 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
         this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
+              console.log(result.data)
               if(result.data.length>1)
               {
                 console.log(result.data);
-
                 if(result.data[0].operationPreviousId==this.idOperationNow){
                   this.operationPrecedent=result.data[1];
                   this.operationnow=result.data[0];
