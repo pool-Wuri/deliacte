@@ -12,6 +12,7 @@ import { OperationService } from 'src/app/core/services/operation.service';
 import { Operation } from 'src/app/core/models/operation.model';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Table } from 'primeng/table';
 
 
 
@@ -216,7 +217,7 @@ searchProcedures(){
   {
     this.utilisateur1.role="SUPER_ADMIN"
   }*/
- if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email && this.utilisateur1.password){
+ if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
   this.confirmationService.confirm({
     message: 'Voulez-vous enregistrer cet utilisateur?',
     header: 'Confirmation',
@@ -765,6 +766,11 @@ generatePDF() {
   // Save the PDF.
   doc.save('table.pdf');
 }
+
+onGlobalFilter(table: Table, event: Event) {
+  table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+}
+
 
 }
 

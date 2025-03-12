@@ -240,6 +240,10 @@ procedure=new Procedure;
   });
   }
 
+  afficherChamp(procedure:Procedure){
+    this.router.navigate(['/deliacte/procedure/details',procedure.id])
+
+  }
 
   depublier(procedure:Procedure){
     console.log(procedure)

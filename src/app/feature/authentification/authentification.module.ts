@@ -30,10 +30,13 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { SharedModule } from "../../shared/shared.module";
+import { DossierSuiviComponent } from './dossier-suivi/dossier-suivi.component';
+import { TimelineModule } from 'primeng/timeline';
 
 @NgModule({
   declarations: [
-    SigninComponent
+    SigninComponent,
+    DossierSuiviComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +72,10 @@ import { SharedModule } from "../../shared/shared.module";
     MessagesModule,
     MessageModule,
     ProgressSpinnerModule,
-    SharedModule
+    SharedModule,
+    ConfirmDialogModule,
+    SplitterModule,
+    TimelineModule
 ],
 
   providers: [

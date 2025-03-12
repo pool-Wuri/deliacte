@@ -33,13 +33,13 @@
          <ng-template pTemplate="caption">
             <div class="flex">
                 <span class="p-input-icon-left ml-auto cherch">
-                    <i class="pi pi-search" ></i>
+                    <!--i class="pi pi-search" ></i-->
                     <input 
                         pInputText 
                         type="text" 
                         #searchInput 
                         (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                        placeholder="      Rechercher" />
+                        placeholder="Rechercher" />
                 </span>
             </div>
         </ng-template>
@@ -166,8 +166,10 @@
                             <small class="p-error" *ngIf="submitted && !utilisateur1.lastName">Ajouter le prenom de l'utilisateur.</small>
 
                         </div>
+                    </div>
+
                         <div>
-                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Adresse email</label>
+                            <label for="" class="block mb-6 text-sm font-medium text-gray-900 dark:text-white">Adresse email</label>
                             <input type="email"   [(ngModel)]="utilisateur1.email"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
                             focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
@@ -176,7 +178,7 @@
 
                         </div>  
                        
-                        <div >
+                        <!--div >
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mot de passe</label>
                             <p-password 
                            
@@ -187,7 +189,7 @@
                             </p-password>
                             <small class="p-error" *ngIf="submitted && !utilisateur1.password">Ajouter un mot de passe.</small>
 
-                        </div> 
+                        </div--> 
                         <!--div class="role">
                             <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sélectionner un rôle</label>
                             <p-dropdown [options]="roleUser" [(ngModel)]="utilisateur1.role" 
@@ -202,7 +204,6 @@
                         </div--> 
                         
                      
-                    </div>
             </div>
 
             <!-- Modal footer -->

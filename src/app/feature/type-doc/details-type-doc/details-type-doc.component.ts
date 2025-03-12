@@ -33,7 +33,7 @@ export class DetailsTypeDocComponent {
 
   imageUrl!: string 
   TEXT="TEXT";
-  CHECKBOX="CHECKBOX"
+ // CHECKBOX="CHECKBOX"
   TEXTAREA="TEXTAREA"
   RADIO="RADIO"
   SELECT="SELECT"
@@ -54,6 +54,8 @@ export class DetailsTypeDocComponent {
   idOperationNow!:number;
 
   dossier:any;
+  dossierTraiter:any[]=[];
+
 
   events1!: any[];
   operationPrecedent=new Operation;
@@ -67,7 +69,8 @@ export class DetailsTypeDocComponent {
     traitement:any;
     isDisabled = true; // Mettre à false pour réactiver
     radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
-
+  document:any[]=[];
+  traitementPass:any={};
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
       private procedureService:ProcedureService,
@@ -119,6 +122,30 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
           console.log(result.data.traitement+" total");
          this.dossier=result.data.dossiers;
+         console.log(this.dossier.length)
+         let i = 0;
+         console.log(i);
+         while (i < this.dossier.length - 1) { 
+          console.log(this.dossier[i + 1].champOperation.operationId) 
+          console.log(this.dossier[i].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+             if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+                 this.dossierTraiter.push(this.dossier[i + 1]);
+                 this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+                 console.log(this.dossierTraiter);
+                 console.log(this.dossier);
+             } else {
+                 i++;  // Incrémente seulement si aucun élément n'est supprimé
+             }
+         }
+         
+         for(let i=0;i<this.dossier.length;i++){
+          if (this.dossier[i].champOperation.inputType === "PDF" ||
+            this.dossier[i].champOperation.inputType === "FILE" ||
+            this.dossier[i].champOperation.inputType === "IMAGE") {
+                    this.document.push(this.dossier[i]);
+            console.log(this.document)
+          }
+         }
          console.log(this.dossier);
          this.traitement=result.data.traitement;
          console.log(this.traitement)
@@ -192,14 +219,32 @@ export class DetailsTypeDocComponent {
     this.typeDocService.getDossierPour(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data+" total");
+        console.log(result.data.traitement+" total");
+        this.traitementPass=result.data.traitement;
+        console.log(this.traitementPass)
        this.dossier=result.data.dossiers;
        for(let i=0;i<this.dossier.length;i++){
-
+        if (this.dossier[i].champOperation.inputType === "PDF" ||
+          this.dossier[i].champOperation.inputType === "FILE" ||
+          this.dossier[i].champOperation.inputType === "IMAGE") {
+                  this.document.push(this.dossier[i]);
+          console.log(this.document)
+        }
        }
-       console.log(this.dossier)
-      // console.log(this.dossier.filter((u: { champOperation: { operationId: any; }; })=>u.champOperation.operationId!==1))
-    //   this.traitement=result.data.traitement;
+       let i = 0;
+       console.log(i);
+       while (i < this.dossier.length - 1) { 
+        console.log(this.dossier[i + 1].champOperation.operationId) 
+        console.log(this.dossier[i].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+           if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+               this.dossierTraiter.push(this.dossier[i + 1]);
+               this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+               console.log(this.dossierTraiter);
+               console.log(this.dossier);
+           } else {
+               i++;  // Incrémente seulement si aucun élément n'est supprimé
+           }
+       }
        this.idOperationNow=result.data.traitement.operationId;;
        console.log(this.idOperationNow);
        this.userService.operationInfo(this.user?.id).subscribe({
@@ -332,7 +377,9 @@ export class DetailsTypeDocComponent {
         error:(error)=>{
           console.log(error);
         }
-      });
+       });
+
+       
       },
       error:(error)=>{
         console.log(error);

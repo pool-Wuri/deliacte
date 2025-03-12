@@ -23,6 +23,8 @@ export class SigninComponent {
   utilisateur1 =new User;
   addUser:boolean=false;
   user=new User;
+demandePage:boolean=false;
+numDossier!:number;
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -133,5 +135,15 @@ onSubmit(){
 
  fermerModal(){
   this.addUser=false;
+ }
+
+ suivreDemande(){
+  this.demandePage=true;
+  console.log(this.demandePage)
+ }
+
+ validerDemande(dossierNumbur:number){
+  console.log(dossierNumbur)
+  this.router.navigate(['/deliacte/login/details', dossierNumbur]);
  }
 }

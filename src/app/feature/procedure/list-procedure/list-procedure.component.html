@@ -76,6 +76,13 @@
 
             </td>
             <td>
+
+                <button type="button"   style="color: #060;" *ngIf="user && user.role === 'PROCEDURE_MANAGER'" title="Afficher champ" (click)="afficherChamp(procedure)"
+                class=" bg-white from-green-500 via-green-600 t
+                o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+                font-medium rounded-full 
+                text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eye">Afficher</button>
+
                 <button type="button"   style="color: #060;" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'" title="visualiser" (click)="detailsProcedure(procedure)"
                 class=" bg-white from-green-500 via-green-600 t
                 o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
