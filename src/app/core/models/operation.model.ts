@@ -25,7 +25,7 @@ export class Operation{
 export enum ChampType {
     TEXT="Champ de texte",
     TEXTAREA="Zone de texte",
-    CHECKBOX="Case à cocher",
+  //  CHECKBOX="Case à cocher",
     RADIO="Bouton radio",
     SELECT="Liste déroulante",
     FILE="Fichier",

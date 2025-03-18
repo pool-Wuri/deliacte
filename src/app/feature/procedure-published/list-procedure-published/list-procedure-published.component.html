@@ -9,7 +9,7 @@
               </svg>
           </button>
          <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="assets/img/burkina (1).png" class="h24 w-24 me-3" alt="FlowBite Logo" />
+            <img src="assets/img/armoiriePh.jpeg" class="h24 w-24 me-3" alt="FlowBite Logo" style="background-color: white;width: 107px;"/>
             <div class="w-80 text-white">
               <h5>Ministère de la Transition Digitale, des Postes et des Communications Électroniques</h5>
           </div>
@@ -71,8 +71,81 @@
     </p-card>
   </div>
 </div>
-  
 
+
+<!--div class="grid">
+  <div class="col-6 md:col-3 drag-column">
+    <p-card>
+      <div class="product-list-detail">
+        <h5 class="mb-2">Section</h5>
+        <i class="pi pi-tag product-category-icon"></i>
+        <p-button (click)="showDialog('topleft')" icon="pi pi-arrow-down-right" label="TopLeft" severity="secondary" styleClass="min-w-40" />
+      </div>
+      <div *ngFor="let champ of champOperation">
+        <div class="product-item" pDraggable="products" (onDragStart)="dragStart(champ)" (onDragEnd)="dragEnd()">
+          
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{champ.name}}</h5>
+                <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{champ.inputType}}</span>
+            </div>
+           
+        </div>
+    </div>
+    </p-card>
+    
+  </div>
+  <div class="col-12 md:col-6 drop-column form" pDroppable="products" (onDrop)="drop()">
+    <p-card>
+      <h1>Form element</h1>
+      <div *ngFor="let item of selectedChamps" style="padding-top: 10px;
+        padding-right: 0px;
+        padding-bottom: 10px;
+        padding-left: 0px;
+        background-color: rgb(253, 250, 250);
+        border-radius: 0px;min-height: auto;">
+         <label class="" style="color: #000000;font-size: 14px">
+          <span class="d-inline-block">{{item.name}}</span></label>
+          <input [type]="item.inputType" [placeholder]="item.name" class="form-control"
+              name="input-84f4abd8"
+              autocomplete="off"
+            style="background-color: #ffffff;border: solid 1px #ced4da;border-radius: 5px"  />
+
+      </div>
+     
+    </p-card>
+  
+  </div>
+  <div class="col-12 md:col-6 drop-column " pDroppable="products" (onDrop)="drop()">
+    <p-card>
+      <p-tabView>
+        <p-tabPanel header="élément courant">
+           Content 1
+        </p-tabPanel>
+        <p-tabPanel header="Formulaire">
+            Content 2
+        </p-tabPanel>
+       
+    </p-tabView>
+    </p-card>
+  
+  </div>
+</div-->
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [position]="'topleft'" [style]="{ width: '25rem' }">
+  <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
+  <div class="flex items-center gap-4 mb-4">
+      <label for="username" class="font-semibold w-24">Username</label>
+      <input pInputText id="username" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex items-center gap-4 mb-8">
+      <label for="email" class="font-semibold w-24">Email</label>
+      <input pInputText id="email" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex justify-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+      <p-button label="Save" (click)="visible = false" />
+  </div>
+</p-dialog>
 
 <div id="adduser" 
      [ngClass]="{'hidden': !demandeFor}" 

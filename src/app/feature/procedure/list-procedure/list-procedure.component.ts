@@ -66,7 +66,7 @@ procedure=new Procedure;
         this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
         this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
         this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
-
+        this.procedures=this.procedures.filter(u=>u.status!=="ARCHIVED");
       },
       error:(error)=>{
         console.log(error);
@@ -240,6 +240,10 @@ procedure=new Procedure;
   });
   }
 
+  afficherChamp(procedure:Procedure){
+    this.router.navigate(['/deliacte/procedure/details',procedure.id])
+
+  }
 
   depublier(procedure:Procedure){
     console.log(procedure)

@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { Modal } from 'flowbite';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Product } from '../product';
+import { ProductService } from '../ProductService';
 
 @Component({
   selector: 'app-list-procedure-published',
@@ -28,6 +31,22 @@ export class ListProcedurePublishedComponent {
   operations=new Array<Operation>();
   champs=new Array <ChampOperation>();
   operation=new Operation;
+
+  modalPopupObject: any;
+  display: boolean = false;
+  vegetables = [
+    { name: 'Label', type: 'label', inputType: 'label' },
+    { name: 'text', type: 'input-text', inputType: 'text', placeholder: '' },
+    { name: 'checkbox', type: 'input-check', inputType: 'checkbox', placeholder: null, displayText: 'Check box' }];
+    droppedVegetables = [];
+    droppedItems = [];
+    dragEnabled = true;
+    htmlText: any;
+    test: string = '';
+    currentDraggedItem: any;
+    types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
+    champOperation=new Array <ChampOperation>()
+
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
@@ -39,13 +58,43 @@ export class ListProcedurePublishedComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private operationService:OperationService,
+    private productService: ProductService
 
-  ) {}
+  ) {
+    this.modalPopupObject = {};
+
+  }
 
 
   ngOnInit(): void {
     this.search_Procedure();
-   }
+    this.selectedProducts = [];
+    this.productService.getProductsSmall().subscribe(data => {
+      this.availableProducts=data
+      console.log(data); // Traitez les données des produits
+    });
+        console.log(this.availableProducts)
+        this.champOperation=[
+          {name:"Text",inputType:"TEXT",description:"",operation:"",isRequired:false},
+          {name:"TEXTAREA",inputType:"TEXTAREA",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"PASSWORD",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"EMAIL",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"NUMBER",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"RANGE",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"DATE",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"TIME",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"",description:"",operation:"",isRequired:false},
+          {name:"",inputType:"",description:"",operation:"",isRequired:false},
+        ];
+        this.availableChamp=this.champOperation;
+  }
+ 
+
+  onDrop(event: CdkDragDrop<any[]>) {
+    moveItemInArray(this.vegetables, event.previousIndex, event.currentIndex);
+  }
 
    search_Procedure():void{
     this.ProcedureService.search_ProcedurePublier("PUBLISHED").subscribe({
@@ -108,5 +157,52 @@ export class ListProcedurePublishedComponent {
    
   }
 
+  availableProducts!: Product[];
+  availableChamp!: ChampOperation[];
+
+  selectedProducts!: Product[];
+  selectedChamps=new Array <ChampOperation>()
+
+  draggedProduct: Product | null = null;
+  draggedProductchamp:ChampOperation | null = null;
+
+  dragStart(champ: ChampOperation) {
+    this.draggedProductchamp = champ;
+}
+
+drop() {
+    if (this.draggedProductchamp) {
+        let draggedProductIndex = this.findIndex(this.draggedProductchamp);
+        this.selectedChamps = [...this.selectedChamps, this.draggedProductchamp];
+        this.availableChamp = this.availableChamp.filter((val,i) => i!=draggedProductIndex);
+        console.log(this.selectedChamps)
+        this.draggedProductchamp = null;
+    }
+}
+
+dragEnd() {
+    this.draggedProductchamp = null;
+}
+
+findIndex(champ: ChampOperation) {
+    let index = -1;
+    for(let i = 0; i < this.availableChamp.length; i++) {
+        if (champ.id === this.availableChamp[i].id) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+
+visible: boolean = false;
+
+position: string = 'center';
+
+showDialog(position: string) {
+  this.position = position;
+  this.visible = true;
+}
 
 }

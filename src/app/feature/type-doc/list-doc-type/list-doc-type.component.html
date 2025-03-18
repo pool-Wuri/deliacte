@@ -29,7 +29,7 @@
     <p-table #dt  [value]="doosierUser" styleClass="p-datatable-customers" [rowHover]="true" 
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
     [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-     [globalFilterFields]="['firstName','lastName','email']">
+     [globalFilterFields]="['numeroDossier','updatedAt']">
     
     
      <ng-template pTemplate="caption">
@@ -39,15 +39,15 @@
             <span class="space-x-0.5 "></span-->
             <p-dropdown  [options]="procedures" optionLabel="name"   *ngIf="user && user.role === PROCEDURE_MANAGER " [(ngModel)]="procedurechoisi" placeholder="Choisir procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
 
-            <!--span class="p-input-icon-left ml-auto cherch">
-                <i class="pi pi-search" ></i>
+            <span class="p-input-icon-left ml-auto cherch">
+                <!--i class="pi pi-search" ></i-->
                 <input 
                     pInputText 
                     type="text" 
                     #searchInput 
                     (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                    placeholder="      Rechercher" />
-            </span-->
+                    placeholder="Rechercher" />
+            </span>
         </div>
     </ng-template>
     
@@ -86,11 +86,11 @@
                 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center me-1 mb-1  pi pi-eye"></button>
 
-                <button type="button" title="Modifier"   style="background-color: #060;"  (click)="modifierDossier(doss)"
+                <!--button type="button" title="Modifier"   style="background-color: #060;"  (click)="modifierDossier(doss)"
                 class="text-white from-green-400 via-green-500 
                 to-green-600 hover:bg-gradient-to-br focus:ring-4 
                 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                text-sm p-2.5 text-center inline-flex items-center me-1 mb-1 pi pi-pencil"></button>
+                text-sm p-2.5 text-center inline-flex items-center me-1 mb-1 pi pi-pencil"></button-->
 
               
                 <button type="button"  title="Supprimer" style="background-color: #ff0000;" class="text-white  from-red-400 
@@ -227,7 +227,8 @@
             class="text-white  focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
             <button  type="button" style="background-color: #ff0000;"
             class="py-2.5 px-5 ms-3 text-sm font-medium text-white  focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</button>
-        </div>    </ng-template>
+        </div>    
+    </ng-template>
 </p-dialog>
 
 

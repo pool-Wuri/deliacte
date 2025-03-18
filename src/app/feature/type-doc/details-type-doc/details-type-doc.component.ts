@@ -33,7 +33,7 @@ export class DetailsTypeDocComponent {
 
   imageUrl!: string 
   TEXT="TEXT";
-  CHECKBOX="CHECKBOX"
+ // CHECKBOX="CHECKBOX"
   TEXTAREA="TEXTAREA"
   RADIO="RADIO"
   SELECT="SELECT"
@@ -54,6 +54,8 @@ export class DetailsTypeDocComponent {
   idOperationNow!:number;
 
   dossier:any;
+  dossierTraiter:any[]=[];
+
 
   events1!: any[];
   operationPrecedent=new Operation;
@@ -65,7 +67,10 @@ export class DetailsTypeDocComponent {
     numDossier!:number;
     indexSave:number[]=[];
     traitement:any;
-
+    isDisabled = true; // Mettre à false pour réactiver
+    radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
+  document:any[]=[];
+  traitementPass:any={};
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
       private procedureService:ProcedureService,
@@ -96,6 +101,16 @@ export class DetailsTypeDocComponent {
       "2020", "2021", "2022", "2023"
   ];
 
+
+  this.champs.forEach(champ => {
+    if (champ.inputType === 'RADIO') {
+        champ.name = null; // Valeur unique pour chaque champ radio
+    }
+    if (champ.inputType === 'CHECKBOX') {
+        champ.name = ""; // Liste pour les cases à cocher
+    }
+});
+
   }
 
 
@@ -107,7 +122,31 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
           console.log(result.data.traitement+" total");
          this.dossier=result.data.dossiers;
-         console.log(result.data);
+         console.log(this.dossier.length)
+         let i = 0;
+         console.log(i);
+         while (i < this.dossier.length - 1) { 
+          console.log(this.dossier[i + 1].champOperation.operationId) 
+          console.log(this.dossier[i].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+             if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+                 this.dossierTraiter.push(this.dossier[i + 1]);
+                 this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+                 console.log(this.dossierTraiter);
+                 console.log(this.dossier);
+             } else {
+                 i++;  // Incrémente seulement si aucun élément n'est supprimé
+             }
+         }
+         
+         for(let i=0;i<this.dossier.length;i++){
+          if (this.dossier[i].champOperation.inputType === "PDF" ||
+            this.dossier[i].champOperation.inputType === "FILE" ||
+            this.dossier[i].champOperation.inputType === "IMAGE") {
+                    this.document.push(this.dossier[i]);
+            console.log(this.document)
+          }
+         }
+         console.log(this.dossier);
          this.traitement=result.data.traitement;
          console.log(this.traitement)
       //  console.log(this.getOperation(this.dossier[0].champOperation.operationId)) 
@@ -176,12 +215,36 @@ export class DetailsTypeDocComponent {
     this.traitement={};
     this.operationPrecedent={};
     this.operationnow={};
+    console.log(this.operationnow)
     this.typeDocService.getDossierPour(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data+" total");
+        console.log(result.data.traitement+" total");
+        this.traitementPass=result.data.traitement;
+        console.log(this.traitementPass)
        this.dossier=result.data.dossiers;
-    //   this.traitement=result.data.traitement;
+       for(let i=0;i<this.dossier.length;i++){
+        if (this.dossier[i].champOperation.inputType === "PDF" ||
+          this.dossier[i].champOperation.inputType === "FILE" ||
+          this.dossier[i].champOperation.inputType === "IMAGE") {
+                  this.document.push(this.dossier[i]);
+          console.log(this.document)
+        }
+       }
+       let i = 0;
+       console.log(i);
+       while (i < this.dossier.length - 1) { 
+        console.log(this.dossier[i + 1].champOperation.operationId) 
+        console.log(this.dossier[i].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+           if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+               this.dossierTraiter.push(this.dossier[i + 1]);
+               this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+               console.log(this.dossierTraiter);
+               console.log(this.dossier);
+           } else {
+               i++;  // Incrémente seulement si aucun élément n'est supprimé
+           }
+       }
        this.idOperationNow=result.data.traitement.operationId;;
        console.log(this.idOperationNow);
        this.userService.operationInfo(this.user?.id).subscribe({
@@ -189,10 +252,10 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
         this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
+              console.log(result.data)
               if(result.data.length>1)
               {
                 console.log(result.data);
-
                 if(result.data[0].operationPreviousId==this.idOperationNow){
                   this.operationPrecedent=result.data[1];
                   this.operationnow=result.data[0];
@@ -206,6 +269,7 @@ export class DetailsTypeDocComponent {
                 }
                 this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                   next:(result)=>{
+                    console.log(this.operationnow)
                     console.log(result)
                    // this.numDossier=result.message;
                     this.champs=result.data;
@@ -313,7 +377,9 @@ export class DetailsTypeDocComponent {
         error:(error)=>{
           console.log(error);
         }
-      });
+       });
+
+       
       },
       error:(error)=>{
         console.log(error);
@@ -321,8 +387,6 @@ export class DetailsTypeDocComponent {
   
     });
    }
-  
-
   }
 
 
@@ -387,6 +451,7 @@ export class DetailsTypeDocComponent {
     console.log(numDossier);
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
+    console.log(this.demandeFor)
    // this.traitement.status=this.operationnow.verbeOperation;
    // this.traitement.commentaire="dossier validé";
     this.traitement.isActive=true;
