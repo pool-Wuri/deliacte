@@ -55,6 +55,8 @@ export class DemandePageComponent {
  champOperationId!:any;
  indexRequis:number[]=[];
 isDisabled=false;
+loading=false;
+
 radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
 
 
@@ -199,6 +201,7 @@ saveFile(){
   console.log(this.file);
   console.log(this.numDossier)
   console.log(this.champOperationId)
+  this.loading=true;
   this.data.append('file', this.file, this.file.name );
   this.data.append('champOperationId', this.champOperationId.toString());
   console.log(this.data)
@@ -217,6 +220,7 @@ saveFile(){
         this.data.delete('champOperationId');
       }
       alert("succès enrégistrement fichier");
+      this.loading=false;
 
     },
     error:(err)=>{
@@ -326,6 +330,7 @@ console.log(this.traitement)
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
+      this.loading=true;
       this.procedureService.get_Procedure(this.id).subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -338,7 +343,9 @@ console.log(this.traitement)
               this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
                 next:(result)=>{               
                   this.router.navigate(['/deliacte/dossier/list']);
-  
+                  if(result){
+                    this.loading=false;
+                  }
                 },
                 complete:()=>{
             

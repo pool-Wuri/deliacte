@@ -34,6 +34,7 @@ import { TreeModule } from 'primeng/tree';
 //import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProductService } from './ProductService';
 import { DragDropModule } from 'primeng/dragdrop';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,9 @@ import { DragDropModule } from 'primeng/dragdrop';
     PanelModule,
     RadioButtonModule,
     TreeModule,
-    DragDropModule
+    DragDropModule,
+    ProgressSpinnerModule,
+
     ],
   providers: [
     ConfirmationService ,

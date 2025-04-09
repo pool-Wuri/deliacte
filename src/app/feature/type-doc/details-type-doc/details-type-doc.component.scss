@@ -15,6 +15,12 @@
 
 }
 
+.container1{
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* facultatif, pour l'alignement vertical */
+}
+
 .disabled {
   pointer-events: none;  /* Désactive les clics et interactions */
   opacity: 0.5;  /* Rend le div plus gris */

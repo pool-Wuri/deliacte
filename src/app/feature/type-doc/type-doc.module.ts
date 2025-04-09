@@ -27,13 +27,16 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsTypeDocComponent } from './details-type-doc/details-type-doc.component';
 import {TimelineModule} from 'primeng/timeline';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @NgModule({
   declarations: [
     TypeDocComponent,
     ListDocTypeComponent,
-    DetailsTypeDocComponent
+    DetailsTypeDocComponent,
+
   ],
   imports: [
     CommonModule,
@@ -60,7 +63,12 @@ import {TimelineModule} from 'primeng/timeline';
     OverlayPanelModule,
     ConfirmDialogModule,
     SplitterModule,
-    TimelineModule
+    TimelineModule,
+    ProgressBarModule,
+    ProgressSpinnerModule,
+    PdfViewerModule  // Ajoutez ce module
+
+
   ]
   ,
   providers: [

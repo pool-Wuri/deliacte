@@ -30,7 +30,6 @@ export class DetailsTypeDocComponent {
   demandeInfos=new DemandeProcedur;
   selectedOption: string | null = null; // Option sélectionnée
   displayPosition!: boolean;
-
   imageUrl!: string 
   TEXT="TEXT";
  // CHECKBOX="CHECKBOX"
@@ -52,15 +51,12 @@ export class DetailsTypeDocComponent {
   SEARCH="SEARCH"
   HIDDEN="HIDDEN";
   idOperationNow!:number;
-
+  loading=false;
   dossier:any;
   dossierTraiter:any[]=[];
-
-
   events1!: any[];
   operationPrecedent=new Operation;
   operationnow=new Operation;
-
     events2!: any[];
     data1:any;
     indexchamp!:number;
@@ -69,8 +65,10 @@ export class DetailsTypeDocComponent {
     traitement:any;
     isDisabled = true; // Mettre à false pour réactiver
     radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
-  document:any[]=[];
-  traitementPass:any={};
+    document:any[]=[];
+    traitementPass:any={};
+    docUrl:string="";
+
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
       private procedureService:ProcedureService,
@@ -232,10 +230,10 @@ export class DetailsTypeDocComponent {
         }
        }
        let i = 0;
-       console.log(i);
+       console.log(this.dossier)
        while (i < this.dossier.length - 1) { 
         console.log(this.dossier[i + 1].champOperation.operationId) 
-        console.log(this.dossier[i].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+        console.log(this.dossier[0].champOperation.operationId)// Vérifie que i+1 reste dans les limites
            if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
                this.dossierTraiter.push(this.dossier[i + 1]);
                this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
@@ -446,6 +444,7 @@ export class DetailsTypeDocComponent {
     });
     return limit;
   }
+
  
   validerDossier(numDossier:number){
     console.log(numDossier);
@@ -487,11 +486,14 @@ export class DetailsTypeDocComponent {
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
-
+      this.loading=true;
       this.procedureService.saveDemande(this.data1,numDossier).subscribe({
         next:(result)=>{
           console.log(result.data);
           this.router.navigate(['/deliacte/dossier/list']);
+          if(result){
+            this.loading=false;
+          }
 
         },
         complete:()=>{
@@ -534,11 +536,14 @@ export class DetailsTypeDocComponent {
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
-
+      this.loading=true;
       this.procedureService.saveDemande(this.data1,numDossier).subscribe({
         next:(result)=>{
           console.log(result.data);
           this.router.navigate(['/deliacte/dossier/list']);
+          if(result){
+            this.loading=false;
+          }
 
         },
         complete:()=>{
@@ -573,12 +578,19 @@ onFileChange(event: any, index: number) {
   const file = event.target.files[0];
   // Traitement du fichier, par exemple :
 }
-
-voirDoc(name:string){
+voirDoc(name:any){
+  console.log(name.champOperation.inputType)
   this.displayPosition = true;
-this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
+  if(name.champOperation.inputType==="IMAGE"){
+    this.imageUrl=environment.apiUrl+"/uploads/"+name.name;
+    this.docUrl="";
+  }
+  else{
+    this.docUrl=environment.apiUrl+"/uploads/pdf/"+name.name;
+    this.imageUrl="";
+  }
 console.log(this.imageUrl)
-  
+  console.log(this.docUrl)
 
   
 }
