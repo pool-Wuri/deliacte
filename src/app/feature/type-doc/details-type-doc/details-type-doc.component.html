@@ -108,6 +108,10 @@
                             (change)="onFileChange($event, i)">
                           
                           <!-- Bouton -->
+                            <!-- Save Button -->
+                            <button (click)="saveFile()" style="background-color: #060;"  class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                Save
+                            </button>
                           <!--button (click)="voirDoc(champ.name)"
                             type="button" style="background-color: #060;"
                             class="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
@@ -413,5 +417,16 @@
   <pdf-viewer *ngIf="docUrl" [src]="docUrl" [render-text]="true" style="display: block; width: 100%; height: 500px;"></pdf-viewer>
 
 </p-dialog>
+
+<div *ngIf="user?.role=='CITOYEN' && !isDisabled">
+    <div class="flex p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
+        <button type="button" style="background-color: #060;" (click)="modifierDossier(dossier[0].numeroDossier)"
+        class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
+
+        <button type="button" style="background-color: #ff0000;" (click)="annulerModif()"
+        class="text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center ms-3 mb-2">Annuler</button>
+
+      </div>
+</div>
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

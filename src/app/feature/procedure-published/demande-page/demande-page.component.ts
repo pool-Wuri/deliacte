@@ -56,7 +56,6 @@ export class DemandePageComponent {
  indexRequis:number[]=[];
 isDisabled=false;
 loading=false;
-
 radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
 
 
