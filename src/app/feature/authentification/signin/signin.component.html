@@ -46,7 +46,7 @@
     </div>
 </div>
 
-<div class="card pt-8" *ngIf="demandePage===false">
+<div class="card pt-8" *ngIf="demandePage===false && oubliPage===false">
     <div class="flex min-h-full flex-col justify-center px-6 py-16 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <img class="mx-auto h-17 w-36" src="assets/img/armoiriePh.jpeg" alt="Your Company">
@@ -65,7 +65,9 @@
                 <div>
                 <div class="flex items-center justify-between">
                     <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Votre mot de passe</label>
-
+                    <div class="text-sm">
+                        <a  (click)="Oublie()" class="font-semibold text-indigo-600 hover:text-indigo-500" style="color: #060;">Mot de passe oublié ?</a>
+                        </div>
                     <div class="text-sm">
                     </div>
                 </div>
@@ -89,7 +91,7 @@
     </div>
 </div>
 
-<div *ngIf="demandePage">
+<div *ngIf="demandePage && !oubliPage ">
     <div class="flex min-h-full flex-col justify-center px-6 py-36 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm card">
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -112,6 +114,28 @@
             
         </div>
     </div>
+  </div>
+
+  <div *ngIf="oubliPage && !demandePage ">
+    <div class="flex min-h-screen justify-center items-center px-6 py-36 lg:px-8">
+        <div class="max-w-sm w-full p-6 bg-white ">
+            <div class="mb-6">
+                <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saisir votre adresse mail</label>
+                <input type="email" id="large-input" placeholder="Adresse email" [(ngModel)]="mailOublie"
+                    class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base 
+                    focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                    dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            </div>
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button type="button" style="background-color: #060;" (click)="saveMailoublie()"
+                    class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+                <button type="button" style="background-color: #ff0000;" (click)="oubliPage=false"
+                    class="py-2.5 px-5 ms-3 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+            </div>
+        </div>
+    </div>
+    
+    
   </div>
 
 

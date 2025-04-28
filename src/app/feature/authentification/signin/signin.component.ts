@@ -24,7 +24,13 @@ export class SigninComponent {
   addUser:boolean=false;
   user=new User;
 demandePage:boolean=false;
+oubliPage:boolean=false;
+
 numDossier!:number;
+mailOublie!:string;
+dataMailOubli:any;
+passPage:boolean=false;
+newpass!:string;
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -145,5 +151,51 @@ onSubmit(){
  validerDemande(dossierNumbur:number){
   console.log(dossierNumbur)
   this.router.navigate(['/deliacte/login/details', dossierNumbur]);
+ }
+
+ Oublie(){
+  this.oubliPage=true;
+  console.log(this.oubliPage)
+  this.mailOublie="";
+ }
+
+ saveMailoublie(){
+  this.oubliPage=false;
+this.dataMailOubli={
+  "email":this.mailOublie,
+  "password":null,
+  "encodeEmail": null
+
+}
+
+this.confirmationService.confirm({
+  message: 'Voulez-vous reinitialiser votre mot de passe?',
+  header: 'Confirmation',
+  acceptLabel:'Oui',
+  rejectLabel:'Non',
+  icon: 'pi pi-exclamation-triangle',
+  acceptButtonStyleClass:'acceptButton',
+accept: () => {
+  this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      console.log(result+"User add");
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Verifier votre boite mail pour valider', life: 3000});
+    },
+    error:(error)=>{
+      console.log(error);
+    }
+    
+  })
+ // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+    //Actual logic to perform a confirmation
+    
+},
+reject:()=>{
+  this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+}
+});
+ 
+
  }
 }

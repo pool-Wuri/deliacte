@@ -81,4 +81,22 @@ getRefreshToken(): string | null {
   isLoggedIn(): boolean {
     return !!this.getAccessToken();
   }
+
+  oublieservice(email:any):Observable<any>{
+    return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",email).pipe(
+      tap((data)=>{
+        console.log(data);
+      })
+    )
+  }
+
+  validerPass(newpass:any):Observable<any>{
+    console.log(this.API_URL+"/users/updatePassword",newpass)
+    return this.http.put<any>(this.API_URL+"/users/updatePassword",newpass).pipe(
+      tap((data)=>{
+        console.log(data);
+      })
+    )
+  }
+  
 }

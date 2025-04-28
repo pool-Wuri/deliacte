@@ -32,11 +32,13 @@ import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { SharedModule } from "../../shared/shared.module";
 import { DossierSuiviComponent } from './dossier-suivi/dossier-suivi.component';
 import { TimelineModule } from 'primeng/timeline';
+import { ResetPassComponent } from './reset-pass/reset-pass.component';
 
 @NgModule({
   declarations: [
     SigninComponent,
-    DossierSuiviComponent
+    DossierSuiviComponent,
+    ResetPassComponent
   ],
   imports: [
     CommonModule,
