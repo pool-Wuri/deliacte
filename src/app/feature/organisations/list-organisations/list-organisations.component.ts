@@ -4,6 +4,8 @@ import { Modal } from 'flowbite';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-list-organisations',
@@ -203,4 +205,36 @@ export class ListOrganisationsComponent implements OnInit {
    });
    }
   
+   generatePDF() {
+    // Create a new PDF document.
+    const doc = new jsPDF();
+  
+    // Add content to the PDF.
+    doc.setFontSize(16);
+    doc.text('Liste des organisations', 10, 10);
+    doc.setFontSize(12);
+    /*doc.text(
+      'This is a comprehensive guide on generating PDFs with Angular.',
+      10,
+      20,
+    );*/
+  
+    // Create a table using `jspdf-autotable`.
+    const headers = [['Organisation', 'Parent', 'Description']];
+    const data = this.organisations.map(organisation => [
+      organisation.name,
+      organisation.parentOrganisation?.name,
+      organisation.description,
+    ]);
+    
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: 30, // Adjust the `startY` position as needed.
+    });
+  
+    
+    // Save the PDF.
+    doc.save('Liste_Organisation.pdf');
+  }
 }

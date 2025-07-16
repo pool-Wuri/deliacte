@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
@@ -558,4 +560,38 @@ fermerModal(){
     }
   }
 
+  generatePDF() {
+    // Create a new PDF document.
+    const doc = new jsPDF();
+  
+    // Add content to the PDF.
+    doc.setFontSize(16);
+    doc.text('Liste des opérations', 10, 10);
+    doc.setFontSize(12);
+    /*doc.text(
+      'This is a comprehensive guide on generating PDFs with Angular.',
+      10,
+      20,
+    );*/
+  
+    // Create a table using `jspdf-autotable`.
+    const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
+    const data = this.operations.map(operation => [
+      operation.name,
+      operation.description,
+      operation.operationNextId,
+      operation.operationPreviousId
+    ]);
+    
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: 30, // Adjust the `startY` position as needed.
+    });
+  
+    
+    // Save the PDF.
+    doc.save('Liste_user.pdf');
+  }
+  
 }

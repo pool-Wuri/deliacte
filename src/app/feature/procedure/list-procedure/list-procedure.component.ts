@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
@@ -320,5 +322,40 @@ procedure=new Procedure;
 
    getStatusKey(status: ProcedureStatus): string {
     return Object.keys(ProcedureStatus).find(key => ProcedureStatus[key as keyof typeof ProcedureStatus] === status) || 'Statut inconnu';
+  }
+
+
+  generatePDF() {
+    // Create a new PDF document.
+    const doc = new jsPDF();
+  
+    // Add content to the PDF.
+    doc.setFontSize(16);
+    doc.text('Liste des procedures', 10, 10);
+    doc.setFontSize(12);
+    /*doc.text(
+      'This is a comprehensive guide on generating PDFs with Angular.',
+      10,
+      20,
+    );*/
+  
+    // Create a table using `jspdf-autotable`.
+    const headers = [['Nom', 'Organisation','Statut']];
+    const data = this.procedures.map(procedure => [
+      procedure.name ?? '',
+      procedure.organisation.name ?? '',
+      procedure.status ?? ''
+    ]);
+    
+    
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: 30, // Adjust the `startY` position as needed.
+    });
+  
+    
+    // Save the PDF.
+    doc.save('Liste_procedure.pdf');
   }
 }

@@ -741,21 +741,23 @@ generatePDF() {
 
   // Add content to the PDF.
   doc.setFontSize(16);
-  doc.text('My Angular PDF Generator', 10, 10);
+  doc.text('Liste des utilisateurs', 10, 10);
   doc.setFontSize(12);
-  doc.text(
+  /*doc.text(
     'This is a comprehensive guide on generating PDFs with Angular.',
     10,
     20,
-  );
+  );*/
 
   // Create a table using `jspdf-autotable`.
-  const headers = [['Nom', 'Prenom', 'Mail',"Telephone"]];
-  const data = [
-    ['David', 'david@example.com', 'Sweden'],
-    ['Castille', 'castille@example.com', 'Spain'],
-    // ...
-  ];
+  const headers = [['Nom', 'Prenom', 'Mail',"Rôle"]];
+  const data = this.utilisateurs.map(user => [
+    user.firstName,
+    user.lastName,
+    user.email,
+    user.role
+  ]);
+  
 	autoTable(doc, {
     head: headers,
     body: data,
@@ -764,11 +766,15 @@ generatePDF() {
 
   
   // Save the PDF.
-  doc.save('table.pdf');
+  doc.save('Liste_user.pdf');
 }
 
 onGlobalFilter(table: Table, event: Event) {
   table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+}
+
+exporterExel(){
+
 }
 
 

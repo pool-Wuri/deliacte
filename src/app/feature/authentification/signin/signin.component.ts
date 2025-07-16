@@ -160,42 +160,38 @@ onSubmit(){
  }
 
  saveMailoublie(){
-  this.oubliPage=false;
-this.dataMailOubli={
-  "email":this.mailOublie,
-  "password":null,
-  "encodeEmail": null
-
-}
-
-this.confirmationService.confirm({
-  message: 'Voulez-vous reinitialiser votre mot de passe?',
-  header: 'Confirmation',
-  acceptLabel:'Oui',
-  rejectLabel:'Non',
-  icon: 'pi pi-exclamation-triangle',
-  acceptButtonStyleClass:'acceptButton',
-accept: () => {
-  this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      console.log(result+"User add");
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Verifier votre boite mail pour valider', life: 3000});
+  this.dataMailOubli={
+    "email":this.mailOublie,
+    "password":null,
+    "encodeEmail": null
+  }
+    this.confirmationService.confirm({
+      message: 'Voulez-vous reinitialiser votre mot de passe?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.loading=true;
+      this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result+"User add");
+          this.oubliPage=false;
+          this.loading=false;
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Verifier votre boite mail pour valider', life: 3000});
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+        
+      })      
     },
-    error:(error)=>{
-      console.log(error);
+    reject:()=>{
+      this.oubliPage=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: 'non je ne veux pas modifier', life: 3000});
     }
-    
-  })
- // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-    //Actual logic to perform a confirmation
-    
-},
-reject:()=>{
-  this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-}
-});
- 
-
+    });
  }
 }

@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Modal } from 'flowbite';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TypeOperationService } from 'src/app/core/services/type-operation.service';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 
 @Component({
@@ -192,4 +194,38 @@ export class ListTypeOperationComponent implements OnInit {
   });
 
   }
+
+  generatePDF() {
+    // Create a new PDF document.
+    const doc = new jsPDF();
+  
+    // Add content to the PDF.
+    doc.setFontSize(16);
+    doc.text('Liste des Operations', 10, 10);
+    doc.setFontSize(12);
+    /*doc.text(
+      'This is a comprehensive guide on generating PDFs with Angular.',
+      10,
+      20,
+    );*/
+  
+    // Create a table using `jspdf-autotable`.
+    const headers = [['Nom', 'Desciption']];
+    const data = this.typeoperations.map(type => [
+      type.name ?? '',
+      type.description ?? ''
+    ]);
+    
+    
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: 30, // Adjust the `startY` position as needed.
+    });
+  
+    
+    // Save the PDF.
+    doc.save('Liste_operation.pdf');
+  }
+  
 }
