@@ -178,24 +178,24 @@ searchtypeoperation():void{
     return "";
   }
 
-ajouter(){
-  if(this.procedurechoisi.id){
-    this.addboutton=true;
-    this.addUser=true;
-    this.editbutt=false;
-    this.title="Formulaire d'ajout d'une opération";
-    this.operation={};
-    console.log(this.procedurechoisi)
-    this.operation.procedureId=this.procedurechoisi.id;
-    this.search_Procedure();
-    this.submitted=false;
-  }
-  else{
-    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
+  ajouter(){
+    if(this.procedurechoisi.id){
+      this.addboutton=true;
+      this.addUser=true;
+      this.editbutt=false;
+      this.title="Formulaire d'ajout d'une opération";
+      this.operation={};
+      console.log(this.procedurechoisi)
+      this.operation.procedureId=this.procedurechoisi.id;
+      this.search_Procedure();
+      this.submitted=false;
+    }
+    else{
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
 
+    }
+  
   }
- 
-}
 
 fermerModal(){
   this.addboutton=false;
@@ -273,29 +273,29 @@ fermerModal(){
     rejectLabel:'Non',
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.operationService.updateprocedure(this.operation).subscribe({
-      next:(value)=>{
-        console.log(value)
-        this.addboutton=false;
-        this.editbutt=false;
-       // this.searchOperation(this.procedurechoisi.id || 0);
-  
-      },
-      complete:()=>{},
-      error:(erreur)=>{
-        console.log(erreur)
-      }
-    })
-  
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.addboutton=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-  }
+    accept: () => {
+      this.operationService.updateprocedure(this.operation).subscribe({
+        next:(value)=>{
+          console.log(value)
+          this.addboutton=false;
+          this.editbutt=false;
+        // this.searchOperation(this.procedurechoisi.id || 0);
+    
+        },
+        complete:()=>{},
+        error:(erreur)=>{
+          console.log(erreur)
+        }
+      })
+    
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      //this.addboutton=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
   });
  }
 

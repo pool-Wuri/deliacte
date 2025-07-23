@@ -1,40 +1,35 @@
-<h1>Details Organisation</h1>
+<div style="display: inline-flex;">
+    <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <h1 class="p-4">Details Organisation</h1>
+
+</div>
 
 <p-splitter [style]="{'height': '300px'}">
+    <!-- Partie gauche -->
     <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
-            <div class="p-fluid">
-                <div class="titleWrap">
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom : <p>{{organisation.name}}</p> </label>
-                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Organisation Parent : <p> {{organisation.parentOrganisation?.name}} </p> </label>
-
-                </div>
-                <!--div class="valueWrap" >
-                    <label for=""  class="propertyValue"   *ngIf="organisation.name!==''"> {{organisation.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="!organisation.name"> </label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="!organisation.parentOrganisationId"> ""</label>
-
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{organisation.parentOrganisation?.name}}</label>
-
-                </div-->
-            </div>
-        </div>    
-    </ng-template>
-    <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center" style="width: 400px;">
-            <div class="p-fluid">
-                <div class="titleWrap">
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Description : <p> {{organisation.description}}</p> </label>
-                   
-                </div>
-                <!--div class="valueWrap" >
-                    <label for=""  style="margin-top: 10px;"  class="propertyValue" > {{organisation.description}}</label>
-                   
-                </div-->
-            </div>
+      <div class="panel-content">
+        <div class="field">
+          <span class="label" style="color: #060;">Nom :</span>
+          <span class="value" >{{ organisation.name }}</span>
         </div>
+        <div class="field">
+          <span class="label" style="color: #060;">Organisation Parent :</span>
+          <span class="value">{{ organisation.parentOrganisation?.name }}</span>
+        </div>
+      </div>
     </ng-template>
-</p-splitter>
+  
+    <!-- Partie droite -->
+    <ng-template pTemplate>
+      <div class="panel-content">
+        <div class="field">
+          <span class="label" style="color: #060;">Description :</span>
+          <span class="value">{{ organisation.description }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </p-splitter>
+  
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <i class="pi pi-info-circle user"></i>
@@ -75,7 +70,7 @@
                 <th >Nom</th>
                 <th >Prenom</th>
                 <th >Email</th>
-                <th >Statut</th>
+                <!--th >Statut</th-->
             </tr>
     
             
@@ -95,9 +90,9 @@
                 <td>
                     {{utilisateur.email}}
                 </td>
-                <td>
+                <!--td>
                     {{utilisateur.isActive}}
-                </td>
+                </td-->
              
               
             </tr>
@@ -138,7 +133,7 @@
                 <th >Nom</th>
                 <th >Description</th>
                 <th >Status</th>
-                <th >IsActive</th>
+                <!--th >IsActive</th-->
             </tr>
     
             
@@ -158,9 +153,9 @@
                 <td>
                     {{ parseStatus(procedure.status) }}
                 </td>
-                <td>
+                <!--td>
                     {{procedure.isActive}}
-                </td>
+                </td-->
             </tr>
         </ng-template>
         </p-table>

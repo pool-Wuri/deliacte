@@ -128,7 +128,7 @@ export class ListTypeOperationComponent implements OnInit {
   }
 
   deleteTypeoperation(typeoperation:TypeOperation){
-
+    console.log(typeoperation)
     this.confirmationService.confirm({
       message: 'Voulez-vous vraiment supprimer cet type d\'opération?',
       header: 'Suppression',
@@ -175,6 +175,7 @@ export class ListTypeOperationComponent implements OnInit {
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Type opération add");
+          this.searchtypeoperation();
         },
         error:(error)=>{
           console.log(error);
@@ -187,8 +188,9 @@ export class ListTypeOperationComponent implements OnInit {
     },
     reject:()=>{
       this.addTypeOperation=false;
-    this.editbutt=false;
-    this.modalVisible = false;
+      this.editbutt=false;
+      this.modalVisible = false;
+      this.searchtypeoperation();
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
   });

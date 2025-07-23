@@ -6,6 +6,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
+import { OperationService } from 'src/app/core/services/operation.service';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
@@ -42,7 +43,9 @@ procedure=new Procedure;
     private messageService: MessageService,
     private procedureService:ProcedureService,
     private organisationService:OrganisationService,
-    private userService:UtilisateurService
+    private userService:UtilisateurService,
+    private operationService:OperationService,
+
   ){}
 
   parseStatus(status: string): string {
@@ -283,40 +286,53 @@ procedure=new Procedure;
 
   publier(procedure:Procedure){
     console.log(procedure)
-    if(procedure.status!="PUBLISHED")
-    {
-      this.confirmationService.confirm({
-        message: 'Voulez-vous publier cette procedure',
-        acceptLabel:'Oui',
-        rejectLabel:'Non',
-        header: 'Publication',
-        icon: 'pi pi-exclamation-triangle',
-        acceptButtonStyleClass:'acceptButton',
-      accept: () => {
-        console.log(procedure.id)
-        procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
-  
-        this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-            console.log(result+"procedure publié");
-          },
-          error:(error)=>{
-            console.log(error);
-          }
-      
-        })
-        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+    this.operationService.get_Operation(procedure.id).subscribe({
+      next:(value)=>{
+        console.log(value)
+        if(value.data.length<=0){
+          this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération disponible pour cette procedure', life: 3000});
+        }
+        else{
+          if(procedure.status!="PUBLISHED")
+            {
+              this.confirmationService.confirm({
+                message: 'Voulez-vous publier cette procedure',
+                acceptLabel:'Oui',
+                rejectLabel:'Non',
+                header: 'Publication',
+                icon: 'pi pi-exclamation-triangle',
+                acceptButtonStyleClass:'acceptButton',
+              accept: () => {
+                console.log(procedure.id)
+                procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
+                this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    console.log(result+"procedure publié");
+                  },
+                  error:(error)=>{
+                    console.log(error);
+                  }
+              
+                })
+                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+              },
+              reject:()=>{
+                this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+              }
+            });
+            }
+            else{
+              this.messageService.add({severity:'error', summary: 'error', detail: 'Procedure déja publiée', life: 3000});
+        
+            }
+        }
+     
       },
-      reject:()=>{
-        this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-      }
-    });
-    }
-    else{
-      this.messageService.add({severity:'error', summary: 'error', detail: 'Procedure déja publiée', life: 3000});
-
-    }
+      complete:()=>{},
+      error:(err)=>{}
+    })
+   
    
   }
 

@@ -1,5 +1,8 @@
-<h1>Details User</h1>
+<div style="display: inline-flex;">
+    <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <h1 class="p-4">Details User</h1>
 
+</div>
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <i class="pi pi-info-circle user"></i>
@@ -82,7 +85,7 @@
                     <th >Nom</th>
                     <th >Organisation parent</th>
                     <th >Description</th>
-                    <th >Statut</th>
+                    <!--th >Statut</th-->
 
                 </tr>
         
@@ -105,9 +108,9 @@
                     <td>
                         {{organisation.description}}
                     </td>
-                    <td>
+                    <!--td>
                         {{organisation.isActive}}
-                    </td>
+                    </td-->
                  
                   
                 </tr>
@@ -145,7 +148,7 @@
                     <th >Nom</th>
                     <th >Organisation</th>
                     <th >Statut</th>
-                    <th >Etat</th>
+                    <!--th >Etat</th-->
 
                 </tr>
         
@@ -167,9 +170,9 @@
                         {{ parseStatus(procedure.status) }} 
                     </td>
                    
-                    <td>
+                    <!--td>
                         {{procedure.isActive}}
-                    </td>
+                    </td-->
                   
                 </tr>
             </ng-template>

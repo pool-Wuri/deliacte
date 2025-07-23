@@ -331,8 +331,9 @@ searchOrganisation(){
   },
   reject:()=>{
     this.addUser=false;
-  this.editbutt=false;
-  this.modalVisible = false;
+   // this.editbutt=false;
+   //this.modalVisible = false;
+    this.searchUser();
     this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
   }
 });
@@ -380,7 +381,6 @@ assigne(utilisateur:any){
           if (!this.idOrganisationAssign.organisationIds) {
             this.idOrganisationAssign.organisationIds = []; // Initialiser si nécessaire
           }
-          
           this.idOrganisationAssign.organisationIds.push(result.data[i].id);
           console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
         }
@@ -420,8 +420,6 @@ assigne(utilisateur:any){
     
   }*/
  
-
- 
 }
 
 eventModif(){
@@ -459,7 +457,7 @@ SaveAssigner(){
     this.procedureTru=false;
     this.adminTrue=true;
     this.confirmationService.confirm({
-      message: 'confirmation ajout?',
+      message: 'Voulez-vous validez?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',
@@ -605,8 +603,8 @@ SaveAssigner(){
 }
 
 fermerAssign(){
+  this.searchUser();
   this.assignModal=false;
-
 }
 
 detailsUser(user:User){
@@ -641,98 +639,65 @@ deleteUser(user:User){
 });
 }
 
-revoquerAdmin(user:User){
-  this.confirmationService.confirm({
-    message: 'Voulez-vous vraiment lui retirer ce droit?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    if(this.user?.role=="SUPER_ADMIN"){
-      this.userService.userOrgaInfo(user.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result.data)
+revoquerAdmin(utilisateur:User){
+  this.searchOrganisation();
+  this.searchProcedures();
+  this.userToAssign=utilisateur;
+  console.log(this.userToAssign);
+  console.log(utilisateur)
+  if(this.user?.role=="ORG_ADMIN"){
+    this.userToAssign.role="Manager de procedure";
+    this.titleAssig="Choisir la procedure";
+    this.procedureAdd={};
+    this.userService.procedureInfo(this.userToAssign.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        for (let i = 0; i < result.data.length; i++) {
+          if (!this.proceduresid.userProcedureIds) {
+            this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+          }
+          
+          this.proceduresid.userProcedureIds.push(result.data[i].id);
+          console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+        }
+      },
+      error:(error)=>{
+        console.log(error)
+      }
+    });
+  }
+  if(this.user?.role=="SUPER_ADMIN"){
+    this.userToAssign.role="Administrateur d'organisation";
+    this.titleAssig="Choisir l'organisation"
+
+    this.userService.userOrgaInfo(this.userToAssign.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result.data)
+        if(result.data.length>0){
+          this.assignModal=true;
           for (let i = 0; i < result.data.length; i++) {
             if (!this.idOrganisationAssign.organisationIds) {
               this.idOrganisationAssign.organisationIds = []; // Initialiser si nécessaire
             }
+            this.idOrganisationAssign.organisationIds.push(result.data[i].id);
             console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
-            this.userService.revoquer(this.idOrganisationAssign,user.id).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                console.log(result+"Utilisateur modifié avec succès");
-                this.searchUser()
-              },
-              error:(error)=>{
-                console.log(error);
-              }
-          
-            })
           }
-          //console.log( this.proceduresid.userProcedureIds)
-        },
-        error:(error)=>{
-          console.log(error)
         }
-      });
-    }
-    if(this.user?.role=="ORG_ADMIN"){
-      this.procedureAdd={};
-      this.userService.procedureInfo(user.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result.data)
-          for (let i = 0; i < result.data.length; i++) {
-            if (!this.proceduresid.userProcedureIds) {
-              console.log(this.proceduresid.userProcedureIds); // Affiche l'ID
-              this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
-            }
-            this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
+        else{
+          this.messageService.add({severity:'error', summary: 'error', detail: 'Aucune organisation assignée', life: 3000});
 
-            console.log(this.proceduresid + "ou "+this.proceduresid.userProcedureIds ); // Affiche l'ID
-            this.userService.revoquerProc(this.proceduresid,user.id).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                console.log(result+"droit retiré avec succès");
-                this.searchUser()
-              },
-              error:(error)=>{
-                console.log(error);
-              }
-          
-            })
-          }
-        },
-        error:(error)=>{
-          console.log(error)
         }
-      });
-    }
-   
-  /*  this.userService.updateUser(user,user.id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result+"Utilisateur modifié avec succès");
+       
+        //console.log( this.proceduresid.userProcedureIds)
       },
       error:(error)=>{
-        console.log(error);
+        console.log(error)
       }
-  
-    })*/
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.assignModal=false;
-
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    });
+   
+    
   }
-});
-
 }
 
 generatePDF() {

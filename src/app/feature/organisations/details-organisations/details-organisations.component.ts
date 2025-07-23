@@ -4,6 +4,7 @@ import { OrganisationService } from 'src/app/core/services/organisation.service'
 import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-organisations',
@@ -23,7 +24,9 @@ export class DetailsOrganisationsComponent {
   statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
 
   constructor(private route:ActivatedRoute, 
-    private organisationService:OrganisationService){
+    private organisationService:OrganisationService,
+    private location: Location,
+  ){
 
 }
 
@@ -71,6 +74,9 @@ getOrganisation(id?:number){
       console.log(error)
     }
   })
+}
+retourPage(){
+  this.location.back();
 }
 
 }

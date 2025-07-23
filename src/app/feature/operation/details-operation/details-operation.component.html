@@ -1,42 +1,37 @@
-<h1>Details Opération</h1>
+<div style="display: inline-flex;">
+    <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <h1 class="p-4">Details Opération</h1>
+
+</div>
+
 <p-toast></p-toast>
 
 
 <p-splitter [style]="{'height': '300px'}">
     <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center">
+        <div class="col-10 flex align-items-center justify-content-center">
             <div class="p-fluid">
                 <div class="titleWrap" >
                     <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Statut:</label>
+                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Verbe de l'opération:</label>
+
+                    <label for=""  style="margin-top: 10px;" class="propertyTitle" *ngIf="operation.procedure">Procedure:</label>
+                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
 
                 </div>
                 <div class="valueWrap" >
                     <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.isActive}} </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.verbeOperation}}</label>
+
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure"> {{operation.procedure.name}} </label>
+                    <label for=""  class="propertyValue"  style="margin-top: 10px;max-width: 300px;" > {{operation.description}}</label>
+
 
                    </div>
             </div>
         </div>    
     </ng-template>
-    <ng-template pTemplate>
-        <div class="col-8 flex align-items-center justify-content-center" >
-            <div class="p-fluid">
-                <div class="titleWrap">
-                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
-
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle">Procedure:</label>
-                    
-                </div>
-                <div class="valueWrap" >
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;max-width: 300px;" > {{operation.description}} ""</label>
-
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure"> {{operation.procedure.name}} </label>
-
-                </div>
-            </div>
-        </div>
-    </ng-template>
+   
 </p-splitter>
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
@@ -291,7 +286,8 @@
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
                             dark:focus:border-blue-500" placeholder="nom" />
-                           
+                            <small class="p-error" *ngIf="submitted && !champ.name">Ajouter le libellé du champ.</small>
+
                         </div>
                         <div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -299,13 +295,18 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="description" />                  
+                            dark:focus:border-blue-500" placeholder="description" />  
+                            <small class="p-error" *ngIf="submitted && !champ.description">Ajouter la description.</small>
+
                         </div>
+
                         <div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
                             <p-dropdown [options]="types" [(ngModel)]="champ.inputType"  optionValue="id" 
                             optionLabel="name"
                           ></p-dropdown>
+                          <small class="p-error" *ngIf="submitted && !champ.inputType">Ajouter le type de champ.</small>
+
                         </div> 
                         <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT'">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saisir options</label>

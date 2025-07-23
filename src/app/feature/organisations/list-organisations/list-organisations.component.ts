@@ -163,9 +163,10 @@ export class ListOrganisationsComponent implements OnInit {
     },
     reject:()=>{
       this.addOrganisation=false;
-    this.editbutt=false;
-    this.modalVisible = false;
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.editbutt=false;
+      this.modalVisible = false;
+      this.searchOrganisation();
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non modifié', life: 3000});
     }
   });
   }

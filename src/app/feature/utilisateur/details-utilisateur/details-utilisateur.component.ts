@@ -4,6 +4,7 @@ import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-utilisateur',
@@ -22,7 +23,8 @@ statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énu
 user: User | null = null;
 
   constructor(private route:ActivatedRoute,
-      private userService:UtilisateurService
+      private userService:UtilisateurService,
+      private location: Location
   ){
 
   }
@@ -87,6 +89,10 @@ user: User | null = null;
     })
    
    
+  }
+
+  retourPage(){
+    this.location.back();
   }
 
 }

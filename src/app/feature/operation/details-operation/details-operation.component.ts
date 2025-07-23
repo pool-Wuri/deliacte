@@ -8,6 +8,7 @@ import { OperationAssign, User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-operation',
@@ -30,24 +31,25 @@ export class DetailsOperationComponent {
   newOption: string = '';
   optionAdd:any;
   optionResult:any;
-responsUsers=new Array<User>();
-operationsIds=new OperationAssign;
-
-listeUser:boolean=false;
-list1: any[] | undefined;
-usergroup=new Array <User>()
-usergroup1=new Array <User>()
-list2: any[] | undefined;
+  responsUsers=new Array<User>();
+  operationsIds=new OperationAssign;
+  listeUser:boolean=false;
+  list1: any[] | undefined;
+  usergroup=new Array <User>()
+  usergroup1=new Array <User>()
+  list2: any[] | undefined;
   sortOrder!: number;
   selectedOperation=new Array <Operation>();
   disable:boolean=false;;
-
+  submitted:boolean=false;
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
     private confirmationService:ConfirmationService,
    private messageService:MessageService,
-   private userService:UtilisateurService
+   private userService:UtilisateurService,
+   private location: Location,
+
 
 ){
 
@@ -83,20 +85,19 @@ getProcedure(id?:number){
             this.champs.reverse()
             console.log(this.champs);
           }
-        
-       
         },
         complete:()=>{},
         error:(err)=>{}
       });
-      console.log(this.operation)
-      if(this.operation.procedure){
-        this.procedureService.get_Procedure(this.operation.procedure.id).subscribe({
+      console.log(this.operation.procedureId)
+      if(this.operation.procedureId!==0){
+        console.log(this.operation.procedureId)
+        this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
           complete:()=>{},
           next:(result)=>{
             this.operation.procedure=result.data;
-          console.log(result)    },
-          error:(er)=>{console.log("get_error_User")}
+            console.log(result)    },
+            error:(er)=>{console.log("get_error_User")}
         })
       }
      
@@ -240,56 +241,60 @@ ajouterChamp(operation:any){
 
 saveChamps(){
   console.log(this.champ)
-  this.confirmationService.confirm({
-    message: 'Voulez-vous sauvegarder ce champ?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.optionResult=this.champ.options;
-    this.operationService.ajouterChamp(this.champ).subscribe({
-      next:(value)=>{
-        console.log(value)
-        if(value.data){
-          value.data.options=this.optionResult;
-          for(let i=0;i<value.data.options.length;i++){
-            value.data.options[i].champOperationId=value.data.id;
-            this.operationService.addOption(value.data.options[i]).subscribe({
-              next:(result)=>{
-                console.log(result);
-                this.searchChamp();
-              },
-              complete:()=>{},
-              error:(err)=>{
-                console.log(err)
-              }
-            })
+  this.submitted=true;
+  if(this.champ.description && this.champ.name && this.champ.inputType){
+    this.confirmationService.confirm({
+      message: 'Voulez-vous sauvegarder ce champ?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.optionResult=this.champ.options;
+      this.operationService.ajouterChamp(this.champ).subscribe({
+        next:(value)=>{
+          console.log(value)
+          if(value.data){
+            value.data.options=this.optionResult;
+            for(let i=0;i<value.data.options.length;i++){
+              value.data.options[i].champOperationId=value.data.id;
+              this.operationService.addOption(value.data.options[i]).subscribe({
+                next:(result)=>{
+                  console.log(result);
+                  this.searchChamp();
+                },
+                complete:()=>{},
+                error:(err)=>{
+                  console.log(err)
+                }
+              })
+            }
+         
           }
-       
+          this.searchChamp();
+          this.addchamp=false;
+          this.editbutton=false;
+          this.addbutton=false;
+        },
+        complete:()=>{},
+        error:(err)=>{
+          console.log(err);
+          this.editbutton=false;
+          this.addchamp=false;
+          this.addbutton=false;
         }
-        this.searchChamp();
-        this.addchamp=false;
-        this.editbutton=false;
-        this.addbutton=false;
-      },
-      complete:()=>{},
-      error:(err)=>{
-        console.log(err);
-        this.editbutton=false;
-        this.addchamp=false;
-        this.addbutton=false;
-      }
-    })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      })
+      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+    });
+   
   }
-  });
  
 }
 
@@ -481,6 +486,8 @@ groupeUser(operation:any){
   }
 }
 
-
+retourPage(){
+  this.location.back();
+}
 
 }

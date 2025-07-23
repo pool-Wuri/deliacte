@@ -6,6 +6,7 @@ import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model';
 import { User } from 'src/app/core/models/user.model';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-procedure',
@@ -23,7 +24,9 @@ export class DetailsProcedureComponent {
 
   constructor(private route:ActivatedRoute,
       private procedureService:ProcedureService,
-      private messageService: MessageService
+      private messageService: MessageService,
+      private location: Location
+
   ){
 
   }
@@ -86,5 +89,9 @@ export class DetailsProcedureComponent {
  
   onUpload(event: UploadEvent) {
     this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
+}
+
+retourPage(){
+  this.location.back();
 }
 }
