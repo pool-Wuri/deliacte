@@ -3,6 +3,9 @@
      <p-progressSpinner></p-progressSpinner>
     </div>
    </div>
+   <div style="display: inline-flex;" >
+        <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    </div>
 
   <div class="card" *ngIf="user?.role=='CITOYEN'" >
     <p-divider align="left">
@@ -144,7 +147,7 @@
             <div>
                 <p-table #dt  [value]="document" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Ligne {first} to {last} pour {totalRecords} entrées"
                  [globalFilterFields]="['firstName','lastName','email']">
                 
                  <ng-template pTemplate="caption">

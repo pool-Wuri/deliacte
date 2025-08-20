@@ -12,6 +12,7 @@ import { environment } from 'src/environnements/environment';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { ConfirmationService, MessageService, PrimeIcons } from 'primeng/api';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-details-type-doc',
@@ -83,6 +84,7 @@ export class DetailsTypeDocComponent {
       private confirmationService: ConfirmationService,
       private messageService: MessageService,
       private router: Router,
+      private location: Location,
 
   ){}
 
@@ -786,4 +788,7 @@ annulerModif(){
     })
   }*/
 
+    retourPage(){
+      this.location.back();
+    }
 }

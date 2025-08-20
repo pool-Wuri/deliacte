@@ -7,6 +7,7 @@ import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-dossier-suivi',
@@ -40,6 +41,7 @@ export class DossierSuiviComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
+    private location: Location,
 
 ){}
 
@@ -154,5 +156,7 @@ getDossier(id?:number){
   });
 }
 
-
+retourPage(){
+  this.location.back();
+}
 }
