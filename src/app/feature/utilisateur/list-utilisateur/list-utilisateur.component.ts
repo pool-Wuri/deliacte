@@ -48,7 +48,6 @@ soumettre:boolean=false;
 newOrganisationId:number=0;
 idOrganisationAssign=new Assigne;
 operationsIds=new OperationAssign;
-
 proceduresid=new ProcedurAssign;
 procedures=new Array <Procedure>;
 user: User | null = null;
@@ -226,6 +225,7 @@ searchProcedures(){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
+    this.loading=true;
     this.modalVisible = false; // Ouvre le modal 
     this.addUser=false;
     this.editbutt=false;
@@ -236,12 +236,13 @@ searchProcedures(){
       next:(result)=>{
         console.log(result+"User add");
         this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-
         this.searchUser();
+        this.loading=false;
       },
       error:(error)=>{
         console.log(error);
-        this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+        this.loading=false;
 
       }
   
@@ -253,7 +254,7 @@ searchProcedures(){
     this.modalVisible = false; // Ouvre le modal 
     this.addUser=false;
     this.editbutt=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
   }
   });
   
@@ -334,7 +335,7 @@ searchOrganisation(){
    // this.editbutt=false;
    //this.modalVisible = false;
     this.searchUser();
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    this.messageService.add({severity:'error', summary: 'error', detail: 'Echec de la modification', life: 3000});
   }
 });
  // Ouvre le modal 

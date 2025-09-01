@@ -27,6 +27,7 @@ import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {SplitterModule} from 'primeng/splitter';
 import {TabViewModule} from 'primeng/tabview';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import {TabViewModule} from 'primeng/tabview';
     OverlayPanelModule,
     ConfirmDialogModule,
     SplitterModule,
+    ProgressSpinnerModule,
     TabViewModule
     
   ],
