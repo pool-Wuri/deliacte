@@ -66,28 +66,37 @@ onSubmit(){
   console.log(this.utilisateur)
   this.authentificationService.authenticate(this.utilisateur).subscribe({
     next: response => {
-      console.log(response)
-      this.loading=false;
-      this.authentificationService.saveToken(response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      const userData = localStorage.getItem('user');
-      this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
-      if (userData) {
-        this.user = JSON.parse(userData);
-        console.log(this.user)
-      }    
-      if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
-        this.router.navigate(['/deliacte/dossier/list']);
+      console.log(response);
+      if(response.user){
+        this.loading=false;
+        this.authentificationService.saveToken(response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+        const userData = localStorage.getItem('user');
+        this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
+        if (userData) {
+          this.user = JSON.parse(userData);
+          console.log(this.user)
+        }    
+        if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
+          this.router.navigate(['/deliacte/dossier/list']);
+        }
+        else
+        setTimeout(()=>{
+          this.router.navigate(['/deliacte/dashboard/']);
+        },2000)
       }
-      else
-      setTimeout(()=>{
-        this.router.navigate(['/deliacte/dashboard/']);
-      },2000)
+      else{
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
+        setTimeout(()=>{
+          this.loading=false;
+        },2000)
+
+      }
     },
     error: error => {
       console.error('Erreur lors de l\'authentification', error);
       this.loading=false;
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Veuillez verifier vos identifiants'});
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez verifier vos identifiants'});
 
    //   this.mess1=[{severity:'error', summary:'Echec de connexion', detail:"Vérifiez vos identifiants ou votre connexion. Si le problème persiste veuillez contacter l'administrateur du site."}]
       //this.errorMessage = 'Identifiants invalides, veuillez réessayer.';
@@ -117,18 +126,27 @@ onSubmit(){
   accept: () => {
     this.addUser=false;
     this.utilisateur1.isActive=true;
-    console.log(this.utilisateur1)
+    console.log(this.utilisateur1);
+    this.loading=true;
     this.userService.saveCitoyens(this.utilisateur1).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"User add");
+        if(result.data){
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+          this.loading=false;
+        }
+        else{
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message, life: 3000});
+          this.loading=false;
+
+        }
+        console.log(result.message );
       },
       error:(error)=>{
         console.log(error);
       }
   
     })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
       //Actual logic to perform a confirmation
       
   },
@@ -184,6 +202,11 @@ onSubmit(){
         },
         error:(error)=>{
           console.log(error);
+          setTimeout(()=>{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Problème de reseau', life: 3000});
+            this.loading=false;
+            },2000)
+        
         }
         
       })      

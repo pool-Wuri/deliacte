@@ -315,19 +315,26 @@ searchOrganisation(){
     this.addUser=false;
     this.editbutt=false;
     this.utilisateur1.isActive=true;
-    console.log(this.utilisateur1)
+    console.log(this.utilisateur1);
+    this.loading=true;
     this.userService.updateUser(this.utilisateur1,this.utilisateur1.id).subscribe({
       complete:()=>{},
       next:(result)=>{
         console.log(result+"User modifier");
+        this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
+        setTimeout(()=>{
+          this.loading=false;
+          this.searchUser();
+
+        },2000)
+
+      //Actual logic to perform a confirmation
       },
       error:(error)=>{
         console.log(error);
       }
-  
     })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-      //Actual logic to perform a confirmation
+    
       
   },
   reject:()=>{
@@ -360,20 +367,20 @@ assigne(utilisateur:any){
           if (!this.proceduresid.userProcedureIds) {
             this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
           }
-          
           this.proceduresid.userProcedureIds.push(result.data[i].id);
           console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
         }
       },
       error:(error)=>{
-        console.log(error)
+        console.log(error);
+        this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
+
       }
     });
   }
   if(this.user?.role=="SUPER_ADMIN"){
     this.userToAssign.role="Administrateur d'organisation";
     this.titleAssig="Choisir l'organisation"
-
     this.userService.userOrgaInfo(this.userToAssign.id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -388,7 +395,10 @@ assigne(utilisateur:any){
         //console.log( this.proceduresid.userProcedureIds)
       },
       error:(error)=>{
-        console.log(error)
+        console.log(error);this.loading=true;
+        this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
+        this.loading=false;
+
       }
     });
    
@@ -441,39 +451,33 @@ eventModif(){
 SaveAssigner(){
   console.log(this.userToAssign)
   console.log(this.newOrganisationId)
-/*  if(this.userToAssign.role=="Administrateur d'organisation"){
-    this.userToAssign.role="ORG_ADMIN"
-  }
-  if(this.userToAssign.role=="Manager de procedure")
-  {
-    this.userToAssign.role="PROCEDURE_MANAGER"
-
-  }
-  if(this.userToAssign.role=="super admin")
-  {
-    this.userToAssign.role="SUPER_ADMIN"
-  }*/
   if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
     this.userToAssign.role="ORG_ADMIN";
     this.procedureTru=false;
     this.adminTrue=true;
     this.confirmationService.confirm({
-      message: 'Voulez-vous validez?',
+      message: 'Voulez-vous valider?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
+      this.loading=true;
       this.assignModal=false;
       this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Utilisateur modifié avec succès");
-          this.searchUser()
+          this.searchUser();
+          this.loading=false;
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Utilisateur assigné avec succès', life: 3000});
+
         },
         error:(error)=>{
           console.log(error);
+          this.messageService.add({severity:'error', summary: 'error', detail: 'Utilisateur non assigné', life: 3000});
+
         }
     
       })
@@ -494,7 +498,7 @@ SaveAssigner(){
     reject:()=>{
       this.assignModal=false;
   
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Assignation echouée', life: 3000});
     }
    });
   }
@@ -513,20 +517,25 @@ SaveAssigner(){
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.assignModal=false;
-      console.log(this.proceduresid)
+      console.log(this.proceduresid);
+      this.loading=true;
       this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"User update");
+          this.loading=true;
           if(result){
             this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
               complete:()=>{},
               next:(result)=>{
                 console.log(result+"Utilisateur modifié avec succès");
                 this.searchUser();
+                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Revocation reussie', life: 3000});
+                this.loading=false;
               },
               error:(error)=>{
                 console.log(error);
+                result=false;
               }
           
             });
@@ -536,6 +545,7 @@ SaveAssigner(){
         },
         error:(error)=>{
           console.log(error);
+          
         }
     
       });
@@ -547,65 +557,19 @@ SaveAssigner(){
     },
     reject:()=>{
       this.assignModal=false;
-  
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
     }
   });
   }
-  /*
-  else if (this.user?.role=="PROCEDURE_MANAGER" || this.user?.role=="Manager de procedure"){
-    this.procedureTru=true;
-    this.adminTrue=false;
-    
-    this.confirmationService.confirm({
-      message: 'confirmation ajout?',
-      header: 'Confirmation',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.assignModal=false;
-      console.log(this.operationsIds)
-    console.log(this.userToAssign)
-      this.userService.assigneroperation(this.operationsIds,this.userToAssign.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"Utilisateur modifié avec succès");
-          this.searchUser();
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      });
-      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"User add");
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
-    },
-    reject:()=>{
-      this.assignModal=false;
-  
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-    }
-  });
-  }*/
+ 
 
 }
 
 fermerAssign(){
   this.searchUser();
   this.assignModal=false;
+  this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler', life: 3000});
+
 }
 
 detailsUser(user:User){

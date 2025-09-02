@@ -16,14 +16,15 @@ export class AuthentificationService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  authenticate(login: User): Observable<{ token: string; user: User, }> {
-    return this.http.post<{ user: User; access_token: string; refresh_token: string }>(`${this.API_URL}/auth/authenticate`, login).pipe(
+  authenticate(login: User): Observable<{ token: string; user: User;message:string}> {
+    return this.http.post<{ user: User; access_token: string; refresh_token: string; message:string }>(`${this.API_URL}/auth/authenticate`, login).pipe(
       map(response => {
         // Renommer access_token en token
         return {
           token: response.access_token,
           user: response.user,
-          refresh_token: response.refresh_token
+          refresh_token: response.refresh_token,
+          message: response.message,
         };
       }),
       tap(({ token, user ,refresh_token}) => {
