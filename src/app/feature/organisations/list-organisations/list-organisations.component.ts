@@ -151,6 +151,7 @@ export class ListOrganisationsComponent implements OnInit {
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Organisation add");
+          this.searchOrganisation();
         },
         error:(error)=>{
           console.log(error);
@@ -195,6 +196,7 @@ export class ListOrganisationsComponent implements OnInit {
          },
          error:(error)=>{
            console.log(error);
+           this.searchOrganisation();
          }
      
        })

@@ -2,16 +2,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 500px;
+    min-height: 600px;
     background-color: #f4f4f9;
   }
   
   .card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
-    text-align: center;
-  }
-  
+  background-color: #ffffff;       /* Fond blanc */
+  border-radius: 12px;             /* Coins plus arrondis */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Ombre douce */
+  padding: 20px;
+  width: 100%;
+  max-width: 1100px;                /* Largeur max pour éviter que la carte soit trop large */
+  margin: 20px auto;               /* Centrer la carte */
+  text-align: center;
+  border: 0.5px solid #a50621;       /* Bordure visible rouge foncé */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Effet au survol */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}

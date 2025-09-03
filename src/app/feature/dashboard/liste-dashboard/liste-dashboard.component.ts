@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from 'src/app/core/services/dashboard.service';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
@@ -7,6 +7,7 @@ import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service'; 
 import { Procedure } from 'src/app/core/models/procedure.model';
+
 
 @Component({
   selector: 'app-liste-dashboard',
@@ -103,6 +104,7 @@ if (this.id !== undefined) {
             backgroundColor: '#060',
             borderColor: '#060',
             data: evolutionData,
+           
           },
         ],
       };
