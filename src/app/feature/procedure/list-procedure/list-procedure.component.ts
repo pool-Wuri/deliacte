@@ -142,8 +142,8 @@ procedure=new Procedure;
         })        
       },
       reject:()=>{
-        this.addboutton = false; // Ouvre le modal 
-        this.addUser=false;
+        this.addboutton = true; // Ouvre le modal 
+        this.addUser=true;
         this.editbutt=false;
         this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'enregistrement', life: 3000});
         this.loading=false;
