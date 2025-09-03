@@ -226,8 +226,8 @@ searchProcedures(){
         
     },
     reject:()=>{
-      this.modalVisible = false; // Ouvre le modal 
-      this.addUser=false;
+     // this.modalVisible = false; // Ouvre le modal 
+     // this.addUser=false;
       this.editbutt=false;
       this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
     }

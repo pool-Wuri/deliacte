@@ -125,8 +125,8 @@ export class ListOrganisationsComponent implements OnInit {
         
     },
     reject:()=>{
-      this.modalVisible = false; // Ouvre le modal 
-      this.addOrganisation=false;
+      this.modalVisible = true; // Ouvre le modal 
+      this.addOrganisation=true;
       this.editbutt=false;
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
@@ -161,24 +161,34 @@ export class ListOrganisationsComponent implements OnInit {
       this.addOrganisation=false;
       this.editbutt=false;
       this.organisation1.isActive=true;
+      this.loading=true;
       this.organisationService.updateOrganisation(this.organisation1,this.organisation1.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Organisation add");
+           
+        this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
+        setTimeout(()=>{
+          this.loading=false;
+          this.searchOrganisation();
+        },2000)
         },
         error:(error)=>{
           console.log(error);
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+     // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         
     },
     reject:()=>{
       this.addOrganisation=false;
-      this.editbutt=false;
-      this.modalVisible = false;
+      //this.editbutt=true;
+      //this.modalVisible = true;
+
+     
+
       this.searchOrganisation();
       this.messageService.add({severity:'error', summary: 'error', detail: ' non modifié', life: 3000});
     }

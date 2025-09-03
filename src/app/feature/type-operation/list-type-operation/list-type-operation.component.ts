@@ -84,8 +84,8 @@ export class ListTypeOperationComponent implements OnInit {
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.modalVisible = false; // Ouvre le modal 
-      this.addTypeOperation=false;
-      this.editbutt=false;
+      this.addTypeOperation=false; 
+      this.editbutt=false; 
       this.loading=true;
       console.log(this.typeoperation1)
       this.TypeOperationService.saveTypeoperation(this.typeoperation1).subscribe({
@@ -109,9 +109,9 @@ export class ListTypeOperationComponent implements OnInit {
         
     },
     reject:()=>{
-      this.modalVisible = false; // Ouvre le modal 
-      this.addTypeOperation=false;
-      this.editbutt=false;
+      this.modalVisible = true; // Ouvre le modal 
+      this.addTypeOperation=true; // a chnager
+      this.editbutt=false; 
       this.messageService.add({severity:'error', summary: 'Annumer', detail: 'Opération annulée', life: 3000});
     }
   });
@@ -184,26 +184,32 @@ export class ListTypeOperationComponent implements OnInit {
       this.modalVisible = false; // Ouvre le modal 
       this.addTypeOperation=false;
       this.editbutt=false;
+      this.loading=true;
      // this.typeoperation1.isActive=true;
       this.TypeOperationService.updateTypeoperation(this.typeoperation1,this.typeoperation1.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Type opération add");
-          this.searchtypeoperation();
+          setTimeout(()=>{
+            this.searchtypeoperation();
+            this.loading=false;
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Type opération enregistré', life: 3000});
+
+            },2000)
         },
         error:(error)=>{
           console.log(error);
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+     // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         //Actual logic to perform a confirmation
         
     },
     reject:()=>{
       this.addTypeOperation=false;
-      this.editbutt=false;
-      this.modalVisible = false;
+      this.editbutt=true; // a changer
+      this.modalVisible = true; // a changer
       this.searchtypeoperation();
       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
     }
