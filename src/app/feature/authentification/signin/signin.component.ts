@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ConfirmationService, Message,MessageService, PrimeNGConfig} from 'primeng/api';
+import { retry } from 'rxjs';
 import { User } from 'src/app/core/models/user.model';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
@@ -31,6 +32,7 @@ mailOublie!:string;
 dataMailOubli:any;
 passPage:boolean=false;
 newpass!:string;
+submitted:boolean=false;
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -53,7 +55,6 @@ initForm(){
   )
 }
 
-submitted:boolean=false;
 
 get f(): { [key: string]: AbstractControl } {
   return this.connexionForm.controls;
@@ -61,49 +62,49 @@ get f(): { [key: string]: AbstractControl } {
 
 onSubmit(){
   this.submitted=true;
-  this.loading=true;
   this.utilisateur=this.connexionForm.value as User;
-  console.log(this.utilisateur)
-  this.authentificationService.authenticate(this.utilisateur).subscribe({
-    next: response => {
-      console.log(response);
-      if(response.user){
-        this.loading=false;
-        this.authentificationService.saveToken(response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        const userData = localStorage.getItem('user');
-        this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
-        if (userData) {
-          this.user = JSON.parse(userData);
-          console.log(this.user)
-        }    
-        if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
-          this.router.navigate(['/deliacte/dossier/list']);
-        }
-        else
-        setTimeout(()=>{
-          this.router.navigate(['/deliacte/dashboard/']);
-        },2000)
-      }
-      else{
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
-        setTimeout(()=>{
+  console.log(this.utilisateur);
+  if(this.utilisateur.email && this.utilisateur.password){
+    this.loading=true;
+
+    this.authentificationService.authenticate(this.utilisateur).subscribe({
+      next: response => {
+        console.log(response);
+        if(response.user){
           this.loading=false;
-        },2000)
-
-      }
-    },
-    error: error => {
-      console.error('Erreur lors de l\'authentification', error);
-      this.loading=false;
-      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez verifier vos identifiants'});
-
-   //   this.mess1=[{severity:'error', summary:'Echec de connexion', detail:"Vérifiez vos identifiants ou votre connexion. Si le problème persiste veuillez contacter l'administrateur du site."}]
-      //this.errorMessage = 'Identifiants invalides, veuillez réessayer.';
-    }
-  });
+          this.authentificationService.saveToken(response.token);
+          localStorage.setItem('user', JSON.stringify(response.user));
+          const userData = localStorage.getItem('user');
+          this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
+          if (userData) {
+            this.user = JSON.parse(userData);
+            console.log(this.user)
+          }    
+          if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
+            this.router.navigate(['/deliacte/dossier/list']);
+          }
+          else
+          setTimeout(()=>{
+            this.router.navigate(['/deliacte/dashboard/']);
+          },2000)
+        }
+        else{
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
+          setTimeout(()=>{
+            this.loading=false;
+          },2000)
   
-
+        }
+      },
+      error: error => {
+        console.error('Erreur lors de l\'authentification', error);
+        this.loading=false;
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez verifier vos identifiants'});
+      }
+    });
+    
+    }
+  
  }
 
 
@@ -115,48 +116,52 @@ onSubmit(){
 
  saveUser(){
  // this.utilisateur1.role="CITOYEN";
-  console.log(this.utilisateur1)
-  this.confirmationService.confirm({
-    message: 'Voulez-vous enregistrer cet utilisateur?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.addUser=false;
-    this.utilisateur1.isActive=true;
-    console.log(this.utilisateur1);
-    this.loading=true;
-    this.userService.saveCitoyens(this.utilisateur1).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        if(result.data){
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-          this.loading=false;
-        }
-        else{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message , life: 3000});
-          this.loading=false;
-
-        }
-        console.log(result.message );
-      },
-      error:(error)=>{
-        console.log(error);
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-        this.loading=false;
-      }
+  console.log(this.utilisateur1);
+  this.submitted=true;
+  if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
+    this.confirmationService.confirm({
+      message: 'Voulez-vous enregistrer cet utilisateur?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.addUser=false;
+      this.utilisateur1.isActive=true;
+      console.log(this.utilisateur1);
+      this.loading=true;
+      this.userService.saveCitoyens(this.utilisateur1).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.data){
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+            this.loading=false;
+          }
+          else{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message , life: 3000});
+            this.loading=false;
   
-    })
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.addUser=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+          }
+          console.log(result.message );
+        },
+        error:(error)=>{
+          console.log(error);
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+          this.loading=false;
+        }
+    
+      })
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.addUser=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    }
+    });
   }
-});
+ 
  }
 
  fermerModal(){

@@ -265,18 +265,6 @@ searchOrganisation(){
 
  validerModif(){
   console.log(this.utilisateur1)
-  /*if(this.utilisateur1.role=="Administrateur d'organisation"){
-    this.utilisateur1.role="ORG_ADMIN"
-  }
-  else if(this.utilisateur1.role=="Manager de procedure")
-  {
-    this.utilisateur1.role="PROCEDURE_MANAGER"
-
-  }
-  else if(this.utilisateur1.role=="super admin")
-  {
-    this.utilisateur1.role="SUPER_ADMIN"
-  }*/
   this.utilisateur1.userOrganisationsIds?.push(this.newOrganisationId)
   this.confirmationService.confirm({
     message: 'Voulez-vous modifier cet utilisateur?',
