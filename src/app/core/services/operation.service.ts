@@ -68,10 +68,7 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_procedure > tap > server data :',
-            data
-          )
+          console.log('api.service > delete_procedure > tap > server data :',data )
         )
       );
   }
@@ -85,10 +82,8 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+          console.log()
+         // console.log( 'api.service > get_formulaire > tap > server data :',data  )
         )
       );
   }

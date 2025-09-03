@@ -31,7 +31,7 @@ export class ListOrganisationsComponent implements OnInit {
   modalVisible: boolean = false;
   soumettre:boolean=false;
   submitted: boolean=false;
-
+  loading:boolean=false;
   constructor(
     private organisationService: OrganisationService,
     private router: Router,
@@ -47,14 +47,21 @@ export class ListOrganisationsComponent implements OnInit {
   
 
   searchOrganisation():void{
+    this.loading=true;
     this.organisationService.search_Organisations().subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"Organisation total");
-        this.organisations=result.data;
+        if(result){
+          console.log(result+"Organisation total");
+          this.organisations=result.data;
+          this.loading=false;
+        }
+       
       },
       error:(error)=>{
         console.log(error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+
       }
   
     })
@@ -92,21 +99,28 @@ export class ListOrganisationsComponent implements OnInit {
     accept: () => {
       this.modalVisible = false; // Ouvre le modal 
       this.addOrganisation=false;
+      this.loading=true;
       this.editbutt=false;
       this.organisation1.isActive=true;
       console.log(this.organisation1)
       this.organisationService.saveOrganisation(this.organisation1).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"Organisation add");
-          this.searchOrganisation();
+          if(result){
+            this.loading=false;
+            console.log(result+"Organisation add");
+            this.searchOrganisation();
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Organisation enregistrée', life: 3000});
+          }
+          
         },
         error:(error)=>{
           console.log(error);
+          this.messageService.add({severity:'error', summary: 'Erruer', detail: 'Organisation non enregistrée', life: 3000});
+
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Organisation enregistré', life: 3000});
         //Actual logic to perform a confirmation
         
     },

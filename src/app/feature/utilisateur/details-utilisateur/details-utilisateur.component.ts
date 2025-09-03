@@ -5,6 +5,7 @@ import { Procedure, ProcedureStatus } from 'src/app/core/models/procedure.model'
 import { User } from 'src/app/core/models/user.model';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { Location } from '@angular/common';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-details-utilisateur',
@@ -21,10 +22,12 @@ SUPER_ADMIN= 'SUPER_ADMIN'
 PROCEDURE_MANAGER= 'PROCEDURE_MANAGER'
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
 user: User | null = null;
-
+loading:boolean=false;
   constructor(private route:ActivatedRoute,
       private userService:UtilisateurService,
-      private location: Location
+      private location: Location,
+      private confirmationService: ConfirmationService,
+      private messageService: MessageService,
   ){
 
   }
@@ -48,30 +51,41 @@ user: User | null = null;
   }
 
   getUser(id?:number){
+    this.loading=true;
     if(this.user?.role=="ORG_ADMIN"){
       this.userService.procedureInfo(id).subscribe({
         complete:()=>{},
-    next:(result)=>{
-      this.procedure=result.data;
-      console.log(this.procedure)
-    },
-    error:(error)=>{
-      console.log(error)
-    }
-      });
-   
-     
-    }
+        next:(result)=>{
+          if(result){
+            this.procedure=result.data;
+            console.log(this.procedure);
+            this.loading=false;
+          }
+        },
+        error:(error)=>{
+          console.log(error);
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
+        }
+      });
+    }
     if(this.user?.role=="SUPER_ADMIN"){
       this.userService.userOrgaInfo(id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          this.organisation=result.data;
-          console.log(this.organisation)
+          if(result){
+            this.organisation=result.data;
+            console.log(this.organisation);
+            this.loading=false;
+          }
+         
         },
         error:(error)=>{
-          console.log(error)
+          console.log(error);
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+
     }
       });
     }
@@ -79,12 +93,17 @@ user: User | null = null;
     this.userService.get_User(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
-        this.utilisateur=result.data;
-       
+        if(result){
+          console.log(result)
+          this.utilisateur=result.data;
+          this.loading=false;
+        }
       },
       error:(error)=>{
-        console.log(error)
+        console.log(error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+        this.loading=false;
+
       }
     })
    

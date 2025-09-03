@@ -25,6 +25,7 @@ import {DividerModule} from 'primeng/divider';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {ConfirmDialog, ConfirmDialogModule} from 'primeng/confirmdialog';
 import { DetailsTypeoperationComponent } from './details-typeoperation/details-typeoperation.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -56,7 +57,9 @@ import { DetailsTypeoperationComponent } from './details-typeoperation/details-t
     ProgressBarModule,
     HttpClientModule,
     FormsModule,
-    FileUploadModule
+    ProgressSpinnerModule,
+    FileUploadModule,
+    InputTextareaModule
   ],
   providers: [
     ConfirmationService ,

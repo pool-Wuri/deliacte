@@ -17,7 +17,7 @@ export class DetailsOrganisationsComponent {
   organisation=new Organisation;
   utilisateurs=new Array <User> ();
   procedures=new Array <Procedure> ();
-
+  loading:boolean=false;
   ORG_ADMIN = 'ORG_ADMIN'; // Définir la constante
   SUPER_ADMIN= 'SUPER_ADMIN'
   PROCEDURE_MANAGER= 'PROCEDURE_MANAGER'
@@ -45,7 +45,7 @@ ngOnInit():void{
 
 
 getOrganisation(id?:number){
-
+  
   this.organisationService.getProcedureByOrg(id).subscribe({
     complete:()=>{},
     next:(result)=>{

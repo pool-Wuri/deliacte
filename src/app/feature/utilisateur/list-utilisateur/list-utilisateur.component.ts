@@ -84,47 +84,24 @@ submitted: boolean=false;
  }
 
  searchUser():void{
-  console.log(this.user?.role)
- /* if(this.user?.role=="SUPER_ADMIN"){
-    this.userService.getUserByRole("ORG_ADMIN").subscribe({
-      next:(value)=>{
-        this.utilisateurs=value;
-        console.log(this.utilisateurs)
-      },
+  this.loading=true;
+  this.userService.search_users().subscribe({
       complete:()=>{},
-      error:(err)=>{}
-    })
-   
-  }
-
-  if(this.user?.role=="ORG_ADMIN"){
-    this.userService.getUserByRole("PROCEDURE_MANAGER").subscribe({
-      next:(value)=>{
-        this.utilisateurs=value;
-        this.utilisateurs.reverse();
-        console.log(this.utilisateurs)
+      next:(result)=>{
+        if(result){
+          console.log(result)
+          this.utilisateurs=result.data;
+          console.log(this.utilisateurs);
+          this.loading=false;
+        }
       },
-      complete:()=>{},
-      error:(err)=>{}
-    })
-    this.utilisateurs = this.utilisateurs.filter(u => 
-      u.role === "PROCEDURE_MANAGER" || u.role === "Manager de procedure"
-    ); 
-  }*/
+      error:(error)=>{
+        console.log(error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
- this.userService.search_users().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      console.log(result)
-      this.utilisateurs=result.data;
-      console.log(this.utilisateurs)
-    
-    },
-    error:(error)=>{
-      console.log(error);
-    }
+      }
 
-  })
+    });
  }
 
   parseStatus(status: string): string {
@@ -204,62 +181,60 @@ searchProcedures(){
   //this.soumettre=true;
   this.submitted=true;
   console.log(this.utilisateur1);
-  /*if(this.utilisateur1.role=="Administrateur d'organisation"){
-    this.utilisateur1.role="ORG_ADMIN"
-  }
-  else if(this.utilisateur1.role=="Manager de procedure")
-  {
-    this.utilisateur1.role="PROCEDURE_MANAGER"
+  if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
+    this.confirmationService.confirm({
+      message: 'Voulez-vous enregistrer cet utilisateur?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.loading=true;
+      this.modalVisible = false; // Ouvre le modal 
+      this.addUser=false;
+      this.editbutt=false;
+      this.utilisateur1.isActive=true;
+      console.log(this.utilisateur1)
+      this.userService.saveUsers(this.utilisateur1).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.data){
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur créé', life: 3000});
+            this.loading=false;
+          }
+          else{
+            this.searchUser();
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message, life: 3000});
+            this.loading=false;
 
-  }
-  else if(this.utilisateur1.role=="super admin")
-  {
-    this.utilisateur1.role="SUPER_ADMIN"
-  }*/
- if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
-  this.confirmationService.confirm({
-    message: 'Voulez-vous enregistrer cet utilisateur?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.loading=true;
-    this.modalVisible = false; // Ouvre le modal 
-    this.addUser=false;
-    this.editbutt=false;
-    this.utilisateur1.isActive=true;
-    console.log(this.utilisateur1)
-    this.userService.saveUsers(this.utilisateur1).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result+"User add");
-        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        this.searchUser();
-        this.loading=false;
-      },
-      error:(error)=>{
-        console.log(error);
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-        this.loading=false;
+          }
+      /*   console.log(result+"User add");
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+          this.searchUser();
+          this.loading=false;*/
+        },
+        error:(error)=>{
+          console.log(error);
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+          this.loading=false;
 
-      }
-  
-    })
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.modalVisible = false; // Ouvre le modal 
-    this.addUser=false;
-    this.editbutt=false;
-    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
+        }
+    
+      })
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.modalVisible = false; // Ouvre le modal 
+      this.addUser=false;
+      this.editbutt=false;
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
+    }
+    });
+    
   }
-  });
   
- }
- 
  }
 
 searchOrganisation(){
@@ -325,13 +300,14 @@ searchOrganisation(){
         setTimeout(()=>{
           this.loading=false;
           this.searchUser();
-
         },2000)
 
       //Actual logic to perform a confirmation
       },
       error:(error)=>{
         console.log(error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Non modifié', life: 3000});
+
       }
     })
     

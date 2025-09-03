@@ -30,7 +30,7 @@ export class ListTypeOperationComponent implements OnInit {
   modalVisible: boolean = false;
   soumettre:boolean=false;
   submitted: boolean=false;
-
+  loading:boolean=false;
   constructor(
     private TypeOperationService: TypeOperationService,
     private router: Router,
@@ -86,19 +86,25 @@ export class ListTypeOperationComponent implements OnInit {
       this.modalVisible = false; // Ouvre le modal 
       this.addTypeOperation=false;
       this.editbutt=false;
+      this.loading=true;
       console.log(this.typeoperation1)
       this.TypeOperationService.saveTypeoperation(this.typeoperation1).subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result+"Type opération add");
-          this.searchtypeoperation();
+          setTimeout(()=>{
+            this.searchtypeoperation();
+            this.loading=false;
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Type opération enregistré', life: 3000});
+
+            },2000)
+         // this.searchtypeoperation();
         },
         error:(error)=>{
           console.log(error);
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Type opération enregistré', life: 3000});
         //Actual logic to perform a confirmation
         
     },
@@ -106,7 +112,7 @@ export class ListTypeOperationComponent implements OnInit {
       this.modalVisible = false; // Ouvre le modal 
       this.addTypeOperation=false;
       this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annumer', detail: 'Opération annulée', life: 3000});
     }
   });
     }
@@ -136,22 +142,30 @@ export class ListTypeOperationComponent implements OnInit {
       rejectLabel:'Non',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.assignModal=false;
-      this.TypeOperationService.delete_Typeoperation(typeoperation.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
-    },
-    reject:()=>{
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-    }
+      accept: () => {
+        this.assignModal=false;
+        this.loading=true;
+        this.TypeOperationService.delete_Typeoperation(typeoperation.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.messageService.add({severity:'success', summary: 'Supprimé', detail: 'Suppression reussie', life: 3000});      
+            setTimeout(()=>{
+              this.searchtypeoperation();
+              this.loading=false;
+              },2000)
+             
+          },
+          error:(error)=>{
+            console.log(error);
+            this.loading=false;
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Opération non supprimée', life: 3000});
+          }
+      
+        })
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Annulation de l\'opération reussie', life: 3000});
+      }
   });
 
   }

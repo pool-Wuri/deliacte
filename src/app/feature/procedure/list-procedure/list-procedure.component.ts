@@ -36,7 +36,7 @@ procedure=new Procedure;
   SUPER_ADMIN= 'SUPER_ADMIN';
   PROCEDURE_MANAGER='PROCEDURE_MANAGER';
   submitted: boolean=false;
-
+  loading:boolean=false;
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,
@@ -62,19 +62,26 @@ procedure=new Procedure;
    }
 
    search_Procedure():void{
+    this.loading=true;
     this.procedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"procedure total");
-        this.procedures=result.data;
-        console.log(this.procedures)
-        this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
-        this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
-        this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
-        this.procedures=this.procedures.filter(u=>u.status!=="ARCHIVED");
+        if(result){
+          console.log(result+"procedure total");
+          this.procedures=result.data;
+          console.log(this.procedures)
+          this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
+          this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
+          this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
+          this.procedures=this.procedures.filter(u=>u.status!=="ARCHIVED");
+          this.loading=false;
+        }
       },
       error:(error)=>{
         console.log(error);
+        this.loading=false;
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+
       }
   
     })
@@ -94,12 +101,12 @@ procedure=new Procedure;
     this.addboutton=false;
     this.addUser=false;
     this.editbutt=false;
+    this.loading=false;
    }
 
    saveProcedure(){ 
    // this.soumettre=true;
    this.submitted=true;
-
    console.log(this.procedure)
    if(this.procedure.name && this.procedure.description && this.procedure.organisationId){
     this.confirmationService.confirm({
@@ -109,48 +116,53 @@ procedure=new Procedure;
       rejectLabel:'Non',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.addboutton = false; // Ouvre le modal 
-      this.addUser=false;
-      this.editbutt=false;
-      this.procedure.isActive=true;
-      this.procedureService.saveProcedure(this.procedure).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"User add");
-          this.search_Procedure();
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
-    },
-    reject:()=>{
-      this.addboutton = false; // Ouvre le modal 
-      this.addUser=false;
-      this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
-    }
-  });
+      accept: () => {
+        this.loading=true;
+        this.addboutton = false; // Ouvre le modal 
+        this.addUser=false;
+        this.editbutt=false;
+        this.procedure.isActive=true;
+        this.procedureService.saveProcedure(this.procedure).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result){
+              this.loading=false;
+              console.log(result+"User add");
+              this.search_Procedure();
+              this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure enregistrée avec succès', life: 3000});
+            }
+          
+          },
+          error:(error)=>{
+            console.log(error);
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non enregistrée', life: 3000});
+            this.loading=false;
+          }
+      
+        })        
+      },
+      reject:()=>{
+        this.addboutton = false; // Ouvre le modal 
+        this.addUser=false;
+        this.editbutt=false;
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'enregistrement', life: 3000});
+        this.loading=false;
+      }
+    });
    }
   
-    
    }
   
   searchOrganisation(){
     this.userService.userOrgaInfo(this.user?.id).subscribe({
       complete:()=>{},
-  next:(result)=>{
-    this.organisations=result.data;
-    console.log(this.organisations)
-  },
-  error:(error)=>{
-    console.log(error)
-  }
+      next:(result)=>{
+        this.organisations=result.data;
+        console.log(this.organisations)
+      },
+      error:(error)=>{
+        console.log(error)
+      }
     });
   /*  this.organisationService.search_Organisations("").subscribe(
       {
@@ -190,25 +202,33 @@ procedure=new Procedure;
       this.addboutton = false; // Ouvre le modal 
       this.addUser=false;
       this.editbutt=false;
+      this.loading=true;
       this.procedureService.updateprocedure(this.procedure,this.procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
+          if(result){
+            this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
+            setTimeout(()=>{
+              this.loading=false;
+              this.search_Procedure();
+            },2000)
+          }
           console.log(result+"procedure add");
         },
         error:(error)=>{
           console.log(error);
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Modification non reussie', life: 3000});
+          this.loading=false;
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
     },
     reject:()=>{
       this.addUser=false;
-    this.editbutt=false;
-    this.addboutton = false;
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.editbutt=false;
+      this.addboutton = false;
+      this.loading=false;
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'enregistrement', life: 3000});
     }
   });
    // Ouvre le modal 
@@ -303,22 +323,32 @@ procedure=new Procedure;
                 icon: 'pi pi-exclamation-triangle',
                 acceptButtonStyleClass:'acceptButton',
               accept: () => {
+                this.loading=true;
+                console.log(procedure)
                 console.log(procedure.id)
                 procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
                 this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
                   complete:()=>{},
                   next:(result)=>{
-                    console.log(result+"procedure publié");
+                    if(result){
+                      this.messageService.add({severity:'success', summary: 'Succes', detail: 'Procedure publiée', life: 3000});
+                      setTimeout(()=>{
+                        this.loading=false;
+                        this.search_Procedure();
+                      },2000)
+                    }
                   },
                   error:(error)=>{
                     console.log(error);
+                    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non publiée', life: 3000});
+                    this.loading=false;
                   }
               
                 })
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+               // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
               },
               reject:()=>{
-                this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+                this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Annuler la publication', life: 3000});
               }
             });
             }
@@ -344,7 +374,7 @@ procedure=new Procedure;
   generatePDF() {
     // Create a new PDF document.
     const doc = new jsPDF();
-  
+
     // Add content to the PDF.
     doc.setFontSize(16);
     doc.text('Liste des procedures', 10, 10);

@@ -32,6 +32,7 @@ import {PickListModule} from 'primeng/picklist';
 import {DataViewModule} from 'primeng/dataview';
 import {ListboxModule} from 'primeng/listbox';
 import {TreeModule} from 'primeng/tree';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {TreeModule} from 'primeng/tree';
     PickListModule,
     DataViewModule,
     ListboxModule,
+    ProgressSpinnerModule,
     TreeModule
     
   ],
