@@ -105,10 +105,11 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
+          console.log()
+         /* console.log(
             'api.service > get_formulaire > tap > server data :',
             data
-          )
+          )*/
         )
       );
   }

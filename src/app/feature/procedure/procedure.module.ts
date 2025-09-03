@@ -28,6 +28,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DetailsProcedureComponent } from './details-procedure/details-procedure.component';
 import {PanelModule} from 'primeng/panel';
 import {TabViewModule} from 'primeng/tabview';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {TabViewModule} from 'primeng/tabview';
     ConfirmDialogModule,
     SplitterModule,
     PanelModule,
+    ProgressSpinnerModule,
     TabViewModule
   ]
   ,

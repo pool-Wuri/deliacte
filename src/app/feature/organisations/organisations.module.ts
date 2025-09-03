@@ -27,6 +27,7 @@ import { DetailsOrganisationsComponent } from './details-organisations/details-o
 import { SplitterModule } from 'primeng/splitter';
 import {PanelModule} from 'primeng/panel';
 import {TabViewModule} from 'primeng/tabview';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {TabViewModule} from 'primeng/tabview';
     HttpClientModule,
     FormsModule,
     FileUploadModule,
+    ProgressSpinnerModule,
     PanelModule
   ],
   providers: [

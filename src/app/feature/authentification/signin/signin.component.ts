@@ -136,7 +136,7 @@ onSubmit(){
           this.loading=false;
         }
         else{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message, life: 3000});
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message , life: 3000});
           this.loading=false;
 
         }
@@ -144,6 +144,8 @@ onSubmit(){
       },
       error:(error)=>{
         console.log(error);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+        this.loading=false;
       }
   
     })
