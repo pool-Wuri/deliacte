@@ -353,7 +353,7 @@ procedure=new Procedure;
             });
             }
             else{
-              this.messageService.add({severity:'error', summary: 'error', detail: 'Procedure déja publiée', life: 3000});
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure déja publiée', life: 3000});
         
             }
         }
