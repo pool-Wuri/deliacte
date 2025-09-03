@@ -60,7 +60,7 @@ export class TypeOperationService {
 
   public updateTypeoperation(TypeOperation:any,id?:number):Observable<any>{
     return this.http
-          .put<any>(TYPEOPERATION_API+'?'+id, TypeOperation)
+          .put<any>(TYPEOPERATION_API+'/'+id, TypeOperation)
           .pipe(
             tap((data) => {
               console.log('api.service > update_organisation> tap :', data);

@@ -70,7 +70,7 @@ export class ProcedureService {
 
   public updateprocedure(procedure:any,id?:number):Observable<any>{
     return this.http
-          .put<any>(PROCEDURE_API+'?'+id, procedure)
+          .put<any>(PROCEDURE_API+'/'+id, procedure)
           .pipe(
             tap((data) => {
               console.log('api.service > update-procedure> tap :', data);
