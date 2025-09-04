@@ -216,10 +216,11 @@ export class ListOrganisationsComponent implements OnInit {
        this.organisationService.delete_organisation(organisation.id).subscribe({
          complete:()=>{},
          next:(result)=>{
+          this.searchOrganisation();
          },
          error:(error)=>{
            console.log(error);
-           this.searchOrganisation();
+           
          }
      
        })
