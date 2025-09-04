@@ -53,12 +53,12 @@ export class DemandePageComponent {
   indexchamp!:number;
   numDossier!:number;
   indexSave:number[]=[];
- champOperationId!:any;
- indexRequis:number[]=[];
-isDisabled=false;
-loading=false;
-radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
-procedureAff!:Procedure;
+  champOperationId!:any;
+  indexRequis:number[]=[];
+  isDisabled=false;
+  loading=false;
+  radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
+  procedureAff!:Procedure;
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
@@ -76,11 +76,11 @@ ngOnInit():void{
   const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-    console.log(this.user)
+   // console.log(this.user)
   }
   this.route.params.subscribe(params => {
     this.id = params['id']; 
-    console.log(this.id)
+    //console.log(this.id)
     this.getProcedure(this.id)
    }
   );
@@ -127,14 +127,14 @@ getProcedure(id?:number){
        // citoyenId: this.user?.id,
         champOperationId: champ.id // ou une autre logique
       }));
-      console.log('Champs:', this.champs);
-      console.log('DemandeFor:', this.demandeFor);
-      console.log('DemandeFor:', this.traitement);
+     // console.log('Champs:', this.champs);
+      //console.log('DemandeFor:', this.demandeFor);
+      //console.log('DemandeFor:', this.traitement);
 
     },
     complete:()=>{},
     error:(error)=>{
-      console.log(error)
+     // console.log(error)
     }
   });
 
@@ -188,16 +188,16 @@ infosVerifier(){
 }
 
 onFileChange(event: any, index: number) {
-  console.log(index)
+  //console.log(index)
   if(this.demandeFor[index]){
-   console.log(this.demandeFor[index].champOperationId) 
+   //console.log(this.demandeFor[index].champOperationId) 
    this.champOperationId= this.demandeFor[index]?.champOperationId;
-    console.log(this.champOperationId)
+    //console.log(this.champOperationId)
   }
   const file = event.target.files[0];
-  console.log( this.numDossier)
+ //console.log( this.numDossier)
     this.indexchamp=index;
-    console.log(this.indexchamp)
+  //  console.log(this.indexchamp)
   // Traitement du fichier, par exemple :
       if (file) {
         this.file=file;
@@ -210,24 +210,24 @@ onFileChange(event: any, index: number) {
 }
 
 saveFile(){
-  console.log(this.file);
-  console.log(this.numDossier)
-  console.log(this.champOperationId)
+  //console.log(this.file);
+  //console.log(this.numDossier)
+  //console.log(this.champOperationId)
   this.loading=true;
   this.data.append('file', this.file, this.file.name );
   this.data.append('champOperationId', this.champOperationId.toString());
-  console.log(this.data)
+ // console.log(this.data)
   this.procedureService.saveDoc(this.data,this.numDossier).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result)
+     // console.log(result)
       if(result){
         this.indexSave.push(this.indexchamp);
        // this.demandeFor.splice(this.indexchamp,1);
         this.file={};
      //  this.indexchamp=0;
-        console.log(this.demandeFor);
-        console.log(this.indexSave)
+        //console.log(this.demandeFor);
+       // console.log(this.indexSave)
         this.data.delete('file');
         this.data.delete('champOperationId');
       }
@@ -247,7 +247,7 @@ searchOperation():void{
     next:(value)=>{
       this.operations=value;
       this.operations=this.operations.filter(u=>u.procedureId==this.id);
-      console.log(this.operations);
+     // console.log(this.operations);
     /*  this.operationService.searchChamp("").subscribe({
         next:(value)=>{
           this.champs=value;
@@ -270,7 +270,7 @@ searchChamp(){
   this.operationService.searchChamp("").subscribe({
     next:(value)=>{
       this.champs=value;
-      console.log(this.champs);
+     // console.log(this.champs);
    
     },
     complete:()=>{},
@@ -281,58 +281,55 @@ searchChamp(){
 
 
 onOptionChange(option: string, index: number) {
-  console.log(index)
-  console.log('Option sélectionnée:', option);
+  //console.log(index)
+  //console.log('Option sélectionnée:', option);
   this.selectedOption = option;
-  console.log(option)
+//  console.log(option)
   this.demandeFor[index].name = option;
-  console.log(this.demandeFor[index])
+ // console.log(this.demandeFor[index])
   // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
 }
 
-
 updateCheckbox(index: number) {
-  console.log(this.demandeFor[index])
+  //console.log(this.demandeFor[index])
   // Toggle l'état de la case à cocher
   this.demandeFor[index].name = "";
 }
 
 
 finDemande(){
-  this.indexRequis=[];
-  console.log(this.champs);
-  for(let i=0;i<this.champs.length;i++){
-    if(this.champs[i].isRequired){
-      this.indexRequis.push(i);
+    this.indexRequis=[]; // pour la verification des champs requis
+    let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais 
+    for(let i=0;i<this.champs.length;i++){
+      if(this.champs[i].isRequired){
+        this.indexRequis.push(i);
+      }
     }
-    console.log(this.indexRequis)
-  }
-  let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais
-  for(let i=0;i<this.indexRequis.length;i++){
-    if(this.demandeFor[this.indexRequis[i]].name){
-      console.log(this.demandeFor[this.indexRequis[i]].name)
-      tousVrais = true;  // Si un élément est faux, on met tousVrais à false
-      break;  //
+    if(this.indexRequis.length==0){
+      tousVrais=true;
+    }
+    else{
+      for(let i=0;i<this.indexRequis.length;i++){
+        if(this.demandeFor[this.indexRequis[i]].name){
+          console.log(this.demandeFor[this.indexRequis[i]].name)
+          tousVrais = true;  // Si un élément est faux, on met tousVrais à false
+          console.log(tousVrais)
+          break;  //
 
+        }
+      }
     }
-  }
-  console.log(tousVrais)
-  console.log(this.traitement)
-  console.log(this.demandeFor);
-  this.traitement.isActive=true;
-  this.indexSave.sort((a, b) => b - a);
-  this.submitted=true;
-  for(let i=0;i<this.indexSave.length;i++){
-    this.demandeFor.splice(this.indexSave[i],1);
-  }
-  
-  this.data1 = {
-      traitement: this.traitement,
-      dossiers: this.demandeFor
-  }
- 
-  console.log(this.data1)  
-  //const data: FormData = new FormData();
+    this.traitement.isActive=true;
+    this.indexSave.sort((a, b) => b - a);
+    this.submitted=true;
+    for(let i=0;i<this.indexSave.length;i++){
+      this.demandeFor.splice(this.indexSave[i],1);
+    }
+    this.data1 = {
+        traitement: this.traitement,
+        dossiers: this.demandeFor
+    }
+    //const data: FormData = new FormData();
     if(tousVrais){
      this.confirmationService.confirm({
       message: 'Voulez-vous vraiment soumettre ce dossier?',
@@ -346,29 +343,28 @@ finDemande(){
       this.procedureService.get_Procedure(this.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result)
+         // console.log(result)
           this.procedure=result.data;
-          console.log(this.procedure)
+         // console.log(this.procedure)
           this.procedureService.get_Champ(this.id).subscribe({
             next:(result)=>{
-              console.log(result)
-              console.log(this.data1)
-              console.log(this.numDossier)
-
+              //console.log(result)
+              //console.log(this.data1)
+              //console.log(this.numDossier)
               this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
                 next:(result)=>{  
                   console.log(result);           
                   this.messageService.add({severity:'success', summary: 'Successful', detail: 'Demande faite avec succès', life: 3000});  
                   this.router.navigate(['/deliacte/dossier/list']);
-                /*  if(result){
+                if(result){
                     this.loading=false;
                     this.messageService.add({severity:'error', summary: 'Erreur', detail: "Demande créée avec succès", life: 3000});
-                  }*/
+                  }
                 },
                 complete:()=>{
                 },
                 error:(error)=>{
-                  console.log(error);
+                 // console.log(error);
                   this.loading=false;
                   this.messageService.add({severity:'error', summary: 'Erreur', detail: error.code, life: 3000});
 
@@ -385,7 +381,9 @@ finDemande(){
          
         },
         error:(error)=>{
-          console.log(error)
+         // console.log(error)
+         this.messageService.add({severity:'error', summary: 'Erreur', detail: error.code, life: 3000});
+
         }
       });        
     },
