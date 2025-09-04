@@ -116,7 +116,7 @@ export class ListOrganisationsComponent implements OnInit {
         },
         error:(error)=>{
           console.log(error);
-          this.messageService.add({severity:'error', summary: 'Erruer', detail: 'Organisation non enregistrée', life: 3000});
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Organisation non enregistrée', life: 3000});
 
         }
     

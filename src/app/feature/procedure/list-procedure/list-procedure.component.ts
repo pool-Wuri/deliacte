@@ -62,7 +62,7 @@ procedure=new Procedure;
    }
 
    search_Procedure():void{
-    this.loading=true;
+    //this.loading=true;
     this.procedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -225,8 +225,8 @@ procedure=new Procedure;
     },
     reject:()=>{
       this.addUser=false;
-      this.editbutt=false;
-      this.addboutton = false;
+     // this.editbutt=false;
+     // this.addboutton = false;
       this.loading=false;
       this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'enregistrement', life: 3000});
     }
