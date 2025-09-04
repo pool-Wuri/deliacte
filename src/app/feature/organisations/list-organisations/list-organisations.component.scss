@@ -172,5 +172,10 @@
             }
         }
     }
+.p-dropdown-panel {
+  max-width: 95vw; /* limite à l’écran */
+  overflow-x: auto;
+}
+
 
 }
