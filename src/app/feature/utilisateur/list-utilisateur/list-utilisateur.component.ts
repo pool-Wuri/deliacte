@@ -115,14 +115,6 @@ submitted: boolean=false;
   this.title="Ajouter";
   this.utilisateur1={};
   this.submitted=false;
- /* if(this.user?.role=="ORG_ADMIN"){
-    this.utilisateur1.role="Manager de procedure"
-  }
-
-  if(this.user?.role=="SUPER_ADMIN"){
-    this.utilisateur1.role="Administrateur d'organisation"
-
-  }*/
   this.searchOrganisation();
   console.log(this.utilisateur1.role)
  }
@@ -202,17 +194,14 @@ searchProcedures(){
           if(result.data){
             this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur créé', life: 3000});
             this.loading=false;
+            this.searchUser();
           }
           else{
             this.searchUser();
             this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message, life: 3000});
             this.loading=false;
 
-          }
-      /*   console.log(result+"User add");
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-          this.searchUser();
-          this.loading=false;*/
+          } 
         },
         error:(error)=>{
           console.log(error);
@@ -226,8 +215,6 @@ searchProcedures(){
         
     },
     reject:()=>{
-     // this.modalVisible = false; // Ouvre le modal 
-     // this.addUser=false;
       this.editbutt=false;
       this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
     }
