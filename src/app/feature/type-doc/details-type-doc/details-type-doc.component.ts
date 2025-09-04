@@ -495,20 +495,8 @@ export class DetailsTypeDocComponent {
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
     console.log(this.demandeFor)
-   // this.traitement.status=this.operationnow.verbeOperation;
-   // this.traitement.commentaire="dossier validé";
-    this.traitement.isActive=true;
-   // this.traitement.numeroDossier=numDossier;
-  /*  this.typeDocService.getDossierPour(numDossier).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-       console.log(result.data)
-      },
-      error:(error)=>{
-        console.log(error);
-      }
   
-    });*/
+    this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
       this.demandeFor.splice(this.indexSave[i],1);

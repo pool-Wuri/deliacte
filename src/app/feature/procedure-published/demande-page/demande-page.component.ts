@@ -7,6 +7,7 @@ import { DemandeProcedur, Procedure } from 'src/app/core/models/procedure.model'
 import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-demande-page',
@@ -57,7 +58,7 @@ export class DemandePageComponent {
 isDisabled=false;
 loading=false;
 radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
-
+procedureAff!:Procedure;
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
@@ -65,6 +66,7 @@ radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons 
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
+    private location: Location,
 
 
 ){
@@ -89,6 +91,17 @@ ngOnInit():void{
 getProcedure(id?:number){
   this.traitement={};
   console.log(id)
+  this.procedureService.get_Procedure(id).subscribe({
+    next:(result)=>{
+      console.log(result);
+      this.procedureAff=result.data;
+      console.log(this.procedureAff)
+    },
+    complete:()=>{},
+    error:(err)=>{
+
+    }
+  })
   this.procedureService.get_Champ(id).subscribe({
     next:(result)=>{
       console.log(result)
@@ -186,12 +199,12 @@ onFileChange(event: any, index: number) {
     this.indexchamp=index;
     console.log(this.indexchamp)
   // Traitement du fichier, par exemple :
- if (file) {
-   this.file=file;
-    //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
-} else {
-  console.log('Aucun fichier sélectionné');
-}
+      if (file) {
+        this.file=file;
+          //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
+      } else {
+        console.log('Aucun fichier sélectionné');
+      }
 
 
 }
@@ -304,7 +317,7 @@ finDemande(){
     }
   }
   console.log(tousVrais)
-console.log(this.traitement)
+  console.log(this.traitement)
   console.log(this.demandeFor);
   this.traitement.isActive=true;
   this.indexSave.sort((a, b) => b - a);
@@ -313,7 +326,7 @@ console.log(this.traitement)
     this.demandeFor.splice(this.indexSave[i],1);
   }
   
-    this.data1 = {
+  this.data1 = {
       traitement: this.traitement,
       dossiers: this.demandeFor
   }
@@ -339,44 +352,53 @@ console.log(this.traitement)
           this.procedureService.get_Champ(this.id).subscribe({
             next:(result)=>{
               console.log(result)
+              console.log(this.data1)
+              console.log(this.numDossier)
+
               this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
-                next:(result)=>{               
+                next:(result)=>{  
+                  console.log(result);           
+                  this.messageService.add({severity:'success', summary: 'Successful', detail: 'Demande faite avec succès', life: 3000});  
                   this.router.navigate(['/deliacte/dossier/list']);
-                  if(result){
+                /*  if(result){
                     this.loading=false;
-                  }
+                    this.messageService.add({severity:'error', summary: 'Erreur', detail: "Demande créée avec succès", life: 3000});
+                  }*/
                 },
                 complete:()=>{
-            
                 },
                 error:(error)=>{
                   console.log(error);
+                  this.loading=false;
+                  this.messageService.add({severity:'error', summary: 'Erreur', detail: error.code, life: 3000});
+
                 }
               });
             },
             complete:()=>{},
             error:(error)=>{
-              console.log(error)
+              console.log(error);
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+
             }
-          })
-  
+          });
          
         },
         error:(error)=>{
           console.log(error)
         }
-      });
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        
+      });        
     },
     reject:()=>{
-  
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'error', detail: 'Interruption demande', life: 3000});
     }
       });
     }
-  
 
+}
+
+retourPage(){
+  this.location.back();
 }
 
 }
