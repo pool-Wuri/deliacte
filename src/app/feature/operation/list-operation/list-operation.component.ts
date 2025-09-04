@@ -280,7 +280,7 @@ fermerModal(){
     acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.loading=true;
-      this.operationService.updateprocedure(this.operation).subscribe({
+      this.operationService.updateprocedure(this.operation,this.operation.id).subscribe({
         next:(value)=>{
           console.log(value)
           this.addboutton=false;
