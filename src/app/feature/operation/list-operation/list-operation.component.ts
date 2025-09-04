@@ -256,9 +256,14 @@ fermerModal(){
       })
     },
     reject:()=>{
-      this.addboutton=false;
-      this.messageService.add({severity:'Erreur', summary: 'Erreur', detail: 'Opération non enregistrée', life: 3000});
+      //this.addboutton=false;
+      this.addboutton=true;
+      this.addUser=true;
+      this.editbutt=false;
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Opération non enregistrée', life: 3000});
+      this.loading=false;
     }
+
     });
   }
   
