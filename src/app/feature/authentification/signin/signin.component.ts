@@ -33,6 +33,7 @@ dataMailOubli:any;
 passPage:boolean=false;
 newpass!:string;
 submitted:boolean=false;
+currentUrl: string = '';
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -45,6 +46,8 @@ constructor(
 
 ngOnInit(): void {
   this.initForm();
+  this.currentUrl = this.router.url;
+    console.log('URL actuelle :', this.currentUrl);
 }
 initForm(){
   this.connexionForm=this.formBuilder.group(
