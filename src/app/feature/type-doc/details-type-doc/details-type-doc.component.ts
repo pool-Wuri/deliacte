@@ -669,8 +669,10 @@ saveFile(){
   
   })
 }
+
 voirDoc(name:any){
   console.log(name.champOperation.inputType)
+  console.log(name)
   this.displayPosition = true;
   if(name.champOperation.inputType==="IMAGE"){
     this.imageUrl=environment.apiUrl+"/uploads/"+name.name;
@@ -680,11 +682,45 @@ voirDoc(name:any){
     this.docUrl=environment.apiUrl+"/uploads/pdf/"+name.name;
     this.imageUrl="";
   }
-console.log(this.imageUrl)
+  console.log(this.imageUrl)
   console.log(this.docUrl)
 
   
 }
+
+
+telechargerDoc(name: any): void {
+  if (!name || !name.champOperation || !name.name) {
+    console.warn('Données invalides pour le téléchargement');
+    return;
+  }
+
+  const inputType = name.champOperation.inputType;
+  const fileName = name.name;
+
+  let fileUrl = '';
+
+  if (inputType === 'IMAGE') {
+    fileUrl = `${environment.apiUrl}/uploads/${fileName}`;
+  } else if (inputType === 'PDF') {
+    fileUrl = `${environment.apiUrl}/uploads/pdf/${fileName}`;
+  } else {
+    console.warn('Type de fichier non supporté pour le téléchargement:', inputType);
+    return;
+  }
+
+  // Création du lien de téléchargement et déclenchement
+  const link = document.createElement('a');
+  link.href = fileUrl;
+  link.download = fileName;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  console.log('Téléchargement déclenché pour :', fileName);
+}
+
 
 modifierDossier(numDossier:number){
   console.log(numDossier);

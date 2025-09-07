@@ -103,40 +103,39 @@ getProcedure(id?:number){
     }
   })
   this.procedureService.get_Champ(id).subscribe({
-    next:(result)=>{
-      console.log(result)
-      this.numDossier=result.message;
-      this.champs=result.data;
-      console.log(this.champs)
-      this.traitement.operationId=this.champs[0].operationId;
+    next: (result) => {
+      console.log(result);
+      this.numDossier = result.message;
+      this.champs = result.data;
+  
+      // Empêcher erreur si aucun champ
+      if (!this.champs || this.champs.length === 0) {
+        this.demandeFor = [];
+        return;
+      }
+  
+      this.traitement.operationId = this.champs[0].operationId;
+  
       this.operationService.get_Procedure(this.champs[0].operationId).subscribe({
-        next:(result)=>{
-          console.log(result);
-          this.traitement.status=result.data.verbeOperation;
-        },
-        complete:()=>{},
-        error:(err)=>{
-
+        next: (res) => {
+          this.traitement.status = res.data.verbeOperation;
         }
-      })
-      this.traitement.commentaire="";
-      this.traitement.isActive=false;
-
+      });
+  
+      this.traitement.commentaire = "";
+      this.traitement.isActive = false;
+  
+      // Initialiser demandeFor avec les bons champs
       this.demandeFor = this.champs.map(champ => ({
-        name: '',
-       // citoyenId: this.user?.id,
-        champOperationId: champ.id // ou une autre logique
+        name: '', // Valeur vide par défaut
+        champOperationId: champ.id
       }));
-     // console.log('Champs:', this.champs);
-      //console.log('DemandeFor:', this.demandeFor);
-      //console.log('DemandeFor:', this.traitement);
-
-    },
-    complete:()=>{},
-    error:(error)=>{
-     // console.log(error)
+  
+      console.log('Champs:', this.champs);
+      console.log('DemandeFor:', this.demandeFor);
     }
   });
+  
 
 /* this.procedureService.get_Procedure(id).subscribe({
     complete:()=>{},
@@ -188,20 +187,13 @@ infosVerifier(){
 }
 
 onFileChange(event: any, index: number) {
-  //console.log(index)
   if(this.demandeFor[index]){
-   //console.log(this.demandeFor[index].champOperationId) 
    this.champOperationId= this.demandeFor[index]?.champOperationId;
-    //console.log(this.champOperationId)
   }
   const file = event.target.files[0];
- //console.log( this.numDossier)
     this.indexchamp=index;
-  //  console.log(this.indexchamp)
-  // Traitement du fichier, par exemple :
       if (file) {
         this.file=file;
-          //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
       } else {
         console.log('Aucun fichier sélectionné');
       }
@@ -210,24 +202,15 @@ onFileChange(event: any, index: number) {
 }
 
 saveFile(){
-  //console.log(this.file);
-  //console.log(this.numDossier)
-  //console.log(this.champOperationId)
   this.loading=true;
   this.data.append('file', this.file, this.file.name );
   this.data.append('champOperationId', this.champOperationId.toString());
- // console.log(this.data)
   this.procedureService.saveDoc(this.data,this.numDossier).subscribe({
     complete:()=>{},
     next:(result)=>{
-     // console.log(result)
       if(result){
         this.indexSave.push(this.indexchamp);
-       // this.demandeFor.splice(this.indexchamp,1);
         this.file={};
-     //  this.indexchamp=0;
-        //console.log(this.demandeFor);
-       // console.log(this.indexSave)
         this.data.delete('file');
         this.data.delete('champOperationId');
       }
@@ -239,7 +222,7 @@ saveFile(){
       console.log(err)
     }
   
-  })
+  });
 }
 
 searchOperation():void{
@@ -310,6 +293,7 @@ finDemande(){
     }
     else{
       for(let i=0;i<this.indexRequis.length;i++){
+        console.log(this.demandeFor[this.indexRequis[i]])
         if(this.demandeFor[this.indexRequis[i]].name){
           console.log(this.demandeFor[this.indexRequis[i]].name)
           tousVrais = true;  // Si un élément est faux, on met tousVrais à false
@@ -329,6 +313,8 @@ finDemande(){
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
+  //  this.saveFile();
+    console.log(this.data1)
     //const data: FormData = new FormData();
     if(tousVrais){
      this.confirmationService.confirm({
@@ -343,14 +329,9 @@ finDemande(){
       this.procedureService.get_Procedure(this.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-         // console.log(result)
           this.procedure=result.data;
-         // console.log(this.procedure)
           this.procedureService.get_Champ(this.id).subscribe({
             next:(result)=>{
-              //console.log(result)
-              //console.log(this.data1)
-              //console.log(this.numDossier)
               this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
                 next:(result)=>{  
                   console.log(result);           
@@ -364,10 +345,12 @@ finDemande(){
                 complete:()=>{
                 },
                 error:(error)=>{
-                 // console.log(error);
-                  this.loading=false;
-                  this.messageService.add({severity:'error', summary: 'Erreur', detail: error.code, life: 3000});
-
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Erreur',
+                    detail: error?.message || 'Une erreur est survenue',
+                    life: 3000
+                  });
                 }
               });
             },

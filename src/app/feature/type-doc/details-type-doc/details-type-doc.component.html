@@ -178,26 +178,24 @@
                 </ng-template>
                 <ng-template id="bodi" pTemplate="body" let-doc>
                     <tr class="p-selectable-row tableContenu">
-                        <!--td>
-                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                        </td-->
                         <td>
                         {{doc.champOperation.name}}
                         </td>
                         <td>
                             {{doc.champOperation.inputType}}
                         </td>
-                       
                         <td>
                             <button (click)="voirDoc(doc)"
                             type="button" style="background-color: #060;"
                             class="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
                             Voir
                           </button>
-                        </td>
-                        
-                       
-                       
+                          <button (click)="telechargerDoc(doc)"
+                            type="button" style="background-color: #060;margin-left: 5px;"
+                            class="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                            Telecharger
+                          </button>
+                        </td>     
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
