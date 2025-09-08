@@ -11,7 +11,7 @@ const CHAMPOption=environment.apiUrl+ "/option-champ-operation"
 const RESPONSABLE_API=environment.apiUrl+ "/option-champ-operation"
 const OPERATION_BYPROCEDURE_API=environment.apiUrl +"/operations/procedure";
 const CHAMP_API=environment.apiUrl +"/champ-operations/champByOperation";
-const OPERATIONNextBYID=environment.apiUrl +"/operations/previousAndNextOperation";
+const OPERATIONNextBYID=environment.apiUrl +"/operations/previousAndNext";
 
 @Injectable({
   providedIn: 'root'

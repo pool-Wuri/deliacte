@@ -277,15 +277,13 @@ export class DetailsTypeDocComponent {
             console.log(error)
           }
         });
-
-        
        }
-
        //en cas de non rejet ,operation normal
        else{
         this.userService.operationInfo(this.user?.id).subscribe({
           complete:()=>{},
           next:(result)=>{
+            console.log()
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
               next:(result)=>{
                 console.log(result.data)
@@ -491,11 +489,11 @@ export class DetailsTypeDocComponent {
 
  
   validerDossier(numDossier:number){
-  /*  console.log(numDossier);
+    console.log(numDossier);
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
     console.log(this.demandeFor)
-  */
+  
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
@@ -505,6 +503,7 @@ export class DetailsTypeDocComponent {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
+    console.log(this.data1)
     this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
@@ -545,16 +544,16 @@ export class DetailsTypeDocComponent {
 
 
   rejetterDossier(numDossier:number){
-      console.log(this.operationnow);
+   /*   console.log(this.operationnow);
       console.log(this.operationPrecedent);
       console.log(this.traitement)
-      console.log(this.traitementPass)
+      console.log(this.traitementPass)*/
       if(this.traitementPass.status!==this.traitementPass.statusDossier){
         this.traitement.operationId=this.traitementPass.operationId;
       }
       this.traitement.isActive=false;
      // this.traitement.numDossier=numDossier;
-      console.log(this.traitement);
+     // console.log(this.traitement);
       this.data1 = {
         traitement: this.traitement,
         dossiers: []
@@ -576,6 +575,8 @@ export class DetailsTypeDocComponent {
           this.router.navigate(['/deliacte/dossier/list']);
           if(result){
             this.loading=false;
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Dossier rejetté ', life: 3000});
+
           }
 
         },
@@ -584,15 +585,16 @@ export class DetailsTypeDocComponent {
         },
         error:(error)=>{
           console.log(error);
+             
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
+          setTimeout(() => {
+            this.loading=false;
+          }, 2000);
         }
-      });
-    
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        
+      });        
     },
     reject:()=>{
-  
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      
     }
   });
   }
