@@ -35,7 +35,7 @@
 <div *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  class="card">
     <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entries"
      [globalFilterFields]="['firstName','lastName','email']">
     
      <ng-template pTemplate="caption">
@@ -137,7 +137,7 @@
             <div class="card">
                 <p-table #dt  [value]="proceduresBrouillon" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                  [globalFilterFields]="['firstName','lastName','email']">
                 
                  <ng-template pTemplate="caption">
@@ -229,7 +229,7 @@
             <div class="card">
                 <p-table #dt  [value]="proceduresPublie" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                  [globalFilterFields]="['firstName','lastName','email']">
                 
                  <ng-template pTemplate="caption">
@@ -304,7 +304,7 @@
             <div class="card">
                 <p-table #dt  [value]="proceduresArchiv" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                  [globalFilterFields]="['firstName','lastName','email']">
                 
                  <ng-template pTemplate="caption">
@@ -432,7 +432,7 @@
             <div class="p-4 md:p-5 space-y-4">             
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de la procedure</label>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de la procedure<span class="text-red-500">*</span></label>
                             <input type="text" id="name" name="name" [(ngModel)]="procedure.name" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
@@ -442,7 +442,7 @@
 
                         </div>
                         <div>
-                            <label for="organisationId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation</label>
+                            <label for="organisationId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Organisation <span class="text-red-500">*</span></label>
                             <select id="organisationId" name="organisationId" [(ngModel)]="procedure.organisationId" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option selected>Organisation</option>
                                 <option *ngFor="let organi of organisations" [value]="organi.id">{{organi.name}}</option>
@@ -452,7 +452,7 @@
                
                         </div>
                         <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description <span class="text-red-500">*</span></label>
                            
                             <input type="text" id="description" name="description" [(ngModel)]="procedure.description" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 

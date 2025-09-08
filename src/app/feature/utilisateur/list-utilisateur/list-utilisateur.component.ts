@@ -124,7 +124,7 @@ submitted: boolean=false;
 }
 
 
-onSortChange(event: { value: any; }) {
+  onSortChange(event: { value: any; }) {
   let proced = event.value;
   console.log(proced)
   this.operationService.search_Procedure("").subscribe({
@@ -319,12 +319,13 @@ assigne(utilisateur:any){
             this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
           }
           this.proceduresid.userProcedureIds.push(result.data[i].id);
-          console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
         }
+        console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+
       },
       error:(error)=>{
         console.log(error);
-        this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
+        //this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
 
       }
     });
@@ -400,14 +401,15 @@ eventModif(){
 
 
 SaveAssigner(){
-  console.log(this.userToAssign)
-  console.log(this.newOrganisationId)
+  //console.log(this.newOrganisationId)
+  //console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+
   if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
     this.userToAssign.role="ORG_ADMIN";
     this.procedureTru=false;
     this.adminTrue=true;
     this.confirmationService.confirm({
-      message: 'Voulez-vous valider?',
+      message: 'Voulez-vous valider l\'action?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',
@@ -416,6 +418,7 @@ SaveAssigner(){
     accept: () => {
       this.loading=true;
       this.assignModal=false;
+
       this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -428,9 +431,7 @@ SaveAssigner(){
         error:(error)=>{
           console.log(error);
           this.messageService.add({severity:'error', summary: 'error', detail: 'Utilisateur non assigné', life: 3000});
-
         }
-    
       })
       this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
@@ -442,25 +443,25 @@ SaveAssigner(){
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
+    
     },
     reject:()=>{
-      this.assignModal=false;
-  
+    //  this.assignModal=false;
       this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Assignation echouée', life: 3000});
     }
    });
   }
   if (this.userToAssign.role=="PROCEDURE_MANAGER" || this.userToAssign.role=="Manager de procedure"){
     this.procedureTru=true;
-    console.log(this.userToAssign)
+    //console.log(this.userToAssign)
     this.adminTrue=false;
     this.userToAssign.role="PROCEDURE_MANAGER";
+   // console.log(this.userToAssign)
+   // console.log( this.proceduresid.userProcedureIds?.length); // Affiche l'ID
+
   ///  this.userToAssign.role="PROCEDURE_MANAGER";
-    this.confirmationService.confirm({
-      message: 'confirmation ajout?',
+  this.confirmationService.confirm({
+      message: 'Voulez-vous valider l\'action?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',
@@ -470,6 +471,12 @@ SaveAssigner(){
       this.assignModal=false;
       console.log(this.proceduresid);
       this.loading=true;
+    //  console.log(this.userToAssign)
+    //  console.log( this.proceduresid.userProcedureIds?.length)
+      if( this.proceduresid.userProcedureIds?.length==0){
+        this.userToAssign.role="AGENT";
+      }
+    //  console.log(this.userToAssign)
       this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -479,14 +486,16 @@ SaveAssigner(){
             this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
               complete:()=>{},
               next:(result)=>{
-                console.log(result+"Utilisateur modifié avec succès");
+               // console.log(result+"Utilisateur modifié avec succès");
                 this.searchUser();
-                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Revocation reussie', life: 3000});
+                this.messageService.add({severity:'success', summary: 'Successful', detail: 'Utilisateur assigné avec succès', life: 3000});
                 this.loading=false;
               },
               error:(error)=>{
-                console.log(error);
-                result=false;
+               // console.log(error);
+                this.loading=false;
+                this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Utilisateur non assigné ', life: 3000});
+
               }
           
             });
@@ -495,24 +504,19 @@ SaveAssigner(){
           }
         },
         error:(error)=>{
-          console.log(error);
-          
+        //  console.log(error);
+          this.assignModal=false;
+
         }
     
       });
-     
-     
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
     },
     reject:()=>{
-      this.assignModal=false;
-      this.messageService.add({severity:'error', summary: 'error', detail: 'Annuler', life: 3000});
+      //this.assignModal=false;
+      this.messageService.add({severity:'error', summary: 'error', detail: 'Utilisateur non assigné', life: 3000});
     }
   });
   }
- 
 
 }
 
@@ -520,7 +524,7 @@ fermerAssign(){
   this.searchUser();
   this.assignModal=false;
   this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler', life: 3000});
-
+  this.searchUser();
 }
 
 detailsUser(user:User){
@@ -559,8 +563,9 @@ revoquerAdmin(utilisateur:User){
   this.searchOrganisation();
   this.searchProcedures();
   this.userToAssign=utilisateur;
-  console.log(this.userToAssign);
-  console.log(utilisateur)
+  /*console.log(this.userToAssign);
+  console.log(utilisateur);*/
+  this.assignModal=true;
   if(this.user?.role=="ORG_ADMIN"){
     this.userToAssign.role="Manager de procedure";
     this.titleAssig="Choisir la procedure";
@@ -572,32 +577,30 @@ revoquerAdmin(utilisateur:User){
           if (!this.proceduresid.userProcedureIds) {
             this.proceduresid.userProcedureIds = []; // Initialiser si nécessaire
           }
-          
           this.proceduresid.userProcedureIds.push(result.data[i].id);
-          console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
         }
+       // console.log( this.proceduresid.userProcedureIds); // Affiche l'ID
+
       },
       error:(error)=>{
-        console.log(error)
+      //  console.log(error)
       }
     });
   }
   if(this.user?.role=="SUPER_ADMIN"){
     this.userToAssign.role="Administrateur d'organisation";
     this.titleAssig="Choisir l'organisation"
-
     this.userService.userOrgaInfo(this.userToAssign.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data)
+       // console.log(result.data)
         if(result.data.length>0){
-          this.assignModal=true;
           for (let i = 0; i < result.data.length; i++) {
             if (!this.idOrganisationAssign.organisationIds) {
               this.idOrganisationAssign.organisationIds = []; // Initialiser si nécessaire
             }
             this.idOrganisationAssign.organisationIds.push(result.data[i].id);
-            console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
+          // console.log( this.idOrganisationAssign.organisationIds); // Affiche l'ID
           }
         }
         else{
@@ -608,7 +611,7 @@ revoquerAdmin(utilisateur:User){
         //console.log( this.proceduresid.userProcedureIds)
       },
       error:(error)=>{
-        console.log(error)
+       // console.log(error)
       }
     });
    

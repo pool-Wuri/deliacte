@@ -33,7 +33,7 @@
     <div class="card">
         <p-table #dt  [value]="utilisateurs" styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="userselect"
         [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-        [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
          [globalFilterFields]="['firstName','lastName','email']">
         
          <ng-template pTemplate="caption">

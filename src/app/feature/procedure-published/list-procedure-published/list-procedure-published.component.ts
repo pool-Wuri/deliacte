@@ -47,6 +47,12 @@ export class ListProcedurePublishedComponent {
     types = Object.entries(ChampType).map(([key, value]) => ({ id: key, name: value }));
     champOperation=new Array <ChampOperation>()
 
+    visible: boolean = false;
+
+    position: string = 'center';
+    searchTerm: string = '';
+    filteredProcedures = [...this.procedures]; // liste affichée
+
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
@@ -69,7 +75,7 @@ export class ListProcedurePublishedComponent {
   ngOnInit(): void {
     this.search_Procedure();
     this.selectedProducts = [];
-    this.productService.getProductsSmall().subscribe(data => {
+    this.productService.getProductsSmall().subscribe(data => { 
       this.availableProducts=data
       console.log(data); // Traitez les données des produits
     });
@@ -90,7 +96,22 @@ export class ListProcedurePublishedComponent {
         ];
         this.availableChamp=this.champOperation;
   }
- 
+
+
+  
+  onSearch() {
+    console.log(this.searchTerm);
+    console.log(this.procedures);
+    this.filteredProcedures=this.procedures;
+    const term = this.searchTerm.toLowerCase().trim();
+    console.log(term)
+    this.filteredProcedures = this.procedures.filter(proc =>
+      proc.name?.toLowerCase().includes(term) ||
+      proc.description?.toLowerCase().includes(term) ||
+      proc.organisation.name.toLowerCase().includes(term)
+    );
+    console.log(this.filteredProcedures)
+  }
 
   onDrop(event: CdkDragDrop<any[]>) {
     moveItemInArray(this.vegetables, event.previousIndex, event.currentIndex);
@@ -102,6 +123,7 @@ export class ListProcedurePublishedComponent {
       next:(result)=>{
         console.log(result+"procedure total");
         this.procedures=result.data;
+        this.filteredProcedures=this.procedures;
        // this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
         console.log(this.procedures);
       },
@@ -124,7 +146,7 @@ export class ListProcedurePublishedComponent {
 
    faireDemande(procedure:any){
     this.demandeFor=true;
-    console.log(procedure.id);
+   // console.log(procedure.id);
     this.router.navigate(['/deliacte/procedure-published/demandePage',procedure.id])
 
   //  this.searchOperation();
@@ -196,9 +218,6 @@ findIndex(champ: ChampOperation) {
 }
 
 
-visible: boolean = false;
-
-position: string = 'center';
 
 showDialog(position: string) {
   this.position = position;

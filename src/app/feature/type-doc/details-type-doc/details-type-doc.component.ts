@@ -491,26 +491,21 @@ export class DetailsTypeDocComponent {
 
  
   validerDossier(numDossier:number){
-    console.log(numDossier);
+  /*  console.log(numDossier);
     console.log(this.operationnow);
     console.log(this.operationPrecedent);
     console.log(this.demandeFor)
-  
+  */
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
       this.demandeFor.splice(this.indexSave[i],1);
     }
-    
-      this.data1 = {
+    this.data1 = {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
-   
-    console.log(this.data1)  
-    console.log(numDossier)
-    //const data: FormData = new FormData();
-   this.confirmationService.confirm({
+    this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
       acceptLabel:'Oui',
@@ -522,9 +517,10 @@ export class DetailsTypeDocComponent {
       this.procedureService.saveDemande(this.data1,numDossier).subscribe({
         next:(result)=>{
           console.log(result.data);
-          this.router.navigate(['/deliacte/dossier/list']);
           if(result){
             this.loading=false;
+            this.router.navigate(['/deliacte/dossier/list']);
+            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Dossier traité avec succès', life: 3000});
           }
 
         },
@@ -533,17 +529,18 @@ export class DetailsTypeDocComponent {
         },
         error:(error)=>{
           console.log(error);
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traietement du dossier', life: 3000});
+          setTimeout(() => {
+            this.loading=false;
+          }, 2000);
         }
       });
-    
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
         
     },
     reject:()=>{
-  
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Erreur lors du traitement', life: 3000});
     }
-  });
+    });
   }
 
 
