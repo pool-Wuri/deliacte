@@ -516,9 +516,9 @@ export class DetailsTypeDocComponent {
       this.procedureService.saveDemande(this.data1,numDossier).subscribe({
         next:(result)=>{
           console.log(result.data);
+          this.router.navigate(['/deliacte/dossier/list']);
           if(result){
             this.loading=false;
-            this.router.navigate(['/deliacte/dossier/list']);
             this.messageService.add({severity:'success', summary: 'Successful', detail: 'Dossier traité avec succès', life: 3000});
           }
 
