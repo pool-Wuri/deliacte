@@ -173,7 +173,6 @@ onSubmit(){
 
  suivreDemande(){
   this.demandePage=true;
-  this.numDossier="";
   console.log(this.demandePage)
   console.log(this.numDossier)
  }
