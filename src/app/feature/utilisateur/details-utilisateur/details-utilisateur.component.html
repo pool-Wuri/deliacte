@@ -9,7 +9,64 @@
     <h1 class="p-4">Details User</h1>
 
 </div>
-<p-divider align="center">
+
+<div class="card">
+    <h4 class="card-title">-- Details Utilisateur --</h4>
+    <div class="input-container">
+        <!-- Champ 1 -->
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Nom de l'utilisateur</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                [value]="utilisateur.lastName"
+
+                class="custom-input"
+                readonly
+            />
+        </div>
+        <!-- Champ 2 -->
+
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Prenom de l'utilisateur</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                class="custom-input"
+                readonly
+                [value]="utilisateur.firstName"
+            />
+        </div>
+
+        <!-- Champ 3 -->
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Adresse mail </label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                class="custom-input"
+                readonly
+                [value]="utilisateur.email"
+            />
+        </div>
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Role de l'utilisateur</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                class="custom-input"
+                readonly
+                [value]="utilisateur.role"
+            />
+        </div>
+        
+    </div> <br>
+</div>
+<!--p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <i class="pi pi-info-circle user"></i>
         <b>User Infos</b>
@@ -56,136 +113,139 @@
 
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
-        <!--i class="pi pi-info-circle user"></i-->
+        <i class="pi pi-info-circle user"></i>
         <b>Historique</b>
     </div>
-</p-divider>
+</p-divider-->
 
-<p-tabView>
-    <p-tabPanel *ngIf="utilisateur && organisation && (utilisateur.role === ORG_ADMIN || utilisateur.role === 'Administrateur d\'organisation')" header="Organisation">
-        <div class="card">
-            <p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
-            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="['name']">
+<div class="card">
+    <p-tabView>
+        <p-tabPanel *ngIf="utilisateur && organisation && (utilisateur.role === ORG_ADMIN || utilisateur.role === 'Administrateur d\'organisation')" header="Organisation">
+            <div class="card">
+                <p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['name']">
+            
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
+                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                                placeholder="      Rechercher" />
+                        </span>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Organisation parent</th>
+                        <th >Description</th>
+                        <!--th >Statut</th-->
+    
+                    </tr>
+            
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-organisation>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                           {{organisation.name}}
+                        </td>
+                        <td *ngIf="organisation.parentOrganisation != null">
+                            {{ organisation.parentOrganisation.name }}
+                        </td>
+                        <td *ngIf="organisation.parentOrganisation == null">
+                             ""
+                        </td>
+                        <td>
+                            {{organisation.description}}
+                        </td>
+                        <!--td>
+                            {{organisation.isActive}}
+                        </td-->
+                     
+                      
+                    </tr>
+                </ng-template>
+                </p-table>
+            
+            </div>
+        </p-tabPanel>
         
-             <ng-template pTemplate="caption">
-                <div class="flex">
-                    <span class="p-input-icon-left ml-auto cherch">
-                        <i class="pi pi-search" ></i>
-                        <input 
-                            pInputText 
-                            type="text" 
-                            #searchInput 
+        <p-tabPanel *ngIf="utilisateur && procedure && (utilisateur.role === PROCEDURE_MANAGER || utilisateur.role === 'Manager de procedure')" header="Procedure">
+            <div class="card">
+                <p-table #dt [value]="procedure"  styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['name']">
+            
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
                             (input)="dt.filterGlobal(searchInput.value, 'contains')" 
                             placeholder="      Rechercher" />
-                    </span>
-                </div>
-            </ng-template>
-            
-            <ng-template pTemplate="header">
-                <tr class="tableEnt">
-                    <!--th style="width: 4rem,">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th-->
-                    <th >Nom</th>
-                    <th >Organisation parent</th>
-                    <th >Description</th>
-                    <!--th >Statut</th-->
-
-                </tr>
-        
+                        </span>
+                    </div>
+                </ng-template>
                 
-            </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-organisation>
-                <tr class="p-selectable-row tableContenu">
-                    <!--td>
-                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                    </td-->
-                    <td>
-                       {{organisation.name}}
-                    </td>
-                    <td *ngIf="organisation.parentOrganisation != null">
-                        {{ organisation.parentOrganisation.name }}
-                    </td>
-                    <td *ngIf="organisation.parentOrganisation == null">
-                         ""
-                    </td>
-                    <td>
-                        {{organisation.description}}
-                    </td>
-                    <!--td>
-                        {{organisation.isActive}}
-                    </td-->
-                 
-                  
-                </tr>
-            </ng-template>
-            </p-table>
-        
-        </div>
-    </p-tabPanel>
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Organisation</th>
+                        <th >Statut</th>
+                        <!--th >Etat</th-->
     
-    <p-tabPanel *ngIf="utilisateur && procedure && (utilisateur.role === PROCEDURE_MANAGER || utilisateur.role === 'Manager de procedure')" header="Procedure">
-        <div class="card">
-            <p-table #dt [value]="procedure"  styleClass="p-datatable-customers" [rowHover]="true" 
-            [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="['name']">
-        
-             <ng-template pTemplate="caption">
-                <div class="flex">
-                    <span class="p-input-icon-left ml-auto cherch">
-                        <i class="pi pi-search" ></i>
-                        <input 
-                            pInputText 
-                            type="text" 
-                            #searchInput 
-                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                        placeholder="      Rechercher" />
-                    </span>
-                </div>
-            </ng-template>
+                    </tr>
             
-            <ng-template pTemplate="header">
-                <tr class="tableEnt">
-                    <!--th style="width: 4rem,">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th-->
-                    <th >Nom</th>
-                    <th >Organisation</th>
-                    <th >Statut</th>
-                    <!--th >Etat</th-->
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-procedure>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                           {{procedure.name}}
+                        </td>
+                        <td>
+                            {{procedure.organisation.name}}
+                        </td>
+                       
+                        <td>
+                            {{ parseStatus(procedure.status) }} 
+                        </td>
+                       
+                        <!--td>
+                            {{procedure.isActive}}
+                        </td-->
+                      
+                    </tr>
+                </ng-template>
+                </p-table>
+            
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</div>
 
-                </tr>
-        
-                
-            </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-procedure>
-                <tr class="p-selectable-row tableContenu">
-                    <!--td>
-                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                    </td-->
-                    <td>
-                       {{procedure.name}}
-                    </td>
-                    <td>
-                        {{procedure.organisation.name}}
-                    </td>
-                   
-                    <td>
-                        {{ parseStatus(procedure.status) }} 
-                    </td>
-                   
-                    <!--td>
-                        {{procedure.isActive}}
-                    </td-->
-                  
-                </tr>
-            </ng-template>
-            </p-table>
-        
-        </div>
-    </p-tabPanel>
-</p-tabView>
 

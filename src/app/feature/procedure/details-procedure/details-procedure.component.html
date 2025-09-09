@@ -4,198 +4,211 @@
 
 </div>
 <div *ngIf="user && user.role !== 'PROCEDURE_MANAGER'">
-    <p-splitter [style]="{'height': '300px'}">
-        <ng-template pTemplate>
-            <div class="col-8 flex align-items-center justify-content-center">
-                <div class="p-fluid">
-                    <div class="titleWrap" >
-                        <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
+
+    <div class="card">
+        <h4 class="card-title">-- Details type opération --</h4>
+        <div class="input-container">
+            <!-- Champ 1 -->
+            <div class="input-item">
+                <label for="inputField1" class="custom-label">Nom de la procédure</label>
+                <input
+                    id="inputField1"
+                    type="text"
+                    pInputText
+                    [value]="procedure.name"
     
-                        <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
-                    </div>
-                    <div class="valueWrap" >
-                        <label for=""  class="propertyValue"  style="inline-size: 100px; margin-top: 10px; word-break: break-all;"> {{procedure.description}}</label>
-    
-                        <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name===''"> </label>
-                        <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.name!==''"> {{procedure.name}}</label>
-                    </div>
-                </div>
-            </div>    
-        </ng-template>
-        <ng-template pTemplate>
-            <div class="col-8 flex align-items-center justify-content-center" >
-                <div class="p-fluid">
-                    <div class="titleWrap">
-                        <label for=""  style="margin-top: 10px;" class="propertyTitle">Statut:</label>
-                        <label for=""  style="margin-top: 10px;" class="propertyTitle">Organisation:</label>
-                        
-                    </div>
-                    <div class="valueWrap" >
-                        <label for=""  style="margin-top: 10px;"  class="propertyValue" >  {{ parseStatus(procedure.status) }} </label>
-                        <label for=""  class="propertyValue"  style="margin-top: 10px;" *ngIf="procedure.organisation===undefined">" "</label>
-                        <label for=""  style="margin-top: 10px;" class="propertyValue"   *ngIf="procedure.organisation!==undefined"> {{procedure.organisation.name}}</label>
-    
-                    </div>
-                </div>
+                    class="custom-input"
+                    readonly
+                />
             </div>
-        </ng-template>
-    </p-splitter>
-    <p-divider align="center">
-        <div class="inline-flex align-items-center" style="color:#060;">
-            <!--i class="pi pi-info-circle user"></i-->
-            <b>Utilisateurs</b>
-        </div>
-    </p-divider>
+            <!-- Champ 2 -->
     
-    <p-panel header="Utilisateurs">
+            <div class="input-item">
+                <label for="inputField1" class="custom-label">Description</label>
+                <input
+                    id="inputField1"
+                    type="text"
+                    pInputText
+                    class="custom-input"
+                    readonly
+                    [value]="procedure.description"
+                />
+            </div>
+            <div class="input-item">
+                <label for="inputField1" class="custom-label">Statut</label>
+                <input
+                    id="inputField1"
+                    type="text"
+                    pInputText
+                    class="custom-input"
+                    readonly
+                    [value]="parseStatus(procedure.status)"
+                />
+            </div>
+            <div class="input-item">
+                <label for="inputField1" class="custom-label">Organisation</label>
+                <input
+                    id="inputField1"
+                    type="text"
+                    pInputText
+                    class="custom-input"
+                    readonly
+                    [value]="procedure.organisation.name ? procedure.organisation.name : '---------------'"
+                />
+            </div>
     
+    
+           
+            
+        </div> <br>
+    </div>
+    <div class="card">
+        <h4 class="card-title">-- Utilisateurs --</h4>
+
+        <p-panel header="Utilisateurs">
+    
+            <div class="card">
+                <p-table #dt [value]="utilisateurs"  styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                 [globalFilterFields]="['firstName']">
+            
+                 <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <span class="p-input-icon-left ml-auto cherch">
+                            <i class="pi pi-search" ></i>
+                            <input 
+                                pInputText 
+                                type="text" 
+                                #searchInput 
+                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                                placeholder="      Rechercher" />
+                        </span>
+                    </div>
+                </ng-template>
+                
+                <ng-template pTemplate="header">
+                    <tr class="tableEnt">
+                        <!--th style="width: 4rem,">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th-->
+                        <th >Nom</th>
+                        <th >Prenom</th>
+                        <th >Email</th>
+                        <th >Statut</th>
+            
+            
+                    </tr>
+            
+                    
+                </ng-template>
+                <ng-template id="bodi" pTemplate="body" let-utilisateur>
+                    <tr class="p-selectable-row tableContenu">
+                        <!--td>
+                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
+                        </td-->
+                        <td>
+                           {{utilisateur.firstName}}
+                        </td>
+                        <td >
+                            {{ utilisateur.lastName }}
+                        </td>
+                       
+                        <td>
+                            {{utilisateur.email}}
+                        </td>
+                        <td>
+                            {{utilisateur.isActive}}
+                        </td>
+                     
+                      
+                    </tr>
+                </ng-template>
+                </p-table>
+            
+            </div>
+        </p-panel>
+    </div>
+</div>
+
+<div *ngIf="user && user.role === 'PROCEDURE_MANAGER'">
+    <div class="card">
+
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="left">
+               
+            </ng-template>
+            <ng-template pTemplate="right">
+                <p-fileUpload 
+                    class="upload-vert"
+                    mode="basic" 
+                    chooseLabel="Importer document" 
+                    chooseIcon="pi pi-upload"
+                    name="demo[]" 
+                    url="https://www.primefaces.org/cdn/api/upload.php" 
+                    accept=".doc,.docx"
+                    maxFileSize="1000000" 
+                    (onUpload)="onUpload($event)" />
+              
+            </ng-template>
+        </p-toolbar>
+       
         <div class="card">
-            <p-table #dt [value]="utilisateurs"  styleClass="p-datatable-customers" [rowHover]="true" 
+            <h4 class="card-title">-- Champs de la procédure --</h4>
+            <p-table #dt  [value]="champs" styleClass="p-datatable-customers" [rowHover]="true" 
             [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="['firstName']">
-        
+            [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
+             [globalFilterFields]="['firstName','lastName','email']">
+            
              <ng-template pTemplate="caption">
                 <div class="flex">
                     <span class="p-input-icon-left ml-auto cherch">
-                        <i class="pi pi-search" ></i>
+                        <!--i class="pi pi-search" ></i-->
                         <input 
                             pInputText 
                             type="text" 
                             #searchInput 
                             (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                            placeholder="      Rechercher" />
+                            placeholder="Rechercher" />
                     </span>
                 </div>
             </ng-template>
             
             <ng-template pTemplate="header">
                 <tr class="tableEnt">
-                    <!--th style="width: 4rem,">
-                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                    </th-->
+                 
                     <th >Nom</th>
-                    <th >Prenom</th>
-                    <th >Email</th>
-                    <th >Statut</th>
-        
-        
+                    <th >Type</th>
+                    <th >Description</th>
                 </tr>
-        
                 
             </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-utilisateur>
+            <ng-template id="bodi" pTemplate="body" let-champ>
                 <tr class="p-selectable-row tableContenu">
-                    <!--td>
-                        <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                    </td-->
+                    
                     <td>
-                       {{utilisateur.firstName}}
+                        {{champ.name}}
                     </td>
-                    <td >
-                        {{ utilisateur.lastName }}
+                    <td>
+                        {{champ.inputType}}
+        
+                    </td>
+                    <td>
+                       {{champ.description}}
+        
                     </td>
                    
-                    <td>
-                        {{utilisateur.email}}
-                    </td>
-                    <td>
-                        {{utilisateur.isActive}}
-                    </td>
-                 
-                  
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="8">Aucune champ trouvé</td>
                 </tr>
             </ng-template>
             </p-table>
-        
+
         </div>
-    </p-panel>
-    
-</div>
-
-<div *ngIf="user && user.role === 'PROCEDURE_MANAGER'">
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-           
-        </ng-template>
-
-        <ng-template pTemplate="right">
-            <p-fileUpload 
-                mode="basic" 
-                chooseLabel="Importer document" 
-                chooseIcon="pi pi-upload"
-                name="demo[]" 
-                url="https://www.primefaces.org/cdn/api/upload.php" 
-                accept=".doc,.docx"
-                maxFileSize="1000000" 
-                (onUpload)="onUpload($event)" />
-          
-        </ng-template>
-    </p-toolbar>
-    <p-divider align="center">
-        <div class="inline-flex align-items-center" style="color:#060;">
-            <!--i class="pi pi-info-circle user"></i-->
-            <b>Champs de la procedure</b>
-        </div>
-    </p-divider>
-    <p-table #dt  [value]="champs" styleClass="p-datatable-customers" [rowHover]="true" 
-    [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-    [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-     [globalFilterFields]="['firstName','lastName','email']">
-    
-     <ng-template pTemplate="caption">
-        <div class="flex">
-            <span class="p-input-icon-left ml-auto cherch">
-                <!--i class="pi pi-search" ></i-->
-                <input 
-                    pInputText 
-                    type="text" 
-                    #searchInput 
-                    (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                    placeholder="Rechercher" />
-            </span>
-        </div>
-    </ng-template>
-    
-    <ng-template pTemplate="header">
-        <tr class="tableEnt">
-            <!--th style="width: 4rem,">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th-->
-            <th >Nom</th>
-            <th >Type</th>
-            <th >Description</th>
-            <!--th style="width: 350px;">Actions</th-->
-        </tr>
-        
-    </ng-template>
-    <ng-template id="bodi" pTemplate="body" let-champ>
-        <tr class="p-selectable-row tableContenu">
-            <!--td>
-                <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-            </td-->
-            <td>
-                {{champ.name}}
-            </td>
-            <td>
-                {{champ.inputType}}
-
-            </td>
-            <td>
-               {{champ.description}}
-
-            </td>
-            <!--td>
-
-              
-               
-            </td-->
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="8">Aucune champ trouvé</td>
-        </tr>
-    </ng-template>
-    </p-table>
+      
+    </div>
+   
 </div>

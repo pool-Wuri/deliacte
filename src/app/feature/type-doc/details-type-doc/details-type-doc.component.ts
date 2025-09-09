@@ -96,10 +96,7 @@ export class DetailsTypeDocComponent {
     }
     this.route.params.subscribe(params => {
       this.id = params['id']; 
-      console.log(this.id)
-     this.getDossier(this.id)
-    /// this.getProcedure(this.id)
-
+      this.getDossier(this.id)
      }
     );
 
@@ -221,146 +218,95 @@ export class DetailsTypeDocComponent {
     
       });
     }
-   else if(this.user?.role!=="CITOYEN"){
-    this.traitement={};
-    this.operationPrecedent={};
-    this.operationnow={};
-    console.log(this.operationnow)
-    this.typeDocService.getDossierPour(id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result.data.traitement+" total");
-        this.traitementPass=result.data.traitement;
-        console.log(this.traitementPass)
-       this.dossier=result.data.dossiers;
-      
-       for(let i=0;i<this.dossier.length;i++){
-        if (this.dossier[i].champOperation.inputType === "PDF" ||
-          this.dossier[i].champOperation.inputType === "FILE" ||
-          this.dossier[i].champOperation.inputType === "IMAGE") {
-                  this.document.push(this.dossier[i]);
-          console.log(this.document)
-        }
-       }
-       let i = 0;
-       console.log(this.dossier)
-       while (i < this.dossier.length - 1) { 
-        console.log(this.dossier[i + 1].champOperation.operationId) 
-        console.log(this.dossier[0].champOperation.operationId)// Vérifie que i+1 reste dans les limites
-           if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
-               this.dossierTraiter.push(this.dossier[i + 1]);
-               this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
-               console.log(this.dossierTraiter);
-               console.log(this.dossier);
-           } else {
-               i++;  // Incrémente seulement si aucun élément n'est supprimé
-           }
-       }
-       if(this.traitementPass.status!=this.traitementPass.statusDossier){
-        this.isDisabled=false;
-      
-       }
-       this.idOperationNow=result.data.traitement.operationId;;
-       console.log(this.idOperationNow);
-              //en cas de  rejet 
-       if(this.traitementPass.status!=this.traitementPass.statusDossier){
-          
-        this.operationService.get_OperationNext(this.idOperationNow).subscribe({
-          next:(result)=>{
-            console.log(result.data)
-            //this.operationnow=result.data[0];
-            this.traitement.operationId=result.data[0].id;
-          
-          },
-          complete:()=>{},
-          error:(error)=>{
-            console.log(error)
+    else if(this.user?.role!=="CITOYEN"){
+      this.traitement={};
+      this.operationPrecedent={};
+      this.operationnow={};
+      this.typeDocService.getDossierPour(id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          this.traitementPass=result.data.traitement;
+        this.dossier=result.data.dossiers;
+        for(let i=0;i<this.dossier.length;i++){
+          if (this.dossier[i].champOperation.inputType === "PDF" ||
+            this.dossier[i].champOperation.inputType === "FILE" ||
+            this.dossier[i].champOperation.inputType === "IMAGE") {
+                    this.document.push(this.dossier[i]);
+            console.log(this.document)
           }
-        });
-       }
-       //en cas de non rejet ,operation normal
-       else{
-        this.userService.operationInfo(this.user?.id).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-            console.log()
+        }
+        let i = 0;
+        while (i < this.dossier.length - 1) { 
+          console.log(this.dossier[i + 1].champOperation.operationId) 
+          console.log(this.dossier[0].champOperation.operationId)// Vérifie que i+1 reste dans les limites
+            if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+                this.dossierTraiter.push(this.dossier[i + 1]);
+                this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+                console.log(this.dossierTraiter);
+                console.log(this.dossier);
+            } else {
+                i++;  // Incrémente seulement si aucun élément n'est supprimé
+            }
+        }
+        if(this.traitementPass.status!=this.traitementPass.statusDossier){
+          this.isDisabled=false;
+        }
+        this.idOperationNow=result.data.traitement.operationId;;
+        if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
-              next:(result)=>{
-                console.log(result.data)
-                if(result.data.length>1)
-                {
-                  console.log(result.data);
-                  if(result.data[0].operationPreviousId==this.idOperationNow){
-                    this.operationPrecedent=result.data[1];
-                    this.operationnow=result.data[0];
-                    this.traitement.operationId=this.operationnow.id;
-                  }
-                  else{
-                    this.operationPrecedent=result.data[0];
-                    this.operationnow=result.data[1];
-                    this.traitement.operationId=this.operationnow.id;
-  
-                  }
-           
-                  this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
-                    next:(result)=>{
-                      console.log(this.operationnow)
-                      console.log(result)
-                     // this.numDossier=result.message;
-                      this.champs=result.data;
-                      console.log(this.champs)
-                      if (this.champs){
-                      //  this.traitement.operationId=this.champs[0].operationId;
-                        this.demandeFor = this.champs.map(champ => ({
-                          name: '',
-                          champOperationId: champ.id // ou une autre logique
-                        }));
-                      }
-                    
-                      console.log('Champs:', this.champs);
-                      console.log('DemandeFor:', this.demandeFor);
-                      console.log('DemandeFor:', this.traitement);
-                      console.log('Champs:', this.champs);
-                      //console.log('DemandeFor:', this.demandeFor);
-                    },
-                    complete:()=>{},
-                    error:(error)=>{
-                      console.log(error)
+            next:(result)=>{
+              console.log(result.data)
+              //this.operationnow=result.data[0];
+              this.traitement.operationId=result.data[0].id;
+            
+            },
+            complete:()=>{},
+            error:(error)=>{
+              console.log(error)
+            }
+          });
+        }
+        else{
+          this.userService.operationInfo(this.user?.id).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              console.log()
+            this.operationService.get_OperationNext(this.idOperationNow).subscribe({
+                next:(result)=>{
+                  console.log(result.data)
+                  if(result.data.length>1)
+                  {
+                    console.log(result.data);
+                    if(result.data[0].operationPreviousId==this.idOperationNow){
+                      this.operationPrecedent=result.data[1];
+                      this.operationnow=result.data[0];
+                      this.traitement.operationId=this.operationnow.id;
                     }
-                  });
-                }
-                else{
-                  console.log(result.data);
-                  if(result.data[0].operationPreviousId==this.idOperationNow){
-                    this.operationnow=result.data[0];
-                    this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
+                    else{
+                      this.operationPrecedent=result.data[0];
+                      this.operationnow=result.data[1];
+                      this.traitement.operationId=this.operationnow.id;
+    
+                    }
+            
+                    this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                       next:(result)=>{
-                        this.operationPrecedent=result.data;
-                      
-                      console.log(this.operationPrecedent);
-                      },
-                      complete:()=>{},
-                      error:(err)=>{}
-                    });
-                    this.traitement.operationId=result.data[0].id;
-                    console.log('DemandeFor:', this.traitement);
-  
-                    this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
-                      next:(result)=>{
+                        console.log(this.operationnow)
                         console.log(result)
-                       // this.numDossier=result.message;
-                       if(result){
+                      // this.numDossier=result.message;
                         this.champs=result.data;
                         console.log(this.champs)
-                      // this.traitement.operationId=this.champs[0].operationId;
-                       }
+                        if (this.champs){
+                        //  this.traitement.operationId=this.champs[0].operationId;
+                          this.demandeFor = this.champs.map(champ => ({
+                            name: '',
+                            champOperationId: champ.id // ou une autre logique
+                          }));
+                        }
                       
-                        this.demandeFor = this.champs.map(champ => ({
-                          name: '',
-                          champOperationId: champ.id // ou une autre logique
-                        }));
                         console.log('Champs:', this.champs);
                         console.log('DemandeFor:', this.demandeFor);
+                        console.log('DemandeFor:', this.traitement);
                         console.log('Champs:', this.champs);
                         //console.log('DemandeFor:', this.demandeFor);
                       },
@@ -371,62 +317,97 @@ export class DetailsTypeDocComponent {
                     });
                   }
                   else{
-                    this.operationPrecedent=result.data[0];
-                    console.log("Fin operation traitement")
+                    console.log(result.data);
+                    if(result.data[0].operationPreviousId==this.idOperationNow){
+                      this.operationnow=result.data[0];
+                      this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
+                        next:(result)=>{
+                          this.operationPrecedent=result.data;
+                        
+                        console.log(this.operationPrecedent);
+                        },
+                        complete:()=>{},
+                        error:(err)=>{}
+                      });
+                      this.traitement.operationId=result.data[0].id;
+                      console.log('DemandeFor:', this.traitement);
+    
+                      this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
+                        next:(result)=>{
+                          console.log(result)
+                        // this.numDossier=result.message;
+                        if(result){
+                          this.champs=result.data;
+                          console.log(this.champs)
+                        // this.traitement.operationId=this.champs[0].operationId;
+                        }
+                        
+                          this.demandeFor = this.champs.map(champ => ({
+                            name: '',
+                            champOperationId: champ.id // ou une autre logique
+                          }));
+                          console.log('Champs:', this.champs);
+                          console.log('DemandeFor:', this.demandeFor);
+                          console.log('Champs:', this.champs);
+                          //console.log('DemandeFor:', this.demandeFor);
+                        },
+                        complete:()=>{},
+                        error:(error)=>{
+                          console.log(error)
+                        }
+                      });
+                    }
+                    else{
+                      this.operationPrecedent=result.data[0];
+                      console.log("Fin operation traitement")
+                    }
+                  
                   }
-                
-                }
-              },
-              complete:()=>{},
-              error:(error)=>{
-                console.log(error)
-              }
-            });
-            console.log(result.data);
-         /*  if(result.data[0].operationPreviousId==this.idOperationNow){
-              this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
-                next:(result)=>{
-                  console.log(result)
-                 // this.numDossier=result.message;
-                  this.champs=result.data;
-                  console.log(this.champs)
-                  this.traitement.operationId=this.champs[0].operationId;
-                  this.demandeFor = this.champs.map(champ => ({
-                    name: '',
-                    champOperationId: champ.id // ou une autre logique
-                  }));
-                  console.log('Champs:', this.champs);
-                  console.log('DemandeFor:', this.demandeFor);
-                  console.log('DemandeFor:', this.traitement);
-                  console.log('Champs:', this.champs);
-                  //console.log('DemandeFor:', this.demandeFor);
                 },
                 complete:()=>{},
                 error:(error)=>{
                   console.log(error)
                 }
               });
-            }*/
-         
-          },
-          error:(error)=>{
-            console.log(error);
-          }
-         });
-       }
-
-       console.log(this.traitement)
-         console.log(this.operationnow)
-      
-
-       
-      },
-      error:(error)=>{
-        console.log(error);
-      }
-  
-    });
-   }
+              console.log(result.data);
+          /*  if(result.data[0].operationPreviousId==this.idOperationNow){
+                this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
+                  next:(result)=>{
+                    console.log(result)
+                  // this.numDossier=result.message;
+                    this.champs=result.data;
+                    console.log(this.champs)
+                    this.traitement.operationId=this.champs[0].operationId;
+                    this.demandeFor = this.champs.map(champ => ({
+                      name: '',
+                      champOperationId: champ.id // ou une autre logique
+                    }));
+                    console.log('Champs:', this.champs);
+                    console.log('DemandeFor:', this.demandeFor);
+                    console.log('DemandeFor:', this.traitement);
+                    console.log('Champs:', this.champs);
+                    //console.log('DemandeFor:', this.demandeFor);
+                  },
+                  complete:()=>{},
+                  error:(error)=>{
+                    console.log(error)
+                  }
+                });
+              }*/
+          
+            },
+            error:(error)=>{
+              console.log(error);
+            }
+          });
+        }
+        },
+        error:(error)=>{
+          console.log(error);
+        }
+    
+      });
+    }
   }
 
 
@@ -435,27 +416,21 @@ export class DetailsTypeDocComponent {
     this.operationService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data)
       this.procedureService.get_Procedure(result.data.procedureId).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result.data);
           this.operationService.get_Operation(result.data.id).subscribe({
             complete:()=>{},
             next:(result)=>{
-              console.log(result.data);
               this.operations=result.data;
               this.events2= this.operations.map(operation => ({
                 status: operation.verbeOperation,
                 icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
                 color: "#c8c8c8", // Gris par défaut
               }));
-              console.log(this.events2)
-
                for (let i = 0; i < this.events2.length; i++) {
                 limit = i;
               };
-
               if (limit !== null) {
                 for (let i = 0; i <= limit; i++) {
                   // Appliquer la même couleur aux événements avant le statut trouvé
@@ -464,8 +439,6 @@ export class DetailsTypeDocComponent {
                   }
                 }
               }
-              console.log(limit)
-              console.log(this.events2)
               return this.events2,limit;
             },
             error:(error)=>{
@@ -489,11 +462,6 @@ export class DetailsTypeDocComponent {
 
  
   validerDossier(numDossier:number){
-    console.log(numDossier);
-    console.log(this.operationnow);
-    console.log(this.operationPrecedent);
-    console.log(this.demandeFor)
-  
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
@@ -544,22 +512,14 @@ export class DetailsTypeDocComponent {
 
 
   rejetterDossier(numDossier:number){
-   /*   console.log(this.operationnow);
-      console.log(this.operationPrecedent);
-      console.log(this.traitement)
-      console.log(this.traitementPass)*/
       if(this.traitementPass.status!==this.traitementPass.statusDossier){
         this.traitement.operationId=this.traitementPass.operationId;
       }
       this.traitement.isActive=false;
-     // this.traitement.numDossier=numDossier;
-     // console.log(this.traitement);
       this.data1 = {
         traitement: this.traitement,
         dossiers: []
-    }
-    console.log(this.data1)  
-    console.log(numDossier)
+      }
     this.confirmationService.confirm({
       message: 'Voulez-vous rejeter ce dossier?',
       header: 'Confirmation',
@@ -576,16 +536,13 @@ export class DetailsTypeDocComponent {
           if(result){
             this.loading=false;
             this.messageService.add({severity:'success', summary: 'Successful', detail: 'Dossier rejetté ', life: 3000});
-
           }
-
         },
         complete:()=>{
     
         },
         error:(error)=>{
-          console.log(error);
-             
+          console.log(error); 
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
           setTimeout(() => {
             this.loading=false;
@@ -594,9 +551,10 @@ export class DetailsTypeDocComponent {
       });        
     },
     reject:()=>{
-      
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
+
     }
-  });
+    });
   }
 
 onOptionChange(option: string, index: number) {
@@ -610,28 +568,18 @@ onOptionChange(option: string, index: number) {
 }
 
 onFileChange(event: any, index: number) {
-  console.log(index)
   if(this.dossier[index]){
-   console.log(this.dossier[index].champOperationId) 
    this.champOperationId= this.dossier[index]?.champOperationId;
    this.idfile=this.dossier[index]?.id;
-    console.log(this.champOperationId)
   }
   const file = event.target.files[0];
-    this.indexchamp=index;
-    console.log(this.indexchamp);
-    console.log(this.numDossier)
-    console.log(this.idfile)
-
-  // Traitement du fichier, par exemple :
- if (file) {
-   this.file=file;
-    //data.append('dossier', new Blob([JSON.stringify(this.doc)], {type: 'application/json'}));
-} else {
-  console.log('Aucun fichier sélectionné');
-}
-
-
+  this.indexchamp=index;
+  if (file) {
+    this.file=file;
+  } 
+  else {
+    console.log('Aucun fichier sélectionné');
+  }
 }
 
 saveFile(){
@@ -798,18 +746,6 @@ annulerModif(){
   this.isDisabled=true;
 }
 
- /* getTypedoc(id?:number){
-    this.TypeDocService.get_TpeDoc(id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result)
-        this.Typedoc=result;
-      },
-      error:(error)=>{
-        console.log(error)
-      }
-    })
-  }*/
 
     retourPage(){
       this.location.back();

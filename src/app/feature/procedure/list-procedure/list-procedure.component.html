@@ -143,22 +143,18 @@
                  <ng-template pTemplate="caption">
                     <div class="flex">
                         <span class="p-input-icon-left ml-auto cherch">
-                            <i class="pi pi-search" ></i>
                             <input 
                                 pInputText 
                                 type="text" 
                                 #searchInput 
                                 (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="      Rechercher" />
+                                placeholder="Rechercher" />
                         </span>
                     </div>
                 </ng-template>
                 
                 <ng-template pTemplate="header">
                     <tr class="tableEnt">
-                        <!--th style="width: 4rem,">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th-->
                         <th >Nom</th>
                         <th >Organisation</th>
                         <th >Statut</th>
@@ -168,9 +164,6 @@
                 </ng-template>
                 <ng-template id="bodi" pTemplate="body" let-procedure>
                     <tr class="p-selectable-row tableContenu">
-                        <!--td>
-                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                        </td-->
                         <td>
                             {{procedure.name}}
                         </td>
@@ -235,22 +228,17 @@
                  <ng-template pTemplate="caption">
                     <div class="flex">
                         <span class="p-input-icon-left ml-auto cherch">
-                            <i class="pi pi-search" ></i>
                             <input 
                                 pInputText 
                                 type="text" 
                                 #searchInput 
                                 (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="      Rechercher" />
+                                placeholder=" Rechercher" />
                         </span>
                     </div>
                 </ng-template>
-                
                 <ng-template pTemplate="header">
                     <tr class="tableEnt">
-                        <!--th style="width: 4rem,">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th-->
                         <th >Nom</th>
                         <th >Organisation</th>
                         <th >Statut</th>
@@ -260,9 +248,6 @@
                 </ng-template>
                 <ng-template id="bodi" pTemplate="body" let-procedure>
                     <tr class="p-selectable-row tableContenu">
-                        <!--td>
-                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                        </td-->
                         <td>
                             {{procedure.name}}
                         </td>
@@ -310,22 +295,18 @@
                  <ng-template pTemplate="caption">
                     <div class="flex">
                         <span class="p-input-icon-left ml-auto cherch">
-                            <i class="pi pi-search" ></i>
                             <input 
                                 pInputText 
                                 type="text" 
                                 #searchInput 
                                 (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="      Rechercher" />
+                                placeholder="Rechercher" />
                         </span>
                     </div>
                 </ng-template>
                 
                 <ng-template pTemplate="header">
                     <tr class="tableEnt">
-                        <!--th style="width: 4rem,">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th-->
                         <th >Nom</th>
                         <th >Organisation</th>
                         <th >Statut</th>

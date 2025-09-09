@@ -5,7 +5,44 @@
 </div>
 
 <br>
+
+
+
 <div class="card">
+    <h4 class="card-title">-- Details type opération --</h4>
+    <div class="input-container">
+        <!-- Champ 1 -->
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Nom de l'opération</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                [value]="TypeOperation.name"
+
+                class="custom-input"
+                readonly
+            />
+        </div>
+        <!-- Champ 2 -->
+
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Description</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                class="custom-input"
+                readonly
+                [value]="TypeOperation.description"
+            />
+        </div>
+
+       
+        
+    </div> <br>
+</div>
+<!--div class="card">
     <div class="grid" style="display: inline-flex;">
         <div class="col-6 flex align-items-center justify-content-center">
             <div class="p-fluid">
@@ -28,4 +65,4 @@
         </div>
        
     </div>
-</div>
+</div-->
