@@ -286,7 +286,6 @@ saveChamps(){
         }
       })
       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
         
     },
     reject:()=>{

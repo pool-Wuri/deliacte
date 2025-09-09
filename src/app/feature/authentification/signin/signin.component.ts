@@ -27,7 +27,7 @@ export class SigninComponent {
 demandePage:boolean=false;
 oubliPage:boolean=false;
 
-numDossier!:number;
+numDossier!:any;
 mailOublie!:string;
 dataMailOubli:any;
 passPage:boolean=false;
@@ -173,10 +173,12 @@ onSubmit(){
 
  suivreDemande(){
   this.demandePage=true;
+  this.numDossier="";
   console.log(this.demandePage)
+  console.log(this.numDossier)
  }
 
- validerDemande(dossierNumbur:number){
+ validerDemande(dossierNumbur:any){
   console.log(dossierNumbur)
   this.router.navigate(['/deliacte/login/details', dossierNumbur]);
  }
