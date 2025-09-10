@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Organisations - Burkina Faso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Style optionnel pour une barre de défilement plus jolie */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }
+    </script>
+</head>
+
+<body class="bg-gray-100 p-10 flex justify-center items-center min-h-screen">
+
+    <!-- Le conteneur principal qui simule la modale ou la page -->
+    <div class="w-full max-w-6xl h-[90vh] bg-white shadow-2xl rounded-lg flex overflow-hidden">
+
+        <!-- ====================================================================== -->
+        <!-- COLONNE DE GAUCHE (Contenu principal )                                 -->
+        <!-- `flex flex-col` est la clé : il organise ses enfants verticalement. -->
+        <!-- `h-full` assure qu'il prend toute la hauteur disponible.             -->
+        <!-- ====================================================================== -->
+        <div class="w-full md:w-3/5 lg:w-1/2 flex flex-col h-full p-6 sm:p-8">
+
+            <!-- ====================================================================== -->
+            <!-- PARTIE 1 : L'EN-TÊTE STATIQUE                                         -->
+            <!-- `flex-shrink-0` empêche cet élément de se réduire. Il restera fixe. -->
+            <!-- ====================================================================== -->
+            <div class="flex justify-between items-center mb-6 flex-shrink-0">
+                <h1 class="text-3xl font-bold text-gray-800">Organisations</h1>
+                <button class="text-gray-500 hover:text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- ====================================================================== -->
+            <!-- PARTIE 2 : LE CONTENEUR SCROLLABLE                                     -->
+            <!-- `flex-grow` : Cet élément prendra tout l'espace vertical restant.   -->
+            <!-- `overflow-y-auto` : Affiche une barre de défilement si nécessaire.   -->
+            <!-- C'est ici que votre contenu doit aller.                              -->
+            <!-- ====================================================================== -->
+            <div class="flex-grow overflow-y-auto custom-scrollbar pr-4 -mr-4">
+                <!-- Grille responsive pour la liste -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8">
+
+                    <!-- Colonne 1 de la liste -->
+                    <div class="space-y-4">
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Administration Territoriale, de la Décentralisation et de la Sécurité</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            des Affaires Étrangères, de la Coopération Régionale et des Burkinabè de l'Extérieur</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Économie, des Finances et de la Prospective</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de la Justice et des Droits Humains, chargé des Relations avec les Institutions</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Agriculture, des Ressources Animales et Halieutiques</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de la Transition Digitale, des Postes et des Communications Électroniques</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de la Santé et de l'Hygiène Publique</a>
+                        <!-- Ajoutez plus d'éléments ici pour tester le scroll -->
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Autre
+                            Ministère...</a>
+                    </div>
+
+                    <!-- Colonne 2 de la liste -->
+                    <div class="space-y-4">
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Éducation Nationale, de l'Alphabétisation et de la Promotion des Langues Nationales</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Enseignement Supérieur, de la Recherche et de l'Innovation</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de la Fonction Publique, du Travail et de la Protection Sociale</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            du Développement Industriel, du Commerce, de l'Artisanat et des PME</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            des Infrastructures et du Désenclavement</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            de l'Urbanisme, des Affaires Foncières et de l'Habitat</a>
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Ministère
+                            des Sports, de la Jeunesse et de l'Emploi</a>
+                        <!-- Ajoutez plus d'éléments ici pour tester le scroll -->
+                        <a href="#"
+                            class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">Autre
+                            Ministère...</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne de droite : Image (reste inchangée ) -->
+        <div class="hidden md:block md:w-2/5 lg:w-1/2 relative">
+            <img class="absolute h-full w-full object-cover"
+                src="https://images.unsplash.com/photo-1590840209934-4a6f4a7f6e6d?q=80&w=1974&auto=format&fit=crop"
+                alt="Silhouette tenant le drapeau du Burkina Faso">
+            <div class="absolute inset-0 bg-black opacity-20"></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

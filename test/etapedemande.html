@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statut des Demandes - Service Public du Burkina Faso</title>
+    <!-- Inclusion de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Police de caractères pour un meilleur rendu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Configuration pour utiliser la police "Inter"
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans p-4 sm:p-6 lg:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- ======================= -->
+        <!-- Fil d'Ariane            -->
+        <!-- ======================= -->
+        <div class="text-sm text-gray-500 mb-4">
+            <a href="#" class="text-green-600 hover:underline font-medium">Accueil</a>
+            <span class="mx-2">/</span>
+            <span>Statut des Demandes</span>
+        </div>
+
+        <!-- ============================================= -->
+        <!-- Conteneur principal avec bordure verte      -->
+        <!-- ============================================= -->
+        <div class="bg-white border-t-4 border-green-600 shadow-md rounded-b-lg">
+
+            <!-- Bannière de progression -->
+            <div class="bg-green-600 text-white p-4 rounded-t-md">
+                <h2 class="font-bold text-lg">Progression de la Reconnaissance et de l'Équivalence des Diplômes</h2>
+            </div>
+
+            <!-- Contenu principal -->
+            <div class="p-6">
+                <!-- Indicateur d'étapes -->
+                <div class="flex items-center space-x-2 text-sm sm:text-base mb-6">
+                    <span class="font-bold text-green-600 flex items-center">
+                        <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                        Étape 1
+                    </span>
+                    <span class="text-gray-400 font-bold">&gt;</span>
+                    <span class="font-bold text-green-600">Étape 2</span>
+                    <span class="text-gray-400 font-bold">&gt;</span>
+                    <span class="font-bold text-gray-400">Étape 3</span>
+                    <span class="text-gray-400 font-bold">&gt;</span>
+                    <span class="font-bold text-gray-400">Étape 4</span>
+                </div>
+
+                <!-- Titre de l'état actuel -->
+                <h3 class="text-2xl sm:text-3xl font-bold text-blue-800 mb-3">En attente de la confirmation des paiements</h3>
+
+                <!-- Barre de progression -->
+                <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden relative">
+                    <div class="bg-green-500 h-full rounded-full" style="width: 50%;"></div>
+                    <span class="absolute inset-0 flex items-center justify-center text-sm font-medium text-white">
+                        Processus de demande complet à 50%
+                    </span>
+                </div>
+            </div>
+
+            <!-- ======================= -->
+            <!-- Tableau des demandes    -->
+            <!-- ======================= -->
+            <div class="border-t border-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full w-full text-sm text-left text-gray-600">
+                        <thead class="bg-gray-50 text-xs uppercase font-medium">
+                            <tr>
+                                <th class="px-6 py-3">#</th>
+                                <th class="px-6 py-3">N° Demande</th>
+                                <th class="px-6 py-3">Date Création</th>
+                                <th class="px-6 py-3">Type de Demandeur</th>
+                                <th class="px-6 py-3">Résidence</th>
+                                <th class="px-6 py-3">Devise</th>
+                                <th class="px-6 py-3">Frais Totaux</th>
+                                <th class="px-6 py-3">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- État vide du tableau -->
+                            <tr>
+                                <td colspan="8" class="text-center py-10 px-6 text-gray-500">
+                                    Aucune donnée disponible dans le tableau
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination et informations -->
+                <div class="flex flex-col sm:flex-row items-center justify-between p-4 text-sm text-gray-600">
+                    <p>Affichage de 0 à 0 sur 0 entrées</p>
+                    <div class="flex items-center space-x-2 mt-4 sm:mt-0">
+                        <button class="px-3 py-1 border border-gray-300 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed">Précédent</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed">Suivant</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

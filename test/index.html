@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCitoyen Burkina - Services gouvernementaux simplifiés</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'burkina-red': '#E31E24',
+                        'burkina-green': '#009639',
+                        'burkina-yellow': '#FCD116',
+                        'primary': '#1e40af',
+                        'secondary': '#059669'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo et titre -->
+                <div class="flex items-center space-x-3">
+                    <img src="images/bCmgaAVS3Def.jpg" alt="Logo Burkina Faso" class="h-10 w-10">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-globe text-burkina-green text-xl"></i>
+                        <span class="text-xl font-bold text-gray-900">eCitoyen</span>
+                    </div>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">National</a>
+                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Régions</a>
+                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Aide & Support</a>
+                </nav>
+                
+                <!-- Boutons d'action -->
+                <div class="flex items-center space-x-3">
+                    <button class="text-gray-700 hover:text-burkina-green">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
+                        Se connecter
+                    </button>
+                    <button class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors">
+                        S'inscrire
+                    </button>
+                    <div class="flex space-x-1">
+                        <button class="p-2 text-gray-500 hover:text-burkina-green">
+                            <i class="fab fa-facebook"></i>
+                        </button>
+                        <button class="p-2 text-gray-500 hover:text-burkina-green">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section Hero -->
+    <section class="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white">
+        <!-- Image de fond -->
+        <div class="absolute inset-0 opacity-30">
+            <img src="images/5vd2XSmyuED1.jpg" alt="Culture burkinabè" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    Services du Gouvernement du Burkina Faso simplifiés
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-200">
+                    Tous vos documents administratifs unifiés
+                </p>
+                
+                <!-- Barre de recherche -->
+                <div class="bg-white rounded-lg p-2 flex items-center shadow-lg">
+                    <i class="fas fa-search text-gray-400 ml-4"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Tapez le nom du service, ministère, département, agence etc..."
+                        class="flex-1 px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none"
+                    >
+                    <button class="bg-burkina-green text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
+                        Rechercher
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services rapides -->
+    <section class="py-16 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
+                <!-- Service 1 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-passport text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Passeport</p>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-id-card text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Permis de Conduire</p>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-burkina-green p-6 rounded-lg hover:bg-green-700 transition-colors">
+                        <i class="fas fa-certificate text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Services ONI</p>
+                    </div>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-users text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Certificat de Naissance</p>
+                    </div>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-file-alt text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Certificat de Bonne Conduite</p>
+                    </div>
+                </div>
+                
+                <!-- Service 6 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-home text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Logement Social</p>
+                    </div>
+                </div>
+                
+                <!-- Service 7 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-building text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Enregistrer une Entreprise</p>
+                    </div>
+                </div>
+                
+                <!-- Service 8 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-ring text-3xl text-white mb-3"></i>
+                        <p class="text-white text-sm font-medium">Demander un Certificat de Mariage</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section statistiques -->
+    <section class="py-16 bg-gradient-to-r from-burkina-green to-green-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-white">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                        Plus de 15 000 services gouvernementaux maintenant disponibles
+                    </h2>
+                    <p class="text-xl mb-6">
+                        de plus de 50 Ministères, Régions, Départements et Agences.
+                    </p>
+                    <p class="text-lg mb-8">
+                        Commencez sur eCitoyen aujourd'hui
+                    </p>
+                    <div class="flex space-x-4">
+                        <button class="bg-white text-burkina-green px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                            Se connecter
+                        </button>
+                        <button class="bg-burkina-green border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors">
+                            S'inscrire
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="images/5vd2XSmyuED1.jpg" alt="Citoyen burkinabè" class="rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Agences -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Agences</h2>
+                <a href="#" class="text-burkina-green hover:text-green-700 font-medium">Voir toutes les agences</a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Agence 1 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/0vsVGrs02VJy.jpg" alt="ONI" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Office National d'Identification (ONI)</h3>
+                            <span class="text-sm text-gray-500">(Nouveau)</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        Plateforme dédiée pour les demandes et renouvellements de passeports biométriques, cartes d'identité et services d'identification connexes.
+                    </p>
+                </div>
+                
+                <!-- Agence 2 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/KjkTmwjhjM6i.png" alt="DGTTM" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Direction Générale des Transports Terrestres et Maritimes (DGTTM)</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        La DGTTM est un organisme statutaire établi par la Direction Générale des Transports et gère les services liés aux permis de conduire et à la sécurité routière.
+                    </p>
+                </div>
+                
+                <!-- Agence 3 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/veFS95fzDyxg.png" alt="État Civil" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Services d'État Civil</h3>
+                            <span class="text-sm text-gray-500">(Nouvelles Demandes)</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        Utilisez les services en ligne de l'État Civil pour les demandes d'extraits d'actes de naissance, de mariage et de décès, ainsi que les certificats de nationalité.
+                    </p>
+                </div>
+                
+                <!-- Agence 4 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/Ru15hdP927xU.png" alt="eCasier" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">eCasier Judiciaire</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        Explorez les services en ligne d'eCasier Judiciaire pour les demandes de bulletins de casier judiciaire et plus encore.
+                    </p>
+                </div>
+                
+                <!-- Agence 5 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/G6yVOvEPOLRB.jpg" alt="Maison de l'Entreprise" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Maison de l'Entreprise du Burkina Faso</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        Tirez parti de la plateforme numérique de la Maison de l'Entreprise pour des procédures d'enregistrement d'entreprise simplifiées et efficaces.
+                    </p>
+                </div>
+                
+                <!-- Agence 6 -->
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <img src="images/bCmgaAVS3Def.jpg" alt="Services Civils" class="h-12 w-12 mr-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">Services d'Enregistrement Civil</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 text-sm">
+                        Accédez aux services d'enregistrement civil pour demander et payer facilement les services gouvernementaux en ligne.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>

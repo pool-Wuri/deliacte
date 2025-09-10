@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide & Support - Service Public du Burkina Faso</title>
+    <!-- Inclusion de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inclusion d'une police de caractères pour un meilleur rendu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Configuration pour utiliser la police "Inter" par défaut
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- ======================= -->
+    <!-- Barre de Navigation     -->
+    <!-- ======================= -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Coat_of_arms_of_Burkina_Faso.svg" alt="Armoiries du Burkina Faso" class="h-12 w-auto">
+                    </a>
+                    <a href="#" class="ml-4 text-2xl font-bold text-gray-800">
+                        ServicePublic.bf
+                    </a>
+                </div>
+
+                <!-- Menu Principal (pour écrans larges ) -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-green-600 font-medium">Accueil</a>
+                    <a href="#" class="text-gray-600 hover:text-green-600 font-medium">Services Nationaux</a>
+                    <a href="#" class="text-gray-600 hover:text-green-600 font-medium">Régions</a>
+                    <a href="#" class="text-green-600 font-semibold border-b-2 border-green-600 pb-1">Aide & Support</a>
+                </nav>
+
+                <!-- Icônes et Boutons d'action -->
+                <div class="hidden md:flex items-center space-x-5">
+                    <a href="#" class="text-gray-500 hover:text-gray-700">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </a>
+                    <a href="#" class="text-gray-600 hover:text-green-600 font-medium">Connexion</a>
+                    <a href="#" class="inline-block bg-green-600 text-white font-bold py-2 px-5 rounded-full hover:bg-green-700 transition-colors">
+                        S'inscrire
+                    </a>
+                </div>
+                
+                <!-- Bouton Menu Burger (pour mobile) -->
+                <div class="md:hidden">
+                    <button class="text-gray-600 hover:text-gray-800">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================= -->
+    <!-- Contenu Principal       -->
+    <!-- ======================= -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <h1 class="text-4xl font-bold text-gray-800 mb-10">Aide & Support</h1>
+
+        <!-- Section Contacts -->
+        <div class="bg-white p-8 rounded-xl shadow-md mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                
+                <!-- Contact 1: Appelez-nous -->
+                <div class="flex flex-col items-center md:flex-row md:items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-5">
+                        <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Appelez-nous</h3>
+                        <p class="text-gray-500 mt-1">24h/24, 7j/7</p>
+                        <a href="tel:+22625000000" class="text-green-600 font-bold mt-1 block text-lg hover:underline">+226 25 00 00 00</a>
+                    </div>
+                </div>
+
+                <!-- Contact 2: Écrivez-nous -->
+                <div class="flex flex-col items-center md:flex-row md:items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-5">
+                        <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Écrivez-nous</h3>
+                        <p class="text-gray-500 mt-1">Email :</p>
+                        <a href="mailto:support@servicepublic.bf" class="text-green-600 font-bold mt-1 block hover:underline">support@servicepublic.bf</a>
+                    </div>
+                </div>
+
+                <!-- Contact 3: Rendez-nous visite -->
+                <div class="flex flex-col items-center md:flex-row md:items-start">
+                    <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4 md:mb-0 md:mr-5">
+                        <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Rendez-nous visite</h3>
+                        <p class="text-gray-500 mt-1">Trouvez-nous à :</p>
+                        <p class="text-green-600 font-bold mt-1 text-lg">N'importe quel guichet unique sur le territoire</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Section FAQ -->
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">Foire Aux Questions (FAQ)</h2>
+
+        <div class="space-y-4">
+            <!-- Question 1 (déjà ouverte) -->
+            <details class="bg-white p-6 rounded-lg shadow-md group" open>
+                <summary class="flex justify-between items-center font-semibold text-gray-800 cursor-pointer">
+                    Qui peut utiliser ServicePublic.bf ?
+                    <div class="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 group-open:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <svg class="w-5 h-5 text-gray-500 hidden group-open:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                    </div>
+                </summary>
+                <p class="text-gray-600 mt-4">
+                    Toute personne, citoyen burkinabè, résident ou étranger, peut accéder à la plateforme en créant simplement un compte.
+                </p>
+            </details>
+
+            <!-- Question 2 -->
+            <details class="bg-white p-6 rounded-lg shadow-md group">
+                <summary class="flex justify-between items-center font-semibold text-gray-800 cursor-pointer">
+                    Pourquoi devrais-je créer un compte ?
+                    <div class="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 group-open:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <svg class="w-5 h-5 text-gray-500 hidden group-open:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                    </div>
+                </summary>
+                <p class="text-gray-600 mt-4">
+                    Un compte vous permet de suivre l'état de vos demandes, d'accéder à l'historique de vos démarches et de recevoir des notifications importantes concernant les services publics.
+                </p>
+            </details>
+
+            <!-- Question 3 -->
+            <details class="bg-white p-6 rounded-lg shadow-md group">
+                <summary class="flex justify-between items-center font-semibold text-gray-800 cursor-pointer">
+                    Comment puis-je payer pour les services ?
+                    <div class="w-7 h-7 bg-gray-100 rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-gray-500 group-open:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <svg class="w-5 h-5 text-gray-500 hidden group-open:block" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                    </div>
+                </summary>
+                <p class="text-gray-600 mt-4">
+                    La plateforme accepte les paiements via les services de mobile money locaux (Orange Money, Moov Money) ainsi que par carte bancaire.
+                </p>
+            </details>
+        </div>
+    </main>
+
+</body>
+</html>

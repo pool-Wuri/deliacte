@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Service Public</title>
+    <!-- Inclusion de Tailwind CSS via CDN pour un test rapide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inclusion d'une police qui supporte bien les accents français -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Configuration optionnelle de Tailwind pour utiliser la police Inter
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Barre de notification d'erreur (positionnée en haut à droite ) -->
+    <div class="absolute top-5 right-5 bg-red-100 border border-red-300 text-gray-800 p-4 rounded-lg shadow-lg max-w-sm z-20">
+        <div class="flex items-start">
+            <!-- Icône d'information -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+            <div>
+                <p class="font-semibold">Oops, la connexion à Internet a échoué.</p>
+                <p class="text-sm mt-1">Tentative de reconnexion en cours...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Barre de navigation supérieure aux couleurs du Burkina Faso -->
+        <header class="w-full h-2 flex">
+            <div class="w-1/2 bg-red-600"></div>
+            <div class="w-1/2 bg-green-600"></div>
+        </header>
+
+        <div class="flex-grow flex">
+            <!-- Section gauche : Formulaire de connexion -->
+            <div class="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12">
+                <div class="w-full max-w-md">
+                    <!-- Logo -->
+                    <div class="flex items-center justify-center lg:justify-start mb-8">
+                        <!-- J'utilise un placeholder pour les armoiries, à remplacer par le vrai SVG -->
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Coat_of_arms_of_Burkina_Faso.svg" alt="Armoiries du Burkina Faso" class="h-14 mr-4">
+                        <div class="h-12 w-px bg-gray-300 mr-4"></div>
+                        <!-- Logo du service -->
+                        <span class="text-2xl font-bold text-gray-800">ServicePublic.bf</span>
+                    </div>
+
+                    <!-- Titres -->
+                    <h1 class="text-4xl font-bold text-gray-900">Connexion unique</h1>
+                    <p class="text-gray-500 mt-2 mb-8">Tous les services du gouvernement</p>
+
+                    <!-- Formulaire -->
+                    <form class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">
+                                Adresse e-mail ou N° d'identification <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="email" placeholder="Saisissez votre e-mail ou identifiant" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700">
+                                Mot de passe <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative mt-1">
+                                <input type="password" id="password" placeholder="Mot de passe" class="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm">
+                                <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm text-gray-500 font-semibold">
+                                    Afficher
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-500" checked>
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-900">Se souvenir de moi</label>
+                            </div>
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Mot de passe oublié ?</a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                Se connecter
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Séparateur -->
+                    <div class="relative my-8">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-gray-50 text-gray-500">Ou continuer avec</span>
+                        </div>
+                    </div>
+
+                    <!-- Connexion alternative -->
+                    <div>
+                         <button type="button" class="w-full flex justify-center items-center py-3 px-4 border border-gray-400 rounded-full shadow-sm text-md font-medium text-gray-800 bg-white hover:bg-gray-100">
+                            <span class="h-6 w-6 mr-3 inline-block">
+                                <!-- Icône pour l'ID Numérique -->
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                                </svg>
+                            </span>
+                            Se connecter avec l'ID National
+                        </button>
+                    </div>
+
+                    <!-- Lien d'inscription -->
+                    <p class="mt-8 text-center text-sm text-gray-600">
+                        Pas encore de compte ?
+                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Inscrivez-vous</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section droite : Image -->
+            <div class="hidden lg:block lg:w-1/2 relative">
+                <!-- J'ai choisi une image contextuelle pour le Burkina Faso, libre de droits -->
+                <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1608575224744-28635f933b03?q=80&w=1964&auto=format&fit=crop" alt="Scène de vie au Burkina Faso">
+                <div class="absolute inset-0 bg-black opacity-10"></div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-3/4">
+                    <div class="bg-white/70 backdrop-blur-md p-6 rounded-xl text-center shadow-lg">
+                        <p class="text-2xl font-bold text-gray-800">Les services publics, désormais à portée de main.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
