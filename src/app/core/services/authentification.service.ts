@@ -28,9 +28,7 @@ export class AuthentificationService {
         };
       }),
       tap(({ token, user ,refresh_token}) => {
-        console.log(user)
-        console.log(token)
-        console.log(refresh_token)
+       
         this.saveToken(token);
         this.saveRefreshToken(refresh_token); // Vous pouvez ajouter un saveRefreshToken si besoin
         localStorage.setItem('USER', JSON.stringify(user));
@@ -67,10 +65,10 @@ getRefreshToken(): string | null {
       localStorage.removeItem('REFRESH_TOKEN');
       localStorage.removeItem('USER');
       this.router.navigate(['/deliacte/login']).catch(err => {
-        console.error('Navigation error:', err);
+        //console.error('Navigation error:', err);
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      //console.error('Logout error:', error);
     }
   }
 
@@ -86,7 +84,7 @@ getRefreshToken(): string | null {
   oublieservice(email:any):Observable<any>{
     return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",email).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
   }
@@ -95,7 +93,7 @@ getRefreshToken(): string | null {
     console.log(this.API_URL+"/users/updatePassword",newpass)
     return this.http.put<any>(this.API_URL+"/users/updatePassword",newpass).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
   }

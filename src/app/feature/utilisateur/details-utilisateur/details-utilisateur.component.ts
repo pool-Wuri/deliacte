@@ -40,11 +40,9 @@ loading:boolean=false;
     const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-    console.log(this.user)
   }
     this.route.params.subscribe(params => {
       this.id = params['id']; 
-      console.log(this.id)
       this.getUser(this.id)
      }
     );
@@ -58,12 +56,10 @@ loading:boolean=false;
         next:(result)=>{
           if(result){
             this.procedure=result.data;
-            console.log(this.procedure);
             this.loading=false;
           }
         },
         error:(error)=>{
-          console.log(error);
           this.loading=false;
           this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
@@ -76,13 +72,11 @@ loading:boolean=false;
         next:(result)=>{
           if(result){
             this.organisation=result.data;
-            console.log(this.organisation);
             this.loading=false;
           }
          
         },
         error:(error)=>{
-          console.log(error);
           this.loading=false;
           this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
@@ -94,13 +88,11 @@ loading:boolean=false;
       complete:()=>{},
       next:(result)=>{
         if(result){
-          console.log(result)
           this.utilisateur=result.data;
           this.loading=false;
         }
       },
       error:(error)=>{
-        console.log(error);
         this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
         this.loading=false;
 

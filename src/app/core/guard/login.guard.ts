@@ -17,7 +17,7 @@ export class LoginGuard implements CanActivate {
   // Vérifie si l'utilisateur peut accéder à la route
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const token = this.authService.getAccessToken();
-    console.log(token)
+    //console.log(token)
     // Si le jeton existe, permettre l'accès
     if (token) {
       return true;

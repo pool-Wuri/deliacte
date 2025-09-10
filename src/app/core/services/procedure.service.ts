@@ -34,10 +34,7 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+         {}
         )
       );
   }
@@ -51,10 +48,7 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+          {}   
         )
       );
   }
@@ -63,7 +57,7 @@ export class ProcedureService {
   public saveProcedure(procedure:any):Observable<any>{
     return this.http.post<any>(PROCEDURE_API,procedure).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
   }
@@ -73,7 +67,7 @@ export class ProcedureService {
           .put<any>(PROCEDURE_API+'/'+id, procedure)
           .pipe(
             tap((data) => {
-              console.log('api.service > update-procedure> tap :', data);
+             // console.log('api.service > update-procedure> tap :', data);
             })
           );
   }
@@ -88,10 +82,7 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_procedure > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -104,12 +95,8 @@ export class ProcedureService {
       })
       .pipe(
         retry(1),
-        tap((data) =>
-          console.log()
-         /* console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )*/
+        tap((data) =>{}
+          
         )
       );
   }
@@ -126,10 +113,7 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -140,7 +124,7 @@ export class ProcedureService {
           .put<any>(PROCEDURE_API+ '?'+ id +'/status',  procedure)
           .pipe(
             tap((data) => {
-              console.log('api.service > update-procedure> tap :', data);
+             // console.log('api.service > update-procedure> tap :', data);
             })
           );
   }
@@ -150,7 +134,7 @@ export class ProcedureService {
   public saveDemande(demande:any,message:any):Observable<any>{
     return this.http.post<any>(DEMANDE_API+message,demande).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }
@@ -164,10 +148,7 @@ export class ProcedureService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -176,7 +157,7 @@ export class ProcedureService {
   public saveDoc(doc:any,numDossier:number):Observable<any>{
     return this.http.post<any>(DOSSIERBYCITOYEN+numDossier,doc).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }

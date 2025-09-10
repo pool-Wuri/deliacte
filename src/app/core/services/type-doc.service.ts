@@ -30,10 +30,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+          {}   
         )
       );
   }
@@ -42,7 +39,7 @@ export class TypeDocService {
   public saveTypeDoc(typeDoc:any):Observable<any>{
     return this.http.post<any>(TYPEDOC_API,typeDoc).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
   }
@@ -52,7 +49,7 @@ export class TypeDocService {
           .put<any>(TYPEDOC_API+'?'+id, type)
           .pipe(
             tap((data) => {
-              console.log('api.service > update-type> tap :', data);
+              //console.log('api.service > update-type> tap :', data);
             })
           );
   }
@@ -67,10 +64,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_typeDoc > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -84,10 +78,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -102,10 +93,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+         {}
         )
       );
   }
@@ -119,10 +107,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+         {}
         )
       );
   }
@@ -136,10 +121,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -153,10 +135,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -170,10 +149,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -185,10 +161,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }

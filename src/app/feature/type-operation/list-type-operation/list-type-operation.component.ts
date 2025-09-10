@@ -46,11 +46,9 @@ export class ListTypeOperationComponent implements OnInit {
     this.TypeOperationService.search_Typeoperation().subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"Type opération total");
         this.typeoperations=result.data;
       },
       error:(error)=>{
-        console.log(error);
       }
   
     })
@@ -72,7 +70,6 @@ export class ListTypeOperationComponent implements OnInit {
 
   saveTypeoperation(){
     this.submitted = true;
-    console.log(this.typeoperation1)
     if(this.typeoperation1.name && this.typeoperation1.description)
     {
     this.confirmationService.confirm({
@@ -87,25 +84,20 @@ export class ListTypeOperationComponent implements OnInit {
       this.addTypeOperation=false; 
       this.editbutt=false; 
       this.loading=true;
-      console.log(this.typeoperation1)
       this.TypeOperationService.saveTypeoperation(this.typeoperation1).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"Type opération add");
           setTimeout(()=>{
             this.searchtypeoperation();
             this.loading=false;
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Type opération enregistré', life: 3000});
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Type opération enregistré', life: 3000});
 
             },2000)
-         // this.searchtypeoperation();
         },
         error:(error)=>{
-          console.log(error);
         }
     
       })
-        //Actual logic to perform a confirmation
         
     },
     reject:()=>{
@@ -129,12 +121,10 @@ export class ListTypeOperationComponent implements OnInit {
     this.addTypeOperation = false;
     this.editbutt = true;
     this.title = 'Formulaire de modification d\'un type d\'opération';
-    console.log(this.typeoperation1);
 
   }
 
   deleteTypeoperation(typeoperation:TypeOperation){
-    console.log(typeoperation)
     this.confirmationService.confirm({
       message: 'Voulez-vous vraiment supprimer cet type d\'opération?',
       header: 'Suppression',
@@ -156,7 +146,6 @@ export class ListTypeOperationComponent implements OnInit {
              
           },
           error:(error)=>{
-            console.log(error);
             this.loading=false;
             this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Opération non supprimée', life: 3000});
           }
@@ -172,7 +161,6 @@ export class ListTypeOperationComponent implements OnInit {
 
   validerModif(){
 
-    console.log(this.typeoperation1)
     this.confirmationService.confirm({
       message: 'Voulez-vous modifier cet type d\'opération?',
       header: 'Modification',
@@ -189,21 +177,18 @@ export class ListTypeOperationComponent implements OnInit {
       this.TypeOperationService.updateTypeoperation(this.typeoperation1,this.typeoperation1.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"Type opération add");
           setTimeout(()=>{
             this.searchtypeoperation();
             this.loading=false;
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Type opération enregistré', life: 3000});
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Type opération enregistré', life: 3000});
 
             },2000)
         },
         error:(error)=>{
-          console.log(error);
         }
     
       })
-     // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
+    
         
     },
     reject:()=>{

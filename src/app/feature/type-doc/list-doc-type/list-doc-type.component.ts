@@ -84,7 +84,6 @@ ngOnInit(): void {
   const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-    console.log(this.user)
   }
   //this.searchType();
   this.getDossier();
@@ -95,11 +94,9 @@ ngOnInit(): void {
   this.typeDocService.search_TypeDoc().subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result+"DOCTYPE total");
       this.typeDcs=result;
     },
     error:(error)=>{
-      console.log(error);
     }
 
   })
@@ -111,27 +108,21 @@ ngOnInit(): void {
 
 
  detailsType(dossier: any) {
-  console.log(dossier)
   this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
 }
 
 
 modifierDossier(dossier: any) {
-  console.log(dossier)
   this.displayBasic=true;
   this.typeDocService.getDossier(dossier.numeroDossier).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result+" total");
      this.dossier=result.data;
-     console.log(result)
     },
     error:(error)=>{
-      console.log(error);
     }
 
   })
- // this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
 }
 
 editDossier(){
@@ -144,10 +135,8 @@ getDossier(){
       complete:()=>{},
       next:(result)=>{
         this.doosierUser=result.data;
-        console.log(this.doosierUser);
       },
       error:(error)=>{
-        console.log(error);
       }
     });
   }
@@ -155,20 +144,16 @@ getDossier(){
     this.userService.operationInfo(this.user?.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data);
       },
       error:(error)=>{
-        console.log(error);
       }
     });
     this.typeDocService.getDossierAtraiter().subscribe({
       complete:()=>{},
       next:(result)=>{
         this.doosierUser=result.data;
-        console.log(this.doosierUser);
       },
       error:(error)=>{
-        console.log(error);
       }
     });
     
@@ -185,9 +170,9 @@ searchOperation():void{
           complete:()=>{},
           next:(result)=>{
             this.operations[i].procedure=result;
-      //console.log(result)    
     },
-          error:(er)=>{console.log("get_error_User")}
+          error:(er)=>{
+          }
         })
       }
    
@@ -205,11 +190,9 @@ search_Procedure():void{
       next:(result)=>{
         if(result){
           this.procedures=result.data;
-          console.log(this.procedures[0]+"procedure total");  
         }
       },
       error:(error)=>{
-        console.log(error);
       }
   
     })
@@ -219,18 +202,14 @@ search_Procedure():void{
 
  onSortChange(event: { value: any; }) {
   let proced = event.value;
-  console.log(this.procedurechoisi);
   this.getProcedure();
   this.typeDocService.searchDoosierByProcedure(this.procedurechoisi.id || 0).subscribe({
     complete:()=>{},
     next:(result)=>{
-   //   console.log(result.data+" total");
       this.doosierUser=result.data;
-      console.log(this.doosierUser);
     
     },
     error:(error)=>{
-      console.log(error);
     }
 
   });
@@ -242,7 +221,6 @@ search_Procedure():void{
     this.procedureService.get_Procedure(this.procedurechoisi.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
         this.procedure=result;
         this.operationService.search_Procedure("").subscribe({
           next:(value)=>{
@@ -254,7 +232,6 @@ search_Procedure():void{
                 next:(value)=>{
                   this.champs=value;
                   this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
-                  console.log(this.champs)
                    
               
                 },
@@ -271,19 +248,14 @@ search_Procedure():void{
        
       },
       error:(error)=>{
-        console.log(error)
       }
     })
   }
   
 
 onOptionChange(option: string, index: number) {
-  console.log(index)
-  console.log('Option sélectionnée:', option);
   this.selectedOption = option;
-  console.log(option)
   this.demandeFor[index].name = option;
-  console.log(this.demandeFor[index])
   // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
 }
 
@@ -297,7 +269,6 @@ onFileChange(event: any, index: number) {
 voirDoc(name:string){
   this.displayPosition = true;
 this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
-console.log(this.imageUrl)
   
 
   

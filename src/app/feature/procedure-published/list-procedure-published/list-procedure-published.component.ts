@@ -77,9 +77,7 @@ export class ListProcedurePublishedComponent {
     this.selectedProducts = [];
     this.productService.getProductsSmall().subscribe(data => { 
       this.availableProducts=data
-      console.log(data); // Traitez les données des produits
     });
-        console.log(this.availableProducts)
         this.champOperation=[
           {name:"Text",inputType:"TEXT",description:"",operation:"",isRequired:false},
           {name:"TEXTAREA",inputType:"TEXTAREA",description:"",operation:"",isRequired:false},
@@ -100,17 +98,14 @@ export class ListProcedurePublishedComponent {
 
   
   onSearch() {
-    console.log(this.searchTerm);
-    console.log(this.procedures);
+  
     this.filteredProcedures=this.procedures;
     const term = this.searchTerm.toLowerCase().trim();
-    console.log(term)
     this.filteredProcedures = this.procedures.filter(proc =>
       proc.name?.toLowerCase().includes(term) ||
       proc.description?.toLowerCase().includes(term) ||
       proc.organisation.name.toLowerCase().includes(term)
     );
-    console.log(this.filteredProcedures)
   }
 
   onDrop(event: CdkDragDrop<any[]>) {
@@ -121,14 +116,11 @@ export class ListProcedurePublishedComponent {
     this.ProcedureService.search_ProcedurePublier("PUBLISHED").subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"procedure total");
         this.procedures=result.data;
         this.filteredProcedures=this.procedures;
        // this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
-        console.log(this.procedures);
       },
       error:(error)=>{
-        console.log(error);
       }
   
     })
@@ -146,26 +138,21 @@ export class ListProcedurePublishedComponent {
 
    faireDemande(procedure:any){
     this.demandeFor=true;
-   // console.log(procedure.id);
     this.router.navigate(['/deliacte/procedure-published/demandePage',procedure.id])
 
-  //  this.searchOperation();
    }
 
    searchOperation():void{
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
         this.operations=value;
-        console.log(this.operations);
 
         this.operations=this.operations.filter(u=>u.name === "SOUMISSION");
         this.operation=this.operations[0]
-        console.log(this.operations);
         this.operationService.searchChamp("").subscribe({
           next:(value)=>{
             this.champs=value;
-            //this.champs=this.champs.filter(u=>u.operationId===1)
-            console.log(this.champs);
+            
          
           },
           complete:()=>{},
@@ -197,7 +184,6 @@ drop() {
         let draggedProductIndex = this.findIndex(this.draggedProductchamp);
         this.selectedChamps = [...this.selectedChamps, this.draggedProductchamp];
         this.availableChamp = this.availableChamp.filter((val,i) => i!=draggedProductIndex);
-        console.log(this.selectedChamps)
         this.draggedProductchamp = null;
     }
 }

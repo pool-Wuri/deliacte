@@ -7,90 +7,95 @@
 <p-toast></p-toast>
 
 <div class="card opera" *ngIf="operation">
-    <h4 class="card-title">-- Details opération --</h4>
+    <h4 class="card-title">-- Détails opération --</h4>
     <div class="input-container">
         <!-- Champ 1 -->
         <div class="input-item">
-            <label for="inputField1" class="custom-label">Nom de l'opération</label>
+            <label class="custom-label">Nom de l'opération</label>
             <input
-                id="inputField1"
                 type="text"
                 pInputText
-                [value]="operation.name"
+                [value]="operation.name || '---------------'"
                 class="custom-input"
                 readonly
             />
         </div>
-        <!-- Champ 2 -->
 
+        <!-- Champ 2 -->
         <div class="input-item">
-            <label for="inputField1" class="custom-label">Statut de l'opération</label>
+            <label class="custom-label">Statut de l'opération</label>
             <input
-                id="inputField1"
                 type="text"
                 pInputText
+                [value]="operation.verbeOperation || '---------------'"
                 class="custom-input"
                 readonly
-                [value]="operation.verbeOperation"
-
             />
         </div>
 
         <!-- Champ 3 -->
         <div class="input-item" *ngIf="operation.procedure">
-            <label for="inputField1" class="custom-label">Procedure </label>
+            <label class="custom-label">Procédure</label>
             <input
-                id="inputField1"
                 type="text"
                 pInputText
+                [value]="operation.procedure.name || '---------------'"
                 class="custom-input"
                 readonly
-                [value]="operation.procedure.name ? operation.procedure.name : '---------------'"
-
             />
         </div>
+
+        <!-- Champ 4 -->
         <div class="input-item">
-            <label for="inputField1" class="custom-label">Description de l'opération </label>
+            <label class="custom-label">Description de l'opération</label>
             <input
-                id="inputField1"
                 type="text"
                 pInputText
+                [value]="operation.description || '---------------'"
                 class="custom-input"
                 readonly
-                [value]="operation.description ? operation.description: '---------------'"
-
             />
         </div>
-        
-    </div> <br>
+    </div>
 </div>
 
-<!--p-splitter [style]="{'height': '300px'}">
-    <ng-template pTemplate>
-        <div class="col-10 flex align-items-center justify-content-center">
-            <div class="p-fluid">
-                <div class="titleWrap" >
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Nom:</label>
-                    <label for=""  class="propertyTitle" style="margin-top: 10px;">Verbe de l'opération:</label>
+<p-divider align="center">
+    <div class="inline-flex align-items-center" style="color:#060;">
+        <!--i class="pi pi-info-circle user"></i-->
+        <b>Document chargement</b>
+    </div>
+</p-divider>
+<div class="card">
 
-                    <label for=""  style="margin-top: 10px;" class="propertyTitle" *ngIf="operation.procedure">Procedure:</label>
-                    <label for=""  class="propertyTitle"  style="margin-top: 10px;">Description:</label>
-
-                </div>
-                <div class="valueWrap" >
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.name}}</label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"> {{operation.verbeOperation}}</label>
-
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;"  *ngIf="operation.procedure"> {{operation.procedure.name}} </label>
-                    <label for=""  class="propertyValue"  style="margin-top: 10px;max-width: 300px;" > {{operation.description}}</label>
-
-
-                   </div>
-            </div>
-        </div>    
-    </ng-template>
-   
-</p-splitter-->
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+           
+        </ng-template>
+        <ng-template pTemplate="right">
+            
+            <p-fileUpload 
+            class="upload-vert"
+            mode="advanced"
+            name="demo"
+            url="http://188.166.86.36:8080/deliacte/v1/documentstemplate/savewordTemplate"
+            accept=".doc,.docx"
+            maxFileSize="5000000"
+            chooseLabel="Sélectionner un fichier"
+            uploadLabel="Téléverser"
+            cancelLabel="Annuler"
+            invalidFileSizeMessageSummary="Fichier trop gros"
+            invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
+            (onUpload)="onUpload($event)">
+    
+            <ng-template pTemplate="empty">
+                <div>Glisser-déposer votre fichier ici</div>
+            </ng-template>
+        </p-fileUpload>
+        
+          
+        </ng-template>
+    </p-toolbar>
+</div>
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <!--i class="pi pi-info-circle user"></i-->
@@ -227,11 +232,7 @@
                             {{utilisateur.lastName}}
                         </td>
                      <td>
-                        <!--button type="button" title="Modifier"   style="background-color: #060;" 
-                        class="text-white from-green-400 via-green-500  
-                        to-green-600 hover:bg-gradient-to-br focus:ring-4 
-                        focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button-->
+                        
                         <button   type="button"  title="retirer utilisateur" (click)="retirerUser(utilisateur)"
                         style="background-color: #ff0000;" class="text-white  from-red-400 
                         via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
@@ -249,8 +250,6 @@
         
     </p-tabView>
 </div>
-
-
 
 <div id="addch" 
      [ngClass]="{'hidden': !addchamp}" 
@@ -391,4 +390,4 @@
       <!--button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text"  style="background-color: #ff0000;"></button>
       <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text" style="background-color: #060;" (click)="userSelet()"></button-->
     </ng-template>
-  </p-dialog>
+</p-dialog>

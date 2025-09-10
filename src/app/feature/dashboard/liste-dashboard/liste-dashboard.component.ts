@@ -71,7 +71,7 @@ export class ListeDashboardComponent {
 // Récupérer les données de l'utilisateur depuis le LocalStorage
 if (userData) {
   this.user = JSON.parse(userData);
-  console.log(this.user);
+  //console.log(this.user);
 
   // Vérifier que this.user n'est pas null ou undefined et que l'ID existe
   if (this.user && this.user.id !== undefined) {
@@ -83,7 +83,7 @@ if (userData) {
 if (this.id !== undefined) {
   this.getUser(this.id); // Appeler getUser uniquement si l'ID est défini
 } else {
-  console.error('L\'ID utilisateur est introuvable.');
+ // console.error('L\'ID utilisateur est introuvable.');
 }
 
 
@@ -236,7 +236,7 @@ if (this.id !== undefined) {
     // Vérifiez que l'organisation sélectionnée n'est pas null
     if (this.selectedOrganisation) {
       const organisationId = this.selectedOrganisation.id; // Récupérer l'ID de l'organisation sélectionnée
-      console.log('ID de l\'organisation sélectionnée:', organisationId);
+      //console.log('ID de l\'organisation sélectionnée:', organisationId);
 
       //nombre de procédure par organisation
       this.DashboardService.getProBYOrgEvolution(organisationId).subscribe((data) => {
@@ -290,7 +290,7 @@ if (this.id !== undefined) {
           return item.year ? `${item.month} ${item.year}` : item.month; // Mois + Année (si disponible)
         });
 
-        console.log(labels)
+       // console.log(labels)
         const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
     
          // Configuration du graphique
@@ -335,9 +335,9 @@ if (this.id !== undefined) {
         const labels = data.map((item: any) => {
           return item.year ? `${item.month} ` : item.month; // Mois + Année (si disponible)
         });
-        console.log(labels)
+      //  console.log(labels)
         const values = data.map((item: any) => item.nombre); // Récupérer les valeurs
-        console.log(values)
+       // console.log(values)
          // Configuration du graphique
          this.basicData6 = {
           labels: labels,
@@ -386,7 +386,7 @@ if (this.id !== undefined) {
     // Vérifiez que l'organisation sélectionnée n'est pas null
     if (this.selectedProcedure) {
       const ProcedureId = this.selectedProcedure.id; // Récupérer l'ID de l'organisation sélectionnée
-      console.log('ID de l\'organisation sélectionnée:', ProcedureId);
+     //console.log('ID de l\'organisation sélectionnée:', ProcedureId);
 
       this.DashboardService.getDossierByProcedure(ProcedureId).subscribe((data) => {
         // Extraire les mois et les nombres des données API
@@ -439,10 +439,10 @@ if (this.id !== undefined) {
       complete:()=>{},
   next:(result)=>{
     this.organisation=result.data;
-    console.log(this.organisation)
+    //console.log(this.organisation)
   },
   error:(error)=>{
-    console.log(error)
+   // console.log(error)
   }
     });
    
@@ -452,11 +452,11 @@ if (this.id !== undefined) {
     this.ProcedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result+"procedure total");
+        //console.log(result+"procedure total");
         this.procedure=result.data;
       },
       error:(error)=>{
-        console.log(error);
+       // console.log(error);
       }
   
     })

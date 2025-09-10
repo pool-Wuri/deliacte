@@ -37,7 +37,6 @@ parseStatus(status: string): string {
 ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 
-    console.log(this.id)
     this.getOrganisation(this.id)
    }
   );
@@ -50,28 +49,26 @@ getOrganisation(id?:number){
     complete:()=>{},
     next:(result)=>{
       this.procedures=result.data;
-      console.log(this.procedures)
     },
-    error:(er)=>{console.log("get_error")}
+    error:(er)=>{
+    }
   })
 
   this.organisationService.getUserById(id).subscribe({
     complete:()=>{},
     next:(result)=>{
       this.utilisateurs=result.data;
-      console.log(this.utilisateurs)
     },
-    error:(er)=>{console.log("get_error_User")}
+    error:(er)=>{
+    }
   })
 
   this.organisationService.get_Organisation(id).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result)
       this.organisation=result.data;
     },
     error:(error)=>{
-      console.log(error)
     }
   })
 }

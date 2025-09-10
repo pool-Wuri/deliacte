@@ -21,7 +21,7 @@ ngOnInit(): void {
   const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-    console.log(this.user)
+    //console.log(this.user)
   }
  }
 

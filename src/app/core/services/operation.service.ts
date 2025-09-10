@@ -31,11 +31,10 @@ export class OperationService {
       })
       .pipe(
         retry(1),
-        tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+        tap((data: any) =>{
+        //  console.log('api.service > get_formulaire > tap > server data :',data)     
+
+        }
         )
       );
   }
@@ -53,7 +52,7 @@ export class OperationService {
           .put<any>(PROCEDURE_API+'/'+id, procedure)
           .pipe(
             tap((data) => {
-              console.log('api.service > update-procedure> tap :', data);
+              //console.log('api.service > update-procedure> tap :', data);
             })
           );
   }
@@ -67,8 +66,10 @@ export class OperationService {
       })
       .pipe(
         retry(1),
-        tap((data) =>
-          console.log('api.service > delete_procedure > tap > server data :',data )
+        tap((data) =>{
+         // console.log('api.service > delete_procedure > tap > server data :',data )
+
+        }
         )
       );
   }
@@ -97,10 +98,7 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -113,11 +111,13 @@ export class OperationService {
       })
       .pipe(
         retry(1),
-        tap((data) =>
-          console.log(
+        tap((data) =>{
+          /*console.log(
             'api.service > get_formulaire > tap > server data :',
             data
-          )
+          )*/
+        }
+       
         )
       );
   }
@@ -135,7 +135,7 @@ export class OperationService {
           .put<any>(CHAMP+'?'+id, champ)
           .pipe(
             tap((data) => {
-              console.log('api.service > update-champ> tap :', data);
+              //console.log('api.service > update-champ> tap :', data);
             })
           );
   }
@@ -150,10 +150,13 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
+          {
+            /*console.log(
             'api.service > get_formulaire > tap > server data :',
             data
-          )     
+          )  */
+        }
+
         )
       );
   }
@@ -168,10 +171,7 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_procedurechamp > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -180,7 +180,7 @@ export class OperationService {
   addOption(option:any):Observable<any>{
     return this.http.post<any>(CHAMPOption,option).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
   }
@@ -194,10 +194,7 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+        {} 
         )
       );
   }
@@ -213,10 +210,7 @@ export class OperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }

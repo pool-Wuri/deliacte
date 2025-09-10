@@ -76,11 +76,9 @@ ngOnInit():void{
   const userData = localStorage.getItem('user');
   if (userData) {
     this.user = JSON.parse(userData);
-   // console.log(this.user)
   }
   this.route.params.subscribe(params => {
     this.id = params['id']; 
-    //console.log(this.id)
     this.getProcedure(this.id)
    }
   );
@@ -90,12 +88,9 @@ ngOnInit():void{
 
 getProcedure(id?:number){
   this.traitement={};
-  console.log(id)
   this.procedureService.get_Procedure(id).subscribe({
     next:(result)=>{
-      console.log(result);
       this.procedureAff=result.data;
-      console.log(this.procedureAff)
     },
     complete:()=>{},
     error:(err)=>{
@@ -104,7 +99,6 @@ getProcedure(id?:number){
   })
   this.procedureService.get_Champ(id).subscribe({
     next: (result) => {
-      console.log(result);
       this.numDossier = result.message;
       this.champs = result.data;
   
@@ -131,55 +125,10 @@ getProcedure(id?:number){
         champOperationId: champ.id
       }));
   
-      console.log('Champs:', this.champs);
-      console.log('DemandeFor:', this.demandeFor);
+     
     }
   });
   
-
-/* this.procedureService.get_Procedure(id).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      console.log(result)
-      this.procedure=result.data;
-      this.operationService.search_Procedure("").subscribe({
-        next:(value)=>{
-          this.operations=value;
-          this.operations=this.operations.filter(u=>u.procedureId==this.id);
-          this.operations=this.operations.filter(u=>u.name=="SOUMISSION");
-          if(this.operations[0]){
-            this.operationService.searchChamp("").subscribe({
-              next:(value)=>{
-                this.champs=value;
-                this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
-                console.log(this.champs)
-               
-                console.log(this.champs)
-
-                this.demandeFor = this.champs.map(champ => ({
-                  name: '',
-                  citoyenId: this.user?.id,
-                  champOperationId: champ.id // ou une autre logique
-                }));
-                console.log('Champs:', this.champs);
-                console.log('DemandeFor:', this.demandeFor);
-              },
-              complete:()=>{},
-              error:(err)=>{}
-            })
-          }
-         
-        
-        },
-        complete:()=>{},
-        error:(err)=>{}
-      });
-     
-    },
-    error:(error)=>{
-      console.log(error)
-    }
-  });*/
 }
 
 infosVerifier(){
@@ -195,7 +144,6 @@ onFileChange(event: any, index: number) {
       if (file) {
         this.file=file;
       } else {
-        console.log('Aucun fichier sélectionné');
       }
 
 
@@ -219,7 +167,6 @@ saveFile(){
 
     },
     error:(err)=>{
-      console.log(err)
     }
   
   });
@@ -230,17 +177,7 @@ searchOperation():void{
     next:(value)=>{
       this.operations=value;
       this.operations=this.operations.filter(u=>u.procedureId==this.id);
-     // console.log(this.operations);
-    /*  this.operationService.searchChamp("").subscribe({
-        next:(value)=>{
-          this.champs=value;
-          //this.champs=this.champs.filter(u=>u.operationId===1)
-          console.log(this.champs);
-       
-        },
-        complete:()=>{},
-        error:(err)=>{}
-      })*/
+    
     },
     complete:()=>{},
     error:(err)=>{}
@@ -253,7 +190,6 @@ searchChamp(){
   this.operationService.searchChamp("").subscribe({
     next:(value)=>{
       this.champs=value;
-     // console.log(this.champs);
    
     },
     complete:()=>{},
@@ -264,18 +200,13 @@ searchChamp(){
 
 
 onOptionChange(option: string, index: number) {
-  //console.log(index)
-  //console.log('Option sélectionnée:', option);
+  
   this.selectedOption = option;
-//  console.log(option)
   this.demandeFor[index].name = option;
- // console.log(this.demandeFor[index])
-  // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
 }
 
 updateCheckbox(index: number) {
-  //console.log(this.demandeFor[index])
-  // Toggle l'état de la case à cocher
+  
   this.demandeFor[index].name = "";
 }
 
@@ -293,11 +224,8 @@ finDemande(){
     }
     else{
       for(let i=0;i<this.indexRequis.length;i++){
-        console.log(this.demandeFor[this.indexRequis[i]])
         if(this.demandeFor[this.indexRequis[i]].name){
-          console.log(this.demandeFor[this.indexRequis[i]].name)
           tousVrais = true;  // Si un élément est faux, on met tousVrais à false
-          console.log(tousVrais)
           break;  //
 
         }
@@ -314,7 +242,6 @@ finDemande(){
         dossiers: this.demandeFor
     }
   //  this.saveFile();
-    console.log(this.data1)
     //const data: FormData = new FormData();
     if(tousVrais){
      this.confirmationService.confirm({
@@ -334,8 +261,7 @@ finDemande(){
             next:(result)=>{
               this.procedureService.saveDemande(this.data1,this.numDossier).subscribe({
                 next:(result)=>{  
-                  console.log(result);           
-                  this.messageService.add({severity:'success', summary: 'Successful', detail: 'Demande faite avec succès', life: 3000});  
+                  this.messageService.add({severity:'success', summary: 'Succès', detail: 'Demande faite avec succès', life: 3000});  
                   this.router.navigate(['/deliacte/dossier/list']);
                 if(result){
                     this.loading=false;
@@ -356,7 +282,6 @@ finDemande(){
             },
             complete:()=>{},
             error:(error)=>{
-              console.log(error);
               this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
             }
@@ -364,7 +289,6 @@ finDemande(){
          
         },
         error:(error)=>{
-         // console.log(error)
          this.messageService.add({severity:'error', summary: 'Erreur', detail: error.code, life: 3000});
 
         }

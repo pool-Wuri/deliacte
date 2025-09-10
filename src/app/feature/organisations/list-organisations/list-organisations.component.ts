@@ -52,14 +52,12 @@ export class ListOrganisationsComponent implements OnInit {
       complete:()=>{},
       next:(result)=>{
         if(result){
-          console.log(result+"Organisation total");
           this.organisations=result.data;
           this.loading=false;
         }
        
       },
       error:(error)=>{
-        console.log(error);
         this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
       }
@@ -86,7 +84,6 @@ export class ListOrganisationsComponent implements OnInit {
   saveOrganisation(){ 
     //this.soumettre=true;
     this.submitted=true;
-    console.log(this.organisation1)
     if(this.organisation1.name && this.organisation1.description)
     {
     this.confirmationService.confirm({
@@ -102,20 +99,17 @@ export class ListOrganisationsComponent implements OnInit {
       this.loading=true;
       this.editbutt=false;
       this.organisation1.isActive=true;
-      console.log(this.organisation1)
       this.organisationService.saveOrganisation(this.organisation1).subscribe({
         complete:()=>{},
         next:(result)=>{
           if(result){
             this.loading=false;
-            console.log(result+"Organisation add");
             this.searchOrganisation();
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Organisation enregistrée', life: 3000});
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Organisation enregistrée', life: 3000});
           }
           
         },
         error:(error)=>{
-          console.log(error);
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Organisation non enregistrée', life: 3000});
 
         }
@@ -141,14 +135,12 @@ export class ListOrganisationsComponent implements OnInit {
     this.addOrganisation = false;
     this.editbutt = true;
     this.title = 'Formulaire de modification d\'une organisation';
-    console.log(this.organisation1);
   }
 
 
   
 
   validerModif(){
-    console.log(this.organisation1)
     this.confirmationService.confirm({
       message: 'Voulez-vous modifier cette organisation?',
       header: 'Modification',
@@ -165,7 +157,6 @@ export class ListOrganisationsComponent implements OnInit {
       this.organisationService.updateOrganisation(this.organisation1,this.organisation1.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result+"Organisation add");
            
         this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
         setTimeout(()=>{
@@ -174,23 +165,15 @@ export class ListOrganisationsComponent implements OnInit {
         },2000)
         },
         error:(error)=>{
-          console.log(error);
         }
     
       })
-     // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
-        //Actual logic to perform a confirmation
-        
+     
     },
     reject:()=>{
       this.addOrganisation=false;
-      //this.editbutt=true;
-      //this.modalVisible = true;
-
-     
-
       this.searchOrganisation();
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non modifié', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: ' non modifié', life: 3000});
     }
   });
   }
@@ -219,15 +202,14 @@ export class ListOrganisationsComponent implements OnInit {
           this.searchOrganisation();
          },
          error:(error)=>{
-           console.log(error);
            
          }
      
        })
-       this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+       this.messageService.add({severity:'success', summary: 'Succès', detail: 'Ok', life: 3000});      
      },
      reject:()=>{
-       this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+       this.messageService.add({severity:'error', summary: 'Erreur', detail: ' non ok', life: 3000});
      }
    });
    }

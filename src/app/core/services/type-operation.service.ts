@@ -24,10 +24,7 @@ export class TypeOperationService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+        {}
         )
       );
   }
@@ -35,7 +32,7 @@ export class TypeOperationService {
   public saveTypeoperation (TypeOperation:any): Observable<any>{
     return this.http.post<any>(TYPEOPERATION_API,TypeOperation).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
 
@@ -50,10 +47,7 @@ export class TypeOperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -63,7 +57,7 @@ export class TypeOperationService {
           .put<any>(TYPEOPERATION_API+'/'+id, TypeOperation)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_organisation> tap :', data);
+            //  console.log('api.service > update_organisation> tap :', data);
             })
           );
   }
@@ -78,10 +72,7 @@ export class TypeOperationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_organisation > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }

@@ -9,6 +9,8 @@ import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 import { Location } from '@angular/common';
+import { UploadEvent } from 'primeng/fileupload';
+import { UploadIcon } from 'primeng/icons/upload';
 
 @Component({
   selector: 'app-details-operation',
@@ -58,7 +60,6 @@ export class DetailsOperationComponent {
 ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 
-    console.log(this.id)
     if(this.id){
       this.getProcedure(this.id)
       this.searchRespon(this.id);
@@ -69,53 +70,37 @@ ngOnInit():void{
 }
 
 getProcedure(id?:number){
-  console.log(id)
     this.operationService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
        this.operation=result.data;
-       console.log(this.operation)
        this.operationService.searchChamp("").subscribe({
         next:(value)=>{
-          console.log(value)
           this.champs=value.data;
           if(this.champs){
             this.champs=this.champs.filter(u=>u.operationId==id);
             this.champs.reverse()
-            console.log(this.champs);
           }
         },
         complete:()=>{},
         error:(err)=>{}
       });
-      console.log(this.operation.procedureId)
       if(this.operation.procedureId!==0){
-        console.log(this.operation.procedureId)
         this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
           complete:()=>{},
           next:(result)=>{
             this.operation.procedure=result.data;
-            console.log(result)    },
-            error:(er)=>{console.log("get_error_User")}
+              },
+            error:(er)=>{
+            }
         })
       }
      
-     /*  this.procedureService.search_Procedure().subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result)
-          this.procedures=result;
-          console.log(this.operation.procedureId)
-          this.procedures = this.procedures.filter(u => u.id === this.operation.procedureId);
-          console.log(this.procedures)
-        },
-        error:(error)=>{
-          console.log(error)
-        }
-      })*/
+    
       },
-      error:(er)=>{console.log("get_error_User")}
+      error:(er)=>{
+
+      }
     })
 }
 
@@ -124,7 +109,6 @@ searchChamp(){
     next:(value)=>{
       this.champs=value.data;
       this.champs=this.champs.filter(u=>u.operationId==this.id)
-      console.log(this.champs);
       this.champs.reverse()
    
     },
@@ -135,7 +119,6 @@ searchChamp(){
 }
 
 supprimerChamp(champ:ChampOperation){
-  console.log(champ)
   this.confirmationService.confirm({
     message: 'Voulez-vous vraiment supprimer ce champ?',
     header: 'Suppression',
@@ -150,14 +133,13 @@ supprimerChamp(champ:ChampOperation){
        this.searchChamp();
       },
       error:(error)=>{
-        console.log(error);
       }
   
     })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ supprimé', life: 3000});      
   },
   reject:()=>{
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Echec', detail: 'Champ non supprimé', life: 3000});
   }
 });
 
@@ -188,20 +170,16 @@ saveChampEdit(){
     this.optionResult=this.champ.options;
     this.operationService.updateChamp(this.champ,this.champ.id).subscribe({
       next:(value)=>{
-        console.log(value);
         if(value.data){
           value.data.options=this.optionResult;
-          console.log(value)
           for(let i=0;i<value.data.options.length;i++){
             value.data.options[i].champOperationId=value.data.id;
             this.operationService.addOption(value.data.options[i]).subscribe({
               next:(result)=>{
-                console.log(result);
                 this.searchChamp();
               },
               complete:()=>{},
               error:(err)=>{
-                console.log(err)
               }
             })
           }
@@ -213,18 +191,17 @@ saveChampEdit(){
       },
       complete:()=>{},
       error:(err)=>{
-        console.log(err)
         this.editbutton=false;
         this.addbutton=false;
       }
     })
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ modifié', life: 3000});
       //Actual logic to perform a confirmation
       
   },
   reject:()=>{
     this.addchamp=false;
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Echec', detail: ' Champ non modifié', life: 3000});
   }
   });
 }
@@ -240,7 +217,6 @@ ajouterChamp(operation:any){
 }
 
 saveChamps(){
-  console.log(this.champ)
   this.submitted=true;
   if(this.champ.description && this.champ.name && this.champ.inputType){
     this.confirmationService.confirm({
@@ -254,19 +230,16 @@ saveChamps(){
       this.optionResult=this.champ.options;
       this.operationService.ajouterChamp(this.champ).subscribe({
         next:(value)=>{
-          console.log(value)
           if(value.data){
             value.data.options=this.optionResult;
             for(let i=0;i<value.data.options.length;i++){
               value.data.options[i].champOperationId=value.data.id;
               this.operationService.addOption(value.data.options[i]).subscribe({
                 next:(result)=>{
-                  console.log(result);
                   this.searchChamp();
                 },
                 complete:()=>{},
                 error:(err)=>{
-                  console.log(err)
                 }
               })
             }
@@ -279,17 +252,16 @@ saveChamps(){
         },
         complete:()=>{},
         error:(err)=>{
-          console.log(err);
           this.editbutton=false;
           this.addchamp=false;
           this.addbutton=false;
         }
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ enregistré', life: 3000});
         
     },
     reject:()=>{
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Echec', detail: ' Champ non enregistré', life: 3000});
     }
     });
    
@@ -298,50 +270,31 @@ saveChamps(){
 }
 
 addOption() {
-  console.log(this.champ)
   this.optionAdd={
     name:this.newOption,
     champOperationId:this.champ.id
   }
-  console.log(this.optionAdd)
   this.optionAdd;
   this.champ.options.push(this.optionAdd)
-  console.log(this.optionAdd)
-  /*this.operationService.addOption(this.optionAdd).subscribe({
-    next:(result)=>{
-      console.log(result);
-      this.searchChamp();
-    },
-    complete:()=>{},
-    error:(err)=>{
-      console.log(err)
-    }
-  })*/
-
- console.log(this.champ.options)
+ 
  this.newOption='';
- console.log(this.champ.options)
 }
 
 searchRespon(idOperation:number){
   this.operationService.searchResponsable(idOperation).subscribe({
     next:(result)=>{
       this.responsUsers=result.data;
-      console.log(this.responsUsers)
 
     },
     complete:()=>{},
     error:(error)=>{
-      console.log(error);
     }
   })
 }
 
 
-
 retirerUser(user:User){
-  console.log(user);
-  console.log(this.id)
+
   this.operationsIds.operationsIds = []; // Initialiser si nécessaire
   this.confirmationService.confirm({
     message: 'Voulez-vous vraiment lui retirer de cette opération?',
@@ -351,49 +304,14 @@ retirerUser(user:User){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => { 
-   /* this.operationService.searchResponsable(this.id  || 0).subscribe({
-      next:(result)=>{
-        this.responsUsers=result.data;
-        console.log(this.responsUsers);
-        this.responsUsers=this.responsUsers.filter(u=>u.id!==user.id);
-        console.log(this.responsUsers);
-        for(let i=0;i<this.responsUsers.length;i++){
-          console.log(this.responsUsers[i])
-          this.operationsIds.operationsIds = []; // Initialiser si nécessaire
-
-          if(this.responsUsers[i].id){
-    
-            this.operationsIds.operationsIds.push(this.id || 0)
-            console.log(this.operationsIds);
-            this.userService.assigneroperation(this.operationsIds,this.responsUsers[i].id).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                console.log(result+"Utilisateur modifié avec succès");
-               // this.searchUser();
-              },
-              error:(error)=>{
-                console.log(error);
-              }
-          
-            });
-          }    
-          console.log( this.operationsIds.operationsIds);   
-          
-       
-        }
-      },
-      complete:()=>{},
-      error:(error)=>{
-        console.log(error);
-      }
-    })*/
-    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});
+  
+    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Opération retirée', life: 3000});
       //Actual logic to perform a confirmation
       
   },
   reject:()=>{
 
-    this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Echec', detail: 'Opération non retirée', life: 3000});
   }
   });
 
@@ -401,15 +319,11 @@ retirerUser(user:User){
 
 
 groupeUser(operation:any){
-  // this.disable=false;
-  // console.log(this.disable)
- this.operation=operation;
- console.log(this.operation);
 
+ this.operation=operation;
      this.userService.userOrganisation().subscribe({
        complete:()=>{},
        next:(result)=>{
-        console.log(result)
          this.usergroup1=result.data;
          if(this.usergroup1){
            this.operationService.searchResponsable(this.operation.id || 0).subscribe({
@@ -417,21 +331,18 @@ groupeUser(operation:any){
                this.usergroup=result.data;
                if(this.usergroup){
                  this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
-                 console.log(this.usergroup);
-                 console.log(this.usergroup1)
+               
                }
              
              },
              complete:()=>{},
              error:(error)=>{
-               console.log(error);
              }
            })
          }
       
        },
        error:(error)=>{
-         console.log(error);
        }
      });
      this.operationsIds={};
@@ -443,44 +354,32 @@ groupeUser(operation:any){
 
  userSelet(){
   this.listeUser=false;
-  console.log(this.usergroup);
   this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
   for(let i=0;i<this.usergroup.length;i++){
-    console.log(this.usergroup[i])
     if(this.usergroup[i].id){
     this.userService.operationInfo(this.usergroup[i].id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result.data);
         for(let i=0;i<result.data.length;i++){
           this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
-          console.log(this.operationsIds)
         }
         this.operationsIds.operationsIds?.push(this.operation.id || 0);
-        console.log(this.operationsIds);
         this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
           complete:()=>{},
           next:(result)=>{
-            console.log(result +"Utilisateur modifié avec succès");
            // this.searchUser();
           },
           error:(error)=>{
-            console.log(error);
           }
       
         });
 
       },
       error:(error)=>{
-        console.log(error);
       }
     });
      
     }
-  //  console.log(this.selectedOperation);
-
- //   console.log( this.operationsIds.operationsIds);   
-    
  
   }
 }
@@ -488,5 +387,11 @@ groupeUser(operation:any){
 retourPage(){
   this.location.back();
 }
+
+onUpload(event: any) {
+  console.log('Fichiers uploadés:', event.files);
+  alert('Fichier uploadé avec succès !');
+}
+
 
 }

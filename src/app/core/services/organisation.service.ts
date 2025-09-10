@@ -26,10 +26,7 @@ export class OrganisationService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+        {}
         )
       );
   }
@@ -38,7 +35,7 @@ export class OrganisationService {
   public saveOrganisation (organisation:any): Observable<any>{
     return this.http.post<any>(ORGANISATION_API,organisation).pipe(
       tap((data)=>{
-        console.log(data);
+        //console.log(data);
       })
     )
 
@@ -53,10 +50,7 @@ export class OrganisationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -66,7 +60,7 @@ export class OrganisationService {
           .put<any>(ORGANISATION_API+'?'+id, organisation)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_organisation> tap :', data);
+              //console.log('api.service > update_organisation> tap :', data);
             })
           );
   }
@@ -81,10 +75,7 @@ export class OrganisationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_organisation > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -99,10 +90,7 @@ export class OrganisationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -116,10 +104,7 @@ export class OrganisationService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_ProcedureByOrg > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }

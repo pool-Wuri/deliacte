@@ -30,6 +30,25 @@
       
       
   </div>
+  <div class="card" *ngIf="user?.role=='CITOYEN'">
+    <p-divider align="left">
+        <div class="inline-flex" style="color:#060;">
+            <b>Votre document</b>
+        </div>
+    </p-divider>
+
+    <!-- Wrapper pour aligner le bouton à droite -->
+    <div class="flex justify-end">
+        <button  style="background-color: #060;" type="button"
+        class="text-white bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+        Voir </button>
+        <button type="button"
+            style="background-color: #060;" (click)="documentRecuper(events2)"
+            class="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+            Télécharger
+        </button>
+    </div>        
+</div>
 
 <div class="card">
     <div  *ngIf="user?.role=='CITOYEN'">
@@ -39,6 +58,7 @@
             </div>
         </p-divider>
     </div> 
+    
     <div class="flex justify-between items-stretch px-6 py-4 gap-6" >
         <div class="text-left card p-6 rounded-xl shadow-md " style="max-width: 100%;min-width: 50%;">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm" >
@@ -141,7 +161,6 @@
                     
                         </ng-container>
                 </div>
-           
                 <div class="card p-6 mt-6 rounded-xl shadow-md bg-white">
                     <h2 class="text-xl font-bold mb-4">Documents joints</h2>
                     <div style="background-color: #ff0000; overflow-x:auto;">
@@ -186,8 +205,6 @@
                         </p-table>
                     </div>
                 </div>
-                
-               
         </div>
         <div *ngIf="user?.role!=='CITOYEN'" class="text-right card p-6 rounded-xl shadow-md " style="max-width: 50%;">
                 <hr class="border-t border-gray-300 my-6">

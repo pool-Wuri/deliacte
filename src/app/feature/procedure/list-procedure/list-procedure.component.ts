@@ -57,7 +57,6 @@ procedure=new Procedure;
     const userData = localStorage.getItem('user');
     if (userData) {
       this.user = JSON.parse(userData);
-      console.log(this.user)
     }
    }
 
@@ -67,9 +66,7 @@ procedure=new Procedure;
       complete:()=>{},
       next:(result)=>{
         if(result){
-          console.log(result+"procedure total");
           this.procedures=result.data;
-          console.log(this.procedures)
           this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
           this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
           this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
@@ -78,7 +75,6 @@ procedure=new Procedure;
         }
       },
       error:(error)=>{
-        console.log(error);
         this.loading=false;
         this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
 
@@ -107,7 +103,6 @@ procedure=new Procedure;
    saveProcedure(){ 
    // this.soumettre=true;
    this.submitted=true;
-   console.log(this.procedure)
    if(this.procedure.name && this.procedure.description && this.procedure.organisationId){
     this.confirmationService.confirm({
       message: 'Voulez-vous enregistrer cette procedure?',
@@ -127,14 +122,12 @@ procedure=new Procedure;
           next:(result)=>{
             if(result){
               this.loading=false;
-              console.log(result+"User add");
               this.search_Procedure();
               this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure enregistrée avec succès', life: 3000});
             }
           
           },
           error:(error)=>{
-            console.log(error);
             this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non enregistrée', life: 3000});
             this.loading=false;
           }
@@ -158,25 +151,11 @@ procedure=new Procedure;
       complete:()=>{},
       next:(result)=>{
         this.organisations=result.data;
-        console.log(this.organisations)
       },
       error:(error)=>{
-        console.log(error)
       }
     });
-  /*  this.organisationService.search_Organisations("").subscribe(
-      {
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result+"Organisation total");
-          this.organisations=result.data;
-        },
-        error:(error)=>{
-          console.log(error);
-        }
-    
-      }
-    )*/
+  
   }
   
    editProcedure(procedure:Procedure){
@@ -186,11 +165,9 @@ procedure=new Procedure;
     this.addUser=false;
     this.editbutt=true;
     this.title="Modifier la procedure";
-    console.log(this.procedure)
    }
   
    validerModif(){
-    console.log(this.procedure)
     this.confirmationService.confirm({
       message: 'Voulez-vous la modifier?',
       header: 'Modification',
@@ -213,10 +190,8 @@ procedure=new Procedure;
               this.search_Procedure();
             },2000)
           }
-          console.log(result+"procedure add");
         },
         error:(error)=>{
-          console.log(error);
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Modification non reussie', life: 3000});
           this.loading=false;
         }
@@ -253,14 +228,13 @@ procedure=new Procedure;
         next:(result)=>{
         },
         error:(error)=>{
-          console.log(error);
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Ok', life: 3000});      
     },
     reject:()=>{
-      this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: ' non ok', life: 3000});
     }
   });
   }
@@ -271,7 +245,6 @@ procedure=new Procedure;
   }
 
   depublier(procedure:Procedure){
-    console.log(procedure)
   
       this.confirmationService.confirm({
         message: 'Voulez-vous dépublier cette procedure?',
@@ -281,23 +254,20 @@ procedure=new Procedure;
         icon: 'pi pi-exclamation-triangle',
         acceptButtonStyleClass:'acceptButton',
       accept: () => {
-        console.log(procedure.id)
         procedure.status = "ARCHIVED" // Assigner la clé comme chaîne
   
         this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
           complete:()=>{},
           next:(result)=>{
-            console.log(result+"procedure dépublié");
           },
           error:(error)=>{
-            console.log(error);
           }
       
         })
-        this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure dépubliée', life: 3000});      
       },
       reject:()=>{
-        this.messageService.add({severity:'error', summary: 'error', detail: ' non ok', life: 3000});
+        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Procedure non dépubliée', life: 3000});
       }
     });
   
@@ -305,10 +275,8 @@ procedure=new Procedure;
   }
 
   publier(procedure:Procedure){
-    console.log(procedure)
     this.operationService.get_Operation(procedure.id).subscribe({
       next:(value)=>{
-        console.log(value)
         if(value.data.length<=0){
           this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération disponible pour cette procedure', life: 3000});
         }
@@ -324,8 +292,7 @@ procedure=new Procedure;
                 acceptButtonStyleClass:'acceptButton',
               accept: () => {
                 this.loading=true;
-                console.log(procedure)
-                console.log(procedure.id)
+           
                 procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
                 this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
                   complete:()=>{},
@@ -339,7 +306,6 @@ procedure=new Procedure;
                     }
                   },
                   error:(error)=>{
-                    console.log(error);
                     this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non publiée', life: 3000});
                     this.loading=false;
                   }

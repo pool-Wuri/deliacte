@@ -37,10 +37,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+         {}  
         )
       );
   }
@@ -54,10 +51,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+          {}  
         )
       );
   }
@@ -71,10 +65,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+          {}  
         )
       );
   }
@@ -86,7 +77,7 @@ export class UtilisateurService {
     });
     return this.http.post<any>(USER_API, user, { headers }).pipe(
       tap((data) => {
-        console.log('User saved:', data);
+       // console.log('User saved:', data);
       }),
       catchError((error) => {
         // Utiliser le service ErrorHandler pour gérer l'erreur
@@ -103,10 +94,10 @@ export class UtilisateurService {
     });
     return this.http.post<any>(USER_API, user).pipe(
       tap((data) => {
-        console.log('User saved:', data);
+        //console.log('User saved:', data);
       }),
       catchError((error) => {
-        console.error('Error saving user:', error);
+       // console.error('Error saving user:', error);
         return of(null); // Gestion des erreurs
       })
     );
@@ -117,7 +108,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'?'+id, user)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+              //console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -132,10 +123,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > delete_user > tap > server data :',
-            data
-          )
+        {}
         )
       );
   }
@@ -149,10 +137,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )
+         {}
         )
       );
   }
@@ -162,7 +147,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+            //  console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -172,7 +157,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-operations', operationIds)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+             // console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -182,7 +167,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-organisations', organisationIds)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+              //console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -192,7 +177,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-procedure', procedureId)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+             // console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -202,7 +187,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-procedure', procedureId)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+              //console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -212,7 +197,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-operation', operationId)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+             // console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -222,7 +207,7 @@ export class UtilisateurService {
           .put<any>(USER_API+'/'+id+'/admin-operation', operationIds)
           .pipe(
             tap((data) => {
-              console.log('api.service > update_user> tap :', data);
+              //console.log('api.service > update_user> tap :', data);
             })
           );
   }
@@ -236,10 +221,7 @@ export class UtilisateurService {
       .pipe(
         retry(1),
         tap((data: any) =>
-          console.log(
-            'api.service > get_formulaire > tap > server data :',
-            data
-          )     
+         {}    
         )
       );
   }
@@ -254,10 +236,7 @@ export class UtilisateurService {
     .pipe(
       retry(1),
       tap((data: any) =>
-        console.log(
-          'api.service > get_formulaire > tap > server data :',
-          data
-        )     
+       {}  
       )
     );
 }
@@ -271,10 +250,7 @@ operationInfo(userId:any):Observable<any>{
   .pipe(
     retry(1),
     tap((data: any) =>
-      console.log(
-        'api.service > get_formulaire > tap > server data :',
-        data
-      )     
+    {}
     )
   );
 }
@@ -288,10 +264,7 @@ getUserByRole(role?:string): Observable<any> {
     .pipe(
       retry(1),
       tap((data) =>
-        console.log(
-          'api.service > get_formulaire > tap > server data :',
-          data
-        )
+       {}
       )
     );
 }
@@ -311,7 +284,7 @@ private handleError(error: HttpErrorResponse) {
     summary: 'Erreur', 
     detail: errorMessage 
   });
-  console.log(this.messageService)
+ // console.log(this.messageService)
 
   return throwError(() => new Error(errorMessage));
 }

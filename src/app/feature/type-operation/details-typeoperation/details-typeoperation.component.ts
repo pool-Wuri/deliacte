@@ -23,7 +23,6 @@ export class DetailsTypeoperationComponent {
 ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 
-    console.log(this.id)
     this.getTypeoperation(this.id)
    }
   );
@@ -33,12 +32,10 @@ getTypeoperation(id?:number){
   this.TypeOperationService.get_Typeoperation(id).subscribe({
     complete:()=>{},
     next:(result)=>{
-      console.log(result)
       this.TypeOperation=result.data
       ;
     },
     error:(error)=>{
-      console.log(error)
     }
   })
 }

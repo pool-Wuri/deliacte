@@ -34,11 +34,9 @@ export class DetailsProcedureComponent {
     const userData = localStorage.getItem('user');
     if (userData) {
       this.user = JSON.parse(userData);
-      console.log(this.user)
     }
     this.route.params.subscribe(params => {
       this.id = params['id']; 
-      console.log(this.id)
       this.getProcedure(this.id);
       this.getChamp(this.id);
 
@@ -54,21 +52,18 @@ export class DetailsProcedureComponent {
     this.procedureService.getUserById(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
         this.utilisateurs=result.data;
-        console.log(this.utilisateurs)
       },
-      error:(er)=>{console.log("get_error_User")}
+      error:(er)=>{
+      }
     })
 
     this.procedureService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
         this.procedure=result.data;
       },
       error:(error)=>{
-        console.log(error)
       }
     })
   }
@@ -76,13 +71,10 @@ export class DetailsProcedureComponent {
   getChamp(id?:number){
     this.procedureService.get_Champ(id).subscribe({
       next:(result)=>{
-        console.log(result);
         this.champs=result.data;
-        console.log(this.champs)
       },
       complete:()=>{},
       error:(erreur)=>{
-        console.log(erreur)
       }
     })
   }
