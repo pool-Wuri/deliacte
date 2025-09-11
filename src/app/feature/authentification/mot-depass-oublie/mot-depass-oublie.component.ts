@@ -48,10 +48,12 @@ export class MotDepassOublieComponent {
           complete:()=>{},
           next:(result)=>{
             console.log(result+"User add");
-            this.loading=false;
-            this.messageService.add({severity:'success', summary: 'Successful', detail: 'Verifier votre boite mail pour valider', life: 3000});
-            this.router.navigate(['/deliacte/login']);
-
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'success', summary: 'Succès', detail: 'Verifier votre boite mail pour valider', life: 3000});
+              this.router.navigate(['/deliacte/login']);
+            }, 2000);
+          
           },
           error:(error)=>{
           //  console.log(error);

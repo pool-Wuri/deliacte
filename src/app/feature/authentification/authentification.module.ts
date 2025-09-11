@@ -35,6 +35,7 @@ import { TimelineModule } from 'primeng/timeline';
 import { ResetPassComponent } from './reset-pass/reset-pass.component';
 import { PageCompteCreateComponent } from './page-compte-create/page-compte-create.component';
 import { MotDepassOublieComponent } from './mot-depass-oublie/mot-depass-oublie.component';
+import { SuiviDemandeComponent } from './suivi-demande/suivi-demande.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { MotDepassOublieComponent } from './mot-depass-oublie/mot-depass-oublie.
     DossierSuiviComponent,
     ResetPassComponent,
     PageCompteCreateComponent,
-    MotDepassOublieComponent
+    MotDepassOublieComponent,
+    SuiviDemandeComponent
   ],
   imports: [
     CommonModule,

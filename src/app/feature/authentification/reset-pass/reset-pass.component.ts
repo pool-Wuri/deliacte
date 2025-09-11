@@ -13,6 +13,7 @@ export class ResetPassComponent implements AfterViewInit {
   passConfirm!: string;
   submitted: boolean = false;
   id!: number;
+  loading=false;
 
   @ViewChild('strengthBar') strengthBar!: ElementRef<HTMLDivElement>;
   @ViewChild('strengthText') strengthText!: ElementRef<HTMLSpanElement>;
@@ -95,14 +96,12 @@ export class ResetPassComponent implements AfterViewInit {
 
   validerPass(): void {
     this.submitted = true;
-
     if (this.newpass !== this.passConfirm) return;
     const data = {
       email: 'string',
       password: this.newpass,
       encodeEmail: this.id
     };
-
     this.confirmationService.confirm({
       message: 'Confirmez mot de passe ?',
       header: 'Confirmation',
@@ -112,8 +111,12 @@ export class ResetPassComponent implements AfterViewInit {
       accept: () => {
         this.authService.validerPass(data).subscribe({
           next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe modifié avec succès', life: 3000 });
-            this.router.navigate(['/deliacte/login']);
+            this.loading=true;
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe modifié avec succès', life: 3000 });
+              this.router.navigate(['/deliacte/login']);
+            }, 2000);
           },
           error: (err) => console.error(err)
         });
