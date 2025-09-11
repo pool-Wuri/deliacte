@@ -1,1 +1,61 @@
-<p>mot-depass-oublie works!</p>
+<div class="fixed -top-4 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32">
+    <div class="min-h-screen flex flex-col bg-gray-200">
+        <!-- Barre de navigation supérieure aux couleurs du Burkina Faso -->
+        <header class="w-full h-2 flex fixed top-0 left-0 z-20">
+            <div class="w-1/2 bg-red-600"></div>
+            <div class="w-1/2 bg-green-600"></div>
+        </header>
+    
+        <!-- Conteneur principal avec image de fond -->
+        <div class="flex-grow flex items-center justify-center p-4 relative bg-cover bg-center" style="background-image: url('assets/img/image3.jpg' );">
+            
+            <!-- Superposition sombre pour la lisibilité -->
+            <div class="absolute inset-0 bg-black opacity-40"></div>
+    
+            <!-- Carte du formulaire -->
+            <div class="relative w-full max-w-md bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 sm:p-12">
+                
+                <!-- BOUTON DE RETOUR -->
+                <div class="absolute top-6 left-6">
+                    <a href="#" class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Retour
+                    </a>
+                </div>
+    
+                <!-- Logo -->
+                <div class="flex items-center justify-center mb-8 mt-10">
+                    <img src="assets/img/armoiriePh.jpeg" alt="Armoiries du Burkina Faso" class="h-12 mr-3">
+                    <span class="text-xl font-bold text-gray-800">deliacte.gov.bf</span>
+                </div>
+    
+                <!-- Titres -->
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold text-gray-900">Mot de passe oublié ?</h1>
+                    <p class="text-gray-600 mt-2 mb-8">Pas de souci. Entrez votre email et nous vous enverrons un lien pour le réinitialiser.</p>
+                </div>
+    
+                <!-- Formulaire -->
+                <form class="space-y-6">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">
+                            Adresse e-mail <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" [(ngModel)]="mailOublie" id="email" name="email" placeholder="votre.email@exemple.com" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" required>
+                    </div>
+    
+                    <div>
+                        <button type="submit"  (click)="saveMailoublie()" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Envoyer le lien
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
