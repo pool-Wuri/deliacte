@@ -17,8 +17,6 @@ interface Step {
 
 @Component({
   selector: 'app-dossier-suivi',
-  //standalone: true, // Utilisation d'un composant Standalone (moderne et plus simple)
-  //imports: [CommonModule], // Importation de CommonModule pour les directives comme *ngFor et *ngIf
   templateUrl: './dossier-suivi.component.html',
   styleUrls: ['./dossier-suivi.component.scss']
 })
