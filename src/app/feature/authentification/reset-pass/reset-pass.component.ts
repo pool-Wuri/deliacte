@@ -31,13 +31,16 @@ export class ResetPassComponent implements AfterViewInit {
     if (input) {
       input.addEventListener('input', () => this.updateStrength(input.value));
     }
+  
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.id = +params['id'];
+      console.log('params récupérés :', params); // Débogage
+      const idParam = params['id'];
+      this.id = params['id'] // Convertit en number ou 0 par défaut
+      console.log('ID récupéré :', this.id);
     });
-    console.log(this.id)
   }
 
 
@@ -94,7 +97,6 @@ export class ResetPassComponent implements AfterViewInit {
     this.submitted = true;
 
     if (this.newpass !== this.passConfirm) return;
-
     const data = {
       email: 'string',
       password: this.newpass,

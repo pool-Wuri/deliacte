@@ -47,7 +47,7 @@ export class MotDepassOublieComponent {
         this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
           complete:()=>{},
           next:(result)=>{
-            //console.log(result+"User add");
+            console.log(result+"User add");
             this.loading=false;
             this.messageService.add({severity:'success', summary: 'Successful', detail: 'Verifier votre boite mail pour valider', life: 3000});
             this.router.navigate(['/deliacte/login']);
