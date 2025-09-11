@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi de votre demande - Service Public</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- PrimeIcons pour les icônes -->
+    <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css">
+
+    <style>
+        /* --- VARIABLES DE COULEUR ET CONFIGURATION DE BASE --- */
+        :root {
+            --burkina-green: #009639;
+            --burkina-red: #E31E24;
+            --burkina-yellow: #FCD116;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans );
+            background-color: var(--gray-100);
+            margin: 0;
+            padding: 0;
+            color: var(--gray-700);
+        }
+
+        /* --- BANNIÈRE SUPÉRIEURE --- */
+        .main-header {
+            width: 100%;
+            height: 0.5rem;
+            display: flex;
+        }
+        .header-bar { flex: 1; }
+
+        /* --- CONTENEUR PRINCIPAL --- */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .tracking-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin: 0;
+        }
+        .tracking-header p {
+            font-size: 1.125rem;
+            color: var(--gray-500);
+            margin-top: 0.5rem;
+        }
+        .tracking-header .dossier-id {
+            display: inline-block;
+            margin-top: 1rem;
+            background-color: var(--gray-200);
+            color: var(--gray-900);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        /* --- STEPPER / BARRE DE PROGRESSION --- */
+        .stepper-wrapper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        .stepper-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--gray-200);
+            z-index: 1;
+        }
+        .stepper-line-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: var(--burkina-green);
+            width: 0; /* Sera défini par JS */
+            transition: width 0.5s ease-in-out;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            width: 120px;
+        }
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--white);
+            border: 4px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 1.25rem;
+            color: var(--gray-400);
+        }
+        .step-label {
+            margin-top: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-400);
+            transition: color 0.3s ease;
+        }
+
+        /* --- ÉTATS DU STEPPER --- */
+        .step.completed .step-icon {
+            border-color: var(--burkina-green);
+            background-color: var(--burkina-green);
+            color: var(--white);
+        }
+        .step.completed .step-label {
+            color: var(--gray-900);
+        }
+
+        .step.active .step-icon {
+            border-color: var(--burkina-green);
+            background-color: var(--white);
+            color: var(--burkina-green);
+            transform: scale(1.1);
+            box-shadow: 0 0 0 4px rgba(0, 150, 57, 0.2);
+        }
+        .step.active .step-label {
+            color: var(--burkina-green);
+            font-weight: 700;
+        }
+
+        /* --- CONTENEUR DES DÉTAILS DES ÉTAPES --- */
+        .step-content-wrapper {
+            background-color: var(--white);
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
+            padding: 2.5rem;
+        }
+        .step-content {
+            display: none; /* Caché par défaut */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block; /* Affiché si actif */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .content-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .status-badge.completed { background-color: #dcfce7; color: #166534; }
+        .status-badge.active { background-color: #fef3c7; color: #92400e; }
+        .status-badge.pending { background-color: #e5e7eb; color: #4b5563; }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .detail-item {
+            background-color: var(--gray-100);
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+        .detail-item label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            margin-bottom: 0.25rem;
+        }
+        .detail-item p {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-bar" style="background-color: var(--burkina-red);"></div>
+        <div class="header-bar" style="background-color: var(--burkina-yellow);"></div>
+        <div class="header-bar" style="background-color: var(--burkina-green);"></div>
+    </header>
+
+    <div class="container">
+        <div class="tracking-header">
+            <h1>Suivi de votre demande</h1>
+            <p>Consultez l'état d'avancement de votre dossier en temps réel.</p>
+            <span class="dossier-id">Dossier N° : SP-2024-12345</span>
+        </div>
+
+        <!-- Stepper / Barre de progression -->
+        <div class="stepper-wrapper" id="stepper">
+            <div class="stepper-line">
+                <div class="stepper-line-progress" id="stepper-progress"></div>
+            </div>
+            <!-- Les étapes seront générées par JS -->
+        </div>
+
+        <!-- Contenu détaillé des étapes -->
+        <div class="step-content-wrapper" id="step-contents">
+            <!-- Le contenu de chaque étape sera généré par JS -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DONNÉES DE LA DEMANDE (ceci viendrait de votre backend) ---
+            const currentStepIndex = 2; // L'étape active (index 0)
+            const stepsData = [
+                {
+                    label: "Soumission",
+                    status: "completed",
+                    icon: "pi-upload",
+                    details: {
+                        "Date de soumission": "10/08/2024",
+                        "Nom du demandeur": "Moussa OUEDRAOGO",
+                        "Type de document": "Passeport Ordinaire",
+                        "Centre de dépôt": "Ouagadougou - Centre"
+                    }
+                },
+                {
+                    label: "Vérification",
+                    status: "completed",
+                    icon: "pi-search",
+                    details: {
+                        "Agent vérificateur": "A. KABORE",
+                        "Date de vérification": "12/08/2024",
+                        "Statut des documents": "Conformes",
+                        "Commentaire": "Dossier complet et valide."
+                    }
+                },
+                {
+                    label: "Traitement",
+                    status: "active",
+                    icon: "pi-spin pi-cog",
+                    details: {
+                        "Service en charge": "Direction de la Production des Titres",
+                        "Début du traitement": "13/08/2024",
+                        "Statut actuel": "En cours de production",
+                        "Date estimée de fin": "25/08/2024"
+                    }
+                },
+                {
+                    label: "Prêt pour retrait",
+                    status: "pending",
+                    icon: "pi-inbox",
+                    details: {
+                        "Lieu de retrait": "Centre de Ouagadougou",
+                        "Pièces à fournir": "Reçu de paiement, CNI",
+                        "Disponibilité": "En attente"
+                    }
+                }
+            ];
+
+            const stepperContainer = document.getElementById('stepper');
+            const stepContentsContainer = document.getElementById('step-contents');
+            const stepperProgress = document.getElementById('stepper-progress');
+
+            // --- GÉNÉRATION DYNAMIQUE DES ÉLÉMENTS ---
+            stepsData.forEach((step, index) => {
+                // Créer l'élément du stepper
+                const stepElement = document.createElement('div');
+                stepElement.className = `step ${step.status}`;
+                stepElement.dataset.index = index;
+                stepElement.innerHTML = `
+                    <div class="step-icon">
+                        <i class="pi ${step.status === 'completed' ? 'pi-check' : step.icon}"></i>
+                    </div>
+                    <p class="step-label">${step.label}</p>
+                `;
+                stepperContainer.appendChild(stepElement);
+
+                // Créer le contenu détaillé de l'étape
+                const contentElement = document.createElement('div');
+                contentElement.className = `step-content ${step.status === 'active' ? 'active' : ''}`;
+                contentElement.id = `content-${index}`;
+                
+                let statusBadge;
+                if (step.status === 'completed') statusBadge = `<span class="status-badge completed">Terminé</span>`;
+                else if (step.status === 'active') statusBadge = `<span class="status-badge active">En cours</span>`;
+                else statusBadge = `<span class="status-badge pending">En attente</span>`;
+
+                let detailsHtml = '';
+                for (const [key, value] of Object.entries(step.details)) {
+                    detailsHtml += `
+                        <div class="detail-item">
+                            <label>${key}</label>
+                            <p>${value}</p>
+                        </div>
+                    `;
+                }
+
+                contentElement.innerHTML = `
+                    <div class="content-header">
+                        <h2>${step.label}</h2>
+                        ${statusBadge}
+                    </div>
+                    <div class="details-grid">
+                        ${detailsHtml}
+                    </div>
+                `;
+                stepContentsContainer.appendChild(contentElement);
+            });
+
+            // --- GESTION DES INTERACTIONS ---
+            const allSteps = document.querySelectorAll('.step');
+            
+            function setActiveStep(index) {
+                // Mettre à jour les classes des steppers
+                allSteps.forEach((step, i) => {
+                    step.classList.toggle('active', i == index);
+                });
+
+                // Mettre à jour les contenus visibles
+                document.querySelectorAll('.step-content').forEach((content, i) => {
+                    content.classList.toggle('active', i == index);
+                });
+            }
+
+            // Ajouter les écouteurs d'événements sur chaque étape
+            allSteps.forEach(step => {
+                step.addEventListener('click', () => {
+                    setActiveStep(step.dataset.index);
+                });
+            });
+
+            // --- MISE À JOUR DE LA BARRE DE PROGRESSION ---
+            function updateProgressBar() {
+                const completedSteps = stepsData.filter(s => s.status === 'completed').length;
+                const progressPercentage = (completedSteps / (stepsData.length - 1)) * 100;
+                stepperProgress.style.width = `${progressPercentage}%`;
+            }
+
+            // Initialisation
+            setActiveStep(currentStepIndex);
+            updateProgressBar();
+        });
+    </script>
+
+</body>
+</html>
