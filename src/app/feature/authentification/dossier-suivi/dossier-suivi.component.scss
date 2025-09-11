@@ -53,3 +53,30 @@
     pointer-events: none;  /* Désactive les clics et interactions */
     opacity: 0.5;  /* Rend le div plus gris */
   }
+
+
+  /* Ajoute une animation de fondu à l'apparition du contenu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Style pour l'icône de chargement qui tourne */
+.pi-spin {
+  animation: pi-spin 1.4s infinite linear;
+}
+
+@keyframes pi-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
