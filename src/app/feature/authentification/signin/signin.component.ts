@@ -24,18 +24,17 @@ export class SigninComponent {
   utilisateur1 =new User;
   addUser:boolean=false;
   user=new User;
-demandePage:boolean=false;
-oubliPage:boolean=false;
-
-numDossier!:any;
-mailOublie!:string;
-dataMailOubli:any;
-passPage:boolean=false;
-newpass!:string;
-submitted:boolean=false;
-currentUrl: string = '';
-erreurMessage:string="";
-showPassword: boolean = false;
+  demandePage:boolean=false;
+  oubliPage:boolean=false;
+  numDossier!:any;
+  mailOublie!:string;
+  dataMailOubli:any;
+  passPage:boolean=false;
+  newpass!:string;
+  submitted:boolean=false;
+  currentUrl: string = '';
+  erreurMessage:string="";
+  showPassword: boolean = false;
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -49,8 +48,8 @@ constructor(
 ngOnInit(): void {
   this.initForm();
   this.currentUrl = this.router.url;
-   // console.log('URL actuelle :', this.currentUrl);
 }
+
 initForm(){
   this.connexionForm=this.formBuilder.group(
     {
@@ -190,7 +189,6 @@ togglePassword() {
 
  Oublie(){
   this.oubliPage=true;
- // console.log(this.oubliPage)
   this.mailOublie="";
  }
 
@@ -234,4 +232,5 @@ togglePassword() {
     }
     });
  }
+ 
 }
