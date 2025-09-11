@@ -30,7 +30,6 @@ import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import { SharedModule } from "../../shared/shared.module";
-import { DossierSuiviComponent } from './dossier-suivi/dossier-suivi.component';
 import { TimelineModule } from 'primeng/timeline';
 import { ResetPassComponent } from './reset-pass/reset-pass.component';
 import { PageCompteCreateComponent } from './page-compte-create/page-compte-create.component';
@@ -40,7 +39,6 @@ import { SuiviDemandeComponent } from './suivi-demande/suivi-demande.component';
 @NgModule({
   declarations: [
     SigninComponent,
-    DossierSuiviComponent,
     ResetPassComponent,
     PageCompteCreateComponent,
     MotDepassOublieComponent,
