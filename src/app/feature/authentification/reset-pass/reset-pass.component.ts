@@ -33,6 +33,14 @@ export class ResetPassComponent implements AfterViewInit {
     }
   }
 
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.id = +params['id'];
+    });
+    console.log(this.id)
+  }
+
+
   private calculateStrength(password: string): number {
     let score = 0;
     if (password.length >= 8) score++;
