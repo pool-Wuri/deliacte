@@ -1,335 +1,55 @@
-/* ==========================================================================
-   1. CONFIGURATION DE BASE ET VARIABLES
-   ========================================================================== */
 
-/* Importation de la police depuis Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap' );
-
-/* Définition des variables de couleur pour une maintenance facile */
-:root {
-  --burkina-green: #009639;
-  --burkina-red: #E31E24;
-  --burkina-yellow: #FCD116;
-  
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
-  
-  --green-100: #dcfce7;
-  --green-800: #166534;
-  --yellow-100: #fef3c7;
-  --yellow-800: #92400e;
-  
-  --white: #ffffff;
-  --font-sans: 'Inter', sans-serif;
+::ng-deep {
+    .p-timeline-event-content,
+    .p-timeline-event-opposite {
+        line-height: 1;
+    }
 }
-
-/* Styles de base pour le corps de la page */
-body {
-  font-family: var(--font-sans);
-  background-color: var(--gray-100);
-  margin: 0;
-  padding-top: 0.5rem; /* Espace pour la bannière fixe */
-  color: var(--gray-800);
-}
-
-/* ==========================================================================
-   2. ÉLÉMENTS DE LA PAGE PRINCIPALE
-   ========================================================================== */
-
-/* Bannière supérieure fixe */
-.main-header {
-  width: 100%;
-  height: 0.5rem;
-  display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 50;
-}
-
-.main-header .header-bar {
-  flex: 1;
-}
-
-/* Conteneur principal pour centrer le contenu */
-.container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem 2rem;
-}
-
-/* En-tête de la section de suivi */
-.tracking-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.tracking-header h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--gray-900);
-  margin: 0;
-}
-
-.tracking-header p {
-  font-size: 1.125rem;
-  color: var(--gray-600);
-  margin-top: 0.75rem;
-}
-
-.tracking-header .dossier-id {
-  display: inline-block;
-  margin-top: 1rem;
-  background-color: var(--gray-200);
-  color: var(--gray-900);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-weight: 600;
-}
-
-/* ==========================================================================
-   3. STEPPER / BARRE DE PROGRESSION
-   ========================================================================== */
-
-.stepper-wrapper {
-  position: relative;
-  margin-bottom: 3rem;
-}
-
-/* Ligne de fond de la barre de progression */
-.stepper-line {
-  position: absolute;
-  top: 20px; /* Centre verticalement sur les icônes */
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-color: var(--gray-300);
-}
-
-/* Ligne de progression active (verte) */
-.stepper-line-progress {
-  height: 100%;
-  background-color: var(--burkina-green);
-  transition: width 0.5s ease-in-out;
-}
-
-/* Conteneur des étapes */
-.stepper-steps {
-  position: relative; /* Pour être au-dessus de la ligne */
-  display: flex;
-  justify-content: space-between;
-}
-
-/* Style d'une étape individuelle */
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 120px;
-  cursor: pointer;
-}
-
-.step-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 4px solid var(--gray-300);
-  background-color: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  color: var(--gray-400);
-  font-size: 1.2rem;
-}
-
-.step-label {
-  margin-top: 0.75rem;
-  font-weight: 600;
-  color: var(--gray-500);
-  transition: color 0.3s ease;
-}
-
-.step:hover .step-label {
-  color: var(--gray-800);
-}
-
-/* --- États des étapes --- */
-.step.completed .step-icon {
-  border-color: var(--burkina-green);
-  background-color: var(--burkina-green);
-  color: var(--white);
-}
-
-.step.completed .step-label {
-  color: var(--gray-900);
-}
-
-.step.active .step-icon {
-  border-color: var(--burkina-green);
-  color: var(--burkina-green);
-  transform: scale(1.1);
-  box-shadow: 0 0 0 4px rgba(0, 150, 57, 0.2);
-}
-
-.step.active .step-label {
-  color: var(--burkina-green);
-  font-weight: 700;
-}
-
-/* ==========================================================================
-   4. CONTENU DÉTAILLÉ DES ÉTAPES
-   ========================================================================== */
-
-.step-content-wrapper {
-  background-color: var(--white);
-  border-radius: 1rem;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.05);
-  padding: 2.5rem;
-}
-
-.step-content {
-  display: none; /* Caché par défaut, sera géré par JS ou framework */
-  animation: fadeIn 0.4s ease-in-out;
-}
-
-.step-content.active {
-  display: block; /* Afficher l'étape active */
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* En-tête de la section de contenu */
-.content-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 1px solid var(--gray-200);
-  padding-bottom: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.content-header h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--gray-900);
-  margin: 0;
-}
-
-/* Badges de statut */
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.875rem;
-}
-.status-badge.completed { background-color: var(--green-100); color: var(--green-800); }
-.status-badge.active { background-color: var(--yellow-100); color: var(--yellow-800); }
-.status-badge.pending { background-color: var(--gray-200); color: var(--gray-800); }
-
-/* Grille pour les détails */
-.details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.detail-item {
-  background-color: var(--gray-100);
-  padding: 1rem;
-  border-radius: 0.75rem;
-}
-
-.detail-item label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--gray-500);
-  margin-bottom: 0.25rem;
-}
-
-.detail-item p {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--gray-900);
-  margin: 0;
-}
-
-/* ==========================================================================
-   5. ICÔNES ET ANIMATIONS
-   ========================================================================== */
-
-/* Animation pour l'icône de chargement */
-.pi-spin {
-  animation: pi-spin 1.4s infinite linear;
-}
-
-@keyframes pi-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Exemple d'utilisation */
-
-.bouton-principal {
-  background-color: var(--burkina-green); /* Utilise la variable --burkina-green */
-  color: white;
-}
-
-.message-erreur {
-  color: var(--burkina-red); /* Utilise la variable --burkina-red */
-}
-
-.element-accentuation {
-  border-color: var(--burkina-yellow); /* Utilise la variable --burkina-yellow */
-}
-/* Ajoute une animation de fondu à l'apparition du contenu */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* Personnalisation du marqueur */
+.custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: white; /* Icône en blanc */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  /* Ombre légère pour le marqueur */
+  .custom-marker.shadow-2 {
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
   }
+  
+  /* Espace entre les événements */
+  .p-timeline .p-timeline-event {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  /* Style pour le contenu de l'événement */
+  .event-content {
+    font-size: 14px;
+    color: #333;
+    margin-left: 10px;
+    font-weight: bold;
+  }
+  @media (max-width: 768px) {
+    .p-timeline {
+      display: block;
+    }
+  
+    .custom-marker {
+      margin-bottom: 10px;
+    }
+  }
+  .p-divider-horizontal.p-divider-center {
+    justify-content: center;
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.4s ease-in-out;
-}
 
-/* Style pour l'icône de chargement qui tourne */
-.pi-spin {
-  animation: pi-spin 1.4s infinite linear;
-}
-
-@keyframes pi-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.bg-burkina-red {
-  background-color: #E31E24; /* rouge Burkina */
-}
-
-.bg-burkina-yellow {
-  background-color: #FCD116; /* jaune Burkina */
-}
-
-.bg-burkina-green {
-  background-color: #009639; /* vert Burkina */
-}
-
-.font-sans {
-  font-family: 'Inter', sans-serif;
-}
+.disabled {
+    pointer-events: none;  /* Désactive les clics et interactions */
+    opacity: 0.5;  /* Rend le div plus gris */
+  }
