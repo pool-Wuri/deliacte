@@ -1,1 +1,96 @@
-<p>page-compte-create works!</p>
+  <div class="fixed -top-4 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32">
+    <div class="min-h-screen flex flex-col">
+        <!-- Barre de navigation supérieure aux couleurs du Burkina Faso -->
+        <header class="w-full h-2 flex">
+            <div class="w-1/2 bg-red-600"></div>
+            <div class="w-1/2 bg-green-600"></div>
+        </header>
+
+        <div class="flex-grow flex">
+            <!-- Section gauche : Formulaire de création de compte -->
+            <div class="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 sm:p-12 relative">
+                
+                <!-- BOUTON DE RETOUR À L'ACCUEIL -->
+                <div class="absolute top-8 left-8">
+                    <a href="/" class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 group">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Accueil
+                    </a>
+                </div>
+                
+                <div class="w-full max-w-md">
+                    <!-- Logo -->
+                    <div class="flex items-center justify-center lg:justify-start mb-8 mt-16 lg:mt-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Coat_of_arms_of_Burkina_Faso.svg" alt="Armoiries du Burkina Faso" class="h-14 mr-4">
+                        <div class="h-12 w-px bg-gray-300 mr-4"></div>
+                        <span class="text-2xl font-bold text-gray-800">ServicePublic.bf</span>
+                    </div>
+
+                    <!-- Titres -->
+                    <h1 class="text-4xl font-bold text-gray-900">Créer votre compte</h1>
+                    <p class="text-gray-500 mt-2 mb-8">Accès unique à tous les services du gouvernement</p>
+
+                    <!-- Formulaire -->
+                    <form class="space-y-6">
+                        <div>
+                            <label for="nom" class="block text-sm font-medium text-gray-700">
+                                Nom <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="nom" name="nom" placeholder="Saisissez votre nom de famille" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" required>
+                        </div>
+
+                        <div>
+                            <label for="prenom" class="block text-sm font-medium text-gray-700">
+                                Prénom <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="prenom" name="prenom" placeholder="Saisissez votre prénom" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" required>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">
+                                Adresse e-mail <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" placeholder="Saisissez votre e-mail" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm" required>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                Créer le compte
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Séparateur -->
+                    <div class="relative my-8">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-gray-50 text-gray-500">Ou</span>
+                        </div>
+                    </div>
+
+                    <!-- Lien de connexion -->
+                    <p class="mt-8 text-center text-sm text-gray-600">
+                        Vous avez déjà un compte ?
+                        <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Connectez-vous</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section droite : Image -->
+            <div class="hidden lg:block lg:w-1/2 relative">
+                <img class="absolute h-full w-full object-cover" src="https://images.unsplash.com/photo-1606232257211-9a751b9d1de2?q=80&w=1974&auto=format&fit=crop" alt="Scène de vie au Burkina Faso">
+                <div class="absolute inset-0 bg-black opacity-10"></div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-3/4">
+                    <div class="bg-white/70 backdrop-blur-md p-6 rounded-xl text-center shadow-lg">
+                        <p class="text-2xl font-bold text-gray-800">Les services publics, désormais à portée de main.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+ 
