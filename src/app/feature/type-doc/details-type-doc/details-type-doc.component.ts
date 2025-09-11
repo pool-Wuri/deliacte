@@ -75,6 +75,7 @@ export class DetailsTypeDocComponent {
     champOperationId!:any;
     indexRequis:number[]=[];
     idfile!:number;
+    filurl:any;
 
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
@@ -117,6 +118,7 @@ export class DetailsTypeDocComponent {
   getDossier(id?:number){
     let limit: number | null = null;
     if(this.user?.role==="CITOYEN"){
+     // console.log(id)
       this.typeDocService.getDossierPour(id).subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -633,10 +635,54 @@ modifierDossier(numDossier:number){
 annulerModif(){
   this.isDisabled=true;
 }
-
-documentRecuper(operation:any){
+documentRecuper(){
   //console.log(operation)
-  console.log(this.traitement.operationId)
+  console.log(this.traitement);
+  let fileUrl = '';
+  const fileName = "";
+  this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
+    next:(result)=>{
+      console.log(result);
+      if(result){
+        this.filurl=result.data;
+        fileUrl=this.filurl;
+        const link = document.createElement('a');
+          link.href = fileUrl;
+          link.download = fileName;
+          link.target = '_blank';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+      }
+     
+
+    },
+    complete:()=>{},
+    error:()=>{}
+
+  })
+
+ // Création du lien de téléchargement et déclenchement
+ 
+}
+
+voirDo(){
+  this.displayPosition = true;
+  this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
+    next:(result)=>{
+      console.log(result);
+      if(result){
+        this.filurl=result.data;
+        this.docUrl=this.filurl;
+      }
+    
+    },
+    complete:()=>{},
+    error:()=>{}
+
+  })
+
+
 }
 
     retourPage(){

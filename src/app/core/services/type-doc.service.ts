@@ -1,4 +1,4 @@
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
@@ -6,10 +6,12 @@ import { environment } from 'src/environnements/environment';
 const TYPEDOC_API=environment.apiUrl +"/type-documents";
 const DOSSIER=environment.apiUrl+"/dossiers/userConnectedDossier";
 const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/dossierByNumero/"
-const DOCUMENTAPI=environment.mockApiUrl+"/uploads/"
+const DOCUMENTAPI=environment.mockApiUrl+"/uploads/";
 const DOSSIERBYPROCEDURE=environment.apiUrl+"/dossiers/dossierByProcedure/";
 const DOSSIERAtraiter=environment.apiUrl+"/dossiers/userConnectedDossierATraiter";
 const DOSSIERTraitements=environment.apiUrl+"/dossiers/dossierTraiterByNumero";
+const DOCUMENT_DOWNLOADAPI=environment.apiUrl+"/documentstemplate/pdffromword"
+
 
 
 
@@ -166,4 +168,18 @@ export class TypeDocService {
       );
   }
 
+
+  telechargerDoc(operationId: string, numeroDossier: any): Observable<any> {
+    const params = new HttpParams()
+      .set('operationId', operationId)
+      .set('numeroDossier', numeroDossier);
+  
+      return this.http.post<string>(DOCUMENT_DOWNLOADAPI, null, { params })
+      .pipe(
+        retry(1),
+        tap(data => {
+          console.log(data)
+        })
+      );
+    }
 }

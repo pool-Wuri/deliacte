@@ -76,8 +76,8 @@
             <p-fileUpload 
             class="upload-vert"
             mode="advanced"
-            name="demo"
-            url="http://188.166.86.36:8080/deliacte/v1/documentstemplate/savewordTemplate"
+            name="file"
+            [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
             accept=".doc,.docx"
             maxFileSize="5000000"
             chooseLabel="Sélectionner un fichier"
