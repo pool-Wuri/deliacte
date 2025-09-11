@@ -34,19 +34,19 @@
             <div 
               class="w-10 h-10 rounded-full border-4 flex items-center justify-center bg-white transition-all duration-300"
               [ngClass]="{
-                'border-burkina-green text-white bg-burkina-green': step.status === 'completed',
+                'border-burkina-green text-white bg-burkina-green': step.status === 'Complète',
                 'border-burkina-green text-burkina-green scale-110 shadow-lg': i === selectedIndex,
-                'border-gray-300 text-gray-400': step.status === 'pending' && i !== selectedIndex
+                'border-gray-300 text-gray-400': step.status === 'En attente' && i !== selectedIndex
               }">
-              <i class="pi" [ngClass]="step.status === 'completed' ? 'pi-check' : step.icon"></i>
+              <i class="pi" [ngClass]="step.status === 'Complète' ? 'pi-check' : step.icon"></i>
             </div>
   
             <p 
               class="mt-3 font-semibold transition-colors"
               [ngClass]="{
                 'text-burkina-green': i === selectedIndex,
-                'text-gray-900': step.status === 'completed' && i !== selectedIndex,
-                'text-gray-500 group-hover:text-gray-800': step.status !== 'completed' && i !== selectedIndex
+                'text-gray-900': step.status === 'Complète' && i !== selectedIndex,
+                'text-gray-500 group-hover:text-gray-800': step.status !== 'Complète' && i !== selectedIndex
               }">
               {{ step.label }}
             </p>
@@ -66,11 +66,11 @@
               <span 
                 class="px-3 py-1 text-sm font-semibold rounded-full"
                 [ngClass]="{
-                  'bg-green-100 text-green-800': step.status === 'completed',
-                  'bg-yellow-100 text-yellow-800': step.status === 'active',
-                  'bg-gray-200 text-gray-800': step.status === 'pending'
+                  'bg-green-100 text-green-800': step.status === 'Complète',
+                  'bg-yellow-100 text-yellow-800': step.status === 'Actif',
+                  'bg-gray-200 text-gray-800': step.status === 'En attente'
                 }">
-                {{ step.status === 'completed' ? 'Terminé' : (step.status === 'active' ? 'En cours' : 'En attente') }}
+                {{ step.status === 'Complète' ? 'Terminé' : (step.status === 'Actif' ? 'En cours' : 'En attente') }}
               </span>
             </div>
   
