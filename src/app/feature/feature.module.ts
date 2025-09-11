@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SuivreMaDemandeComponent } from './suivre-ma-demande/suivre-ma-demande.component';
 
 
 
@@ -7,6 +8,8 @@ import { CommonModule } from '@angular/common';
   declarations: [
    
   
+  
+    SuivreMaDemandeComponent
   ],
   imports: [
     CommonModule
