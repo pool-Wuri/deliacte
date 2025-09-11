@@ -1,13 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ChampOperation } from 'src/app/core/models/champOperation.model';
-import { Operation } from 'src/app/core/models/operation.model';
-import { OperationService } from 'src/app/core/services/operation.service';
-import { ProcedureService } from 'src/app/core/services/procedure.service';
-import { TypeDocService } from 'src/app/core/services/type-doc.service';
-import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
-import { Location } from '@angular/common';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
+
+// Définition des types pour une meilleure autocomplétion et sécurité
+interface StepDetail {
+  [key: string]: string;
+}
+
+interface Step {
+  label: string;
+  status: 'completed' | 'active' | 'pending';
+  icon: string;
+  details: StepDetail;
+}
 
 // Définition des types pour une meilleure autocomplétion et sécurité
 interface StepDetail {
@@ -25,6 +31,7 @@ interface Step {
   templateUrl: './dossier-suivi.component.html',
   styleUrls: ['./dossier-suivi.component.scss']
 })
+<<<<<<< HEAD
 
 
 
@@ -51,6 +58,11 @@ export class DossierSuiviComponent {
 
 
     // Données de la demande (simulées, viendraient d'un service/API)
+=======
+export class DossierSuiviComponent implements OnInit {
+
+  // Données de la demande (simulées, viendraient d'un service/API)
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
   dossierId = 'SP-2024-12345';
   steps: Step[] = [
     {
@@ -103,16 +115,25 @@ export class DossierSuiviComponent {
   
   // Pourcentage de la barre de progression
   progressPercentage: number = 0;
+<<<<<<< HEAD
   constructor(private route:ActivatedRoute,
     private typeDocService:TypeDocService,
     private procedureService:ProcedureService,
     private operationService:OperationService,
     private userService:UtilisateurService,
+=======
+
+id!:number;
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthentificationService,
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router,
-    private location: Location,
+    private router: Router
+  ) {}
 
+<<<<<<< HEAD
 ){}
 
 ngOnInit():void{
@@ -128,16 +149,31 @@ ngOnInit():void{
     this.id = params['id']; 
     console.log(this.id)
   /// this.getProcedure(this.id)
+=======
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      console.log('params récupérés :', params); // Débogage
+      const idParam = params['id'];
+      this.id = params['id'] // Convertit en number ou 0 par défaut
+      console.log('ID récupéré :', this.id);
+    });
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
 this.getDossier(this.id)
-   }
-  );
-  this.events2 = [
-    "2020", "2021", "2022", "2023"
-];
-}
+    // Initialiser l'index sélectionné sur l'étape active
+    this.selectedIndex = this.steps.findIndex(step => step.status === 'active');
+    if (this.selectedIndex === -1) { // Au cas où tout est terminé
+        this.selectedIndex = this.steps.length - 1;
+    }
+    
+    // Calculer la progression de la barre
+    this.calculateProgress();
+  }
+
+<<<<<<< HEAD
 
 
-
+=======
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
   // Méthode pour sélectionner une étape au clic
   selectStep(index: number): void {
     this.selectedIndex = index;
@@ -155,6 +191,7 @@ this.getDossier(this.id)
     return Object.keys(obj);
   }
 
+<<<<<<< HEAD
 getDossier(id?:number){
   let limit: number | null = null;
   this.typeDocService.getDossierPour(id).subscribe({
@@ -196,63 +233,17 @@ getDossier(id?:number){
       console.log(result.data)
     this.procedureService.get_Procedure(result.data.procedureId).subscribe({
       complete:()=>{},
+=======
+
+  getDossier(id:any){
+    this.authService.getDossierAfficher(id).subscribe({
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
       next:(result)=>{
         console.log(result.data);
-        this.operationService.get_Operation(result.data.id).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-            console.log(result.data);
-            this.operations=result.data;
-            this.events2= this.operations.map(operation => ({
-              status: operation.verbeOperation,
-              icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
-              color: "#c8c8c8", // Gris par défaut
-            }));
-
-             for (let i = 0; i < this.events2.length; i++) {
-
-              if(this.events2[i].status==this.traitement.status){
-                this.events2[i].color = '#4caf50';
-                limit = i;
-                console.log(limit)
-              }
-            };
-            if (limit !== null) {
-              for (let i = 0; i <= limit; i++) {
-                // Appliquer la même couleur aux événements avant le statut trouvé
-                if (this.events2[i].color == '#c8c8c8') {  // Si la couleur a été modifiée
-                  this.events2[i].color = this.events2[limit].color;
-                }
-              }
-            }
-            console.log(this.events2)
-
-          },
-          error:(error)=>{
-            console.log(error)
-          }
-        });
+        this.steps=result.data;
       },
-        error:(error)=>{
-          console.log(error)
-        }
-
+      complete:()=>{},
+      error:(err)=>{}
     })
-     
-    },
-    error:(error)=>{
-      console.log(error)
-    }
-  });
-    },
-    error:(error)=>{
-      console.log(error);
-    }
-
-  });
-}
-
-retourPage(){
-  this.location.back();
-}
+  }
 }

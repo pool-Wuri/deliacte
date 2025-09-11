@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" style="background-color: #060; z-index: 1000;">
     <div class="flex items-center justify-between ">
         <div class="flex items-center justify-start rtl:justify-end h-24" >
@@ -70,12 +71,28 @@
   <main class="bg-gray-100 min-h-screen pt-12 font-sans">
     <div class="container max-w-5xl mx-auto p-4 sm:p-8">
       
+=======
+<!-- Bannière supérieure -->
+<header class="w-full h-2 flex fixed top-0 left-0 z-50">
+    <div class="flex-1 bg-burkina-red"></div>
+    <div class="flex-1 bg-burkina-yellow"></div>
+    <div class="flex-1 bg-burkina-green"></div>
+  </header>
+  
+  <main class="bg-gray-100 min-h-screen pt-12 font-sans">
+    <div class="container max-w-5xl mx-auto p-4 sm:p-8">
+      
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
       <!-- En-tête de la page -->
       <div class="text-center mb-12">
         <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900">Suivi de votre demande</h1>
         <p class="mt-3 text-lg text-gray-600">Consultez l'état d'avancement de votre dossier en temps réel.</p>
         <span class="mt-4 inline-block bg-gray-200 text-gray-900 px-4 py-2 rounded-full font-semibold">
+<<<<<<< HEAD
           Dossier N° : {{ dossierId }}
+=======
+          Dossier N° : {{ id }}
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
         </span>
       </div>
   
@@ -101,6 +118,7 @@
                 'border-gray-300 text-gray-400': step.status === 'pending' && i !== selectedIndex
               }">
               <i class="pi" [ngClass]="step.status === 'completed' ? 'pi-check' : step.icon"></i>
+<<<<<<< HEAD
             </div>
   
             <p 
@@ -164,12 +182,43 @@
                 <input [type]="champ.inputType" [id]="'input-' + i" 
                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
                        required [(ngModel)]="champ.name"/>
+=======
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
             </div>
-        
-            <div *ngIf="champ.champOperation.inputType === 'TEXTAREA'" class="col-span-1">
-                <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
-                <textarea id="message" rows="4" [(ngModel)]="champ.name" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+  
+            <p 
+              class="mt-3 font-semibold transition-colors"
+              [ngClass]="{
+                'text-burkina-green': i === selectedIndex,
+                'text-gray-900': step.status === 'completed' && i !== selectedIndex,
+                'text-gray-500 group-hover:text-gray-800': step.status !== 'completed' && i !== selectedIndex
+              }">
+              {{ step.label }}
+            </p>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Contenu détaillé des étapes -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10">
+        <div *ngFor="let step of steps; let i = index">
+          <!-- Affiche le contenu seulement pour l'étape sélectionnée -->
+          <div *ngIf="i === selectedIndex" class="animate-fadeIn">
+            
+            <!-- En-tête du contenu -->
+            <div class="flex items-center gap-4 border-b border-gray-200 pb-4 mb-6">
+              <h2 class="text-3xl font-bold text-gray-900">{{ step.label }}</h2>
+              <span 
+                class="px-3 py-1 text-sm font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': step.status === 'completed',
+                  'bg-yellow-100 text-yellow-800': step.status === 'active',
+                  'bg-gray-200 text-gray-800': step.status === 'pending'
+                }">
+                {{ step.status === 'completed' ? 'Terminé' : (step.status === 'active' ? 'En cours' : 'En attente') }}
+              </span>
             </div>
+<<<<<<< HEAD
         
             <div *ngIf="['RADIO'].includes(champ.champOperation.inputType)" class="col-span-1">
                 <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
@@ -227,17 +276,25 @@
                 <div *ngIf="champ.name">
                   <p>Fichier sélectionné : {{ champ.name }}</p>
                 </div>
+=======
+  
+            <!-- Grille des détails -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div *ngFor="let key of getObjectKeys(step.details)" class="bg-gray-50 p-4 rounded-lg">
+                <label class="block text-sm font-medium text-gray-500">{{ key }}</label>
+                <p class="text-base font-semibold text-gray-900">{{ step.details[key] }}</p>
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
               </div>
-              
-            <div *ngIf="champ.champOperation.inputType === 'SELECT'" class="col-span-1">
-                <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.champOperation.name }}</label>
-                <select [id]="'select-' + i" [(ngModel)]="champ.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option selected>Choisir {{ champ.champOperation.name }}</option>
-                    <option *ngFor="let option of champ.champOperation.options" [value]="option.name">{{ option.name }}</option>
-                </select>
             </div>
-
-        </ng-container>
+  
+          </div>
+        </div>
+      </div>
+  
     </div>
+<<<<<<< HEAD
   </div-->
+=======
+  </main>
+>>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
   

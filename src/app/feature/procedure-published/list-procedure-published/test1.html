@@ -1,0 +1,345 @@
+
+<div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" style="background-color: #060; z-index: 1000;">
+  <div class="flex items-center justify-between ">
+      <div class="flex items-center justify-start rtl:justify-end h-24" >
+          <button  type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+              <span class="sr-only">Open sidebar</span>
+              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+              </svg>
+          </button>
+         <a class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="assets/img/armoiriePh.jpeg" class="h24 w-24 me-3" alt="FlowBite Logo" style="background-color: white;width: 107px;"/>
+            <div class="w-80 text-white">
+              <h5>Ministère de la Transition Digitale, des Postes et des Communications Électroniques</h5>
+          </div>
+          </a>
+         
+      </div>
+      <div class="mr-5">
+        <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+    <span class="example-spacer"></span>
+   
+    <button type="button"  [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 
+    focus:outline-none bg-white rounded-full border border-gray-200 
+    hover:bg-Green-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 
+    dark:bg-green-800 dark:text-green-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-green-700">Voir dossier</button>
+    <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none 
+    bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:bg-gray-100 focus:z-10 
+    focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 
+    dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Se Connecter</button>
+      </div>
+  </div>
+</div>
+<div
+  class="card-grid mt-24"
+  *ngIf="procedures.length === 0"
+  style="background-color: #ff0000; padding: 16px; border-radius: 8px; text-align: center; position: relative; overflow: hidden;"
+>
+  <p class="animated-text">Aucune procédure disponible pour le moment!!!! Merci de revenir plutard.</p>
+</div>
+
+<div class="w-full mt-32" style="display: block;">
+  <form class="max-w-md mx-auto" (ngSubmit)="onSearch()" #searchForm="ngForm">
+    <label for="default-search" class="sr-only">Rechercher</label>
+    <div class="relative">
+      <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+        </svg>
+      </div>
+
+      <input
+        type="search"
+        id="default-search"
+        name="query"
+        [(ngModel)]="searchTerm"
+        class="block w-full p-4 ps-10 text-sm text-gray-900 border bg-Green-700 rounded-lg bg-gray-50"
+        placeholder="Rechercher une procédure..."
+        required
+      />
+      <button
+        type="submit"
+        class="text-white absolute end-2.5 bottom-2.5  hover:bg-Green-700 font-medium rounded-lg text-sm px-4 py-2"
+        style="background-color: #060;"
+      >
+        Rechercher
+      </button>
+    </div>
+  </form>
+</div>
+
+
+<div class="card-grid" *ngIf="filteredProcedures.length > 0">
+  <div
+    *ngFor="let procedure of filteredProcedures"
+    (click)="faireDemande(procedure)"
+    class="card-wrapper"
+  >
+    <p-card class="custom-card">
+      <!-- HEADER -->
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <img
+            alt="Logo"
+            src="assets/img/burkina (1).png"
+            class="card-logo"
+          />
+  <i
+  class="pi pi-info-circle action-icon"
+  title="Informations"
+></i>
+
+        </div>
+      </ng-template>
+
+      <!-- CONTENT -->
+      <div class="card-content">
+        <h3 class="card-title">{{ procedure.name }}</h3>
+        
+        <p class="card-text">
+          <strong>Organisation :</strong> {{ procedure.organisation.name }}
+        </p>
+        <p class="card-subtitle">{{ procedure.description }}</p>
+      </div>
+
+      <!-- FOOTER -->
+     <ng-template pTemplate="footer">
+  <div class="card-footer">
+    <p-button
+      label="Faire ma demande"
+      (onClick)="soumettre()"
+      styleClass="p-button-rounded custom-green-button"
+      icon="pi pi-arrow-right"
+      iconPos="right"
+    ></p-button>
+  </div>
+</ng-template>
+
+
+
+
+    </p-card>
+  </div>
+</div>
+
+
+<!--div class="grid">
+  <div class="col-6 md:col-3 drag-column">
+    <p-card>
+      <div class="product-list-detail">
+        <h5 class="mb-2">Section</h5>
+        <i class="pi pi-tag product-category-icon"></i>
+        <p-button (click)="showDialog('topleft')" icon="pi pi-arrow-down-right" label="TopLeft" severity="secondary" styleClass="min-w-40" />
+      </div>
+      <div *ngFor="let champ of champOperation">
+        <div class="product-item" pDraggable="products" (onDragStart)="dragStart(champ)" (onDragEnd)="dragEnd()">
+          
+            <div class="product-list-detail">
+                <h5 class="mb-2">{{champ.name}}</h5>
+                <i class="pi pi-tag product-category-icon"></i>
+                <span class="product-category">{{champ.inputType}}</span>
+            </div>
+           
+        </div>
+    </div>
+    </p-card>
+    
+  </div>
+  <div class="col-12 md:col-6 drop-column form" pDroppable="products" (onDrop)="drop()">
+    <p-card>
+      <h1>Form element</h1>
+      <div *ngFor="let item of selectedChamps" style="padding-top: 10px;
+        padding-right: 0px;
+        padding-bottom: 10px;
+        padding-left: 0px;
+        background-color: rgb(253, 250, 250);
+        border-radius: 0px;min-height: auto;">
+         <label class="" style="color: #000000;font-size: 14px">
+          <span class="d-inline-block">{{item.name}}</span></label>
+          <input [type]="item.inputType" [placeholder]="item.name" class="form-control"
+              name="input-84f4abd8"
+              autocomplete="off"
+            style="background-color: #ffffff;border: solid 1px #ced4da;border-radius: 5px"  />
+
+      </div>
+     
+    </p-card>
+  
+  </div>
+  <div class="col-12 md:col-6 drop-column " pDroppable="products" (onDrop)="drop()">
+    <p-card>
+      <p-tabView>
+        <p-tabPanel header="élément courant">
+           Content 1
+        </p-tabPanel>
+        <p-tabPanel header="Formulaire">
+            Content 2
+        </p-tabPanel>
+       
+    </p-tabView>
+    </p-card>
+  
+  </div>
+</div-->
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [position]="'topleft'" [style]="{ width: '25rem' }">
+  <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span>
+  <div class="flex items-center gap-4 mb-4">
+      <label for="username" class="font-semibold w-24">Username</label>
+      <input pInputText id="username" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex items-center gap-4 mb-8">
+      <label for="email" class="font-semibold w-24">Email</label>
+      <input pInputText id="email" class="flex-auto" autocomplete="off" />
+  </div>
+  <div class="flex justify-end gap-2">
+      <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+      <p-button label="Save" (click)="visible = false" />
+  </div>
+</p-dialog>
+
+<div id="adduser" 
+     [ngClass]="{'hidden': !demandeFor}" 
+     tabindex="-1" 
+     [attr.aria-hidden]="!demandeFor" 
+     class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
+
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                  Demande
+                </h3>
+                <button type="button" (click)="fermerModel()"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
+                rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4">             
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                            <input type="text" id="name" name="name" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500" placeholder="nom" />
+                           
+                        </div>
+                        <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                            <input type="text" id="description" name="description" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500" placeholder="description" />                  
+                        </div>
+                        <div>
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                            <p-dropdown   optionValue="id" 
+                            optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                                              
+                    </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button type="button"   style="background-color: #060;" 
+                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+                <button  type="button" style="background-color: #ff0000;"  (click)="fermerModel()"
+                class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+   <section class="py-16 bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Titre de section -->
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-white text-2xl font-bold">Organisations</h2>
+            <i class="fas fa-arrow-right text-white text-xl"></i>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
+            <!-- Service 1 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-passport text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Passeport</p>
+                </div>
+            </div>
+            
+            <!-- Service 2 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-id-card text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Permis de Conduire</p>
+                </div>
+            </div>
+            
+            <!-- Service 3 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-burkina-green p-6 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-certificate text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Services ONI</p>
+                </div>
+            </div>
+            
+            <!-- Service 4 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-users text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Certificat de Naissance</p>
+                </div>
+            </div>
+            
+            <!-- Service 5 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-file-alt text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Certificat de Bonne Conduite</p>
+                </div>
+            </div>
+            
+            <!-- Service 6 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-home text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Logement Social</p>
+                </div>
+            </div>
+            
+            <!-- Service 7 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-building text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Enregistrer une Entreprise</p>
+                </div>
+            </div>
+            
+            <!-- Service 8 -->
+            <div class="text-center group cursor-pointer">
+                <div class="bg-gray-800 p-6 rounded-lg hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-ring text-3xl text-white mb-3"></i>
+                    <p class="text-white text-sm font-medium">Demander un Certificat de Mariage</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

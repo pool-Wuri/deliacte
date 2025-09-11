@@ -74,6 +74,7 @@ export class ListProcedurePublishedComponent {
 
   ngOnInit(): void {
     this.search_Procedure();
+    
     this.selectedProducts = [];
     this.productService.getProductsSmall().subscribe(data => { 
       this.availableProducts=data
@@ -106,6 +107,7 @@ export class ListProcedurePublishedComponent {
       proc.description?.toLowerCase().includes(term) ||
       proc.organisation.name.toLowerCase().includes(term)
     );
+    
   }
 
   onDrop(event: CdkDragDrop<any[]>) {
