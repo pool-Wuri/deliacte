@@ -2,6 +2,23 @@
    1. CONFIGURATION DE BASE ET VARIABLES
    ========================================================================== */
 
+
+.bg-burkina-red {
+  background-color: #E31E24; /* rouge Burkina */
+}
+
+.bg-burkina-yellow {
+  background-color: #FCD116; /* jaune Burkina */
+}
+
+.bg-burkina-green {
+  background-color: #009639; /* vert Burkina */
+}
+
+.font-sans {
+  font-family: 'Inter', sans-serif;
+}
+
 /* Importation de la police depuis Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap' );
 
@@ -317,19 +334,4 @@ body {
 @keyframes pi-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-.bg-burkina-red {
-  background-color: #E31E24; /* rouge Burkina */
-}
-
-.bg-burkina-yellow {
-  background-color: #FCD116; /* jaune Burkina */
-}
-
-.bg-burkina-green {
-  background-color: #009639; /* vert Burkina */
-}
-
-.font-sans {
-  font-family: 'Inter', sans-serif;
 }

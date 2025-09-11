@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
 
 // Définition des types pour une meilleure autocomplétion et sécurité
 interface StepDetail {
@@ -14,13 +16,13 @@ interface Step {
 }
 
 @Component({
-  selector: 'app-tracking',
-  standalone: true, // Utilisation d'un composant Standalone (moderne et plus simple)
-  imports: [CommonModule], // Importation de CommonModule pour les directives comme *ngFor et *ngIf
+  selector: 'app-dossier-suivi',
+  //standalone: true, // Utilisation d'un composant Standalone (moderne et plus simple)
+  //imports: [CommonModule], // Importation de CommonModule pour les directives comme *ngFor et *ngIf
   templateUrl: './dossier-suivi.component.html',
-  styleUrls: ['./dossier-suivi.component.css']
+  styleUrls: ['./dossier-suivi.component.scss']
 })
-export class TrackingComponent implements OnInit {
+export class DossierSuiviComponent implements OnInit {
 
   // Données de la demande (simulées, viendraient d'un service/API)
   dossierId = 'SP-2024-12345';
@@ -76,7 +78,23 @@ export class TrackingComponent implements OnInit {
   // Pourcentage de la barre de progression
   progressPercentage: number = 0;
 
+id!:number;
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthentificationService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      console.log('params récupérés :', params); // Débogage
+      const idParam = params['id'];
+      this.id = params['id'] // Convertit en number ou 0 par défaut
+      console.log('ID récupéré :', this.id);
+    });
+this.getDossier(this.id)
     // Initialiser l'index sélectionné sur l'étape active
     this.selectedIndex = this.steps.findIndex(step => step.status === 'active');
     if (this.selectedIndex === -1) { // Au cas où tout est terminé
@@ -102,5 +120,17 @@ export class TrackingComponent implements OnInit {
   // Méthode pour convertir les clés d'un objet en tableau pour l'itération dans le template
   getObjectKeys(obj: object): string[] {
     return Object.keys(obj);
+  }
+
+
+  getDossier(id:any){
+    this.authService.getDossierAfficher(id).subscribe({
+      next:(result)=>{
+        console.log(result.data);
+        this.steps=result.data;
+      },
+      complete:()=>{},
+      error:(err)=>{}
+    })
   }
 }

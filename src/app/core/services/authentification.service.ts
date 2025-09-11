@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 import { environment } from 'src/environnements/environment';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, tap, throwError } from 'rxjs';
 import { JwToken } from '../models/jwt-token.module';
 import { Token } from '@angular/compiler';
 
@@ -13,6 +13,7 @@ import { Token } from '@angular/compiler';
 export class AuthentificationService {
   private readonly TOKEN_KEY = 'TOKEN';
   API_URL=environment.apiUrl;
+  httpParams: HttpHeaders | undefined;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -96,6 +97,20 @@ getRefreshToken(): string | null {
         //console.log(data);
       })
     )
+  }
+
+
+  getDossierAfficher(numDossier :any): Observable<any> {
+    return this.http
+    .get(this.API_URL + "/dossiers/dossierformated/"+ numDossier, {
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          {}   
+        )
+      );
   }
   
 }
