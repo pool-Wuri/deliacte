@@ -34,6 +34,8 @@ passPage:boolean=false;
 newpass!:string;
 submitted:boolean=false;
 currentUrl: string = '';
+erreurMessage:string="";
+showPassword: boolean = false;
 
 constructor(
   private authentificationService: AuthentificationService,
@@ -92,7 +94,8 @@ onSubmit(){
           },2000)
         }
         else{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
+          //this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
+          this.erreurMessage=response.message
           setTimeout(()=>{
             this.loading=false;
           },2000)
@@ -110,6 +113,10 @@ onSubmit(){
   
  }
 
+
+togglePassword() {
+  this.showPassword = !this.showPassword;
+}
 
  ajouter(){
   this.utilisateur1={};

@@ -33,12 +33,14 @@ import { SharedModule } from "../../shared/shared.module";
 import { DossierSuiviComponent } from './dossier-suivi/dossier-suivi.component';
 import { TimelineModule } from 'primeng/timeline';
 import { ResetPassComponent } from './reset-pass/reset-pass.component';
+import { PageCompteCreateComponent } from './page-compte-create/page-compte-create.component';
 
 @NgModule({
   declarations: [
     SigninComponent,
     DossierSuiviComponent,
-    ResetPassComponent
+    ResetPassComponent,
+    PageCompteCreateComponent
   ],
   imports: [
     CommonModule,
