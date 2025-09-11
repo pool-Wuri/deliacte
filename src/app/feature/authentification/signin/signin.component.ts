@@ -185,7 +185,6 @@ togglePassword() {
  }
 
  validerDemande(dossierNumbur:any){
-  //console.log(dossierNumbur)
   this.router.navigate(['/deliacte/login/details', dossierNumbur]);
  }
 
