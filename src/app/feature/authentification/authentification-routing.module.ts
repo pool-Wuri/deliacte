@@ -11,7 +11,7 @@ const routes: Routes = [
   {path:'details/:id',component:DossierSuiviComponent},
   {path:'creationUtilisateur',component:PageCompteCreateComponent},
   {path:'ReinitialiserPass',component:MotDepassOublieComponent},
-  {path:'reset-password',component:ResetPassComponent}
+  {path:'reset-password/:id',component:ResetPassComponent}
 
 ];
 
