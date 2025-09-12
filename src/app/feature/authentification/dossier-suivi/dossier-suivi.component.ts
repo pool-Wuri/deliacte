@@ -25,7 +25,7 @@ export class DossierSuiviComponent implements OnInit {
   // Données de la demande (simulées, viendraient d'un service/API)
   dossierId = 'SP-2024-12345';
   steps: Step[] = [
-    {
+   /* {
       label: "Soumission",
       status: "completed",
       icon: "pi-upload",
@@ -67,7 +67,7 @@ export class DossierSuiviComponent implements OnInit {
         "Pièces à fournir": "Reçu de paiement, CNI",
         "Disponibilité": "En attente"
       }
-    }
+    }*/
   ];
 
   // Index de l'étape sélectionnée pour l'affichage des détails
@@ -100,7 +100,6 @@ this.getDossier(this.id)
     }
     
     // Calculer la progression de la barre
-    this.calculateProgress();
   }
 
   // Méthode pour sélectionner une étape au clic
@@ -111,8 +110,11 @@ this.getDossier(this.id)
   // Méthode pour calculer la largeur de la barre de progression
   private calculateProgress(): void {
     const completedSteps = this.steps.filter(s => s.status === 'completed').length;
+    console.log(completedSteps)
+    console.log(this.steps)
     // La progression est basée sur les intervalles entre les étapes
-    this.progressPercentage = (completedSteps / (this.steps.length - 1)) * 100;
+    this.progressPercentage = (completedSteps / (this.steps.length -1)) * 100;
+    console.log(this.progressPercentage)
   }
 
   // Méthode pour convertir les clés d'un objet en tableau pour l'itération dans le template
@@ -125,7 +127,10 @@ this.getDossier(this.id)
     this.authService.getDossierAfficher(id).subscribe({
       next:(result)=>{
         console.log(result.data);
-        this.steps=result.data;
+        if(result){
+          
+        }
+       
       },
       complete:()=>{},
       error:(err)=>{}
