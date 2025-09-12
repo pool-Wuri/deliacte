@@ -11,15 +11,6 @@
   background-color: #FCD116; /* jaune Burkina */
 }
 
-<<<<<<< HEAD
-.disabled {
-    pointer-events: none;  /* Désactive les clics et interactions */
-    opacity: 0.5;  /* Rend le div plus gris */
-  }
-
-
-  /* Ajoute une animation de fondu à l'apparition du contenu */
-=======
 .bg-burkina-green {
   background-color: #009639; /* vert Burkina */
 }
@@ -288,7 +279,6 @@
   border-color: var(--burkina-yellow); /* Utilise la variable --burkina-yellow */
 }
 /* Ajoute une animation de fondu à l'apparition du contenu */
->>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -312,8 +302,4 @@
 @keyframes pi-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 04ee256ccffabb2df938ca626baed4796a3c73a6
