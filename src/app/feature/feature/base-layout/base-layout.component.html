@@ -1,25 +1,17 @@
-<nav class="fixed px-0 m-0 top-0 z-50 w-screen bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700" style="margin-left: -26px;">
-   <app-header></app-header>
-  </nav>
-  
-  <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-36 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-        <ul class="space-y-2 font-medium">
-          <app-navbar></app-navbar>
-        </ul>
-     </div>
-  </aside>
-  
-  <div class="p-4 sm:ml-64 mt-24">
-     <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-        <router-outlet></router-outlet>
-     </div>
+<div class="flex h-screen overflow-hidden">
+  <!-- Sidebar fixe -->
+  <app-navbar class="fixed top-0 left-0 h-screen w-64 z-20"></app-navbar>
+
+  <!-- Zone principale -->
+  <div class="flex-1 flex flex-col ml-64">
+    <!-- Header fixe -->
+    <app-header class="fixed top-0 left-64 right-0 z-30"></app-header>
+
+    <!-- Contenu principal avec scroll -->
+    <div class="flex-1 mt-20 mb-16 overflow-y-auto p-6 bg-gray-100">
+      <router-outlet></router-outlet>
+    </div>
+
+    <app-footer></app-footer>
   </div>
-  
-  <!-- Footer Section -->
-  <!--footer class="bg-gray-800 text-white py-4 mt-10">
-     <div class="container mx-auto text-center">
-        <app-footer></app-footer>
-     </div>
-  </footer-->
-  
+</div>
