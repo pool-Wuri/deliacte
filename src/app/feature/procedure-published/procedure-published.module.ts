@@ -36,6 +36,7 @@ import { ProductService } from './ProductService';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FaqComponent } from './faq/faq.component';
+import { AdministrationsComponent } from './administrations/administrations.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,8 @@ import { FaqComponent } from './faq/faq.component';
     ListProcedurePublishedComponent,
     DemandePageComponent,
     FaqComponent,
+    AdministrationsComponent,
+    
   ],
   imports: [
     CommonModule,

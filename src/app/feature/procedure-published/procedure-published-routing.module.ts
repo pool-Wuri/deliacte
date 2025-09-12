@@ -5,6 +5,7 @@ import { ListProcedurePublishedComponent } from './list-procedure-published/list
 import { DemandePageComponent } from './demande-page/demande-page.component';
 import { LoginGuard } from 'src/app/core/guard/login.guard';
 import { FaqComponent } from './faq/faq.component';
+import { AdministrationsComponent } from './administrations/administrations.component';
 
 const routes: Routes = [
   { path: '', component: ProcedurePublishedComponent ,children:
@@ -12,7 +13,9 @@ const routes: Routes = [
       {path:'',pathMatch:'full',redirectTo:'list'},
       {path:'list',component:ListProcedurePublishedComponent},
       {path:'demandePage/:id',component:DemandePageComponent, canActivate:[LoginGuard],},
-      {path:'faq',component:FaqComponent, canActivate:[LoginGuard],}
+      {path:'faq',component:FaqComponent, canActivate:[LoginGuard],},
+      {path:'administrations',component:AdministrationsComponent, canActivate:[LoginGuard],}
+      
     ]
    }
 ];
