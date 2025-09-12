@@ -128,7 +128,8 @@ this.getDossier(this.id)
       next:(result)=>{
         console.log(result.data);
         if(result){
-          
+          console.log(result.data);
+        this.steps=result.data;
         }
        
       },
