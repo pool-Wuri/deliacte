@@ -44,6 +44,8 @@ export class DetailsOperationComponent {
   selectedOperation=new Array <Operation>();
   disable:boolean=false;;
   submitted:boolean=false;
+  loading:boolean=false;
+
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -294,7 +296,6 @@ searchRespon(idOperation:number){
 
 
 retirerUser(user:User){
-
   this.operationsIds.operationsIds = []; // Initialiser si nécessaire
   this.confirmationService.confirm({
     message: 'Voulez-vous vraiment lui retirer de cette opération?',
@@ -304,13 +305,12 @@ retirerUser(user:User){
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
   accept: () => { 
-  
+
     this.messageService.add({severity:'success', summary: 'Succès', detail: 'Opération retirée', life: 3000});
       //Actual logic to perform a confirmation
       
   },
   reject:()=>{
-
     this.messageService.add({severity:'error', summary: 'Echec', detail: 'Opération non retirée', life: 3000});
   }
   });
@@ -319,7 +319,6 @@ retirerUser(user:User){
 
 
 groupeUser(operation:any){
-
  this.operation=operation;
      this.userService.userOrganisation().subscribe({
        complete:()=>{},
@@ -331,57 +330,86 @@ groupeUser(operation:any){
                this.usergroup=result.data;
                if(this.usergroup){
                  this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
-               
                }
-             
              },
              complete:()=>{},
              error:(error)=>{
              }
            })
          }
-      
        },
        error:(error)=>{
        }
      });
      this.operationsIds={};
      this.listeUser=true;
-    
-  
  }
 
 
  userSelet(){
-  this.listeUser=false;
-  this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
-  for(let i=0;i<this.usergroup.length;i++){
-    if(this.usergroup[i].id){
-    this.userService.operationInfo(this.usergroup[i].id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        for(let i=0;i<result.data.length;i++){
-          this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
-        }
-        this.operationsIds.operationsIds?.push(this.operation.id || 0);
-        this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-           // this.searchUser();
-          },
-          error:(error)=>{
-          }
-      
-        });
+  this.confirmationService.confirm({
+    message: 'Voulez-vous modifier ce champ?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+  accept: () => {
+    this.listeUser=false;
+    this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
+    this.loading=true;
+    for(let i=0;i<this.usergroup.length;i++){
+      if(this.usergroup[i].id){
+      this.userService.operationInfo(this.usergroup[i].id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result){
+            for(let i=0;i<result.data.length;i++){
+              this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+            }
+            this.operationsIds.operationsIds?.push(this.operation.id || 0);
+            this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                console.log(result)
+                if(result.status==200 || result.status==201){
+                  setTimeout(() => {
+                    this.loading=false;
+                    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
+                    this.searchRespon(this.id ?? 0);
+                  }, 2000);
+                }
+                else{
+                  this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
+                  this.loading=false;
 
-      },
-      error:(error)=>{
+                }
+               // this.searchUser();
+              },
+              error:(error)=>{
+                console.log(error);
+                this.loading=false;
+              }
+          
+            });
+          }
+         
+  
+        },
+        error:(error)=>{
+        }
+      });
+       
       }
-    });
-     
+   
     }
- 
+      //Actual logic to perform a confirmation
+      
+  },
+  reject:()=>{
+    this.messageService.add({severity:'error', summary: 'Echec', detail: ' Utilisateur non affecté', life: 3000});
   }
+  });
 }
 
 retourPage(){

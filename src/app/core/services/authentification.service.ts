@@ -82,8 +82,8 @@ getRefreshToken(): string | null {
     return !!this.getAccessToken();
   }
 
-  oublieservice(email:any):Observable<any>{
-    return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",email).pipe(
+  oublieservice(mail:any):Observable<any>{
+    return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",mail).pipe(
       tap((data)=>{
         //console.log(data);
       })
