@@ -312,16 +312,22 @@ fermerModal(){
      this.operationService.delete_operation(operation.id).subscribe({
        complete:()=>{},
        next:(result)=>{
-   
-        setTimeout(() => {
+        console.log(result);
+        if(result.status==200 || result.status==201){
+          setTimeout(() => {
+            this.loading=false;
+            this.messageService.add({severity:'success', summary: 'Suppression', detail: 'Opération supprimée', life: 3000});      
+            this.onSortChange({ value: this.proced });
+          }, 2000);
+        }
+        else{
           this.loading=false;
-          this.messageService.add({severity:'success', summary: 'Suppression', detail: 'Opération supprimée', life: 3000});      
-          this.onSortChange({ value: this.proced });
-
-        }, 2000);
+          this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
+        }
+      
        },
        error:(error)=>{
-         this.messageService.add({severity:'error', summary: 'Suppression', detail: 'Opération non supprimée', life: 3000});      
+        console.log(error)
         this.loading=false;
        }
    

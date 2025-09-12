@@ -56,7 +56,7 @@ export class MotDepassOublieComponent {
           
           },
           error:(error)=>{
-          //  console.log(error);
+           console.log(error);
             setTimeout(()=>{
               this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Problème de reseau', life: 3000});
               this.loading=false;
