@@ -53,6 +53,12 @@ export class ListProcedurePublishedComponent {
     searchTerm: string = '';
     filteredProcedures = [...this.procedures]; // liste affichée
 
+      // --- pagination ---
+    currentPage = 1;
+    itemsPerPage = 6;
+    totalProcedurespublished: number = 0;
+
+
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
@@ -98,7 +104,7 @@ export class ListProcedurePublishedComponent {
 
 
   
-  onSearch() {
+  onSearch1() {
   
     this.filteredProcedures=this.procedures;
     const term = this.searchTerm.toLowerCase().trim();
@@ -120,6 +126,7 @@ export class ListProcedurePublishedComponent {
       next:(result)=>{
         this.procedures=result.data;
         this.filteredProcedures=this.procedures;
+        this.totalProcedurespublished = this.procedures.length;
        // this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');
       },
       error:(error)=>{
@@ -129,6 +136,37 @@ export class ListProcedurePublishedComponent {
 
    
    }
+
+
+   // Découpe les données selon la page courante
+  get paginatedProcedures() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredProcedures.slice(startIndex, startIndex + this.itemsPerPage);
+  }
+
+  get totalPages() {
+    return Math.ceil(this.filteredProcedures.length / this.itemsPerPage);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+   onSearch() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredProcedures = this.procedures.filter(proc =>
+      proc.name?.toLowerCase().includes(term) ||
+      proc.description?.toLowerCase().includes(term) ||
+      proc.organisation.name.toLowerCase().includes(term)
+    );
+
+    // Réinitialiser la pagination après recherche
+    this.currentPage = 1;
+  }
+
 
    fermerModel(){
     this.demandeFor=false;

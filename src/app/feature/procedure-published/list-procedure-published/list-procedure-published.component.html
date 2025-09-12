@@ -34,6 +34,7 @@
             display: flex;
             flex-direction: column;
             background-color: white !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         header {
@@ -84,9 +85,9 @@
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
-                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">National</a>
-                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Régions</a>
-                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Aide & Support</a>
+                    <a href="#procedurepublieess" class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
+                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Opérations</a>
+                    <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
                 </nav>
                 
                 <!-- Boutons d'action -->
@@ -97,7 +98,7 @@
                     <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
                         Se connecter
                     </button>
-                    <button type="button"  [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors" style="background-color: #060;">
+                    <button type="button"  [routerLink]="'/deliacte/login/suiviDemande'" routerLinkActive="active" class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors" style="background-color: #060;">
                         Voir Dossier
                     </button>
                      <!--<div class="flex space-x-1">
@@ -159,7 +160,7 @@
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="text-white">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                        Plus de 15 000 procédures gouvernementales maintenant disponibles
+                        Plus de {{ totalProcedurespublished }} procédures gouvernementales maintenant disponibles
                     </h2>
                     <p class="text-xl mb-6">
                         de plus de 50 Ministères, Directions, et Départements .
@@ -171,7 +172,7 @@
                         <!--<button class="bg-white text-burkina-green px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                             Se connecter
                         </button> -->
-                        <button type="button"  [routerLink]="'/deliacte/dossier'" routerLinkActive="active" class="bg-burkina-green border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors">
+                        <button type="button"  [routerLink]="'/deliacte/login/suiviDemande'" routerLinkActive="active" class="bg-burkina-green border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition-colors">
                             Voir mes dossiers
                         </button>
                     </div>
@@ -183,97 +184,106 @@
         </div>
     </section>
 
-    <!-- Section Agences -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between items-center mb-12">
-            <!-- Titre à gauche -->
-            <h2 class="text-3xl font-bold text-gray-900">Procédures publiées</h2>
+    <!-- Section Procedures -->
+   <!-- Section Procedures -->
+<section id="procedurepublieess" class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center mb-12">
+      <!-- Titre -->
+      <h2 class="text-3xl font-bold text-gray-900">Procédures publiées</h2>
 
-            <!-- Input aligné à droite dans un formulaire -->
-            <form (ngSubmit)="onSearch()" class="ml-auto w-64">
-                <div class="relative">
-                    <!-- Icone de recherche -->
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
-
-                    <!-- Input -->
-                    <input
-                        type="search"
-                        name="query"
-                        [(ngModel)]="searchTerm"
-                        class="block w-full p-2 pl-10 text-sm text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-burkina-green focus:border-burkina-green"
-                        placeholder="Rechercher une procédure..."
-                        required
-                    />
-                </div>
-            </form>
+      <!-- Barre de recherche -->
+      <form (ngSubmit)="onSearch()" class="ml-auto w-64">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
           </div>
-
-
-          <div
-            class="card-grid mt-24"
-            *ngIf="procedures.length === 0"
-            style="background-color: #ff0000; color: white; padding: 16px; border-radius: 8px; text-align: center; position: relative; overflow: hidden;"
-          >
-            <p class="animated-text">Aucune procédure disponible pour le moment!!!! Merci de revenir plutard.</p>
-          </div>
-
-           
-            <div class="grid md:grid-cols-3 gap-8" *ngIf="filteredProcedures.length > 0">
-              <div
-                  *ngFor="let procedure of filteredProcedures"
-                  (click)="faireDemande(procedure)"
-                  class="card-wrapper"
-                >
-
-             
-                <!-- Agence 1 -->
-                  <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
-                      <div class="flex items-center mb-4">
-                          <div class="h-12 w-12 bg-burkina-green rounded-full flex items-center justify-center mr-4">
-                              <img
-                                alt="Logo"
-                                src="assets/img/burkina (1).png"
-                                class="card-logo"
-                              />
-                          </div>
-                          <div>
-                              <h3 class="font-semibold text-gray-900">{{ procedure.name }}</h3>
-                              <!-- <span class="text-sm text-gray-500">(Nouveau)</span>-->
-                          </div>
-                      </div>
-                       <p class="card-text" style="margin-bottom: 10px;">
-                        <strong>Organisation :</strong> {{ procedure.organisation.name }}
-                      </p>
-                      <p class="text-gray-600 text-sm" style="margin-bottom: 15px;">
-                         {{ procedure.description }} .
-                      </p>
-
-                      <div class="flex justify-end">
-                        <button 
-                          (click)="soumettre()" 
-                          class="rounded-lg bg-burkinafaso-green text-white px-4 py-2 flex items-center gap-1 hover:bg-green-700 transition-colors text-sm"
-                        >
-                          Faire ma demande
-                          <i class="pi pi-arrow-right"></i>
-                        </button>
-                      </div>
-
-
-                  </div>
-              </div>
-              
-                
-                
-                
-                
-            </div>
+          <input
+            type="search"
+            name="query"
+            [(ngModel)]="searchTerm"
+            class="block w-full p-2 pl-10 text-sm text-gray-900 border rounded-lg focus:outline-none focus:ring-2 focus:ring-burkina-green focus:border-burkina-green"
+            placeholder="Rechercher une procédure..."
+          />
         </div>
-    </section>
+      </form>
+    </div>
+
+    <!-- Message si aucune procédure -->
+    <div *ngIf="filteredProcedures.length === 0"
+      class="mt-12 bg-red-600 text-white p-4 rounded-lg text-center">
+      Aucune procédure disponible pour le moment. Merci de revenir plus tard.
+    </div>
+
+    <!-- Liste des procédures paginées -->
+    <div class="grid md:grid-cols-3 gap-8" *ngIf="filteredProcedures.length > 0">
+      <div *ngFor="let procedure of paginatedProcedures"
+           (click)="faireDemande(procedure)"
+           class="card-wrapper">
+
+        <div class="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
+          <div class="flex items-center mb-4">
+            <div class="h-12 w-12 rounded-full flex items-center justify-center mr-4">
+              <img alt="Logo" src="assets/img/burkina (1).png" class="card-logo" />
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900">{{ procedure.name }}</h3>
+            </div>
+          </div>
+
+          <p class="mb-2"><strong>Organisation :</strong> {{ procedure.organisation.name }}</p>
+          <p class="text-gray-600 text-sm mb-4">{{ procedure.description }}</p>
+
+          <div class="flex justify-end">
+            <button
+              (click)="soumettre()"
+              class="rounded-lg bg-burkinafaso-green text-white px-4 py-2 flex items-center gap-1 hover:bg-green-700 transition-colors text-sm"
+            >
+              Faire ma demande
+              <i class="pi pi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1" class="flex justify-center mt-8 space-x-2">
+      <!-- Bouton précédent -->
+      <button
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="px-3 py-1 rounded border bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+      >
+        ◀
+      </button>
+
+      <!-- Pages -->
+      <button
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        (click)="changePage(i + 1)"
+        [class.bg-green-600]="currentPage === i + 1"
+        [class.text-white]="currentPage === i + 1"
+        class="px-3 py-1 rounded border hover:bg-gray-200"
+      >
+        {{ i + 1 }}
+      </button>
+
+      <!-- Bouton suivant -->
+      <button
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+        class="px-3 py-1 rounded border bg-gray-100 hover:bg-gray-200 disabled:opacity-50"
+      >
+        ▶
+      </button>
+    </div>
+  </div>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">

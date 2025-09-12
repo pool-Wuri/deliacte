@@ -35,12 +35,14 @@ import { TreeModule } from 'primeng/tree';
 import { ProductService } from './ProductService';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FaqComponent } from './faq/faq.component';
 
 @NgModule({
   declarations: [
     ProcedurePublishedComponent,
     ListProcedurePublishedComponent,
     DemandePageComponent,
+    FaqComponent,
   ],
   imports: [
     CommonModule,
