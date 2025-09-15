@@ -5,7 +5,7 @@ import { BaseLayoutComponent } from './feature/feature/base-layout/base-layout.c
 import { LoginGuard } from './core/guard/login.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'deliacte' }, // Redirection vers 'dialecte'
+  { path: '', pathMatch: 'full', redirectTo: 'deliacte/login' }, // Redirection vers 'dialecte'
 
   {
     path: 'deliacte/login',
