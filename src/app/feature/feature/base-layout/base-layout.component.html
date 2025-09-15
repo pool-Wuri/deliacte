@@ -1,17 +1,27 @@
-<div class="flex h-screen overflow-hidden">
-  <!-- Sidebar fixe -->
-  <app-navbar class="fixed top-0 left-0 h-screen w-64 z-20"></app-navbar>
+<!-- Navbar (sidebar) -->
+<app-navbar class="fixed top-0 left-0 h-screen w-64 z-20" [(sidebarOpen)]="sidebarOpen"></app-navbar>
 
-  <!-- Zone principale -->
-  <div class="flex-1 flex flex-col ml-64">
-    <!-- Header fixe -->
-    <app-header class="fixed top-0 left-64 right-0 z-30"></app-header>
+  <!-- Header -->
+  <app-header  
+    [(sidebarOpen)]="sidebarOpen"
+    class="fixed top-0 left-0 right-0 lg:left-64 lg:right-0 w-full lg:w-[calc(100%-16rem)] z-30"
+  />
 
-    <!-- Contenu principal avec scroll -->
-    <div class="flex-1 mt-20 mb-16 overflow-y-auto p-6 bg-gray-100">
-      <router-outlet></router-outlet>
-    </div>
+<!-- Contenu principal -->
+<div class="flex-1 flex flex-col lg:ml-64 min-h-screen">
+  
+  <!-- Main content -->
+  <main class="flex-1 mt-20 mb-16 overflow-y-auto p-6 bg-gray-100">
+    <router-outlet></router-outlet>
+  </main>
 
-    <app-footer></app-footer>
-  </div>
+  <!-- Footer -->
+  <footer class="bg-white h-20 flex items-center justify-between px-6 border-t border-gray-200 fixed bottom-0 left-0 right-0 lg:left-64">
+    <p class="text-sm text-gray-600">
+      © 2025 Service Public du Burkina Faso. Tous droits réservés.
+    </p>
+    <p class="text-sm text-gray-600">
+      Propulsé par <a href="#" class="font-semibold text-green-700">DGTD</a>
+    </p>
+  </footer>
 </div>

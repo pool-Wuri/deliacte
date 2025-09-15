@@ -45,6 +45,9 @@ export class AuthentificationService {
 
  saveToken(token: string): void {
     localStorage.setItem('ACCESS_TOKEN', token);
+     // stocker aussi l'heure d'expiration (24h = 86400000 ms)
+  const expireAt = new Date().getTime() + 24 * 60 * 60 * 1000;
+  localStorage.setItem("expireAt", expireAt.toString());
 }
 
  saveRefreshToken(token: string): void {
@@ -79,7 +82,21 @@ getRefreshToken(): string | null {
   }
 
   isLoggedIn(): boolean {
-    return !!this.getAccessToken();
+    //return !!this.getAccessToken();
+    const token = this.getAccessToken();
+    const expireAt = localStorage.getItem("expireAt");
+    console.log(expireAt)
+
+    if (!token || !expireAt) {
+      return false;
+    }
+    const now = new Date().getTime();
+    if (now > Number(expireAt)) {
+      this.logOut(); // si expiré → logout auto
+      return false;
+    }
+
+    return true;
   }
 
   oublieservice(mail:any):Observable<any>{

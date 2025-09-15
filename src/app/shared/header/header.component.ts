@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { User } from 'src/app/core/models/user.model';
 import { AuthentificationService } from 'src/app/core/services/authentification.service';
 
@@ -9,7 +9,8 @@ import { AuthentificationService } from 'src/app/core/services/authentification.
 })
 export class HeaderComponent {
   user: User | null = null;
-
+  @Input() sidebarOpen!: boolean;
+  @Output() sidebarOpenChange = new EventEmitter<boolean>();
   constructor(private authService:AuthentificationService){
 
   }
@@ -25,4 +26,10 @@ export class HeaderComponent {
   deconnecter(){
     this.authService.logOut();
   }
+   
+  
+    toggleSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+      this.sidebarOpenChange.emit(this.sidebarOpen);
+    }
 }

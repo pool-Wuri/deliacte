@@ -5,7 +5,7 @@
     </div>
    </div>
 <div style="display: inline-flex;">
-    <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <p-button icon="pi pi-arrow-left z-50"  (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
     <h1 class="p-4">Details User</h1>
 
 </div>
@@ -122,34 +122,80 @@
     <p-tabView>
         <p-tabPanel *ngIf="utilisateur && organisation && (utilisateur.role === ORG_ADMIN || utilisateur.role === 'Administrateur d\'organisation')" header="Organisation">
             <div class="card">
-                <p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
+
+                <p-table #dt  
+                [value]="organisation" 
+                [rowHover]="true" 
+                [rows]="5" 
+                [paginator]="true" 
+                [rowsPerPageOptions]="[5,10,15,25,50]" 
+                dataKey="id"
+                currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} utilisateurs"
+                [globalFilterFields]="['firstName','lastName','email']"
+                class="min-w-full">
+   
+         <ng-template pTemplate="header">
+           <tr class="bg-green-700 text-left text-sm text-gray-700">
+             <th class="px-6 py-3">Nom</th>
+             <th class="px-6 py-3">Organisation paren</th>
+             <th class="px-6 py-3">Description</th>
+            
+           </tr>
+         </ng-template>
+   
+         <ng-template pTemplate="body" let-organisation>
+           <tr class="hover:bg-gray-50">
+             <td class="px-6 py-3">{{ organisation.name }}</td>
+             <td class="px-6 py-3" *ngIf="organisation.parentOrganisation != null">
+                {{ organisation.parentOrganisation.name }}
+            </td>
+            <td class="px-6 py-3" *ngIf="organisation.parentOrganisation == null">
+                 ""
+            </td>
+            <td class="px-6 py-3">
+                {{organisation.description}}
+            </td>
+            
+              
+           </tr>
+         </ng-template>
+   
+         <ng-template pTemplate="emptymessage">
+           <tr>
+             <td colspan="5" class="text-center py-4 text-gray-500">Aucun utilisateur disponible</td>
+           </tr>
+         </ng-template>
+   
+         <ng-template pTemplate="paginatorleft" *ngIf="organisation">
+           <div class="text-sm text-gray-600">
+             Total: {{ organisation.length || 0 }} organisations
+           </div>
+         </ng-template>
+   
+       </p-table>
+                <!--p-table #dt [value]="organisation"  styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} pour {totalRecords} entrées"
                  [globalFilterFields]="['name']">
             
                  <ng-template pTemplate="caption">
                     <div class="flex">
                         <span class="p-input-icon-left ml-auto cherch">
-                            <i class="pi pi-search" ></i>
                             <input 
                                 pInputText 
                                 type="text" 
                                 #searchInput 
                                 (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="      Rechercher" />
+                                placeholder="Rechercher" />
                         </span>
                     </div>
                 </ng-template>
                 
                 <ng-template pTemplate="header">
                     <tr class="tableEnt">
-                        <!--th style="width: 4rem,">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                        </th-->
                         <th >Nom</th>
                         <th >Organisation parent</th>
                         <th >Description</th>
-                        <!--th >Statut</th-->
     
                     </tr>
             
@@ -157,9 +203,7 @@
                 </ng-template>
                 <ng-template id="bodi" pTemplate="body" let-organisation>
                     <tr class="p-selectable-row tableContenu">
-                        <!--td>
-                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                        </td-->
+                      
                         <td>
                            {{organisation.name}}
                         </td>
@@ -172,14 +216,12 @@
                         <td>
                             {{organisation.description}}
                         </td>
-                        <!--td>
-                            {{organisation.isActive}}
-                        </td-->
+                       
                      
                       
                     </tr>
                 </ng-template>
-                </p-table>
+                </p-table-->
             
             </div>
         </p-tabPanel>
@@ -188,7 +230,7 @@
             <div class="card">
                 <p-table #dt [value]="procedure"  styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} pour {totalRecords} entrées"
                  [globalFilterFields]="['name']">
             
                  <ng-template pTemplate="caption">
