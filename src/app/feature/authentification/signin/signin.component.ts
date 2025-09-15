@@ -35,7 +35,7 @@ export class SigninComponent {
   currentUrl: string = '';
   erreurMessage:string="";
   showPassword: boolean = false;
-
+  erroAff:boolean=false;
 constructor(
   private authentificationService: AuthentificationService,
   private formBuilder:FormBuilder,
@@ -94,7 +94,8 @@ onSubmit(){
         }
         else{
           //this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
-          this.erreurMessage=response.message
+          this.erreurMessage=response.message;
+          this.erroAff=true;
           setTimeout(()=>{
             this.loading=false;
           },2000)

@@ -7,8 +7,8 @@
 <p-toast></p-toast>
 
   <!-- Barre de notification d'erreur (positionnée en haut à droite ) -->
-   <div  class="fixed -top-4 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" *ngIf="demandePage===false && oubliPage===false">
-    <div  *ngIf="submitted" class="absolute top-5 right-5 bg-red-100 border border-red-300 text-gray-800 p-4 rounded-lg shadow-lg max-w-sm z-20">
+   <div  class="fixed -top-4 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" >
+    <div  *ngIf="erroAff" class="absolute top-5 right-5 bg-red-100 border border-red-300 text-gray-800 p-4 rounded-lg shadow-lg max-w-sm z-20">
         <div class="flex items-start" >
             <!-- Icône d'information -->
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 mr-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -266,7 +266,7 @@
     </div>
 </div-->
 
-<div *ngIf="demandePage && !oubliPage ">
+<!--div *ngIf="demandePage && !oubliPage ">
     <div class="flex min-h-full flex-col justify-center px-6 py-36 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm card">
             <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -289,9 +289,9 @@
             
         </div>
     </div>
-  </div>
+  </div-->
 
-  <div *ngIf="oubliPage && !demandePage ">
+  <!--div *ngIf="oubliPage && !demandePage ">
     <div class="flex min-h-screen justify-center items-center px-6 py-36 lg:px-8">
         <div class="max-w-sm w-full p-6 bg-white ">
             <div class="mb-6">
@@ -311,19 +311,17 @@
     </div>
     
     
-  </div>
+  </div-->
 
 
-<div 
+<!--div 
      [ngClass]="{'hidden': !addUser}" 
      tabindex="-1" 
      [attr.aria-hidden]="!addUser" 
      class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
     <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
             <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
                     Ajouter utilisateur
@@ -337,7 +335,6 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">             
 
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
@@ -367,7 +364,6 @@
                    
             </div>
 
-            <!-- Modal footer -->
             <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button type="button" *ngIf="addUser" (click)="saveUser()" style="background-color: #060;"
                 class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
@@ -378,7 +374,7 @@
             </div>
         </div>
     </div>
-</div>
+</div-->
 
  
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
