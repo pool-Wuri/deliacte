@@ -1,108 +1,105 @@
 <p-toast></p-toast>
-<div *ngIf="loading" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
-    <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
-     <p-progressSpinner></p-progressSpinner>
-    </div>
-   </div>
-<div class="card"> 
-    <h1>Liste des organisations</h1>
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-            <!--button type="button" 
-            class="text-red-700 hover:text-white border border-red-700 
-            hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
-            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Importer</button-->
-            <button type="button" (click)="generatePDF()"
-            class="text-red-700 hover:text-white border border-red-700 
-            hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
-            font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
-            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Exporter</button> 
-           
-        </ng-template>
 
-        <ng-template pTemplate="right">
-            <button    style="background-color: #060;" (click)="ajouter()"
-        class="text-white  from-green-400 via-green-500 to-green-600 
-        focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-        dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
-            Ajouter une organisation
-        </button>
-        </ng-template>
-    </p-toolbar>
-    <p-table #dt  [value]="organisations" styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="organisationselect"
-            [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" dataKey="id"
-            [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             [globalFilterFields]="['nom','parentOrganisationId','description']">
-            
-                <ng-template pTemplate="caption">
-                    <div class="flex">
-                        <span class="p-input-icon-left ml-auto cherch">
-                            <i class="pi pi-search"></i>
-                            <input 
-                                pInputText 
-                                type="text" 
-                                #searchInput 
-                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="      Rechercher" />
-                        </span>
-                    </div>
-                </ng-template>
-
-            <ng-template pTemplate="header">
-                <tr class="tableEnt">
-                    
-                    <th>Nom</th>
-                    <th >Organisation parent</th>
-                    <th >Description</th>
-                    <th style="width: 300px;" >Action</th>
-                </tr>
-                
-            </ng-template>
-            <ng-template id="bodi" pTemplate="body" let-organisation>
-                <tr class="p-selectable-row tableContenu">
-                   
-                    <td>
-                       {{organisation.name}}
-                    </td>
-                    <td>
-                        {{organisation.parentOrganisation?.name}}
-                    </td>
-                    
-                    <td>
-                        {{organisation.description}}
-                    </td> 
-                    
-                    <td>
-                        <button type="button"  style="color: #060;" title="visualiser" (click)="detailsOrganisation(organisation)"
-                        class=" bg-white from-green-500 via-green-600 t
-                        o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
-                        font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center me-1 mb-1  pi pi-eye"></button>
-        
-                        <button type="button" title="Modifier"   style="background-color: #060;" (click)="editOrganisation(organisation)"
-                        class="text-white from-green-400 via-green-500 
-                        to-green-600 hover:bg-gradient-to-br focus:ring-4 
-                        focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center me-1 mb-1 pi pi-pencil"></button>
-        
-                      
-                        <button type="button"  title="Supprimer" (click)="deleteOrganisation(organisation)" style="background-color: #ff0000;" class="text-white  from-red-400 
-                        via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center 
-                        me-1 mb-1  pi pi-eraser">
-                        </button>
-                       
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-                <tr>
-                    <td colspan="8">organisation non trouvé</td>
-                </tr>
-            </ng-template>
-     </p-table>
+<!-- Loading Overlay -->
+<div *ngIf="loading" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+  <p-progressSpinner></p-progressSpinner>
 </div>
+
+<div class="container mx-auto p-4 max-w-7xl">
+
+  <!-- Header -->
+  <div class="bg-green-600 text-white p-6 rounded-t-lg shadow-md mb-6">
+    <h1 class="text-2xl font-bold">Liste des organisations</h1>
+  </div>
+
+  <!-- Table Card -->
+  <div class="card shadow-md rounded-lg overflow-hidden">
+
+    <!-- Toolbar -->
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50 p-4 border-b border-gray-200 space-y-3 md:space-y-0">
+
+      <!-- Search Box -->
+      <span class="p-input-icon-left w-full md:w-64">
+        <i class="pi pi-search"></i>
+        <input 
+          pInputText 
+          type="text" 
+          #searchInput 
+          (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+          placeholder="Rechercher" 
+          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+      </span>
+
+      <!-- Buttons -->
+      <div class="flex space-x-2 mt-2 md:mt-0">
+        <button type="button" (click)="generatePDF()"
+          class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+          Exporter
+        </button>
+        <button type="button" (click)="ajouter()"
+          class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+          Ajouter une organisation
+        </button>
+      </div>
+
+    </div>
+
+    <!-- PrimeNG Table -->
+    <p-table #dt  
+             [value]="organisations" 
+             [rowHover]="true" 
+             [rows]="10" 
+             [paginator]="true" 
+             [rowsPerPageOptions]="[10,25,50]" 
+             dataKey="id"
+             currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} organisations"
+             [globalFilterFields]="['name','parentOrganisation.name','description']"
+             class="min-w-full">
+
+      <ng-template pTemplate="header">
+        <tr class="bg-gray-100 text-left text-sm text-gray-700">
+          <th class="px-6 py-3">Nom</th>
+          <th class="px-6 py-3">Organisation parent</th>
+          <th class="px-6 py-3">Description</th>
+          <th class="px-6 py-3">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-org>
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-3">{{ org.name }}</td>
+          <td class="px-6 py-3">{{ org.parentOrganisation?.name || '---' }}</td>
+          <td class="px-6 py-3">{{ org.description || '---' }}</td>
+          <td class="px-6 py-3 flex space-x-2">
+            <button type="button" title="Visualiser" (click)="detailsOrganisation(org)"
+              class="bg-green-100 text-green-600 hover:bg-green-200 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+
+            <button type="button" title="Modifier" (click)="editOrganisation(org)"
+              class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+
+            <button type="button" title="Supprimer" (click)="deleteOrganisation(org)"
+              class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4" class="text-center py-4 text-gray-500">Aucune organisation disponible</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="paginatorleft">
+        <div class="text-sm text-gray-600">
+          Total: {{ organisations?.length || 0 }} organisations
+        </div>
+      </ng-template>
+
+    </p-table>
+
+  </div>
+</div>
+
 
 <div id="addOrganisation" 
      [ngClass]="{'hidden': !modalVisible}" 
