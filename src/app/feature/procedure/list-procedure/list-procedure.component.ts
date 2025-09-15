@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
+import { Table } from 'primeng/table';
 import autoTable from 'jspdf-autotable';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Organisation } from 'src/app/core/models/organisation.model';
@@ -25,7 +26,7 @@ procedures=new Array <Procedure>();
 proceduresBrouillon=new Array <Procedure>();
 proceduresArchiv=new Array <Procedure>();
 proceduresPublie=new Array <Procedure>();
-
+@ViewChild('dt') dt!: Table; // <- référence au p-table
 organisations=new Array <Organisation>();
 statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouillon"},{value:"PUBLISHED",label:"Publiée"}]
 statuses = Object.entries(ProcedureStatus); // Récupérer les valeurs de l'énumération
