@@ -26,18 +26,18 @@
           #searchInput 
           (input)="dt.filterGlobal(searchInput.value, 'contains')" 
           placeholder="Rechercher" 
-          class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+          class=" hidden lg:inline-flex w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"/>
       </span>
 
       <!-- Buttons -->
-      <div class="flex space-x-2 mt-2 md:mt-0">
+      <div class="flex w-full md:w-auto justify-end md:justify-end space-x-2 mt-2 md:mt-0">
         <button type="button" (click)="generatePDF()"
-          class="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
-          Exporter
+        class="hidden lg:inline-flex text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+        Exporter
         </button>
         <button type="button" (click)="ajouter()" style="background-color: #060;"
-          class="text-white hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
-          Ajouter un type d'opération
+        class=" text-white hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+        Ajouter un type d'opération
         </button>
       </div>
 
@@ -47,9 +47,9 @@
     <p-table #dt  
              [value]="typeoperations" 
              [rowHover]="true" 
-             [rows]="10" 
+             [rows]="5" 
              [paginator]="true" 
-             [rowsPerPageOptions]="[10,25,50]" 
+             [rowsPerPageOptions]="[5,10,15,25,50]" 
              dataKey="id"
              currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} types d'opération"
              [globalFilterFields]="['name','description']"
@@ -69,13 +69,13 @@
           <td class="px-6 py-3">{{ typeop.description || '---' }}</td>
           <td class="px-6 py-3 flex space-x-2">
             <button type="button" title="Visualiser" (click)="detailsTypeoperation(typeop)"
-              class="bg-green-100 text-green-600 hover:bg-green-200 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+              class="bg-green-100 text-green-700 hover:bg-green-200 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
 
-            <button type="button" title="Modifier" (click)="editTypeoperation(typeop)"
-              class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+            <button type="button" title="Modifier" (click)="editTypeoperation(typeop)" style="background-color: #060;"
+              class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
 
-            <button type="button" title="Supprimer" (click)="deleteTypeoperation(typeop)"
-              class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+            <button type="button" title="Supprimer" (click)="deleteTypeoperation(typeop)" style="background-color: #ff0000;"
+              class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
           </td>
         </tr>
       </ng-template>
@@ -104,7 +104,7 @@
      [attr.aria-hidden]="!modalVisible" 
      class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
-<div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->

@@ -17,7 +17,6 @@
 
     <!-- Search Box -->
     <span class="p-input-icon-left w-full md:w-64">
-      <i class="pi pi-search"></i>
       <input
         pInputText
         type="text"
@@ -78,19 +77,19 @@
               class="bg-white text-green-600 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
 
             <!-- Modifier -->
-            <button type="button" title="Modifier" *ngIf="user?.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)"
-              class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+            <button type="button" title="Modifier" *ngIf="user?.role !== 'PROCEDURE_MANAGER'" (click)="editProcedure(procedure)" style="background-color: #060;"
+              class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
 
             <!-- Publier / Dépublier -->
-            <button type="button" *ngIf="procedure.status !== 'PUBLISHED'"  title="Publier" (click)="publier(procedure)"
-              class="bg-yellow-500 text-white hover:bg-yellow-600 font-medium rounded-full px-4 py-2 transition-colors duration-200">Publier</button>
+            <button type="button" *ngIf="procedure.status !== 'PUBLISHED'"  title="Publier" (click)="publier(procedure)" style="background-color: #e8e400;"
+              class=" text-white hover:bg-yellow-600 font-medium rounded-full px-4 py-2 transition-colors duration-200">Publier</button>
 
-            <button type="button" *ngIf="procedure.status === 'PUBLISHED'" title="Dépublier" (click)="depublier(procedure)"
-              class="bg-yellow-500 text-white hover:bg-yellow-600 font-medium rounded-full px-4 py-2 transition-colors duration-200">Dépublier</button>
+            <button type="button" *ngIf="procedure.status === 'PUBLISHED'" title="Dépublier" (click)="depublier(procedure)" style="background-color: #e8e400;"
+              class=" text-white hover:bg-yellow-600 font-medium rounded-full px-4 py-2 transition-colors duration-200">Dépublier</button>
 
             <!-- Supprimer -->
-            <button type="button" title="Supprimer" *ngIf="user?.role !== 'PROCEDURE_MANAGER'" (click)="deleteProcedure(procedure)"
-              class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+            <button type="button" title="Supprimer" *ngIf="user?.role !== 'PROCEDURE_MANAGER'" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;"
+              class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
           </td>
         </tr>
       </ng-template>
@@ -126,9 +125,9 @@
                 <td class="px-6 py-3">{{ procedure.organisation.name }}</td>
                 <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
                 <td class="px-6 py-3 flex flex-wrap gap-2">
-                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-600 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-                  <button type="button" title="Modifier" (click)="editProcedure(procedure)" class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
-                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                  <button type="button" title="Modifier" (click)="editProcedure(procedure)" style="background-color: #060;" class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
                 </td>
               </tr>
             </ng-template>
@@ -154,8 +153,8 @@
                 <td class="px-6 py-3">{{ procedure.organisation.name }}</td>
                 <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
                 <td class="px-6 py-3 flex flex-wrap gap-2">
-                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-600 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
                 </td>
               </tr>
             </ng-template>
@@ -181,9 +180,9 @@
                 <td class="px-6 py-3">{{ procedure.organisation.name }}</td>
                 <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
                 <td class="px-6 py-3 flex flex-wrap gap-2">
-                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-600 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-                  <button type="button" title="Modifier" (click)="editProcedure(procedure)" class="bg-green-600 text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
-                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                  <button type="button" title="Modifier" (click)="editProcedure(procedure)" style="background-color: #060;" class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
                 </td>
               </tr>
             </ng-template>
@@ -199,21 +198,21 @@
 
 
 
-<p-toast></p-toast>
+<!--p-toast></p-toast>
 <div *ngIf="loading" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
     <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
      <p-progressSpinner></p-progressSpinner>
     </div>
-   </div>
-<div> 
+   </div-->
+<!--div> 
     <h1>Liste des procedures</h1>
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
-            <!--button type="button" 
+            <button type="button" 
             class="text-red-700 hover:text-white border border-red-700 
             hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
             font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
-            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Importer</button-->
+            dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Importer</button>
             <button type="button" (click)="generatePDF()"
             class="text-red-700 hover:text-white border border-red-700 
             hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
@@ -231,9 +230,9 @@
         </ng-template>
     </p-toolbar>
    
-</div>
+</div-->
 
-<div *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  class="card">
+<!--div *ngIf="user && user.role === 'PROCEDURE_MANAGER' "  class="card">
     <p-table #dt  [value]="procedures" styleClass="p-datatable-customers" [rowHover]="true" 
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
     [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entries"
@@ -255,9 +254,7 @@
     
     <ng-template pTemplate="header">
         <tr class="tableEnt">
-            <!--th style="width: 4rem,">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th-->
+           
             <th >Nom</th>
             <th >Organisation</th>
             <th >Statut</th>
@@ -267,9 +264,7 @@
     </ng-template>
     <ng-template id="bodi" pTemplate="body" let-procedure>
         <tr class="p-selectable-row tableContenu">
-            <!--td>
-                <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-            </td-->
+           
             <td>
                 {{procedure.name}}
             </td>
@@ -330,9 +325,9 @@
         </tr>
     </ng-template>
     </p-table>
-</div>
+</div-->
 
-<div *ngIf="user && user.role !== 'PROCEDURE_MANAGER'">
+<!--div *ngIf="user && user.role !== 'PROCEDURE_MANAGER'">
     <p-tabView>
         <p-tabPanel header="Brouillon">
             <div class="card">
@@ -394,12 +389,7 @@
                             focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
                             ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Publier</button>
         
-                            <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
-                            class="text-white  from-teal-400 via-teal-500 to-teal-600 
-                           focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
-        
-        
+                          
                             <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
                             via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                             text-sm p-2.5 text-center inline-flex items-center 
@@ -517,9 +507,7 @@
                 </ng-template>
                 <ng-template id="bodi" pTemplate="body" let-procedure>
                     <tr class="p-selectable-row tableContenu">
-                        <!--td>
-                            <p-tableCheckbox  class="rounded-lg" [value]="utilisateur"></p-tableCheckbox>
-                        </td-->
+                       
                         <td>
                             {{procedure.name}}
                         </td>
@@ -544,7 +532,7 @@
                             focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                             text-sm p-2.5 text-center inline-flex items-center mx-0	 pi pi-pencil"></button>
         
-                            <!--button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' && procedure.status!='PUBLISHED'"  (click)="publier(procedure)" class="text-white bg-green-700 
+                            <button type="button" style="background-color: #e8e400;" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER' && procedure.status!='PUBLISHED'"  (click)="publier(procedure)" class="text-white bg-green-700 
                             hover:bg-green-800 focus:outline-none focus:ring-4 
                             focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 t
                             ext-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
@@ -558,10 +546,10 @@
                             Depublier
                             </button-->
         
-                            <!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
+<!--button type="button" title="Publier" *ngIf="user && user.role === 'PROCEDURE_MANAGER'"  (click)="publier(procedure)" style="background-color: #e8e400;"
                             class="text-white  from-teal-400 via-teal-500 to-teal-600 
                            focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button-->
+                            text-sm p-2.5 text-center inline-flex items-center mx-0	pi pi-arrow-right" ></button>
         
         
                             <button type="button" *ngIf="user && user.role !== 'PROCEDURE_MANAGER'"  title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class="text-white  from-red-400 
@@ -583,7 +571,7 @@
            
         </p-tabPanel>
     </p-tabView>
-</div>
+</div-->
 
 
 

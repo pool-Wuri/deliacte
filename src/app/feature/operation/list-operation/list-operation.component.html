@@ -4,7 +4,10 @@
      <p-progressSpinner></p-progressSpinner>
     </div>
    </div>
-<h1>Liste des opérations</h1>
+<!--h1>Liste des opérations</h1-->
+<div class=" text-white p-6 rounded-t-lg shadow-md mb-6" style="background-color: #060;">
+    <h1 class="text-2xl font-bold">Liste des opérations</h1>
+  </div>
 <p-toolbar styleClass="mb-4 gap-2">
     <ng-template pTemplate="left">
         <!--button type="button" 
@@ -35,7 +38,7 @@
 </p-toolbar>
 
 <div class="card">
-    <p-table #dt [value]="operations"  styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="selectedOperation"
+    <!--p-table #dt [value]="operations"  styleClass="p-datatable-customers" [rowHover]="true" [(selection)]="selectedOperation"
     [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
     [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
      [globalFilterFields]="['firstName','lastName','email']">
@@ -63,8 +66,7 @@
             </th>
             <th >Nom</th>
             <th >Description</th>
-            <!--th >Ordre</th-->
-            <!--th >Statut</th-->
+          
             <th >Suivant</th>
             <th >Précedent</th>
             <th style="width: 350px;">Actions</th>
@@ -82,19 +84,12 @@
             <td>
                 {{operation.description}}
             </td>
-            <!--td>
-                {{operation.numeroOrdre}}
-            </td-->
-            <!--td *ngIf="operation.procedure">
-                {{operation.procedure.name}}
-            </td>
+            
+          
             <td *ngIf="!operation.procedure">
                 ""
-            </td-->
-            <!--td>
-                {{operation.isActive}}
-
-            </td-->
+            </td>
+            
             <td *ngIf="operation.operationNextId">
                 {{operation.operationNextId.name}}
 
@@ -118,19 +113,7 @@
                 font-medium rounded-full 
                 text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-eye"></button>
 
-                <!--button type="button"   style="background-color: rgba(0, 102, 0, 0.298);" (click)="ajouterChamp(operation)" title="ajouter champ"
-                class="text-white from-green-400 via-green-500  
-                to-green-600 hover:bg-gradient-to-br focus:ring-4 
-                focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                text-sm p-2.5 mx-px text-center inline-flex items-center mx-0	 pi pi-plus"></button>
-
-                <button type="button"   (click)="ajouterTypeDoc(operation)" title="ajouter Type document"
-                style="background-color: #e8e400;"
-                class="text-white  from-teal-400 via-teal-500 to-teal-600 
-               focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                text-sm p-2.5 text-center inline-flex items-center mx-1	pi  pi pi-plus-circle"></button-->
-
-               
+              
                 <button type="button" title="Modifier"   style="background-color: #060;" (click)="edit(operation)"
                 class="text-white from-green-400 via-green-500  
                 to-green-600 hover:bg-gradient-to-br focus:ring-4 
@@ -151,6 +134,104 @@
             <td colspan="8">Aucune opération trouvée</td>
         </tr>
     </ng-template>
+    </p-table-->
+
+    <p-table #dt 
+    [value]="operations"
+    [rowHover]="true"
+    [rows]="5"
+    [paginator]="true"
+    [rowsPerPageOptions]="[5,10,15,25,50]"
+    dataKey="id"
+    currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} procédures"
+    [globalFilterFields]="['name','organisation.name']"
+    class="min-w-full">
+
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <p-dropdown  [options]="procedures" optionLabel="name" emptyMessage="Aucun resultat trouvé" [(ngModel)]="procedurechoisi" placeholder="Choisir une procedure" (onChange)="onSortChange($event)" styleClass="mb-2 md:mb-0"></p-dropdown>
+
+            <span class="p-input-icon-left ml-auto cherch">
+                <i class="pi pi-search" ></i>
+                <input 
+                    pInputText 
+                    type="text" 
+                    #searchInput 
+                    (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                    placeholder="      Rechercher" />
+            </span>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="header">
+    <tr class="bg-gray-100 text-left text-sm text-gray-700">
+        <th  class="px-6 py-3">Nom</th>
+        <th  class="px-6 py-3">Description</th>
+        <!--th >Ordre</th-->
+        <!--th >Statut</th-->
+        <th  class="px-6 py-3">Suivant</th>
+        <th  class="px-6 py-3">Précedent</th>
+        <th  class="px-6 py-3" style="width: 300px;">Actions</th>
+    
+    </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-operation>
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-3">
+                {{operation.name}}
+            </td>
+            <td class="px-6 py-3">
+                {{operation.description}}
+            </td>
+        
+            <td class="px-6 py-3" *ngIf="operation.operationNextId">
+                {{operation.operationNextId.name}}
+
+            </td> 
+            <td class="px-6 py-3" *ngIf="!operation.operationNextId">
+            --------
+            </td> 
+        
+            <td class="px-6 py-3" *ngIf="operation.operationPreviousId">
+                {{operation.operationPreviousId.name}}
+
+            </td>
+            <td class="px-6 py-3" *ngIf="!operation.operationPreviousId">
+                --------
+
+            </td> 
+       
+        <td class="px-6 py-3 flex flex-wrap gap-2">
+            <button type="button"   style="color: #060;" title="visualiser" (click)="detailsOperation(operation)"
+            class=" bg-white from-green-500 via-green-600 t
+            o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
+            font-medium rounded-full 
+            text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-eye"></button>
+
+        
+            <button type="button" title="Modifier"   style="background-color: #060;" (click)="edit(operation)"
+            class="text-white from-green-400 via-green-500  
+            to-green-600 hover:bg-gradient-to-br focus:ring-4 
+            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+            text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button>
+
+            <button type="button"  title="Supprimer"  style="background-color: #ff0000;" (click)="deleteOperation(operation)" class="text-white  from-red-400 
+            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+            text-sm p-2.5 text-center inline-flex items-center 
+            mx-0 pi pi-eraser">
+            </button>
+        
+        </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+    <tr>
+    <td colspan="5" class="text-center py-4 text-gray-500">Aucune opération disponible</td>
+    </tr>
+    </ng-template>
+
     </p-table>
 </div>
 

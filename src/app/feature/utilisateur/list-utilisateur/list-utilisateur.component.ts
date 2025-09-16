@@ -347,8 +347,6 @@ eventModif(){
 
 
 SaveAssigner(){
-
-
   if(this.userToAssign.role=="ORG_ADMIN" || this.userToAssign.role=="Administrateur d'organisation"){
     this.userToAssign.role="ORG_ADMIN";
     this.procedureTru=false;
@@ -484,7 +482,7 @@ deleteUser(user:User){
   reject:()=>{
     this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Utilisateur non supprimé', life: 3000});
   }
-});
+  });
 }
 
 revoquerAdmin(utilisateur:User){
