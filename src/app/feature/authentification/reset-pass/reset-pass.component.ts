@@ -109,16 +109,21 @@ export class ResetPassComponent implements AfterViewInit {
       rejectLabel: 'Non',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.loading=true;
         this.authService.validerPass(data).subscribe({
           next: () => {
-            this.loading=true;
             setTimeout(() => {
               this.loading=false;
               this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mot de passe modifié avec succès', life: 3000 });
               this.router.navigate(['/deliacte/login']);
             }, 2000);
           },
-          error: (err) => console.error(err)
+          error: (err) =>{
+            setTimeout(() => {
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: err.error.error, life: 3000});
+              this.loading=false;
+            }, 2000);
+          } 
         });
       },
       reject: () => {

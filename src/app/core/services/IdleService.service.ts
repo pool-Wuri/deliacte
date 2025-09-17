@@ -9,7 +9,7 @@ import { AuthentificationService } from './authentification.service';
 })
 export class IdleService {
   private timeoutId: any;
-  private readonly timeoutDuration = 24 * 60 * 60 * 1000 ;// 15 min (changer selon ton besoin)
+  private readonly timeoutDuration = 9 * 60 * 60 * 1000  ;// 15 min (changer selon ton besoin)
 
   constructor(private router: Router, private ngZone: NgZone,private authServie:AuthentificationService) {
     this.startWatching();

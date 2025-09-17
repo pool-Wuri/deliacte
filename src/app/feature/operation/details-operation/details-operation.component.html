@@ -90,7 +90,12 @@
             cancelLabel="Annuler"
             invalidFileSizeMessageSummary="Fichier trop gros"
             invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
+            (onError)="onError($event)"
             (onUpload)="onUpload($event)">
+            <!-- Zone d'affichage du message d'erreur -->
+            <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
+                {{ errorMessage }}
+            </div>
     
             <ng-template pTemplate="empty">
                 <div>Glisser-déposer votre fichier ici</div>

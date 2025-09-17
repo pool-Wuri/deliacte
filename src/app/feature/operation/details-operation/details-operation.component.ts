@@ -45,6 +45,7 @@ export class DetailsOperationComponent {
   disable:boolean=false;;
   submitted:boolean=false;
   loading:boolean=false;
+  errorMessage: string | null = null;
 
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
@@ -354,72 +355,109 @@ groupeUser(operation:any){
     rejectLabel:'Non',
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.listeUser=false;
-    this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
-    this.loading=true;
-    for(let i=0;i<this.usergroup.length;i++){
-      if(this.usergroup[i].id){
-      this.userService.operationInfo(this.usergroup[i].id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          if(result){
-            for(let i=0;i<result.data.length;i++){
-              this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
-            }
-            this.operationsIds.operationsIds?.push(this.operation.id || 0);
-            this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                console.log(result)
-                if(result.status==200 || result.status==201){
-                  setTimeout(() => {
-                    this.loading=false;
-                    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
-                    this.searchRespon(this.id ?? 0);
-                  }, 2000);
-                }
-                else{
-                  this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
-                  this.loading=false;
-
-                }
-               // this.searchUser();
-              },
-              error:(error)=>{
-                console.log(error);
-                this.loading=false;
+    accept: () => {
+      this.listeUser=false;
+      this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
+      this.loading=true;
+      for(let i=0;i<this.usergroup.length;i++){
+        if(this.usergroup[i].id){
+        this.userService.operationInfo(this.usergroup[i].id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result){
+              for(let i=0;i<result.data.length;i++){
+                this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
               }
+              this.operationsIds.operationsIds?.push(this.operation.id || 0);
+              this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  console.log(result)
+                  if(result.status==200 || result.status==201){
+                    setTimeout(() => {
+                      this.loading=false;
+                      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
+                      this.searchRespon(this.id ?? 0);
+                    }, 2000);
+                  }
+                  else{
+                    this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
+                    this.loading=false;
+
+                  }
+                // this.searchUser();
+                },
+                error:(error)=>{
+                  console.log(error);
+                  this.loading=false;
+                }
+            
+              });
+            }
           
-            });
+    
+          },
+          error:(error)=>{
           }
-         
-  
-        },
-        error:(error)=>{
+        });
+        
         }
-      });
-       
+    
       }
-   
+        //Actual logic to perform a confirmation
+        
+    },
+    reject:()=>{
+      this.messageService.add({severity:'error', summary: 'Echec', detail: ' Utilisateur non affecté', life: 3000});
     }
-      //Actual logic to perform a confirmation
-      
-  },
-  reject:()=>{
-    this.messageService.add({severity:'error', summary: 'Echec', detail: ' Utilisateur non affecté', life: 3000});
-  }
-  });
+    });
 }
 
 retourPage(){
   this.location.back();
 }
 
+
 onUpload(event: any) {
-  console.log('Fichiers uploadés:', event.files);
-  alert('Fichier uploadé avec succès !');
+  console.log("Réponse brute :", event);
+
+  const body = event?.originalEvent?.body;
+
+  if (body) {
+    if (body.status === 200) {
+      // ✅ Succès
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: body.message || 'Fichier téléversé avec succès'
+      });
+    } else {
+      // ⚠️ Erreur logique (même si HTTP est 200)
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Avertissement',
+        detail: body.message || 'Un problème est survenu'
+      });
+    }
+  } else {
+    // ❌ Erreur serveur (500, etc.)
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erreur',
+      detail: 'Impossible de téléverser le fichier'
+    });
+  }
+}
+
+onError(event: any) {
+  console.error("Erreur Upload :", event);
+
+  this.messageService.add({
+    severity: 'error',
+    summary: 'Erreur serveur',
+    detail: 'Une erreur est survenue lors du téléversement'
+  });
+}
 }
 
 
-}

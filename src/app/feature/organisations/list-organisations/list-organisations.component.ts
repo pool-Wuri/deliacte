@@ -55,11 +55,13 @@ export class ListOrganisationsComponent implements OnInit {
           this.organisations=result.data;
           this.loading=false;
         }
-       
       },
       error:(error)=>{
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-
+        setTimeout(() => {
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error.error.error, life: 3000});
+        this.loading=false;
+        }, 2000);
+        
       }
   
     })
