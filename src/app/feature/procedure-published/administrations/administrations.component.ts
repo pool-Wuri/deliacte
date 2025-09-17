@@ -15,6 +15,9 @@ export class AdministrationsComponent {
   
    leftColumn: Organisation[] = [];
   rightColumn: Organisation[] = [];
+
+ filteredOrganisations: any[] = [];
+  searchTerm: string = '';
   constructor(
     private organisationService: OrganisationService,
     private router: Router,
@@ -37,6 +40,7 @@ export class AdministrationsComponent {
         if(result){
           this.organisations=result.data;
           console.log("organfvfv",result);
+           
           this.splitInTwoColumns(this.organisations);
         }
        
@@ -48,6 +52,8 @@ export class AdministrationsComponent {
   
     })
    }
+
+
 
    private splitInTwoColumns(data: Organisation[] | null | undefined) {
   if (!data || data.length === 0) {
