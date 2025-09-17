@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 const ORGANISATION_API =environment.apiUrl +'/organisations';
 const ORGANISATIONADMIN_API = environment.apiUrl + '/users';
 const PROCEDUREBYORGANISATION_API = environment.apiUrl + '/procedures/procedureByorganisation';
+const ORGANISATIONCITOYEN_API =environment.apiUrl +'/organisations/citoyen';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,21 @@ export class OrganisationService {
   public search_Organisations(filterParam =''): Observable<any> {
     return this.http
     .get(ORGANISATION_API , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+        {}
+        )
+      );
+  }
+
+
+    public search_Organisationscitoyen(): Observable<any> {
+    return this.http
+    .get(ORGANISATIONCITOYEN_API , {
         headers: this.httpParams,
         responseType: 'json',
       })

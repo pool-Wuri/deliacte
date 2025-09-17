@@ -31,7 +31,7 @@ export class AdministrationsComponent {
 
   searchOrganisation():void{
     
-    this.organisationService.search_Organisations().subscribe({
+    this.organisationService.search_Organisationscitoyen().subscribe({
       complete:()=>{},
       next:(result)=>{
         if(result){

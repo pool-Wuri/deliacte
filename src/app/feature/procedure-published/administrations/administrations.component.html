@@ -113,7 +113,7 @@
                 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+                    <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
                     <a [routerLink]="'/deliacte/procedure-published/list'"  class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
                     <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
                     <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
@@ -219,7 +219,7 @@
                     <div class="space-y-4">
                         <a *ngFor="let org of leftColumn" href="#"
                             class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">
-                            {{ org.name }}
+                            {{ org.description }}
                         </a>
                        
                     </div>
@@ -228,7 +228,7 @@
                     <div class="space-y-4">
                         <a *ngFor="let org of rightColumn" href="#"
                             class="block py-4 border-b border-gray-200 text-gray-700 hover:text-green-600 transition-colors duration-200">
-                            {{ org.name }}
+                            {{ org.description }}
                             
                         </a>
                        
@@ -241,7 +241,7 @@
         <!-- Colonne de droite : Image (reste inchangée ) -->
         <div class="hidden md:block md:w-2/5 lg:w-1/2 relative">
             <img class="absolute h-full w-full object-cover"
-                src="./image1.png"
+                src="assets/img/image1.png"
                 alt="Silhouette tenant le drapeau du Burkina Faso">
             <div class="absolute inset-0 bg-black opacity-20"></div>
         </div>
