@@ -62,7 +62,7 @@ procedure=new Procedure;
    }
 
    search_Procedure():void{
-    //this.loading=true;
+    this.loading=true;
     this.procedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -76,9 +76,10 @@ procedure=new Procedure;
         }
       },
       error:(error)=>{
-        this.loading=false;
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-
+        setTimeout(() => {
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error.error.error, life: 3000});
+          this.loading=false;
+        }, 2000);
       }
   
     })
@@ -246,7 +247,6 @@ procedure=new Procedure;
   }
 
   depublier(procedure:Procedure){
-  
       this.confirmationService.confirm({
         message: 'Voulez-vous dépublier cette procedure?',
         acceptLabel:'Oui',
@@ -255,17 +255,22 @@ procedure=new Procedure;
         icon: 'pi pi-exclamation-triangle',
         acceptButtonStyleClass:'acceptButton',
       accept: () => {
+        this.loading=true;
         procedure.status = "ARCHIVED" // Assigner la clé comme chaîne
-  
         this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
           complete:()=>{},
           next:(result)=>{
+            this.loading=false;
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure dépubliée', life: 3000});      
           },
           error:(error)=>{
+            setTimeout(() => {
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: error.error.error, life: 3000});
+              this.loading=false;
+            }, 2000);
           }
       
         })
-        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure dépubliée', life: 3000});      
       },
       reject:()=>{
         this.messageService.add({severity:'error', summary: 'Echec', detail: ' Procedure non dépubliée', life: 3000});
