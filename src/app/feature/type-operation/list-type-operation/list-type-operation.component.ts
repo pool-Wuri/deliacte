@@ -67,6 +67,7 @@ export class ListTypeOperationComponent implements OnInit {
     this.editbutt = false;
     this.title = 'Formulaire d\'ajout d\'un type d\'opération ';
     this.submitted = false;
+    this.typeoperation1={};
 
    }
 
