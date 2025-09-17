@@ -43,12 +43,18 @@ export class ListTypeOperationComponent implements OnInit {
    }
 
    searchtypeoperation():void{
+    this.loading=true;
     this.TypeOperationService.search_Typeoperation().subscribe({
       complete:()=>{},
       next:(result)=>{
         this.typeoperations=result.data;
+        this.loading=false;
       },
       error:(error)=>{
+        setTimeout(() => {
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error.error.error, life: 3000});
+          this.loading=false;
+        }, 2000);
       }
   
     })
