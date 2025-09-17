@@ -232,9 +232,7 @@ export class DetailsTypeDocComponent {
           this.isDisabled=false;
         }
         this.idOperationNow=result.data.traitement.operationId;;
-        console.log(this.idOperationNow)
-        console.log(this.traitement)
-        console.log(this.traitementPass)
+       
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
@@ -255,7 +253,6 @@ export class DetailsTypeDocComponent {
               console.log(result)
             this.operationService.get_OperationNext(this.idOperationNow).subscribe({
                 next:(result)=>{
-                  console.log(result);
                   if(result.data.length>1)
                   {
                     if(result.data[0].operationPreviousId==this.idOperationNow){
@@ -392,8 +389,7 @@ export class DetailsTypeDocComponent {
 
  
   validerDossier(numDossier:number){
-    console.log(this.operationnow);
-    console.log(this.traitement)
+   
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
@@ -403,8 +399,7 @@ export class DetailsTypeDocComponent {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
-    console.log(this.data1)
-    console.log(numDossier)
+  
     this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
