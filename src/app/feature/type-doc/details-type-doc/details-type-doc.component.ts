@@ -209,11 +209,12 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
           this.traitementPass=result.data.traitement;
         this.dossier=result.data.dossiers;
+        console.log(this.dossier)
         for(let i=0;i<this.dossier.length;i++){
           if (this.dossier[i].champOperation.inputType === "PDF" ||
             this.dossier[i].champOperation.inputType === "FILE" ||
             this.dossier[i].champOperation.inputType === "IMAGE") {
-                    this.document.push(this.dossier[i]);
+            this.document.push(this.dossier[i]);
           }
         }
         let i = 0;
@@ -226,14 +227,20 @@ export class DetailsTypeDocComponent {
                 i++;  // Incrémente seulement si aucun élément n'est supprimé
             }
         }
+        //fin while
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.isDisabled=false;
         }
         this.idOperationNow=result.data.traitement.operationId;;
+        console.log(this.idOperationNow)
+        console.log(this.traitement)
+        console.log(this.traitementPass)
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
+              console.log(result)
               this.traitement.operationId=result.data[0].id;
+              console.log(this.traitement)
             
             },
             complete:()=>{},
@@ -245,8 +252,10 @@ export class DetailsTypeDocComponent {
           this.userService.operationInfo(this.user?.id).subscribe({
             complete:()=>{},
             next:(result)=>{
+              console.log(result)
             this.operationService.get_OperationNext(this.idOperationNow).subscribe({
                 next:(result)=>{
+                  console.log(result);
                   if(result.data.length>1)
                   {
                     if(result.data[0].operationPreviousId==this.idOperationNow){
@@ -260,7 +269,6 @@ export class DetailsTypeDocComponent {
                       this.traitement.operationId=this.operationnow.id;
     
                     }
-            
                     this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                       next:(result)=>{
                       
@@ -384,6 +392,8 @@ export class DetailsTypeDocComponent {
 
  
   validerDossier(numDossier:number){
+    console.log(this.operationnow);
+    console.log(this.traitement)
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
@@ -393,6 +403,8 @@ export class DetailsTypeDocComponent {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
+    console.log(this.data1)
+    console.log(numDossier)
     this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',

@@ -76,6 +76,7 @@ procedure=new Procedure;
         }
       },
       error:(error)=>{
+        console.log(error)
         setTimeout(() => {
           this.messageService.add({severity:'error', summary: 'Erreur', detail: error.error.error, life: 3000});
           this.loading=false;
