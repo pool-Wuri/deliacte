@@ -3,7 +3,38 @@
      <p-progressSpinner></p-progressSpinner>
     </div>
    </div>
-<div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" style="background-color: #060; z-index: 1000;">
+   <header class="h-20 bg-white shadow-md fixed top-0 left-0 lg:left-0 right-0 z-20">
+    <div class="h-full flex items-center">
+      
+      <!-- Logo + Service -->
+      <div class="flex items-center h-full text-white font-bold text-lg px-3"
+           style="background-color: #060;">
+        <img src="assets/img/armoiriePh.jpeg" 
+             alt="Armoiries du Burkina Faso" 
+             class="h-12 mr-2">
+        <span>Service Public</span>
+      </div>
+  
+      <!-- Titre (collé après Service Public et qui prend le reste de la place) -->
+      <h1 
+          class="flex items-center h-full text-lg font-semibold text-gray-800 truncate px-4 flex-1">
+        Bienvenue sur le Portail de Delivrance d'actes Administratifs
+      </h1>
+      
+      <!-- Utilisateur -->
+      <div class="flex items-center justify-end h-full px-4 space-x-3">
+        <i class="pi pi-user text-gray-600 text-xl"></i>
+        <span class="text-gray-600 font-medium">
+          {{ user?.firstName }} {{ user?.lastName }}
+        </span>
+      </div>
+  
+    </div>
+  </header>
+  
+  
+  
+<!--div class="fixed top-0 left-0 right-0 px-0 py-4 lg:px-0 lg:pl-0 h-32" style="background-color: #060; z-index: 1000;">
     <div class="flex items-center justify-between ">
         <div class="flex items-center justify-start rtl:justify-end h-24" >
             <button  type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -39,7 +70,7 @@
       </div>
       </div>
     </div>
-  </div>
+  </div-->
   
 
 

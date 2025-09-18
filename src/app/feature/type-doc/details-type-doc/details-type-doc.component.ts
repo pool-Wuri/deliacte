@@ -99,18 +99,17 @@ export class DetailsTypeDocComponent {
       this.getDossier(this.id)
      }
     );
-
     this.events2 = [
-      "2020", "2021", "2022", "2023"
-  ];
+        "2020", "2021", "2022", "2023"
+    ];
     this.champs.forEach(champ => {
-      if (champ.inputType === 'RADIO') {
-          champ.name = null; // Valeur unique pour chaque champ radio
-      }
-      if (champ.inputType === 'CHECKBOX') {
-          champ.name = ""; // Liste pour les cases à cocher
-      }
-  });
+        if (champ.inputType === 'RADIO') {
+            champ.name = null; // Valeur unique pour chaque champ radio
+        }
+        if (champ.inputType === 'CHECKBOX') {
+            champ.name = ""; // Liste pour les cases à cocher
+        }
+    });
 
   }
 
@@ -123,7 +122,7 @@ export class DetailsTypeDocComponent {
         complete:()=>{},
         next:(result)=>{
          this.dossier=result.data.dossiers;
-         //console.log(this.dossier)
+         console.log(this.dossier)
          this.numDossier=result.data.traitement.numeroDossier;
          let i = 0;
          while (i < this.dossier.length - 1) { 

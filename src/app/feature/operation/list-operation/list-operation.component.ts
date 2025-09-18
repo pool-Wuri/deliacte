@@ -43,11 +43,9 @@ proced:any;
 
 listeUser:boolean=false;
 list1: any[] | undefined;
-
 list2: any[] | undefined;
   sortOrder!: number;
   operationsIds=new OperationAssign;
-
   sortField!: string;
   procedurechoisi=new Procedure;
   submitted: boolean=false;

@@ -1,3 +1,8 @@
+<!-- Loading Overlay -->
+<div *ngIf="loading" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
 <div class="container mx-auto p-4 max-w-7xl">
 
   <!-- Header -->
@@ -105,12 +110,6 @@
 
   </div>
 </div>
-
-
-
-
-
-
 
 
 <p-dialog  header="Modifier dossier" [(visible)]="displayBasic" [style]="{width: '50vw'}">
@@ -228,10 +227,9 @@
             type="button" style="background-color: #060;"
             class="text-white  focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
             <button  type="button" style="background-color: #ff0000;"
-            class="py-2.5 px-5 ms-3 text-sm font-medium text-white  focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</button>
+            class="ms-3  text-white  focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Annuler</button>
         </div>    
     </ng-template>
 </p-dialog>
-
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

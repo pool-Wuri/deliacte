@@ -48,7 +48,7 @@
             Télécharger
         </button>
     </div>        
-</div>
+  </div>
 
 <div class="card">
     <div  *ngIf="user?.role=='CITOYEN'">
@@ -95,18 +95,19 @@
                         </div>
                     
                         <!-- Radio -->
-                        <div *ngIf="champ.champOperation.inputType === 'RADIO'" class="col-span-1">
+                        <div *ngIf="champ.champOperation.inputType === 'RADIO'" class="col-span-1 ">
                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             {{ champ.champOperation.name }}
                             </label>
-                            <div class="flex flex-wrap">
-                            <div *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center mr-4">
-                                <input [id]="'radio-' + i + '-' + j" type="radio"
-                                        [value]="option.name" [(ngModel)]="champ.name"
-                                        name="radio-group-{{i}}"
-                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
-                                <label [for]="'radio-' + i + '-' + j" class="ml-2 text-sm text-gray-900">{{ option.name }}</label>
-                            </div>
+                            <div class="flex flex-wrap" >
+                                <div *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center mr-8 ">
+                                    <input [id]="'radio-' + i + '-' + j" type="radio"
+                                            [value]="option.name" [(ngModel)]="champ.name"
+                                            name="radio-group-{{i}}"
+                                            style="width: 50%;"
+                                            class="h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
+                                    <label [for]="'radio-' + i + '-' + j" class="ml-2 text-sm text-gray-900 ">{{ option.name }}</label>
+                                </div>
                             </div>
                         </div>
                     

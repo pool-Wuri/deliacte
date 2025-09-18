@@ -6,6 +6,7 @@ import { Operation } from 'src/app/core/models/operation.model';
 import { DemandeProcedur, Procedure } from 'src/app/core/models/procedure.model';
 import { TypeDoc } from 'src/app/core/models/typeDoc-model';
 import { User } from 'src/app/core/models/user.model';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { TypeDocService } from 'src/app/core/services/type-doc.service';
@@ -65,6 +66,7 @@ MONTH="MONTH"
 WEEK="WEEK"
 SEARCH="SEARCH"
 HIDDEN="HIDDEN";
+loading:boolean=false;
 
 
 constructor(
@@ -74,8 +76,8 @@ constructor(
   private messageService: MessageService,
   private procedureService:ProcedureService,
   private operationService:OperationService,
-  private userService:UtilisateurService
-
+  private userService:UtilisateurService,
+  private authService:AuthentificationService
 
 ){
 }
@@ -95,8 +97,10 @@ ngOnInit(): void {
     complete:()=>{},
     next:(result)=>{
       this.typeDcs=result;
+     // console.log(result)
     },
     error:(error)=>{
+      //console.log(error)
     }
 
   })
@@ -130,75 +134,96 @@ editDossier(){
 }
 
 getDossier(){
-  if(this.user?.role=="CITOYEN"){
-    this.typeDocService.searchDoosier().subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        this.doosierUser=result.data;
-      },
-      error:(error)=>{
-      }
-    });
-  }
-  else{
-    this.userService.operationInfo(this.user?.id).subscribe({
-      complete:()=>{},
-      next:(result)=>{
-      },
-      error:(error)=>{
-      }
-    });
-    this.typeDocService.getDossierAtraiter().subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        this.doosierUser=result.data;
-      },
-      error:(error)=>{
-      }
-    });
-    
-  }
-}
-
-searchOperation():void{
-  this.operationService.search_Procedure("").subscribe({
-    next:(value)=>{
-      this.operations=value;
-      this.operations.reverse();
-      for(let i=0;i<this.operations.length;i++){
-        this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-          complete:()=>{},
-          next:(result)=>{
-            this.operations[i].procedure=result;
-    },
-          error:(er)=>{
+  this.loading=true;
+    if(this.user?.role=="CITOYEN"){
+      this.typeDocService.searchDoosier().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.status==200 || result.status==201){
+            this.doosierUser=result.data;
+            this.loading=false;
           }
-        })
-      }
-   
-    },
-    complete:()=>{},
-    error:(err)=>{}
-  })
- 
-}
-
-search_Procedure():void{
-  if(this.user?.role=="PROCEDURE_MANAGER"){
-    this.procedureService.search_Procedure().subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        if(result){
-          this.procedures=result.data;
+          else{
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
+              this.authService.logOut();
+            }, 2000);
+          }
+        },
+        error:(error)=>{
+          //console.log(error)
         }
+      });
+    }
+    else{
+      this.userService.operationInfo(this.user?.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+        },
+        error:(error)=>{
+        }
+      });
+      this.typeDocService.getDossierAtraiter().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.status==200 || result.status==201){
+            this.doosierUser=result.data;
+            this.loading=false;
+          }
+          else{
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
+              this.authService.logOut();
+            }, 2000);
+          }
+        },
+        error:(error)=>{
+        }
+      });
+      
+    }
+}
+  searchOperation():void{
+    this.operationService.search_Procedure("").subscribe({
+      next:(value)=>{
+        this.operations=value;
+        this.operations.reverse();
+        for(let i=0;i<this.operations.length;i++){
+          this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+            complete:()=>{},
+            next:(result)=>{
+              this.operations[i].procedure=result;
       },
-      error:(error)=>{
-      }
-  
+            error:(er)=>{
+            }
+          })
+        }
+    
+      },
+      complete:()=>{},
+      error:(err)=>{}
     })
+  
   }
- 
- }
+
+  search_Procedure():void{
+    if(this.user?.role=="PROCEDURE_MANAGER"){
+      this.procedureService.search_Procedure().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result){
+            this.procedures=result.data;
+          }
+        },
+        error:(error)=>{
+        }
+    
+      })
+    }
+  
+  }
 
  onSortChange(event: { value: any; }) {
   let proced = event.value;
@@ -215,7 +240,6 @@ search_Procedure():void{
   });
 
   }
-
   
   getProcedure(id?:number){
     this.procedureService.get_Procedure(this.procedurechoisi.id).subscribe({
@@ -252,27 +276,24 @@ search_Procedure():void{
     })
   }
   
+  onOptionChange(option: string, index: number) {
+    this.selectedOption = option;
+    this.demandeFor[index].name = option;
+    // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
+  }
 
-onOptionChange(option: string, index: number) {
-  this.selectedOption = option;
-  this.demandeFor[index].name = option;
-  // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
-}
+  onFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    // Traitement du fichier, par exemple :
+  }
 
+  voirDoc(name:string){
+    this.displayPosition = true;
+  this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
+    
 
-
-onFileChange(event: any, index: number) {
-  const file = event.target.files[0];
-  // Traitement du fichier, par exemple :
-}
-
-voirDoc(name:string){
-  this.displayPosition = true;
-this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
-  
-
-  
-}
+    
+  }
 
 
 }

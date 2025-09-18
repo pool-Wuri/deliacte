@@ -90,16 +90,13 @@ id!:number;
       console.log('params récupérés :', params); // Débogage
       const idParam = params['id'];
       this.id = params['id'] // Convertit en number ou 0 par défaut
-      console.log('ID récupéré :', this.id);
+     // console.log('ID récupéré :', this.id);
     });
-this.getDossier(this.id)
-    // Initialiser l'index sélectionné sur l'étape active
+    this.getDossier(this.id)
     this.selectedIndex = this.steps.findIndex(step => step.status === 'active');
     if (this.selectedIndex === -1) { // Au cas où tout est terminé
         this.selectedIndex = this.steps.length - 1;
     }
-    
-    // Calculer la progression de la barre
   }
 
   // Méthode pour sélectionner une étape au clic
@@ -109,12 +106,8 @@ this.getDossier(this.id)
 
   // Méthode pour calculer la largeur de la barre de progression
   private calculateProgress(): void {
-    const completedSteps = this.steps.filter(s => s.status === 'completed').length;
-    console.log(completedSteps)
-    console.log(this.steps)
-    // La progression est basée sur les intervalles entre les étapes
-    this.progressPercentage = (completedSteps / (this.steps.length -1)) * 100;
-    console.log(this.progressPercentage)
+    const completedSteps = this.steps.filter(s => s.status === 'completed' || s.status === 'active').length;
+    this.progressPercentage = (completedSteps / (this.steps.length )) * 100;
   }
 
   // Méthode pour convertir les clés d'un objet en tableau pour l'itération dans le template
@@ -126,12 +119,18 @@ this.getDossier(this.id)
   getDossier(id:any){
     this.authService.getDossierAfficher(id).subscribe({
       next:(result)=>{
-        console.log(result.data);
         if(result){
-          console.log(result.data);
-        this.steps=result.data;
+
+          this.steps=result.data;
+          console.log(this.steps)
+          for(let i=0;i<this.steps.length;i++){
+            if(this.steps[i].status=="active"){
+              this.steps[i].icon="pi pi-check";
+              this.steps[i].status="completed";
+            }
+          }
+          this.calculateProgress();
         }
-       
       },
       complete:()=>{},
       error:(err)=>{}

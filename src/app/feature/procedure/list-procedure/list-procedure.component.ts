@@ -11,6 +11,7 @@ import { OperationService } from 'src/app/core/services/operation.service';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
+import { ChampOperation } from 'src/app/core/models/champOperation.model';
 
 @Component({
   selector: 'app-list-procedure',
@@ -38,6 +39,8 @@ procedure=new Procedure;
   PROCEDURE_MANAGER='PROCEDURE_MANAGER';
   submitted: boolean=false;
   loading:boolean=false;
+  champs=new Array <ChampOperation>();
+
   constructor(
     private router:Router,
     private confirmationService: ConfirmationService,
@@ -284,52 +287,62 @@ procedure=new Procedure;
   publier(procedure:Procedure){
     this.operationService.get_Operation(procedure.id).subscribe({
       next:(value)=>{
-        if(value.data.length<=0){
-          this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération disponible pour cette procedure', life: 3000});
-        }
-        else{
-          if(procedure.status!="PUBLISHED")
-            {
-              this.confirmationService.confirm({
-                message: 'Voulez-vous publier cette procedure',
-                acceptLabel:'Oui',
-                rejectLabel:'Non',
-                header: 'Publication',
-                icon: 'pi pi-exclamation-triangle',
-                acceptButtonStyleClass:'acceptButton',
-              accept: () => {
-                this.loading=true;
-           
-                procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
-                this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
-                  complete:()=>{},
-                  next:(result)=>{
-                    if(result){
-                      this.messageService.add({severity:'success', summary: 'Succes', detail: 'Procedure publiée', life: 3000});
-                      setTimeout(()=>{
-                        this.loading=false;
-                        this.search_Procedure();
-                      },2000)
-                    }
-                  },
-                  error:(error)=>{
-                    this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non publiée', life: 3000});
-                    this.loading=false;
-                  }
-              
-                })
-               // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
-              },
-              reject:()=>{
-                this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Annuler la publication', life: 3000});
-              }
-            });
+        this.procedureService.get_Champ(procedure.id).subscribe({
+          next:(result)=>{
+            this.champs=result.data;
+            console.log(this.champs.length)
+            if(value.data.length<=0 ||  this.champs.length<=0 ){
+              this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération et champ disponible pour cette procedure', life: 3000});
             }
             else{
-              this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure déja publiée', life: 3000});
-        
+              if(procedure.status!="PUBLISHED")
+                {
+                  this.confirmationService.confirm({
+                    message: 'Voulez-vous publier cette procedure',
+                    acceptLabel:'Oui',
+                    rejectLabel:'Non',
+                    header: 'Publication',
+                    icon: 'pi pi-exclamation-triangle',
+                    acceptButtonStyleClass:'acceptButton',
+                  accept: () => {
+                    this.loading=true;
+               
+                    procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
+                    this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
+                      complete:()=>{},
+                      next:(result)=>{
+                        if(result){
+                          this.messageService.add({severity:'success', summary: 'Succes', detail: 'Procedure publiée', life: 3000});
+                          setTimeout(()=>{
+                            this.loading=false;
+                            this.search_Procedure();
+                          },2000)
+                        }
+                      },
+                      error:(error)=>{
+                        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non publiée', life: 3000});
+                        this.loading=false;
+                      }
+                  
+                    })
+                   // this.messageService.add({severity:'success', summary: 'Successful', detail: 'Ok', life: 3000});      
+                  },
+                  reject:()=>{
+                    this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Annuler la publication', life: 3000});
+                  }
+                });
+                }
+                else{
+                  this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure déja publiée', life: 3000});
+            
+                }
             }
-        }
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+          }
+        })
+       
      
       },
       complete:()=>{},
@@ -343,6 +356,16 @@ procedure=new Procedure;
     return Object.keys(ProcedureStatus).find(key => ProcedureStatus[key as keyof typeof ProcedureStatus] === status) || 'Statut inconnu';
   }
 
+  getChamp(id?:number){
+    this.procedureService.get_Champ(id).subscribe({
+      next:(result)=>{
+        this.champs=result.data;
+      },
+      complete:()=>{},
+      error:(erreur)=>{
+      }
+    })
+  }
 
   generatePDF() {
     // Create a new PDF document.

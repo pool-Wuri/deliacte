@@ -200,13 +200,11 @@ searchChamp(){
 
 
 onOptionChange(option: string, index: number) {
-  
   this.selectedOption = option;
   this.demandeFor[index].name = option;
 }
 
 updateCheckbox(index: number) {
-  
   this.demandeFor[index].name = "";
 }
 
@@ -303,7 +301,9 @@ finDemande(){
 }
 
 retourPage(){
-  this.location.back();
+  this.router.navigate(['/deliacte/dossier/list']);
+
+ // this.location.back();
 }
 
 }
