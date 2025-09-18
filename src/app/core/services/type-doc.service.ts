@@ -178,7 +178,7 @@ export class TypeDocService {
       .pipe(
         retry(1),
         tap(data => {
-          console.log(data)
+          //console.log(data)
         })
       );
     }

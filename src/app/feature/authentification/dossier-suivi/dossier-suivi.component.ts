@@ -120,9 +120,7 @@ id!:number;
     this.authService.getDossierAfficher(id).subscribe({
       next:(result)=>{
         if(result){
-
           this.steps=result.data;
-          console.log(this.steps)
           for(let i=0;i<this.steps.length;i++){
             if(this.steps[i].status=="active"){
               this.steps[i].icon="pi pi-check";

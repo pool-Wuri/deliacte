@@ -152,7 +152,15 @@ getDossier(){
           }
         },
         error:(error)=>{
-          //console.log(error)
+        //  console.log(error);
+          if(error.error.status==500){
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'error', summary: error.error.error, detail: 'Veuillez vous reconnecter', life: 3000});
+              this.authService.logOut();
+
+            }, 2000);
+          }
         }
       });
     }
@@ -289,10 +297,7 @@ getDossier(){
 
   voirDoc(name:string){
     this.displayPosition = true;
-  this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
-    
-
-    
+    this.imageUrl=environment.mockApiUrl+"/uploads/"+name;
   }
 
 

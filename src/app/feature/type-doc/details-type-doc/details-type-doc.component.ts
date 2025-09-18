@@ -122,7 +122,7 @@ export class DetailsTypeDocComponent {
         complete:()=>{},
         next:(result)=>{
          this.dossier=result.data.dossiers;
-         console.log(this.dossier)
+        // console.log(this.dossier)
          this.numDossier=result.data.traitement.numeroDossier;
          let i = 0;
          while (i < this.dossier.length - 1) { 
@@ -386,9 +386,7 @@ export class DetailsTypeDocComponent {
     return limit;
   }
 
- 
   validerDossier(numDossier:number){
-   
     this.traitement.isActive=true;
     this.indexSave.sort((a, b) => b - a);
     for(let i=0;i<this.indexSave.length;i++){
@@ -480,216 +478,237 @@ export class DetailsTypeDocComponent {
     });
   }
 
-onOptionChange(option: string, index: number) {
-  this.selectedOption = option;
-  this.demandeFor[index].name = option;
-  // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
-}
-
-onFileChange(event: any, index: number) {
-  if(this.dossier[index]){
-   this.champOperationId= this.dossier[index]?.champOperationId;
-   this.idfile=this.dossier[index]?.id;
+  onOptionChange(option: string, index: number) {
+    this.selectedOption = option;
+    this.demandeFor[index].name = option;
+    // Ajoutez votre logique ici, par exemple, mettre à jour une autre variable ou état
   }
-  const file = event.target.files[0];
-  this.indexchamp=index;
-  if (file) {
-    this.file=file;
-  } 
-  else {
-  }
-}
 
-saveFile(){
-
-  this.loading=true;
-  this.data.append('file', this.file, this.file.name );
-  this.data.append('champOperationId', this.champOperationId.toString());
-  this.data.append('id', this.idfile.toString());
-
-  this.procedureService.saveDoc(this.data,this.numDossier).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      if(result){
-        this.indexSave.push(this.indexchamp);
-       // this.demandeFor.splice(this.indexchamp,1);
-        this.file={};
-     //  this.indexchamp=0;
-       
-        this.data.delete('file');
-        this.data.delete('champOperationId');
-      }
-      alert("succès enrégistrement fichier");
-      this.loading=false;
-
-    },
-    error:(err)=>{
+  onFileChange(event: any, index: number) {
+    if(this.dossier[index]){
+    this.champOperationId= this.dossier[index]?.champOperationId;
+    this.idfile=this.dossier[index]?.id;
     }
-  
-  })
-}
-
-voirDoc(name:any){
-  this.displayPosition = true;
-  if(name.champOperation.inputType==="IMAGE"){
-    this.imageUrl=environment.apiUrl+"/uploads/"+name.name;
-    this.docUrl="";
-  }
-  else{
-    this.docUrl=environment.apiUrl+"/uploads/pdf/"+name.name;
-    this.imageUrl="";
-  }
-
-
-  
-}
-
-
-telechargerDoc(name: any): void {
-  if (!name || !name.champOperation || !name.name) {
-    return;
-  }
-
-  const inputType = name.champOperation.inputType;
-  const fileName = name.name;
-
-  let fileUrl = '';
-
-  if (inputType === 'IMAGE') {
-    fileUrl = `${environment.apiUrl}/uploads/${fileName}`;
-  } else if (inputType === 'PDF') {
-    fileUrl = `${environment.apiUrl}/uploads/pdf/${fileName}`;
-  } else {
-    return;
-  }
-
-  // Création du lien de téléchargement et déclenchement
-  const link = document.createElement('a');
-  link.href = fileUrl;
-  link.download = fileName;
-  link.target = '_blank';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-
-}
-
-
-modifierDossier(numDossier:number){
- 
-  this.traitement.isActive=true;
-  this.traitement.statusDossier=this.traitement.status;
-  this.indexRequis=[];
-  for(let i=0;i<this.champs.length;i++){
-    if(this.champs[i].isRequired){
-      this.indexRequis.push(i);
+    const file = event.target.files[0];
+    this.indexchamp=index;
+    if (file) {
+      this.file=file;
+    } 
+    else {
     }
   }
-  let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais
-  for(let i=0;i<this.indexRequis.length;i++){
-    if(this.dossier[this.indexRequis[i]].name){
-      tousVrais = true;  // Si un élément est faux, on met tousVrais à false
-      break;  //
 
-    }
-  }
-  this.indexSave.sort((a, b) => b - a);
-  for(let i=0;i<this.indexSave.length;i++){
-    this.dossier.splice(this.indexSave[i],1);
-  }
-    this.data1 = {
-      traitement: this.traitement,
-      dossiers: this.dossier
-  }
- 
- this.confirmationService.confirm({
-    message: 'Voulez-vous modifier ce dossier?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
+  saveFile(){
+
     this.loading=true;
-    this.procedureService.saveDemande(this.data1,numDossier).subscribe({
+    this.data.append('file', this.file, this.file.name );
+    this.data.append('champOperationId', this.champOperationId.toString());
+    this.data.append('id', this.idfile.toString());
+
+    this.procedureService.saveDoc(this.data,this.numDossier).subscribe({
+      complete:()=>{},
       next:(result)=>{
-        this.router.navigate(['/deliacte/dossier/list']);
         if(result){
-          this.loading=false;
+          this.indexSave.push(this.indexchamp);
+        // this.demandeFor.splice(this.indexchamp,1);
+          this.file={};
+      //  this.indexchamp=0;
+        
+          this.data.delete('file');
+          this.data.delete('champOperationId');
         }
-        this.isDisabled=true;
+        alert("succès enrégistrement fichier");
+        this.loading=false;
 
       },
-      complete:()=>{
-  
-      },
-      error:(error)=>{
-      }
-    });
-  
-    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Dossier modifié', life: 3000});
-      
-  },
-  reject:()=>{
-
-    this.messageService.add({severity:'error', summary: 'Erreur', detail: ' Dossier non modifié', life: 3000});
-  }
-});
-
-}
-
-annulerModif(){
-  this.isDisabled=true;
-}
-documentRecuper(){
-  //console.log(operation)
-  console.log(this.traitement);
-  let fileUrl = '';
-  const fileName = "";
-  this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
-    next:(result)=>{
-      console.log(result);
-      if(result){
-        this.filurl=result.data;
-        fileUrl=this.filurl;
-        const link = document.createElement('a');
-          link.href = fileUrl;
-          link.download = fileName;
-          link.target = '_blank';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-      }
-     
-
-    },
-    complete:()=>{},
-    error:()=>{}
-
-  })
-
- // Création du lien de téléchargement et déclenchement
- 
-}
-
-voirDo(){
-  this.displayPosition = true;
-  this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
-    next:(result)=>{
-      console.log(result);
-      if(result){
-        this.filurl=result.data;
-        this.docUrl=this.filurl;
+      error:(err)=>{
       }
     
+    })
+  }
+
+  voirDoc(name:any){
+    this.displayPosition = true;
+    if(name.champOperation.inputType==="IMAGE"){
+      this.imageUrl=environment.apiUrl+"/uploads/"+name.name;
+      this.docUrl="";
+    }
+    else{
+      this.docUrl=environment.apiUrl+"/uploads/pdf/"+name.name;
+      this.imageUrl="";
+    }
+
+
+    
+  }
+
+
+  telechargerDoc(name: any): void {
+    if (!name || !name.champOperation || !name.name) {
+      return;
+    }
+    const inputType = name.champOperation.inputType;
+    const fileName = name.name;
+    let fileUrl = '';
+    if (inputType === 'IMAGE') {
+      fileUrl = `${environment.apiUrl}/uploads/${fileName}`;
+    } else if (inputType === 'PDF') {
+      fileUrl = `${environment.apiUrl}/uploads/pdf/${fileName}`;
+    } else {
+      return;
+    }
+
+    // Création du lien de téléchargement et déclenchement
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileName;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+  }
+
+
+  modifierDossier(numDossier:number){
+  
+    this.traitement.isActive=true;
+    this.traitement.statusDossier=this.traitement.status;
+    this.indexRequis=[];
+    for(let i=0;i<this.champs.length;i++){
+      if(this.champs[i].isRequired){
+        this.indexRequis.push(i);
+      }
+    }
+    let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais
+    for(let i=0;i<this.indexRequis.length;i++){
+      if(this.dossier[this.indexRequis[i]].name){
+        tousVrais = true;  // Si un élément est faux, on met tousVrais à false
+        break;  //
+
+      }
+    }
+    this.indexSave.sort((a, b) => b - a);
+    for(let i=0;i<this.indexSave.length;i++){
+      this.dossier.splice(this.indexSave[i],1);
+    }
+      this.data1 = {
+        traitement: this.traitement,
+        dossiers: this.dossier
+    }
+  
+  this.confirmationService.confirm({
+      message: 'Voulez-vous modifier ce dossier?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.loading=true;
+      this.procedureService.saveDemande(this.data1,numDossier).subscribe({
+        next:(result)=>{
+          this.router.navigate(['/deliacte/dossier/list']);
+          if(result){
+            this.loading=false;
+          }
+          this.isDisabled=true;
+
+        },
+        complete:()=>{
+    
+        },
+        error:(error)=>{
+        }
+      });
+    
+      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Dossier modifié', life: 3000});
+        
     },
-    complete:()=>{},
-    error:()=>{}
+    reject:()=>{
 
-  })
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: ' Dossier non modifié', life: 3000});
+    }
+  });
+
+  }
+
+  annulerModif(){
+    this.isDisabled=true;
+  }
+
+  documentRecuper(){
+    //console.log(operation)
+   // console.log(this.traitement);
+   this.loading=true;
+    let fileUrl = '';
+    const fileName = "";
+    this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
+      next:(result)=>{
+       // console.log(result);
+        if(result){
+          console.log(result)
+          if(result.status==404){
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'error', summary: result.error, detail: 'Aucun document disponible pour cette opération', life: 3000});  
+            }, 2000);
+                 }
+          else{
+            this.loading=false;
+            this.filurl=result.data;
+            fileUrl=this.filurl;
+            const link = document.createElement('a');
+              link.href = fileUrl;
+              link.download = fileName;
+              link.target = '_blank';
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+          }
+        
+        }
+      
+
+      },
+      complete:()=>{},
+      error:()=>{
+        this.loading=false;
+      }
+
+    })
+
+  // Création du lien de téléchargement et déclenchement
+  }
+
+  voirDo(){
+    this.loading=true;
+    this.typeDocService.telechargerDoc(this.traitement.operationId,this.numDossier).subscribe({
+      next:(result)=>{
+        //console.log(result);
+        if(result.error==null){
+          this.loading=false;
+          this.filurl=result.data;
+          this.docUrl=this.filurl;
+          this.displayPosition = true;
+        }
+        else{
+          setTimeout(() => {
+            this.loading=false;
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Aucun document disponible pour cette opération', life: 3000});
+            this.displayPosition = false;
+
+          }, 2000);
+        }
+      
+      },
+      complete:()=>{},
+      error:()=>{}
+
+    })
 
 
-}
+  }
 
     retourPage(){
       this.location.back();
