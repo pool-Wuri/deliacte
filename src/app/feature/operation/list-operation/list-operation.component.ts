@@ -132,7 +132,7 @@ searchtypeoperation():void{
             complete:()=>{},
             next:(result)=>{
               this.operations[i].procedure=result.data;
-      },
+            },
             error:(er)=>{
             }
           });
@@ -435,13 +435,11 @@ fermerModal(){
     }
 
   groupeUser(){
-   
-
     if (!this.selectedOperation || this.selectedOperation.length === 0) {
       this.messageService.add({severity:'error', summary: 'Erreur', detail: ' Sélectionner d\'abord une opération', life: 3000});
       this.disable=true;
     }
-    else{
+    else{      
       this.userService.userOrganisation().subscribe({
         complete:()=>{},
         next:(result)=>{
@@ -480,36 +478,60 @@ fermerModal(){
 
   userSelet(){
     this.listeUser=false;
-    this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
-    for(let i=0;i<this.usergroup.length;i++){
-      if(this.usergroup[i].id){
-      this.userService.operationInfo(this.usergroup[i].id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          for(let i=0;i<result.data.length;i++){
-            this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
-          }
-          this.operationsIds.operationsIds?.push(this.selectedOperation[0].id || 0);
-          this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-             // this.searchUser();
-            },
-            error:(error)=>{
-            }
-        
-          });
-
-        },
-        error:(error)=>{
-        }
-      });
-       
-      }
-  
+    this.operationsIds.operationsIds = []; // Initialiser si nécessaire   
+    this.confirmationService.confirm({
+      message: 'Voulez-vous vraiment affecter ces agents à l\'opération?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        for(let i=0;i<this.usergroup.length;i++){
+          if(this.usergroup[i].id){
+            this.userService.operationInfo(this.usergroup[i].id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                for(let i=0;i<result.data.length;i++){
+                  this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+                }
+                this.operationsIds.operationsIds?.push(this.selectedOperation[0].id || 0);
+                  this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+                    complete:()=>{},
+                    next:(result)=>{
+                      if(result.status==200 || result.status==201){
+                        setTimeout(() => {
+                          this.loading=false;
+                          this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
+                        }, 2000);
+                      }
+                      else{
+                        this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
+                        this.loading=false;
+    
+                      }
+                    },
+                    error:(error)=>{
+                    }
+                
+                  });
       
-   
-    }
+              },
+              error:(error)=>{
+              }
+            });
+           
+          }
+        }
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.loading=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler l\'affectation', life: 3000});
+      }
+    });   
+    
   }
 
   generatePDF() {

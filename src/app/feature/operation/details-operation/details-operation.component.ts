@@ -349,7 +349,7 @@ groupeUser(operation:any){
 
  userSelet(){
   this.confirmationService.confirm({
-    message: 'Voulez-vous modifier ce champ?',
+    message: 'Voulez-vous ajouter des agents ?',
     header: 'Confirmation',
     acceptLabel:'Oui',
     rejectLabel:'Non',
@@ -372,7 +372,7 @@ groupeUser(operation:any){
               this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
                 complete:()=>{},
                 next:(result)=>{
-                  console.log(result)
+                 // console.log(result)
                   if(result.status==200 || result.status==201){
                     setTimeout(() => {
                       this.loading=false;

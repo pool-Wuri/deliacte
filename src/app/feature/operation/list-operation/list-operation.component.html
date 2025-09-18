@@ -145,6 +145,7 @@
     dataKey="id"
     currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} procédures"
     [globalFilterFields]="['name','description']"
+    [(selection)]="selectedOperation"
     class="min-w-full">
 
     <ng-template pTemplate="caption">
@@ -164,6 +165,9 @@
     
     <ng-template pTemplate="header">
     <tr class="bg-gray-100 text-left text-sm text-gray-700">
+        <th style="width: 4rem,">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
         <th  class="px-6 py-3">Nom</th>
         <th  class="px-6 py-3">Description</th>
         <!--th >Ordre</th-->
@@ -177,6 +181,9 @@
 
     <ng-template pTemplate="body" let-operation>
         <tr class="hover:bg-gray-50">
+            <td>
+                <p-tableCheckbox  class="rounded-lg" [value]="operation"></p-tableCheckbox>
+            </td>
             <td class="px-6 py-3">
                 {{operation.name}}
             </td>
@@ -480,7 +487,7 @@
       <!--button pButton pRipple label="Quitter " icon="pi pi-times" class="p-button-text"  style="background-color: #ff0000;"></button>
       <button pButton pRipple label="Ajouter"  icon="pi pi-check" class="p-button-text" style="background-color: #060;" (click)="userSelet()"></button-->
     </ng-template>
-  </p-dialog>
+</p-dialog>
 
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
