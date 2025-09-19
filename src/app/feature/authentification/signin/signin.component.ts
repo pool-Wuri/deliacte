@@ -36,87 +36,87 @@ export class SigninComponent {
   erreurMessage:string="";
   showPassword: boolean = false;
   erroAff:boolean=false;
-constructor(
-  private authentificationService: AuthentificationService,
-  private formBuilder:FormBuilder,
-  private userService:UtilisateurService,
-  private router:Router,
-  private confirmationService: ConfirmationService,
-  private messageService: MessageService,
-){}
+  constructor(
+    private authentificationService: AuthentificationService,
+    private formBuilder:FormBuilder,
+    private userService:UtilisateurService,
+    private router:Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+  ){}
 
-ngOnInit(): void {
-  this.initForm();
-  this.currentUrl = this.router.url;
-}
+  ngOnInit(): void {
+    this.initForm();
+    this.currentUrl = this.router.url;
+  }
 
-initForm(){
-  this.connexionForm=this.formBuilder.group(
-    {
-      email: this.formBuilder.control('',Validators.required),
-      password:this.formBuilder.control('',[Validators.required,Validators.pattern(/[0-9a-zA-Z]{4,}/)])
-    },{updateOn:'submit'}
-  )
-}
+  initForm(){
+    this.connexionForm=this.formBuilder.group(
+      {
+        email: this.formBuilder.control('',Validators.required),
+        password:this.formBuilder.control('',[Validators.required,Validators.pattern(/[0-9a-zA-Z]{4,}/)])
+      },{updateOn:'submit'}
+    )
+  }
 
 
-get f(): { [key: string]: AbstractControl } {
-  return this.connexionForm.controls;
-}
+  get f(): { [key: string]: AbstractControl } {
+    return this.connexionForm.controls;
+  }
 
-onSubmit(){
-  this.submitted=true;
-  this.utilisateur=this.connexionForm.value as User;
- // console.log(this.utilisateur);
-  if(this.utilisateur.email && this.utilisateur.password){
-    this.loading=true;
+  onSubmit(){
+    this.submitted=true;
+    this.utilisateur=this.connexionForm.value as User;
+  // console.log(this.utilisateur);
+    if(this.utilisateur.email && this.utilisateur.password){
+      this.loading=true;
 
-    this.authentificationService.authenticate(this.utilisateur).subscribe({
-      next: response => {
-       // console.log(response);
-        if(response.user){
-          this.loading=false;
-          this.authentificationService.saveToken(response.token);
-          localStorage.setItem('user', JSON.stringify(response.user));
-          const userData = localStorage.getItem('user');
-          this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
-          if (userData) {
-            this.user = JSON.parse(userData);
-            //console.log(this.user)
-          }    
-          if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
-            this.router.navigate(['/deliacte/dossier/list']);
-          }
-          else
-          setTimeout(()=>{
-            this.router.navigate(['/deliacte/dashboard/']);
-          },2000)
-        }
-        else{
-          //this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
-          this.erreurMessage=response.message;
-          this.erroAff=true;
-          setTimeout(()=>{
+      this.authentificationService.authenticate(this.utilisateur).subscribe({
+        next: response => {
+         console.log(response);
+          if(response.user){
             this.loading=false;
-          },2000)
-  
-        }
-      },
-      error: error => {
-       // console.error('Erreur lors de l\'authentification', error);
-        this.loading=false;
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez verifier vos identifiants'});
-      }
-    });
+            this.authentificationService.saveToken(response.token);
+            localStorage.setItem('user', JSON.stringify(response.user));
+            const userData = localStorage.getItem('user');
+            this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
+            if (userData) {
+              this.user = JSON.parse(userData);
+              //console.log(this.user)
+            }    
+            if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
+              this.router.navigate(['/deliacte/dossier/list']);
+            }
+            else
+            setTimeout(()=>{
+              this.router.navigate(['/deliacte/dashboard/']);
+            },2000)
+          }
+          else{
+            //this.messageService.add({severity:'error', summary: 'Erreur', detail: response.message});
+            this.erreurMessage=response.message;
+            this.erroAff=true;
+            setTimeout(()=>{
+              this.loading=false;
+            },2000)
     
-    }
-  
- }
+          }
+        },
+        error: error => {
+        // console.error('Erreur lors de l\'authentification', error);
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez verifier vos identifiants'});
+        }
+      });
+      
+      }
+    
+  }
 
 
-togglePassword() {
-  this.showPassword = !this.showPassword;
-}
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
  ajouter(){
   this.utilisateur1={};

@@ -4,9 +4,8 @@
     </div>
    </div>
 <div style="display: inline-flex;">
-    <p-button icon="pi pi-arrow-left z-10" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <p-button icon="pi pi-arrow-left z-50" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
     <h1 class="p-4">Details Opération</h1>
-
 </div>
 
 <p-toast></p-toast>
@@ -79,7 +78,7 @@
         <ng-template pTemplate="right">
             
             <p-fileUpload 
-            class="upload-vert"
+            class="upload-vert custom-upload"
             mode="advanced"
             name="file"
             [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
@@ -92,10 +91,12 @@
             invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
             (onError)="onError($event)"
             (onUpload)="onUpload($event)">
+            
             <!-- Zone d'affichage du message d'erreur -->
             <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
                 {{ errorMessage }}
             </div>
+        
     
             <ng-template pTemplate="empty">
                 <div>Glisser-déposer votre fichier ici</div>
@@ -114,150 +115,125 @@
 </p-divider>
 <div class="card opera" >
     <p-tabView>
-
-        <p-tabPanel header="Champ">
-            <p-toolbar styleClass="mb-4 gap-2">
-                <ng-template pTemplate="right">
-                    <button   style="background-color: #060;" (click)="ajouterChamp(operation)"
-                    class="text-white  from-green-400 via-green-500 to-green-600 
-                    focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-                    dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
-                        Ajouter
-                    </button>
-                </ng-template>
+          <p-tabPanel header="Champ">
+            <p-toolbar styleClass="mb-4 gap-2 flex justify-end ">
+              <ng-template pTemplate="right">
+                <button style="background-color: #060;" (click)="ajouterChamp(operation)"
+                  class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                  dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
+                  type="button">
+                  Ajouter
+                </button>
+              </ng-template>
             </p-toolbar>
+          
             <div class="card">
-                <p-table #dt [value]="champs"  styleClass="p-datatable-customers" [rowHover]="true" 
+              <p-table #dt [value]="champs" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
                 [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
-                 [globalFilterFields]="['firstName']">
-            
-                 <ng-template pTemplate="caption">
-                    <div class="flex">
-                        <span class="p-input-icon-left ml-auto cherch">
-                            <input 
-                                pInputText 
-                                type="text" 
-                                #searchInput 
-                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder=" Rechercher" />
-                        </span>
-                    </div>
+                [globalFilterFields]="['firstName']">
+          
+                <ng-template pTemplate="caption">
+                  <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                      <input pInputText type="text" #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder=" Rechercher" />
+                    </span>
+                  </div>
                 </ng-template>
-                
+          
                 <ng-template pTemplate="header">
-                    <tr class="tableEnt">
-                       
-                        <th >Nom</th>
-                        <th >description</th>
-                        <th >Type</th>
-                        <th >Requis</th>
-                        <th >Actions</th>
-                    </tr>
-            
-                    
+                  <tr class="tableEnt">
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Requis</th>
+                    <th>Actions</th>
+                  </tr>
                 </ng-template>
-                <ng-template id="bodi" pTemplate="body" let-champ>
-                    <tr class="p-selectable-row tableContenu">
-                       
-                        <td>
-                            {{champ.name}}
-                        </td>
-                        <td >
-                            {{champ.description}}
-                        </td>
-                        <td >
-                            {{champ.inputType}}
-                        </td>
-                        <td >
-                            {{champ.isRequired ? 'oui' : 'non'}} 
-                        </td>
-                        <td >
-                            <button type="button"  title="Supprimer"  style="background-color: #ff0000;" (click)="supprimerChamp(champ)"  class="text-white  from-red-400 
-                            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                            text-sm p-2.5 text-center inline-flex items-center 
-                            mx-0 pi pi-eraser">
-                            </button>
-                            <button type="button" title="Modifier"   style="background-color: #060;" (click)="editChamp(champ)"
-                            class="text-white from-green-400 via-green-500  
-                            to-green-600 hover:bg-gradient-to-br focus:ring-4 
-                            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                            text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button>
-                        </td>
-                      
-                    </tr>
+          
+                <ng-template pTemplate="body" let-champ>
+                  <tr class="p-selectable-row tableContenu">
+                    <td>{{champ.name}}</td>
+                    <td>{{champ.description}}</td>
+                    <td>{{champ.inputType}}</td>
+                    <td>{{champ.isRequired ? 'oui' : 'non'}}</td>
+                    <td>
+                      <button type="button" title="Supprimer" style="background-color: #ff0000;" 
+                        (click)="supprimerChamp(champ)" 
+                        class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eraser">
+                      </button>
+          
+                      <button type="button" title="Modifier" style="background-color: #060;" 
+                        (click)="editChamp(champ)"
+                        class="text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-pencil">
+                      </button>
+                    </td>
+                  </tr>
                 </ng-template>
-                </p-table>
+              </p-table>
             </div>
-        </p-tabPanel>
-        <p-tabPanel header="Groupe Utilisateur">
-            <p-toolbar styleClass="mb-4 gap-2">
-                <ng-template pTemplate="right">
-                    <button   style="background-color: #060;" (click)="groupeUser(operation)"
-                    class="text-white  from-green-400 via-green-500 to-green-600 
-                    focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-                    dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" type="button">
-                        Ajouter utilisateur
-                    </button>
-                </ng-template>
+          </p-tabPanel>
+          <p-tabPanel header="Groupe Utilisateur">
+            <p-toolbar styleClass="mb-4 gap-2 flex justify-end">
+              <ng-template pTemplate="right">
+                <button style="background-color: #060;" (click)="groupeUser(operation)"
+                  class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                  focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                  dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
+                  type="button">
+                  Ajouter utilisateur
+                </button>
+              </ng-template>
             </p-toolbar>
+          
             <div class="card">
-                <p-table #dt [value]="responsUsers"  styleClass="p-datatable-customers" [rowHover]="true" 
+              <p-table #dt [value]="responsUsers" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
                 [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
-                 [globalFilterFields]="['firstName']">
-            
-                 <ng-template pTemplate="caption">
-                    <div class="flex">
-                        <span class="p-input-icon-left ml-auto cherch">
-                            <input 
-                                pInputText 
-                                type="text" 
-                                #searchInput 
-                                (input)="dt.filterGlobal(searchInput.value, 'contains')" 
-                                placeholder="Rechercher" />
-                        </span>
-                    </div>
+                [globalFilterFields]="['firstName']">
+          
+                <ng-template pTemplate="caption">
+                  <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                      <input pInputText type="text" #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder="Rechercher" />
+                    </span>
+                  </div>
                 </ng-template>
-                
+          
                 <ng-template pTemplate="header">
-                    <tr class="tableEnt">
-                        
-                        <th >Nom</th>
-                        <th >Prenom</th>
-                       <th>Action</th>
-            
-            
-                    </tr>
-            
-                    
+                  <tr class="tableEnt">
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Action</th>
+                  </tr>
                 </ng-template>
-                <ng-template id="bodi" pTemplate="body" let-utilisateur>
-                    <tr class="p-selectable-row tableContenu">
-                       
-                        <td>
-                            {{utilisateur.firstName}}
-                        </td>
-                        <td>
-                            {{utilisateur.lastName}}
-                        </td>
-                     <td>
-                        
-                        <button   type="button"  title="retirer utilisateur" (click)="userSelet()"
-                        style="background-color: #ff0000;" class="text-white  from-red-400 
-                        via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-                        text-sm p-2.5 text-center inline-flex items-center 
-                        mx-0 pi pi-arrow-left" 
-                        ></button>
-                     </td>
-                      
-                    </tr>
+          
+                <ng-template pTemplate="body" let-utilisateur>
+                  <tr class="p-selectable-row tableContenu">
+                    <td>{{utilisateur.firstName}}</td>
+                    <td>{{utilisateur.lastName}}</td>
+                    <td>
+                      <button type="button" title="Retirer utilisateur" (click)="userSelet()"
+                        style="background-color: #ff0000;" 
+                        class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-arrow-left">
+                      </button>
+                    </td>
+                  </tr>
                 </ng-template>
-                </p-table>
-            
+              </p-table>
             </div>
-        </p-tabPanel>
-        
+          </p-tabPanel>
     </p-tabView>
 </div>
 

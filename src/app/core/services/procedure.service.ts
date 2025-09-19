@@ -8,6 +8,8 @@ import { TreeNode } from 'primeng/api';
 
 
 const PROCEDURE_API=environment.apiUrl +"/procedures";
+const GET_PROCEDURE_API=environment.apiUrl +"/procedures";
+
 const CHAMP_API=environment.apiUrl +"/champ-operations/champByProcedure";
 
 const PROCEDURE_PUBLIE_API=environment.apiUrl +"/procedures/status/";
@@ -27,7 +29,7 @@ export class ProcedureService {
 
   public search_Procedure(filterParam =''): Observable<any> {
     return this.http
-    .get(PROCEDURE_API , {
+    .get(GET_PROCEDURE_API , {
         headers: this.httpParams,
         responseType: 'json',
       })

@@ -266,3 +266,24 @@
         flex: 1 1 100%;
     }
 }
+
+/* Desktop : même largeur fixe */
+::ng-deep .custom-upload .p-button {
+    min-width: 180px; /* largeur fixe identique */
+    justify-content: center; /* texte bien centré */
+    height: 45px;      
+  }
+  ::ng-deep .custom-upload .p-button-label {
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* Mobile : largeur 100% */
+  @media (max-width: 640px) {
+    ::ng-deep .custom-upload .p-button {
+      min-width: 100% !important;
+      max-width: 100% !important;
+      margin-bottom: 8px; /* espace entre boutons */
+    }
+  }
+  

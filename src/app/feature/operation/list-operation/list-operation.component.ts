@@ -388,46 +388,49 @@ fermerModal(){
      this.proced = event.value;
     this.operationService.get_Operation(this.proced.id).subscribe({
       next:(value)=>{
-        this.operations=value.data;
+        if(value){
+          this.operations=value.data;
+          console.log(this.operations)
+          for(let i=0;i<this.operations.length;i++){
+            this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                this.operations[i].procedure=result.data;
+                  },
+              error:(er)=>{
+              }
+            });
+          if(this.operations[i].operationNextId){
+            this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                this.operations[i].operationNextId=result.data;
+              }
+            }
+          );
+          }
+          else
+          {
+            this.operations[i].operationNextId="";
+  
+          }
+          if(this.operations[i].operationPreviousId){
+            this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                this.operations[i].operationPreviousId=result.data;
+              }
+            }
+          );
+          }
+          else
+          {
+            this.operations[i].operationPreviousId="";
+  
+          }
+          }
+        }
       
-        for(let i=0;i<this.operations.length;i++){
-          this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              this.operations[i].procedure=result.data;
-                },
-            error:(er)=>{
-            }
-          });
-        if(this.operations[i].operationNextId){
-          this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              this.operations[i].operationNextId=result.data;
-            }
-          }
-        );
-        }
-        else
-        {
-          this.operations[i].operationNextId="";
-
-        }
-        if(this.operations[i].operationPreviousId){
-          this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              this.operations[i].operationPreviousId=result.data;
-            }
-          }
-        );
-        }
-        else
-        {
-          this.operations[i].operationPreviousId="";
-
-        }
-        }
       },
       complete:()=>{},
       error:(err)=>{}
@@ -542,12 +545,7 @@ fermerModal(){
     doc.setFontSize(16);
     doc.text('Liste des opérations', 10, 10);
     doc.setFontSize(12);
-    /*doc.text(
-      'This is a comprehensive guide on generating PDFs with Angular.',
-      10,
-      20,
-    );*/
-  
+    
     // Create a table using `jspdf-autotable`.
     const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
     const data = this.operations.map(operation => [
@@ -568,4 +566,81 @@ fermerModal(){
     doc.save('Liste_user.pdf');
   }
   
+  private async getBase64ImageFromUrl(url: string): Promise<string> {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Erreur lors du chargement de l'image : ${response.statusText}`);
+    }
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+  
+  public async generatePDF1(): Promise<void> {
+    try {
+      // 1. Créer une nouvelle instance de jsPDF.
+      const doc = new jsPDF();
+      
+      // --- DÉBUT DE L'EN-TÊTE ---
+  
+      // URL des armoiries (depuis Wikimedia Commons)
+      const imageUrl = 'assets/img/armoiriePh.jpeg';
+      
+      // Charger l'image et la convertir en base64
+      const imageBase64 = await this.getBase64ImageFromUrl(imageUrl );
+  
+      // Ajouter le nom du pays
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text('BURKINA FASO', doc.internal.pageSize.getWidth() / 2, 20, { align: 'center' });
+  
+      // Ajouter la devise
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'italic');
+      doc.text('La Patrie ou la Mort, nous Vaincrons', doc.internal.pageSize.getWidth() / 2, 27, { align: 'center' });
+  
+      // Ajouter l'image des armoiries (largeur de 30mm)
+      doc.addImage(imageBase64, 'PNG', doc.internal.pageSize.getWidth() / 2 - 15, 32, 30, 30);
+  
+      // --- FIN DE L'EN-TÊTE ---
+  
+      // Ajouter le titre principal du document
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Liste des opérations de la procedure'+" "+ this.procedurechoisi.name, 14, 80); // Position Y ajustée pour être sous l'en-tête
+  
+      // Préparer les données du tableau
+      const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
+      console.log(this.operations)
+      const data = this.operations.map(operation => [
+        operation.name,
+        operation.description,
+        operation.operationNextId.name || "---",
+        operation.operationPreviousId.name  || "---"
+      ]);
+  
+      // Créer le tableau
+      autoTable(doc, {
+        head: headers,
+        body: data,
+        startY: 85, // Position de départ du tableau ajustée
+        theme: 'grid',
+        styles: {
+          font: 'helvetica',
+          fontSize: 10
+        }
+      });
+  
+      // Sauvegarder le fichier PDF
+      doc.save('Liste_des_operation.pdf');
+  
+    } catch (error) {
+      console.error("Erreur lors de la génération du PDF :", error);
+      // Gérer l'erreur, par exemple en affichant un message à l'utilisateur
+    }
+  }
 }

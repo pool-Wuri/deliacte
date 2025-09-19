@@ -39,28 +39,26 @@ export class AuthentificationService {
         return throwError(err);
       })
     );
-}
+  }
 
+  saveToken(token: string): void {
+      localStorage.setItem('ACCESS_TOKEN', token);
+      // stocker aussi l'heure d'expiration (24h = 86400000 ms)
+      const expireAt = new Date().getTime() + 24 * 60 * 60 * 1000;
+      localStorage.setItem("expireAt", expireAt.toString());
+  }
 
-
- saveToken(token: string): void {
-    localStorage.setItem('ACCESS_TOKEN', token);
-     // stocker aussi l'heure d'expiration (24h = 86400000 ms)
-  const expireAt = new Date().getTime() + 24 * 60 * 60 * 1000;
-  localStorage.setItem("expireAt", expireAt.toString());
-}
-
- saveRefreshToken(token: string): void {
+  saveRefreshToken(token: string): void {
     localStorage.setItem('REFRESH_TOKEN', token);
-}
+  }
 
-getAccessToken(): string | null {
-    return localStorage.getItem('ACCESS_TOKEN');
-}
+  getAccessToken(): string | null {
+      return localStorage.getItem('ACCESS_TOKEN');
+  }
 
-getRefreshToken(): string | null {
-    return localStorage.getItem('REFRESH_TOKEN');
-}
+  getRefreshToken(): string | null {
+      return localStorage.getItem('REFRESH_TOKEN');
+  }
 
   logOut(): void {
     try {
@@ -85,7 +83,7 @@ getRefreshToken(): string | null {
     //return !!this.getAccessToken();
     const token = this.getAccessToken();
     const expireAt = localStorage.getItem("expireAt");
-    console.log(expireAt)
+    //console.log(expireAt)
 
     if (!token || !expireAt) {
       return false;
