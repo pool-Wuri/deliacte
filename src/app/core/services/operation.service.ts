@@ -42,7 +42,7 @@ export class OperationService {
   public saveProcedure(procedure:any):Observable<any>{
     return this.http.post<any>(PROCEDURE_API,procedure).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }
@@ -82,8 +82,10 @@ export class OperationService {
       })
       .pipe(
         retry(1),
-        tap((data) =>
-          console.log()
+        tap((data) =>{
+          
+        }
+        //  console.log()
          // console.log( 'api.service > get_formulaire > tap > server data :',data  )
         )
       );

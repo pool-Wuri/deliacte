@@ -40,6 +40,10 @@ procedure=new Procedure;
   submitted: boolean=false;
   loading:boolean=false;
   champs=new Array <ChampOperation>();
+  @ViewChild('dtBrouillon') dtBrouillon!: Table;
+  @ViewChild('dtPublie') dtPublie!: Table;
+  @ViewChild('dtArchiv') dtArchiv!: Table;
+  activeTab: 'brouillon' | 'publie' | 'archiv' = 'brouillon';
 
   constructor(
     private router:Router,
@@ -64,17 +68,61 @@ procedure=new Procedure;
     }
    }
 
+
+  applyGlobalFilter(value: string) {
+    if(this.user?.role=='PROCEDURE_MANAGER'){
+      this.dt?.filterGlobal(value, 'contains');
+    }
+    else{
+      switch (this.activeTab) {
+        case 'brouillon':
+          this.dtBrouillon?.filterGlobal(value, 'contains');
+          break;
+        case 'publie':
+          this.dtPublie?.filterGlobal(value, 'contains');
+          break;
+        case 'archiv':
+          this.dtArchiv?.filterGlobal(value, 'contains');
+          break;
+        default:
+          this.dt?.filterGlobal(value, 'contains');
+          break;
+      }
+    }
+   
+  }
+
    search_Procedure():void{
     this.loading=true;
     this.procedureService.search_Procedure().subscribe({
       complete:()=>{},
       next:(result)=>{
-        if(result.status==200){
+        if(result.status==201 || result.status==200){
           this.procedures=result.data;
           this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
           this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
           this.proceduresPublie=this.procedures.filter(u=>u.status=="PUBLISHED");
           this.procedures=this.procedures.filter(u=>u.status!=="ARCHIVED");
+
+          this.procedures = this.procedures.map(p => ({
+            ...p,
+            organisationName: p.organisation?.name || ''
+          }));
+          
+          this.proceduresBrouillon = this.proceduresBrouillon.map(p => ({
+            ...p,
+            organisationName: p.organisation?.name || ''
+          }));
+          
+          this.proceduresPublie = this.proceduresPublie.map(p => ({
+            ...p,
+            organisationName: p.organisation?.name || ''
+          }));
+          
+          this.proceduresArchiv = this.proceduresArchiv.map(p => ({
+            ...p,
+            organisationName: p.organisation?.name || ''
+          }));
           this.loading=false;
         }
         else{
@@ -85,7 +133,7 @@ procedure=new Procedure;
         }
       },
       error:(error)=>{
-        console.log(error)
+        this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
       
       }
   
@@ -129,11 +177,17 @@ procedure=new Procedure;
         this.procedureService.saveProcedure(this.procedure).subscribe({
           complete:()=>{},
           next:(result)=>{
-            if(result){
-              this.loading=false;
-              this.search_Procedure();
-              this.messageService.add({severity:'success', summary: 'Succès', detail: 'Procedure enregistrée avec succès', life: 3000});
-            }
+            if(result.status==201 || result.status==200){
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+              setTimeout(() => {
+                this.loading=false;
+                this.search_Procedure();
+           
+              }, 2000);
+               }
+               else{
+                this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+               }
           
           },
           error:(error)=>{
@@ -147,7 +201,7 @@ procedure=new Procedure;
         this.addboutton = true; // Ouvre le modal 
         this.addUser=true;
         this.editbutt=false;
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'enregistrement', life: 3000});
+        this.messageService.add({severity:'error', summary: 'Annulation', detail: 'Annuler l\'enregistrement', life: 3000});
         this.loading=false;
       }
     });
@@ -192,13 +246,17 @@ procedure=new Procedure;
       this.procedureService.updateprocedure(this.procedure,this.procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          if(result){
-            this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
+        //  console.log(result)
+          if(result.status==201 || result.status==200){
+            this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
             setTimeout(()=>{
               this.loading=false;
               this.search_Procedure();
-            },2000)
-          }
+             },2000)
+            }
+            else{
+              this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+            }
         },
         error:(error)=>{
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Modification non reussie', life: 3000});
@@ -235,15 +293,23 @@ procedure=new Procedure;
       this.procedureService.delete_procedure(procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
+          if(result){
+            this.messageService.add({severity:'success', summary: 'Succès', detail: 'procedure supprimée', life: 3000});      
+            setTimeout(() => {
+              this.search_Procedure();
+            }, 2000);
+          }
+     
         },
         error:(error)=>{
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non supprimée', life: 3000});      
+
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Ok', life: 3000});      
     },
     reject:()=>{
-      this.messageService.add({severity:'error', summary: 'Erreur', detail: ' non ok', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Procedure non supprimée', life: 3000});
     }
   });
   }
@@ -280,7 +346,7 @@ procedure=new Procedure;
         })
       },
       reject:()=>{
-        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Procedure non dépubliée', life: 3000});
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Procedure non dépubliée', life: 3000});
       }
     });
   
@@ -293,7 +359,7 @@ procedure=new Procedure;
         this.procedureService.get_Champ(procedure.id).subscribe({
           next:(result)=>{
             this.champs=result.data;
-            console.log(this.champs.length)
+           // console.log(this.champs.length)
             if(value.data.length<=0 ||  this.champs.length<=0 ){
               this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération et champ disponible pour cette procedure', life: 3000});
             }
@@ -309,21 +375,24 @@ procedure=new Procedure;
                     acceptButtonStyleClass:'acceptButton',
                   accept: () => {
                     this.loading=true;
-               
                     procedure.status = "PUBLISHED" // Assigner la clé comme chaîne
                     this.procedureService.updateprocedure(procedure,procedure.id).subscribe({
                       complete:()=>{},
                       next:(result)=>{
-                        if(result){
-                          this.messageService.add({severity:'success', summary: 'Succes', detail: 'Procedure publiée', life: 3000});
+                        if(result.status==201 || result.status==200){
+                          this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
                           setTimeout(()=>{
                             this.loading=false;
                             this.search_Procedure();
                           },2000)
                         }
+                        else{
+                          this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+                          this.loading=false;
+                        }
                       },
                       error:(error)=>{
-                        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Procedure non publiée', life: 3000});
+                        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
                         this.loading=false;
                       }
                   

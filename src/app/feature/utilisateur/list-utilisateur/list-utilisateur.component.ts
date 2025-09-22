@@ -149,24 +149,24 @@ submitted: boolean=false;
   })
   }
 
-searchProcedures(){
-  this.procedureService.search_Procedure("").subscribe(
-    {
-      complete:()=>{},
-      next:(result)=>{
-        this.procedures=result.data;
-      },
-      error:(error)=>{
+  searchProcedures(){
+    this.procedureService.search_Procedure("").subscribe(
+      {
+        complete:()=>{},
+        next:(result)=>{
+          this.procedures=result.data;
+        },
+        error:(error)=>{
+        }
+    
       }
-  
-    }
-  );
-}
+    );
+  }
 
  saveUser(){ 
   //this.soumettre=true;
   this.submitted=true;
-  if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
+    if(this.utilisateur1.lastName && this.utilisateur1.firstName && this.utilisateur1.email){
     this.confirmationService.confirm({
       message: 'Voulez-vous enregistrer cet utilisateur?',
       header: 'Confirmation',
@@ -174,46 +174,47 @@ searchProcedures(){
       rejectLabel:'Non',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.loading=true;
-      this.modalVisible = false; // Ouvre le modal 
-      this.addUser=false;
-      this.editbutt=false;
-      this.utilisateur1.isActive=true;
-      this.userService.saveUsers(this.utilisateur1).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          if(result.data){
-            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur créé', life: 3000});
+      accept: () => {
+        this.loading=true;
+        this.modalVisible = false; // Ouvre le modal 
+        this.addUser=false;
+        this.editbutt=false;
+        this.utilisateur1.isActive=true;
+        this.userService.saveUsers(this.utilisateur1).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result.status==201 || result.status==200){
+              setTimeout(() => {
+                this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+                this.loading=false;
+                this.searchUser();
+              }, 2000);
+              
+            }
+            
+            else{
+              //this.searchUser();
+              this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+              this.loading=false;
+
+            } 
+          },
+          error:(error)=>{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
             this.loading=false;
-            this.searchUser();
+
           }
-          else{
-            this.searchUser();
-            this.messageService.add({severity:'error', summary: 'Erreur', detail: result.message, life: 3000});
-            this.loading=false;
-
-          } 
-        },
-        error:(error)=>{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-          this.loading=false;
-
-        }
-    
-      })
-        //Actual logic to perform a confirmation
-        
-    },
-    reject:()=>{
-      this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Annuler l\'ajout', life: 3000});
-    }
+      
+        });
+      },
+      reject:()=>{
+        this.editbutt=false;
+        this.messageService.add({severity:'error', summary: 'Annulation', detail: 'Annuler l\'ajout', life: 3000});
+      }
     });
     
+    }
   }
-  
- }
 
 searchOrganisation(){
   this.organisationService.search_Organisations("").subscribe(
@@ -256,29 +257,32 @@ searchOrganisation(){
     this.userService.updateUser(this.utilisateur1,this.utilisateur1.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.messageService.add({severity:'success', summary: 'Succes', detail: 'Modification reussie', life: 3000});
-        setTimeout(()=>{
+        if(result.status==201 || result.status==200){
+          this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+          setTimeout(()=>{
+            this.loading=false;
+            this.searchUser();
+          },2000)
+        }
+        else{
           this.loading=false;
-          this.searchUser();
-        },2000)
-
+          this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+        }
+      
       //Actual logic to perform a confirmation
       },
       error:(error)=>{
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Non modifié', life: 3000});
-
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Utilisateur on modifié', life: 3000});
+        this.loading=false;
       }
-    })
-    
-      
+    }) 
   },
   reject:()=>{
     this.addUser=false;
-  
     this.searchUser();
-    this.messageService.add({severity:'error', summary: 'error', detail: 'Echec de la modification', life: 3000});
+    this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Utilisateur on modifié', life: 3000});
   }
-});
+  });
  // Ouvre le modal 
 
  }
@@ -364,32 +368,40 @@ SaveAssigner(){
     accept: () => {
       this.loading=true;
       this.assignModal=false;
-
       this.userService.assigner(this.idOrganisationAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          this.searchUser();
-          this.loading=false;
-          this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur assigné avec succès', life: 3000});
-
+          if(result.status==201 || result.status==200){
+            setTimeout(() => {
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+              this.loading=false;
+              this.searchUser();
+            }, 2000); 
+          }
+          else{
+            this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+            this.loading=false;
+          } 
+         
         },
         error:(error)=>{
+          this.loading=false;
           this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Utilisateur non assigné', life: 3000});
         }
-      })
+      });
       this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
         complete:()=>{},
         next:(result)=>{
+         // console.log(result);
         },
         error:(error)=>{
         }
     
-      })
+      });
     
     },
     reject:()=>{
-    //  this.assignModal=false;
-      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Assignation echouée', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Assignation echouée', life: 3000});
     }
    });
   }
@@ -397,55 +409,58 @@ SaveAssigner(){
     this.procedureTru=true;
     this.adminTrue=false;
     this.userToAssign.role="PROCEDURE_MANAGER";
-  
-  this.confirmationService.confirm({
-      message: 'Voulez-vous valider l\'action?',
-      header: 'Confirmation',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.assignModal=false;
-      this.loading=true;
-   
-      if( this.proceduresid.userProcedureIds?.length==0){
-        this.userToAssign.role="AGENT";
-      }
-      this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          this.loading=true;
-          if(result){
-            this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.searchUser();
-                this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur assigné avec succès', life: 3000});
-                this.loading=false;
-              },
-              error:(error)=>{
-                this.loading=false;
-                this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Utilisateur non assigné ', life: 3000});
+    this.confirmationService.confirm({
+        message: 'Voulez-vous valider l\'action?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.assignModal=false;
+        this.loading=true;
+        if( this.proceduresid.userProcedureIds?.length==0){
+          this.userToAssign.role="AGENT";
+        }
+        this.userService.updateUser(this.userToAssign,this.userToAssign.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.loading=true;
+            if(result){
+              this.userService.assignerProcedure(this.proceduresid,this.userToAssign.id).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  if(result.status==201 || result.status==200){
+                    setTimeout(() => {
+                      this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+                      this.loading=false;
+                      this.searchUser();
+                    }, 2000); 
+                  }
+                  else{
+                    this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+                    this.loading=false;
+                  } 
+                },
+                error:(error)=>{
+                  this.loading=false;
+                  this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Utilisateur non assigné ', life: 3000});
 
-              }
-          
-            });
+                }
+              });
+            }
+          },
+          error:(error)=>{
+            this.assignModal=false;
 
           }
-        },
-        error:(error)=>{
-          this.assignModal=false;
-
-        }
-    
-      });
-    },
-    reject:()=>{
-      //this.assignModal=false;
-      this.messageService.add({severity:'error', summary: 'error', detail: 'Utilisateur non assigné', life: 3000});
-    }
-  });
+        });
+      },
+      reject:()=>{
+        //this.assignModal=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Utilisateur non assigné', life: 3000});
+      }
+    });
   }
 
 }
@@ -471,16 +486,29 @@ deleteUser(user:User){
     acceptButtonStyleClass:'acceptButton',
   accept: () => {
     this.assignModal=false;
+    this.loading=true;
     this.userService.delete_usert(user.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.searchUser();
+        if(result.status==201 || result.status==200){
+          setTimeout(() => {
+            this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+            this.searchUser();
+            this.loading=false;
+          }, 1000);
+         
+        }
+        else{
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+        }
       },
       error:(error)=>{
+        this.loading=false;
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
       }
   
     })
-    this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur supprimé', life: 3000});      
   },
   reject:()=>{
     this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Utilisateur non supprimé', life: 3000});
@@ -492,7 +520,6 @@ revoquerAdmin(utilisateur:User){
   this.searchOrganisation();
   this.searchProcedures();
   this.userToAssign=utilisateur;
- 
   this.assignModal=true;
   if(this.user?.role=="ORG_ADMIN"){
     this.userToAssign.role="Manager de procedure";

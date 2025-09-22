@@ -73,7 +73,7 @@ export class SigninComponent {
 
       this.authentificationService.authenticate(this.utilisateur).subscribe({
         next: response => {
-         console.log(response);
+         //console.log(response);
           if(response.user){
             this.loading=false;
             this.authentificationService.saveToken(response.token);

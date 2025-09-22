@@ -6,8 +6,6 @@
 
 <br>
 
-
-
 <div class="card">
     <h4 class="card-title">-- Details type opération --</h4>
     <div class="input-container">
@@ -25,7 +23,18 @@
             />
         </div>
         <!-- Champ 2 -->
+        <div class="input-item">
+            <label for="inputField1" class="custom-label">Statut associé de l'opération</label>
+            <input
+                id="inputField1"
+                type="text"
+                pInputText
+                [value]="TypeOperation. verbeOperation"
 
+                class="custom-input"
+                readonly
+            />
+        </div>
         <div class="input-item">
             <label for="inputField1" class="custom-label">Description</label>
             <input

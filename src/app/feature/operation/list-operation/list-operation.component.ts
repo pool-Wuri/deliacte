@@ -179,7 +179,7 @@ searchtypeoperation():void{
   
   }
 
-fermerModal(){
+  fermerModal(){
   this.addboutton=false;
   this.addUser=false;
   this.editbutt=false;
@@ -205,17 +205,29 @@ fermerModal(){
       this.operationService.saveProcedure(this.operation).subscribe({
         next:(value)=>{
           if(value){
+            this.addboutton=false;
+            if(value.status==201 || value.status==200){
+              setTimeout(() => {
+                this.loading=false;
+                this.onSortChange({ value: this.proced });
+                this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+              }, 2000);
+            }
+            else{
+              this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+              this.loading=false;
+            }
             this.operationService.search_Procedure("").subscribe({
               next:(value)=>{
                 this.operations=value.data;
-               this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
+                this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
                 this.operations.reverse();
                 for(let i=0;i<this.operations.length;i++){
                   this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
                     complete:()=>{},
                     next:(result)=>{
                       this.operations[i].procedure=result.data;
-              },
+                    },
                     error:(er)=>{
 
                     }
@@ -226,16 +238,12 @@ fermerModal(){
               complete:()=>{},
               error:(err)=>{}
             });
-            setTimeout(() => {
-              this.loading=false;
-              this.onSortChange({ value: this.proced });
-              this.messageService.add({severity:'success', summary: 'Reussie', detail: 'Operation créée avec succès', life: 3000});        
-            }, 2000);
-            this.addboutton=false;
           }    
         },
         complete:()=>{},
         error:(erreur)=>{
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
+
         }
       })
     },
@@ -244,7 +252,7 @@ fermerModal(){
       this.addboutton=true;
       this.addUser=true;
       this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Opération non enregistrée', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
       this.loading=false;
     }
 
@@ -268,22 +276,28 @@ fermerModal(){
         next:(value)=>{
           this.addboutton=false;
           this.editbutt=false;   
-          setTimeout(() => {
+          if(value.status==201 || value.status==200){
+            setTimeout(() => {
+              this.loading=false;
+              this.onSortChange({ value: this.proced });
+              this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+            }, 2000);
+          }
+          else{
+            this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
             this.loading=false;
-            this.onSortChange({ value: this.proced });
-            this.messageService.add({severity:'success', summary: 'Modification', detail: 'Operation modifiée avec succès', life: 3000});        
-          }, 2000);
+          }
         },
         complete:()=>{},
         error:(erreur)=>{
           this.loading=false;
-          this.messageService.add({severity:'error', summary: 'Modification', detail: 'Operation non modifiée', life: 3000});        
+          this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
         }
       })        
     },
     reject:()=>{
       //this.addboutton=false;
-      this.messageService.add({severity:'error', summary: 'Modification', detail: ' Annuler la modification', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
     }
   });
  }
@@ -305,35 +319,33 @@ fermerModal(){
      rejectLabel:'Non',
      icon: 'pi pi-exclamation-triangle',
      acceptButtonStyleClass:'acceptButton',
-   accept: () => {
-    this.loading=true;
-     this.operationService.delete_operation(operation.id).subscribe({
-       complete:()=>{},
-       next:(result)=>{
-        console.log(result);
-        if(result.status==200 || result.status==201){
-          setTimeout(() => {
+    accept: () => {
+      this.loading=true;
+      this.operationService.delete_operation(operation.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.status==200 || result.status==201){
+            setTimeout(() => {
+              this.loading=false;
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+              this.onSortChange({ value: this.proced });
+            }, 2000);
+          }
+          else{
             this.loading=false;
-            this.messageService.add({severity:'success', summary: 'Suppression', detail: 'Opération supprimée', life: 3000});      
-            this.onSortChange({ value: this.proced });
-          }, 2000);
-        }
-        else{
+            this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
+          }
+        
+        },
+        error:(error)=>{
           this.loading=false;
-          this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
         }
-      
-       },
-       error:(error)=>{
-        console.log(error)
-        this.loading=false;
-       }
-   
-     })
-   },
-   reject:()=>{
-     this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
-   }
+    
+      })
+    },
+    reject:()=>{
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
+    }
  });
  }
 
@@ -390,7 +402,7 @@ fermerModal(){
       next:(value)=>{
         if(value){
           this.operations=value.data;
-          console.log(this.operations)
+         // console.log(this.operations)
           for(let i=0;i<this.operations.length;i++){
             this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
               complete:()=>{},
@@ -435,7 +447,7 @@ fermerModal(){
       complete:()=>{},
       error:(err)=>{}
     });
-    }
+  }
 
   groupeUser(){
     if (!this.selectedOperation || this.selectedOperation.length === 0) {
