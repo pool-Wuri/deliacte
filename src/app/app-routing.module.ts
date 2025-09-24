@@ -55,6 +55,10 @@ const routes: Routes = [
         path: 'operation',
         loadChildren: () => import('./feature/operation/operation.module').then(m => m.OperationModule)
       },
+      {
+        path: 'entite',
+        loadChildren: () => import('./feature/entite/entite.module').then(m => m.EntiteModule)
+      },
 
     ]
   },
