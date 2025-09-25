@@ -47,19 +47,21 @@ export class DetailsOperationComponent {
   loading:boolean=false;
   errorMessage: string | null = null;
 
-  constructor(private route:ActivatedRoute,
+  constructor(
+    private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
     private confirmationService:ConfirmationService,
-   private messageService:MessageService,
-   private userService:UtilisateurService,
-   private location: Location,
+    private messageService:MessageService,
+    private userService:UtilisateurService,
+    private location: Location,
 
 
 ){
 
 
-}
+  }
+
 ngOnInit():void{
   this.route.params.subscribe(params => {
     this.id = params['id']; 

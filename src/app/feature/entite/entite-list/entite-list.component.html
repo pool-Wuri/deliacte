@@ -30,93 +30,135 @@
         focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
         dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
         type="button">
-        Ajouter une untité
+        Ajouter une entité
       </button>
     </ng-template>
   </p-toolbar>
-  
-<div class="card">
-    <p-table #dt 
-    [value]="entites"
-    [rowHover]="true"
-    [rows]="5"
-    [paginator]="true"
-    [rowsPerPageOptions]="[5,10,15,25,50]"
-    dataKey="id"
-    currentPageReportTemplate="Affichage {first} à {last} sur {totalRecords} procédures"
-    [globalFilterFields]="['name','description']"
-    [(selection)]="selectedOperation"
-    class="min-w-full">
 
   
-    
-    <ng-template pTemplate="header">
-    <tr class="bg-gray-100 text-left text-sm text-gray-700">
-        <!--th style="width: 4rem,">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th  class="px-6 py-3">Nom</th>
-        <th  class="px-6 py-3">Description</th>
-        <!--th >Ordre</th-->
-        <!--th >Statut</th-->
-       
-        <th  class="px-6 py-3" style="width: 300px;">Actions</th>
-    
-    </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-entite>
-        <tr class="hover:bg-gray-50">
-            <!--td>
-                <p-tableCheckbox  class="rounded-lg" [value]="entite"></p-tableCheckbox>
-            </td-->
-            <td class="px-6 py-3">
-                {{entite.name}}
-            </td>
-            <td class="px-6 py-3">
-                {{entite.description}}
-            </td>
-        
-       
-       
-        <td class="px-6 py-3 flex flex-wrap gap-2">
-            <button type="button"   style="color: #060;" title="visualiser" (click)="detailsEntite(entite)"
-            class=" bg-white from-green-500 via-green-600 t
-            o-green-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 
-            font-medium rounded-full 
-            text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-eye"></button>
-
-        
-            <button type="button" title="Modifier"   style="background-color: #060;" (click)="edit(entite)"
-            class="text-white from-green-400 via-green-500  
-            to-green-600 hover:bg-gradient-to-br focus:ring-4 
-            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-            text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-pencil"></button>
-
-            <button type="button" title="Ajouter champs"   style="background-color: #060;" (click)="ajouterChampEntite(entite)"
-            class="text-white from-green-400 via-green-500  
-            to-green-600 hover:bg-gradient-to-br focus:ring-4 
-            focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-            text-sm p-2.5 text-center inline-flex items-center mx-1	 pi pi-plus"></button>
-
-            <button type="button"  title="Supprimer"  style="background-color: #ff0000;" (click)="deleteOperation(operation)" class="text-white  from-red-400 
-            via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
-            text-sm p-2.5 text-center inline-flex items-center 
-            mx-0 pi pi-eraser">
-            </button>
-        
-        </td>
+  <div class="card">
+    <p-table
+      [value]="entites"
+      dataKey="id"
+      [rows]="5"
+      [paginator]="true"
+      [rowsPerPageOptions]="[5, 10, 15, 25, 50]"
+      class="min-w-full"
+    >
+      <!-- Header -->
+      <ng-template pTemplate="header">
+        <tr class="bg-gray-100 text-left text-sm text-gray-700">
+          <th style="width: 3rem"></th> <!-- bouton expand -->
+          <th class="px-6 py-3">Nom</th>
+          <th class="px-6 py-3">Description</th>
+          <th class="px-6 py-3" style="width: 300px">Actions</th>
         </tr>
-    </ng-template>
-
-    <ng-template pTemplate="emptymessage">
-    <tr>
-    <td colspan="5" class="text-center py-4 text-gray-500">Aucune entité disponible</td>
-    </tr>
-    </ng-template>
-
+      </ng-template>
+  
+      <!-- Corps principal (niveau 1 : entités) -->
+      <ng-template pTemplate="body" let-entite let-expanded="expanded">
+        <tr>
+          <td>
+            <button
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="entite"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              (click)="expandAll(entite.id)"
+            ></button>
+          </td>
+  
+          <td class="px-6 py-3">{{ entite.name }}</td>
+          <td class="px-6 py-3">{{ entite.description }}</td>
+          <td class="px-6 py-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              title="Visualiser"
+                (click)="detailsEntite(entite)"
+              class="bg-white text-green-700 font-medium rounded-full text-sm p-2.5 pi pi-eye"
+            ></button>
+  
+            <button
+              type="button"
+              title="Modifier"
+              style="background-color: #060"
+              (click)="edit(entite)"
+              class="text-white font-medium rounded-full text-sm p-2.5 pi pi-pencil"
+            ></button>
+  
+            <button
+              type="button"
+              title="Ajouter champ"
+              style="background-color: rgb(224, 244, 224)"
+              (click)="ajouterChampEntite(entite)"
+              class="text-green-800 font-medium rounded-full text-sm p-2.5 pi pi-plus"
+            ></button>
+  
+            <button
+              type="button"
+              title="Supprimer"
+              style="background-color: #ff0000"
+              (click)="deleteEntite(entite)"
+              class="text-white font-medium rounded-full text-sm p-2.5 pi pi-eraser"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+  
+      <!-- Expansion : Niveau 2 (liste des champs de l’entité) -->
+      <ng-template pTemplate="rowexpansion" let-entite>
+        <tr>
+          <td colspan="4">
+            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
+              <h4 class="font-semibold text-gray-700 mb-2">
+                Champs de l’entité : {{ entite.name }}
+              </h4>
+  
+              <p-table
+                [value]="champsEntites"
+                [rows]="5"
+                [paginator]="true"
+                dataKey="id"
+                class="w-full"
+              >
+                <ng-template pTemplate="header">
+                  <tr class="bg-green-100 text-left text-sm text-gray-700">
+                    <th>Nom du champ</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Obligatoire</th>
+                  </tr>
+                </ng-template>
+  
+                <ng-template pTemplate="body" let-field>
+                  <tr>
+                    <td>{{ field.name }}</td>
+                    <td>{{ field.description }}</td>
+                    <td>{{ field.inputType }}</td>
+                    <td>
+                      <span
+                        class="px-2 py-1 rounded text-xs"
+                        [ngClass]="
+                          field.isRequired
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-green-100 text-green-700'
+                        "
+                      >
+                        {{ field.isRequired ? 'Oui' : 'Non' }}
+                      </span>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
-</div>
+  </div>
+  
 
 
 <div id="addoper" 

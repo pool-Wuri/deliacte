@@ -71,6 +71,19 @@ export class EntiteService {
       );
   }
 
+  getEntityByEntity(id?:string): Observable<any> {
+    return this.http
+      .get(ENTITE_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+        {}
+        )
+      );
+  }
 
   ajouterChamp(champ:any):Observable<any>{
     console.log(champ)
@@ -135,5 +148,20 @@ export class EntiteService {
       })
     )
   }
+
+  getChampByEntity(id?:string): Observable<any> {
+    return this.http
+      .get(CHAMP+ '/by-entity/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+        {}
+        )
+      );
+  }
+
 
 }

@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EntiteListComponent } from './entite-list/entite-list.component';
+import { DetailsEntiteComponent } from './details-entite/details-entite.component';
 
 const routes: Routes = [
       {path:'',pathMatch:'full',redirectTo:'list'},
       {path:'list',component:EntiteListComponent},
+      {path:'details/:id',component:DetailsEntiteComponent}
 
 ];
 

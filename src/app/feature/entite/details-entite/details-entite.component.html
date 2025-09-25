@@ -1,0 +1,101 @@
+<div *ngIf="loading" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
+    <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
+     <p-progressSpinner></p-progressSpinner>
+    </div>
+   </div>
+<div style="display: inline-flex;">
+    <p-button icon="pi pi-arrow-left z-50" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
+    <h1 class="p-4">Details de l'entité</h1>
+</div>
+
+<p-toast></p-toast>
+
+<div class="card opera" *ngIf="entite">
+    <h4 class="card-title">-- Détails de l'entité --</h4>
+    <div class="input-container">
+        <!-- Champ 1 -->
+        <div class="input-item">
+            <label class="custom-label">Nom </label>
+            <input
+                type="text"
+                pInputText
+                [value]="entite.name || '---------------'"
+                class="custom-input"
+                readonly
+            />
+        </div>
+
+        <!-- Champ 2 -->
+        <div class="input-item">
+            <label class="custom-label">Description</label>
+            <input
+                type="text"
+                pInputText
+                [value]="entite.description || '---------------'"
+                class="custom-input"
+                readonly
+            />
+        </div>
+
+      
+    </div>
+</div>
+
+<p-divider align="center">
+    <div class="inline-flex align-items-center" style="color:#060;">
+        <!--i class="pi pi-info-circle user"></i-->
+        <b>Champ</b>
+    </div>
+</p-divider>
+
+<div class="card">
+    <p-table #dt [value]="champsEntites" styleClass="p-datatable-customers" [rowHover]="true" 
+      [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+      [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+      [globalFilterFields]="['firstName']">
+
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <span class="p-input-icon-left ml-auto cherch">
+            <input pInputText type="text" #searchInput 
+              (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+              placeholder=" Rechercher" />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr class="tableEnt">
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Requis</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-champ>
+        <tr class="p-selectable-row tableContenu">
+          <td>{{champ.name}}</td>
+          <td>{{champ.description}}</td>
+          <td>{{champ.inputType}}</td>
+          <td>{{champ.isRequired ? 'oui' : 'non'}}</td>
+          <td>
+            <button type="button" title="Supprimer" style="background-color: #ff0000;" 
+             
+              class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
+              focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+              text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eraser">
+            </button>
+
+            <button type="button" title="Modifier" style="background-color: #060;" 
+          
+              class="text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+              focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+              text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-pencil">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>

@@ -60,7 +60,8 @@ list2: any[] | undefined;
   entiteChamp=new ChampEntite;
   newOption: string = '';
   optionAdd:any;
-
+  champsEntites=new Array <ChampEntite>();
+  expandedRowsEntite: { [key: string]: boolean } = {};
 
 constructor(
   private TypeOperationService: TypeOperationService,
@@ -85,8 +86,9 @@ ngOnInit(): void {
     this.user = JSON.parse(userData);
   }
   this.searchEntite();
-  this.searchtypeoperation();
-  this.search_Procedure();
+  this.searchChamp();
+  //this.searchtypeoperation();
+ // this.search_Procedure();
 }
 
 ajouter(){
@@ -118,7 +120,6 @@ saveEntite(){
             if(value.status==201 || value.status==200){
               setTimeout(() => {
                 this.loading=false;
-                this.onSortChange({ value: this.proced });
                 this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
               }, 2000);
             }
@@ -149,12 +150,26 @@ saveEntite(){
  }
 
  searchEntite(){
+  this.loading=true;
   this.entiteService.search_Entite().subscribe({
     complete:()=>{},
     next:(result)=>{
-      this.entites=result.data;
-    },
+      if(result.status==201 || result.status==200){
+          setTimeout(() => {
+            this.loading=false;
+            this.entites=result.data;
+            this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+          }, 2000);
+        }
+        else{
+          this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+          this.loading=false;
+    }
+  },
     error:(error)=>{
+      this.loading=false;
+      this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
+
     }
 
   })
@@ -220,7 +235,7 @@ fermerModal(){
  }
 
  detailsEntite(entite:Entite){
-  this.router.navigate(['/deliacte/operation/details',entite.id])
+  this.router.navigate(['/deliacte/entite/details',entite.id])
   }
 
   ajouterChampEntite(entite:any){
@@ -229,6 +244,7 @@ fermerModal(){
     this.entiteChamp={};
     this.entiteChamp.entityObjectId=entite.id;
     this.entiteChamp.entityObjectOptionFields=[];
+    //console.log(this.entiteChamp)
   }
 
 
@@ -248,16 +264,18 @@ fermerModal(){
           console.log(value)
           this.addchamp=false;
          if(value.status==201 || value.status==200){
-          for(let i=0;i<value.data.entityObjectOptionFields.length;i++){
-            value.data.entityObjectOptionFields[i].entityObjectField=value.data;
-            this.operationService.addOption(value.data.entityObjectOptionFields[i]).subscribe({
-              next:(result)=>{
-                console.log(result)
-              },
-              complete:()=>{},
-              error:(err)=>{
-              }
-            })
+          if(value.data.entityObjectOptionFields.length>0){
+            for(let i=0;i<value.data.entityObjectOptionFields.length;i++){
+              value.data.entityObjectOptionFields[i].entityObjectField=value.data;
+              this.operationService.addOption(value.data.entityObjectOptionFields[i]).subscribe({
+                next:(result)=>{
+                  console.log(result)
+                },
+                complete:()=>{},
+                error:(err)=>{
+                }
+              })
+            }
           }
             setTimeout(() => {
               this.loading=false;
@@ -271,6 +289,7 @@ fermerModal(){
         },
         complete:()=>{},
         error:(err)=>{
+          this.loading=false;
           console.log(err)
         }
       })
@@ -298,109 +317,53 @@ fermerModal(){
    this.newOption='';
   }
 
-
-
-
-
-
-
-searchUser(){
-  this.userService.allUser().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.utilisateurs=result.data;
-    },
-    error:(error)=>{
-    }
-
-  })
-}
-
-
-searchtypeoperation():void{
-  this.TypeOperationService.search_Typeoperation().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.typeoperations=result.data;
-    },
-    error:(error)=>{
-    }
-
-  })
-
- }
- 
- search_Procedure():void{
-  this.procedureService.search_Procedure().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.procedures=result.data;
-    },
-    error:(error)=>{
-    }
-
-  })
- }
-
- getProcedure(id?:number){
-  this.procedureService.get_Procedure(id).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      },
-    error:(er)=>{
-    }
-  })
-  }
-
- searchOperation(procedureId:number):void{
-    this.operationService.get_Operation(procedureId).subscribe({
-      next:(value)=>{
-        this.operations=value;
-        this.operations.reverse();
-        for(let i=0;i<this.operations.length;i++){
-          this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              this.operations[i].procedure=result.data;
-            },
-            error:(er)=>{
-            }
-          });
-          this.operationService.get_Procedure(this.operations[i].id).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-            }
-          }
-        );
-        }
-     
-      },
-      complete:()=>{},
-      error:(err)=>{}
-    })
-   
-  }
-
-  getOperation(operationId:any):string{
-    this.operationService.get_Procedure(operationId).subscribe({
+  expandAll(id:string) {
+    console.log(id)
+    this.entiteService.getChampByEntity(id).subscribe({
       complete:()=>{},
       next:(result)=>{
+        console.log(result)
+        this.champsEntites=result.data;
+        console.log(this.champsEntites)
+      },
+      error:(err)=>{
+        console.log(err)
       }
-    }
-  );
-    return "";
+    })
   }
 
+  onEntiteExpand(event: any) {
+    this.expandedRowsEntite[event.data.id] = true;
+    // Charger les champs si besoin
+    if (!event.data.champs) {
+      this.entiteService.getChampByEntity(event.data.id).subscribe(champs => {
+        event.data.champs = champs;
+        console.log(champs)
+      });
+    }
+  }
+
+  onEntiteCollapse(event: any) {
+    delete this.expandedRowsEntite[event.data.id];
+  }
+
+  searchChamp(){
+    this.entiteService.searchChamp().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result)
+      },
+      error:(err)=>{
+        console.log(err)
+      }
 
 
-   
+    })
+  }
 
-
-
-
- deleteOperation(operation:Operation){
+ deleteEntite(entite:Entite){
   this.confirmationService.confirm({
-     message: 'Voulez-vous vraiment supprimer cette opération?',
+     message: 'Voulez-vous vraiment supprimer cette entité?',
      header: 'Suppression',
      acceptLabel:'Oui',
      rejectLabel:'Non',
@@ -408,14 +371,14 @@ searchtypeoperation():void{
      acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.loading=true;
-      this.operationService.delete_operation(operation.id).subscribe({
+      this.entiteService.delete_entite(entite.id).subscribe({
         complete:()=>{},
         next:(result)=>{
           if(result.status==200 || result.status==201){
             setTimeout(() => {
               this.loading=false;
+              this.searchEntite();
               this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
-              this.onSortChange({ value: this.proced });
             }, 2000);
           }
           else{
@@ -436,98 +399,6 @@ searchtypeoperation():void{
  });
  }
 
- detailsOperation(operation:Operation){
-  this.router.navigate(['/deliacte/operation/details',operation.id])
-  }
-
- 
-
-  
-
- 
-
-
-  onSortChange(event: { value: any; }) {
-     this.proced = event.value;
-    this.operationService.get_Operation(this.proced.id).subscribe({
-      next:(value)=>{
-        if(value){
-          this.operations=value.data;
-         // console.log(this.operations)
-          for(let i=0;i<this.operations.length;i++){
-            this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].procedure=result.data;
-                  },
-              error:(er)=>{
-              }
-            });
-          if(this.operations[i].operationNextId){
-            this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].operationNextId=result.data;
-              }
-            }
-          );
-          }
-          else
-          {
-            this.operations[i].operationNextId="";
-  
-          }
-          if(this.operations[i].operationPreviousId){
-            this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].operationPreviousId=result.data;
-              }
-            }
-          );
-          }
-          else
-          {
-            this.operations[i].operationPreviousId="";
-  
-          }
-          }
-        }
-      
-      },
-      complete:()=>{},
-      error:(err)=>{}
-    });
-  }
-
-  generatePDF() {
-    // Create a new PDF document.
-    const doc = new jsPDF();
-  
-    // Add content to the PDF.
-    doc.setFontSize(16);
-    doc.text('Liste des opérations', 10, 10);
-    doc.setFontSize(12);
-    
-    // Create a table using `jspdf-autotable`.
-    const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
-    const data = this.operations.map(operation => [
-      operation.name,
-      operation.description,
-      operation.operationNextId,
-      operation.operationPreviousId
-    ]);
-    
-    autoTable(doc, {
-      head: headers,
-      body: data,
-      startY: 30, // Adjust the `startY` position as needed.
-    });
-  
-    
-    // Save the PDF.
-    doc.save('Liste_user.pdf');
-  }
   
   private async getBase64ImageFromUrl(url: string): Promise<string> {
     const response = await fetch(url);
@@ -574,16 +445,13 @@ searchtypeoperation():void{
       // Ajouter le titre principal du document
       doc.setFontSize(16);
       doc.setFont('helvetica', 'bold');
-      doc.text('Liste des opérations de la procedure'+" "+ this.procedurechoisi.name, 14, 80); // Position Y ajustée pour être sous l'en-tête
+      doc.text('Liste des entités'+" "+ this.procedurechoisi.name, 14, 80); // Position Y ajustée pour être sous l'en-tête
   
       // Préparer les données du tableau
-      const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
-      console.log(this.operations)
-      const data = this.operations.map(operation => [
-        operation.name,
-        operation.description,
-        operation.operationNextId.name || "---",
-        operation.operationPreviousId.name  || "---"
+      const headers = [['Nom', 'Description']];
+      const data = this.entites.map(entite => [
+        entite.name || "---",
+        entite.description || "---",
       ]);
   
       // Créer le tableau
@@ -599,7 +467,7 @@ searchtypeoperation():void{
       });
   
       // Sauvegarder le fichier PDF
-      doc.save('Liste_des_operation.pdf');
+      doc.save('Liste_des_entités.pdf');
   
     } catch (error) {
       console.error("Erreur lors de la génération du PDF :", error);

@@ -30,11 +30,14 @@ import { TabViewModule } from 'primeng/tabview';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TreeModule } from 'primeng/tree';
+import { DetailsEntiteComponent } from './details-entite/details-entite.component';
+import { TagModule } from 'primeng/tag';
 
 
 @NgModule({
   declarations: [
-    EntiteListComponent
+    EntiteListComponent,
+    DetailsEntiteComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +69,8 @@ import { TreeModule } from 'primeng/tree';
     DataViewModule,
     ListboxModule,
     ProgressSpinnerModule,
-    TreeModule
+    TreeModule,
+    TagModule
     
   ],
   providers: [
