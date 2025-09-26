@@ -94,70 +94,70 @@
 
     <!-- Expansion niveau 2 : champs -->
     <ng-template pTemplate="rowexpansion" let-entite>
-        <tr style="margin-left: 20%;" class="champ">
-            <td colspan="4" >
-                <div class="card">
-                    <p-table
-                    [value]="champsEntites"
-                    dataKey="id"
-                    [rows]="4" 
-                    [paginator]="true" 
-                    [rowsPerPageOptions]="[4, 8, 12, 16,20, 50]"
-                    [expandedRowKeys]="expandedFieldKeys"
-                    (onRowExpand)="onFieldExpand($event)"
-                    (onRowCollapse)="onFieldCollapse($event)"
-                    class="w-full"
-                >
-                    <ng-template pTemplate="header">
-                    <tr style="background-color: #ff0000;">
-                        <th style="width:3rem"></th>
-                        <th>Nom du champ</th>
-                        <th>Description</th>
-                        <th>Type</th>
-                        <th>Obligatoire</th>
-                    </tr>
-                    </ng-template>
-
-                    <ng-template pTemplate="body" let-field let-expanded="expanded">
-                    <tr>
-                        <td>
-                        <button
-                            type="button"
-                            pButton
-                            [pRowToggler]="field"
-                            class="p-button-text p-button-rounded p-button-plain"
-                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-                        ></button>
-                        </td>
-                        <td>{{ field.name }}</td>
-                        <td>{{ field.description }}</td>
-                        <td>{{ field.inputType }}</td>
-                        <td>{{ field.isRequired ? 'Oui' : 'Non' }}</td>
-                    </tr>
-                    </ng-template>
-
-                    <!-- Expansion niveau 3 : options -->
-                    <ng-template pTemplate="rowexpansion" let-field>
-                    <tr>
-                        <td colspan="5">
-                        <div class="p-3 border rounded bg-white">
-                            <h5 class="font-semibold mb-2">
-                            Options du champ : {{ field.name }}
-                            </h5>
-                            <ul class="list-disc ml-6 text-sm text-gray-700">
-                            <li *ngFor="let opt of field.entityObjectOptionFields">
-                                {{ opt.name }}
-                            </li>
-                            </ul>
-                        </div>
-                        </td>
-                    </tr>
-                    </ng-template>
-                    </p-table>
-                </div>
-               
-            </td>
-        </tr>
+            <tr style="margin-left: 20%;" class="rounded-full bg-gray-300">
+                <td colspan="4" >
+                    <div class="card">
+                        <p-table
+                        [value]="champsEntites"
+                        dataKey="id"
+                        [rows]="4" 
+                        [paginator]="true" 
+                        [rowsPerPageOptions]="[4, 8, 12, 16,20, 50]"
+                        [expandedRowKeys]="expandedFieldKeys"
+                        (onRowExpand)="onFieldExpand($event)"
+                        (onRowCollapse)="onFieldCollapse($event)"
+                        class="w-full"
+                    >
+                        <ng-template pTemplate="header">
+                        <tr style="background-color: #ff0000;">
+                            <th style="width:3rem"></th>
+                            <th>Nom du champ</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Obligatoire</th>
+                        </tr>
+                        </ng-template>
+    
+                        <ng-template pTemplate="body" let-field let-expanded="expanded">
+                        <tr>
+                            <td>
+                            <button
+                                type="button"
+                                pButton
+                                [pRowToggler]="field"
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                            ></button>
+                            </td>
+                            <td>{{ field.name }}</td>
+                            <td>{{ field.description }}</td>
+                            <td>{{ field.inputType }}</td>
+                            <td>{{ field.isRequired ? 'Oui' : 'Non' }}</td>
+                        </tr>
+                        </ng-template>
+    
+                        <!-- Expansion niveau 3 : options -->
+                        <ng-template pTemplate="rowexpansion" let-field>
+                        <tr>
+                            <td colspan="5">
+                            <div class="p-3 border rounded bg-white">
+                                <h5 class="font-semibold mb-2">
+                                Options du champ : {{ field.name }}
+                                </h5>
+                                <ul class="list-disc ml-6 text-sm text-gray-700">
+                                <li *ngFor="let opt of field.entityObjectOptionFields">
+                                    {{ opt.name }}
+                                </li>
+                                </ul>
+                            </div>
+                            </td>
+                        </tr>
+                        </ng-template>
+                        </p-table>
+                    </div>
+                   
+                </td>
+            </tr>       
     </ng-template>
     </p-table>
   </div>
