@@ -62,6 +62,7 @@ list2: any[] | undefined;
   optionAdd:any;
   champsEntites=new Array <ChampEntite>();
   expandedRowsEntite: { [key: string]: boolean } = {};
+  expandedRowKeys: { [key: string]: boolean } = {};
 
 constructor(
   private TypeOperationService: TypeOperationService,
@@ -120,6 +121,7 @@ saveEntite(){
             if(value.status==201 || value.status==200){
               setTimeout(() => {
                 this.loading=false;
+                this.searchEntite();
                 this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
               }, 2000);
             }
@@ -264,7 +266,7 @@ fermerModal(){
           console.log(value)
           this.addchamp=false;
          if(value.status==201 || value.status==200){
-          if(value.data.entityObjectOptionFields.length>0){
+        /*  if(value.data.entityObjectOptionFields.length>0){
             for(let i=0;i<value.data.entityObjectOptionFields.length;i++){
               value.data.entityObjectOptionFields[i].entityObjectField=value.data;
               this.operationService.addOption(value.data.entityObjectOptionFields[i]).subscribe({
@@ -276,9 +278,10 @@ fermerModal(){
                 }
               })
             }
-          }
+          }*/
             setTimeout(() => {
               this.loading=false;
+              this.searchEntite();
               this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
             }, 2000);
           }
@@ -308,23 +311,36 @@ fermerModal(){
   addOption(){
     this.optionAdd={
       name:this.newOption,
-      entityObjectField:this.entiteChamp
+      //entityObjectField:this.entiteChamp
     }
-    this.optionAdd;
+ //   this.optionAdd;
     this.entiteChamp.entityObjectOptionFields.push(this.optionAdd);
     console.log(this.entiteChamp)
    
    this.newOption='';
   }
 
+
+  onRowExpand(event: any) {
+    // Réinitialiser toutes les expansions
+    this.expandedRowKeys = {};
+    // Ouvrir seulement la ligne cliquée
+    this.expandedRowKeys[event.data.id] = true;
+  }
+  
+  onRowCollapse(event: any) {
+    // Quand on referme manuellement
+    delete this.expandedRowKeys[event.data.id];
+  }
   expandAll(id:string) {
-    console.log(id)
+   // console.log(id)
+    this.champsEntites=[];
     this.entiteService.getChampByEntity(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
+      //  console.log(result)
         this.champsEntites=result.data;
-        console.log(this.champsEntites)
+       // console.log(this.champsEntites)
       },
       error:(err)=>{
         console.log(err)
@@ -332,19 +348,15 @@ fermerModal(){
     })
   }
 
-  onEntiteExpand(event: any) {
-    this.expandedRowsEntite[event.data.id] = true;
-    // Charger les champs si besoin
-    if (!event.data.champs) {
-      this.entiteService.getChampByEntity(event.data.id).subscribe(champs => {
-        event.data.champs = champs;
-        console.log(champs)
-      });
-    }
-  }
+expandedFieldKeys: { [key: string]: boolean } = {};
 
-  onEntiteCollapse(event: any) {
-    delete this.expandedRowsEntite[event.data.id];
+  onFieldExpand(event: any) {
+    this.expandedFieldKeys = {};
+    this.expandedFieldKeys[event.data.id] = true;
+  }
+  
+  onFieldCollapse(event: any) {
+    delete this.expandedFieldKeys[event.data.id];
   }
 
   searchChamp(){

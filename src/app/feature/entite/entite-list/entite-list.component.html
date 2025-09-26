@@ -8,154 +8,157 @@
 <div class=" text-white p-6 rounded-t-lg shadow-md mb-6" style="background-color: #060;">
     <h1 class="text-2xl font-bold">Liste des entités</h1>
   </div>
-  <p-toolbar styleClass="mb-4 gap-2">
-    <!-- Boutons à gauche -->
-    <ng-template pTemplate="left">
-      <!-- Bouton Exporter (caché en mobile) -->
-      <button type="button" (click)="generatePDF1()"
-        class="hidden md:inline-block text-red-700 hover:text-white border border-red-700 
-        hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 
-        font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 
-        dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
-        Exporter
-      </button>
-  
-      
-    </ng-template>
-  
-    <!-- Bouton à droite -->
-    <ng-template pTemplate="right">
-      <button style="background-color: #060;" (click)="ajouter()"
-        class="text-white from-green-400 via-green-500 to-green-600 
-        focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-        dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
-        type="button">
-        Ajouter une entité
-      </button>
-    </ng-template>
-  </p-toolbar>
 
-  
+  <!-- Toolbar -->
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50 p-4 border-b border-gray-200 space-y-3 md:space-y-0">
+
+    <!-- Search Box -->
+    <span class="p-input-icon-left w-full md:w-64">
+     
+      <input 
+        pInputText 
+        type="text" 
+        #searchInput 
+        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+        placeholder="Rechercher" 
+        class="hidden lg:inline-flex w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-700"/>
+    </span>
+
+    <!-- Buttons -->
+    <div class="flex w-full md:w-auto justify-end md:justify-end space-x-2 mt-2 md:mt-0">
+      <button type="button" (click)="generatePDF1()"
+      class="hidden lg:inline-flex text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+      Exporter
+      </button>
+      <button type="button" (click)="ajouter()" style="background-color: #060;"
+      class=" text-white hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
+      Ajouter une entité
+          </button>
+    </div>
+
+  </div>
+
   <div class="card">
+   <!-- Table des entités -->
     <p-table
-      [value]="entites"
-      dataKey="id"
-      [rows]="5"
-      [paginator]="true"
-      [rowsPerPageOptions]="[5, 10, 15, 25, 50]"
-      class="min-w-full"
+        #dt 
+        [value]="entites" 
+        dataKey="id" 
+        [rows]="5" 
+        [globalFilterFields]="['name', 'description']"
+        [paginator]="true" 
+        [rowsPerPageOptions]="[5, 10, 15, 25, 50]"
+        [expandedRowKeys]="expandedRowKeys"
+        (onRowExpand)="onRowExpand($event)"
+        (onRowCollapse)="onRowCollapse($event)"
     >
-      <!-- Header -->
-      <ng-template pTemplate="header">
-        <tr class="bg-gray-100 text-left text-sm text-gray-700">
-          <th style="width: 3rem"></th> <!-- bouton expand -->
-          <th class="px-6 py-3">Nom</th>
-          <th class="px-6 py-3">Description</th>
-          <th class="px-6 py-3" style="width: 300px">Actions</th>
-        </tr>
-      </ng-template>
-  
-      <!-- Corps principal (niveau 1 : entités) -->
-      <ng-template pTemplate="body" let-entite let-expanded="expanded">
+    <ng-template pTemplate="header">
+    <tr>
+        <th style="width:3rem"></th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-entite let-expanded="expanded">
         <tr>
-          <td>
-            <button
-              type="button"
-              pButton
-              pRipple
-              [pRowToggler]="entite"
-              class="p-button-text p-button-rounded p-button-plain"
-              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              (click)="expandAll(entite.id)"
-            ></button>
-          </td>
-  
-          <td class="px-6 py-3">{{ entite.name }}</td>
-          <td class="px-6 py-3">{{ entite.description }}</td>
-          <td class="px-6 py-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              title="Visualiser"
-                (click)="detailsEntite(entite)"
-              class="bg-white text-green-700 font-medium rounded-full text-sm p-2.5 pi pi-eye"
-            ></button>
-  
-            <button
-              type="button"
-              title="Modifier"
-              style="background-color: #060"
-              (click)="edit(entite)"
-              class="text-white font-medium rounded-full text-sm p-2.5 pi pi-pencil"
-            ></button>
-  
-            <button
-              type="button"
-              title="Ajouter champ"
-              style="background-color: rgb(224, 244, 224)"
-              (click)="ajouterChampEntite(entite)"
-              class="text-green-800 font-medium rounded-full text-sm p-2.5 pi pi-plus"
-            ></button>
-  
-            <button
-              type="button"
-              title="Supprimer"
-              style="background-color: #ff0000"
-              (click)="deleteEntite(entite)"
-              class="text-white font-medium rounded-full text-sm p-2.5 pi pi-eraser"
-            ></button>
-          </td>
+            <td>
+                <button
+                    type="button"
+                    pButton
+                    [pRowToggler]="entite"
+                    class="p-button-text p-button-rounded p-button-plain"
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                    (click)="expandAll(entite.id)"
+                ></button>
+            </td>
+            <td>{{ entite.name }}</td>
+            <td>{{ entite.description }}</td>
+            <td class="px-6 py-3 flex flex-wrap gap-2"> 
+                <button type="button" title="Visualiser" (click)="detailsEntite(entite)" 
+                    class="bg-white text-green-700 font-medium rounded-full text-sm p-2.5 pi pi-eye" >
+                </button> 
+                <button type="button" title="Modifier" style="background-color: #060" 
+                    (click)="edit(entite)" class="text-white font-medium rounded-full text-sm p-2.5 pi pi-pencil" >
+                </button>
+                <button type="button" title="Ajouter champ" style="background-color: rgb(224, 244, 224)" 
+                    (click)="ajouterChampEntite(entite)" class="text-green-800 font-medium rounded-full text-sm p-2.5 pi pi-plus" >
+                </button> 
+                <button type="button" title="Supprimer" style="background-color: #ff0000" 
+                    (click)="deleteEntite(entite)" class="text-white font-medium rounded-full text-sm p-2.5 pi pi-eraser" >
+                </button> 
+            </td>
         </tr>
-      </ng-template>
-  
-      <!-- Expansion : Niveau 2 (liste des champs de l’entité) -->
-      <ng-template pTemplate="rowexpansion" let-entite>
-        <tr>
-          <td colspan="4">
-            <div class="p-4 border border-gray-200 rounded-lg bg-gray-50">
-              <h4 class="font-semibold text-gray-700 mb-2">
-                Champs de l’entité : {{ entite.name }}
-              </h4>
-  
-              <p-table
-                [value]="champsEntites"
-                [rows]="5"
-                [paginator]="true"
-                dataKey="id"
-                class="w-full"
-              >
-                <ng-template pTemplate="header">
-                  <tr class="bg-green-100 text-left text-sm text-gray-700">
-                    <th>Nom du champ</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Obligatoire</th>
-                  </tr>
-                </ng-template>
-  
-                <ng-template pTemplate="body" let-field>
-                  <tr>
-                    <td>{{ field.name }}</td>
-                    <td>{{ field.description }}</td>
-                    <td>{{ field.inputType }}</td>
-                    <td>
-                      <span
-                        class="px-2 py-1 rounded text-xs"
-                        [ngClass]="
-                          field.isRequired
-                            ? 'bg-red-100 text-red-700'
-                            : 'bg-green-100 text-green-700'
-                        "
-                      >
-                        {{ field.isRequired ? 'Oui' : 'Non' }}
-                      </span>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
-            </div>
-          </td>
+    </ng-template>
+
+    <!-- Expansion niveau 2 : champs -->
+    <ng-template pTemplate="rowexpansion" let-entite>
+        <tr style="margin-left: 20%;" class="champ">
+            <td colspan="4" >
+                <div class="card">
+                    <p-table
+                    [value]="champsEntites"
+                    dataKey="id"
+                    [rows]="4" 
+                    [paginator]="true" 
+                    [rowsPerPageOptions]="[4, 8, 12, 16,20, 50]"
+                    [expandedRowKeys]="expandedFieldKeys"
+                    (onRowExpand)="onFieldExpand($event)"
+                    (onRowCollapse)="onFieldCollapse($event)"
+                    class="w-full"
+                >
+                    <ng-template pTemplate="header">
+                    <tr style="background-color: #ff0000;">
+                        <th style="width:3rem"></th>
+                        <th>Nom du champ</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Obligatoire</th>
+                    </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-field let-expanded="expanded">
+                    <tr>
+                        <td>
+                        <button
+                            type="button"
+                            pButton
+                            [pRowToggler]="field"
+                            class="p-button-text p-button-rounded p-button-plain"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                        ></button>
+                        </td>
+                        <td>{{ field.name }}</td>
+                        <td>{{ field.description }}</td>
+                        <td>{{ field.inputType }}</td>
+                        <td>{{ field.isRequired ? 'Oui' : 'Non' }}</td>
+                    </tr>
+                    </ng-template>
+
+                    <!-- Expansion niveau 3 : options -->
+                    <ng-template pTemplate="rowexpansion" let-field>
+                    <tr>
+                        <td colspan="5">
+                        <div class="p-3 border rounded bg-white">
+                            <h5 class="font-semibold mb-2">
+                            Options du champ : {{ field.name }}
+                            </h5>
+                            <ul class="list-disc ml-6 text-sm text-gray-700">
+                            <li *ngFor="let opt of field.entityObjectOptionFields">
+                                {{ opt.name }}
+                            </li>
+                            </ul>
+                        </div>
+                        </td>
+                    </tr>
+                    </ng-template>
+                    </p-table>
+                </div>
+               
+            </td>
         </tr>
-      </ng-template>
+    </ng-template>
     </p-table>
   </div>
   
@@ -197,13 +200,18 @@
                             <small class="p-error" *ngIf="submitted && !operation.typeOperationId">Entrer le libéllé .</small>
 
                         </div> 
-                        <div [class.disabled]="true">
+                        <div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer la description</label>
-                            <input type="text" id="name" name="name" [(ngModel)]="entite.description"
+                          
+                            <textarea id="description" name="description" [(ngModel)]="entite.description" 
+                            rows="4" cols="50"
+                            class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            placeholder="Entrer la description" required></textarea>
+                             <!--input type="text" id="name" name="name" [(ngModel)]="entite.description"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="Description" />
+                            dark:focus:border-blue-500" placeholder="Description" /-->
                           
                         </div> 
                       

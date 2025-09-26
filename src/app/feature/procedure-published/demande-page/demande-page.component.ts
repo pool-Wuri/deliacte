@@ -8,6 +8,8 @@ import { User } from 'src/app/core/models/user.model';
 import { OperationService } from 'src/app/core/services/operation.service';
 import { ProcedureService } from 'src/app/core/services/procedure.service';
 import { Location } from '@angular/common';
+import { ChampEntite, Entite } from 'src/app/core/models/entite.modele';
+import { EntiteService } from 'src/app/core/services/entite.service';
 
 @Component({
   selector: 'app-demande-page',
@@ -65,10 +67,8 @@ export class DemandePageComponent {
     private operationService:OperationService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router,
+    private router: Router,  private entiteService:EntiteService,
     private location: Location,
-
-
 ){
 
 }
@@ -82,7 +82,7 @@ ngOnInit():void{
     this.getProcedure(this.id)
    }
   );
- 
+ this.searchEntity()
  // this.searchChamp()
 }
 
@@ -177,7 +177,6 @@ searchOperation():void{
     next:(value)=>{
       this.operations=value;
       this.operations=this.operations.filter(u=>u.procedureId==this.id);
-    
     },
     complete:()=>{},
     error:(err)=>{}
@@ -304,6 +303,46 @@ retourPage(){
   this.router.navigate(['/deliacte/dossier/list']);
 
  // this.location.back();
+}
+entites=new Array <Entite>();
+champsEntites=new Array <ChampEntite>();
+
+searchEntity(){
+  this.entiteService.search_Entite().subscribe({
+    complete:()=>{},
+    next:(result)=>{
+      this.entiteService.searchChamp().subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          console.log(result)
+          this.champsEntites=result.data;
+          console.log(this.champsEntites)
+        },
+        error:(err)=>{
+          console.log(err)
+        }
+  
+  
+      })
+      if(result.status==201 || result.status==200){
+          setTimeout(() => {
+            this.loading=false;
+            this.entites=result.data;
+            this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+          }, 2000);
+        }
+        else{
+          this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+          this.loading=false;
+    }
+  },
+    error:(error)=>{
+      this.loading=false;
+      this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
+
+    }
+
+  })
 }
 
 }

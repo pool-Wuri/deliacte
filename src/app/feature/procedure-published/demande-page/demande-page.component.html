@@ -87,8 +87,11 @@
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 
         <div class="grid gap-6 mb-6 md:grid-cols-2" [class.disabled]="isDisabled" >
+            
             <ng-container *ngFor="let champ of champs; let i = index">
+
                 <div *ngIf="demandeFor[i]">
+                  
                     <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
                         <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }} <span class="text-red-500">*</span></label>
                         <input [type]="champ.inputType" [id]="'input-' + i" 
@@ -170,6 +173,18 @@
                         <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
                     </div>
+                    <div *ngIf="!['TEXT','PDF', 'FILE','SELECT', 'IMAGE', 'RANGE', 'NUMBER','RADIO', 'EMAIL','CHECKBOX','TEXTAREA', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
+                        <div>
+                            <h1>Informations de {{entites[0].name}}</h1>
+                        </div>
+                        <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }} <span class="text-red-500">*</span></label>
+                        <input [type]="champ.inputType" [id]="'input-' + i" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            required [(ngModel)]="demandeFor[i].name"/>
+                            <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
+
+                    </div>
+                 
                 </div>
             </ng-container>
             

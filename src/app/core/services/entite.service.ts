@@ -4,9 +4,9 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 import { entityObjectOptionFields } from '../models/entite.modele';
 
-const ENTITE_API=environment.apiUrl +"/classeobject";
-const CHAMP=environment.apiUrl+ "/champsclasse";
-const CHAMPOption=environment.apiUrl+ "/optionschamps"
+const ENTITE_API=environment.apiUrl +"/entity_object";
+const CHAMP=environment.apiUrl+ "/entity_objec_field";
+const CHAMPOption=environment.apiUrl+ "/entity_objec_field_option"
 
 @Injectable({
   providedIn: 'root'
