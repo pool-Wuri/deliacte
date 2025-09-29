@@ -1,0 +1,147 @@
+<p-toast></p-toast>
+<div *ngIf="loading" appendTo="body" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
+    <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
+     <p-progressSpinner></p-progressSpinner>
+    </div>
+   </div>
+
+<body class="bg-gray-100">
+  <!-- Bande grisée avec avatar centré -->
+  <div class="w-full h-32 bg-gradient-to-t from-gray-200 to-gray-400 flex justify-center items-end">
+    <div class="rounded-full bg-white shadow-lg w-28 h-28 flex items-center justify-center -mb-14 border border-gray-300">
+      <img src="https://ui-avatars.com/api/?name={{userInfos.firstName}}  {{userInfos.lastName}}" class="rounded-full w-24 h-24" alt="">
+    </div>
+  </div>
+  <!-- En-tête de profil -->
+  <div class="flex flex-col items-center mt-20 mb-6">
+    <h1 class="text-xl font-semibold mb-2">{{userInfos.firstName}}  {{userInfos.lastName}}</h1>
+    <span class="text-gray-600 text-base">{{userInfos.email}}</span>
+  </div>
+  <!-- Contenu principal -->
+ <div class="min-h-screen bg-gray-100 p-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="w-full">
+        <!-- Formulaire de l'entité courante -->
+        <div class="bg-white shadow-md rounded-lg p-6 w-full" *ngIf="entitesUser && entitesUser.length > 0">
+          <h2 class="text-xl font-semibold mb-4">{{ entitesUser[currentPage].name }}</h2>
+      
+            <!-- Boucle sur les champs de l’entité -->
+            <div *ngFor="let champ of entitesUser[currentPage].entityObjectFields; let j = index">
+      
+              <!-- Champs texte classiques -->
+              <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)">
+                <label [for]="'input-' + currentPage + '-' + j" class="block mb-2 text-sm font-medium text-gray-900">
+                  {{ champ.name }} <span *ngIf="champ.isRequired" class="text-red-500">*</span>
+                </label>
+                <input
+                  [type]="champ.inputType.toLowerCase()"
+                  [id]="'input-' + currentPage + '-' + j"
+                  [required]="champ.isRequired"
+                  [(ngModel)]="champ.value"    
+                  class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                         focus:ring-blue-500 focus:border-blue-500 block p-2.5
+                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                         dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                />
+              </div>
+      
+              <!-- Champ Textarea -->
+              <div *ngIf="champ.inputType === 'TEXTAREA'">
+                <label [for]="'textarea-' + currentPage + '-' + j" class="block mb-2 text-sm font-medium text-gray-900">
+                  {{ champ.name }} <span *ngIf="champ.isRequired" class="text-red-500">*</span>
+                </label>
+                <textarea [id]="'textarea-' + currentPage + '-' + j" rows="4"
+                [(ngModel)]="champ.value"    
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
+                         focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 
+                         dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Écrire ici..."></textarea>
+              </div>
+      
+              <!-- Champ Radio -->
+              <div *ngIf="champ.inputType === 'RADIO'" class="flex flex-wrap">
+                <label class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }} <span *ngIf="champ.isRequired" class="text-red-500">*</span></label>
+                <div *ngFor="let option of champ.entityObjectOptionFields; let k = index" class="flex items-center me-4">
+                  <input 
+                    [id]="'radio-' + currentPage + '-' + j + '-' + k" 
+                    type="radio" 
+                    [value]="option.name" 
+                    [(ngModel)]="champ.value"    
+                    name="radio-group-{{currentPage}}-{{j}}"                    
+                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 focus:ring-2">
+                  <label [for]="'radio-' + currentPage + '-' + j + '-' + k" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    {{ option.name }}
+                  </label>
+                </div>
+              </div>
+      
+              <!-- Champ Checkbox -->
+              <div *ngIf="champ.inputType === 'CHECKBOX'" class="flex flex-wrap">
+                <label class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }} <span *ngIf="champ.isRequired" class="text-red-500">*</span></label>
+                <div *ngFor="let option of champ.options; let k = index" class="flex items-center me-4">
+                  <input 
+                    [id]="'checkbox-' + currentPage + '-' + j + '-' + k" 
+                    type="checkbox" 
+                    [value]="option.name" 
+                    [(ngModel)]="champ.value"    
+                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 focus:ring-2">
+                  <label [for]="'checkbox-' + currentPage + '-' + j + '-' + k" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    {{ option.name }}
+                  </label>
+                </div>
+              </div>
+      
+              <!-- Champ Fichier -->
+              <div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.inputType)">
+                <label [for]="'file-' + currentPage + '-' + j" class="block mb-2 text-sm font-medium text-gray-900">
+                  {{ champ.name }}
+                </label>
+                <div class="flex items-center space-x-4">
+                  <input [id]="'file-' + currentPage + '-' + j" type="file"
+                  (change)="onFileChange($event, j,currentPage)"
+                  class="block w-4/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
+                  <button style="background-color: #060;" (click)="saveFile()" class="px-4 py-2 text-white font-semibold rounded-lg hover:bg-green-700">
+                    Save
+                  </button>
+                </div>
+              </div>
+      
+              <!-- Champ Select -->
+              <div *ngIf="champ.inputType === 'SELECT'">
+                <label [for]="'select-' + currentPage + '-' + j" class="block mb-2 text-sm font-medium text-gray-900">{{ champ.name }}</label>
+                <select 
+                [(ngModel)]="champ.value"    
+                [id]="'select-' + currentPage + '-' + j" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                  <option *ngFor="let opt of champ.entityObjectOptionFields" [value]="opt.name">{{ opt.name }}</option>
+                </select>
+              </div>
+      
+            </div>
+      
+          <!-- Navigation des pages -->
+          <div class="flex justify-between items-center mt-6">
+            <button (click)="prevPage()" [disabled]="currentPage === 0" class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50">
+              Précédent
+            </button>
+            <span class="font-medium">Formulaire {{ currentPage + 1 }} / {{ entitesUser.length }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === entitesUser.length - 1" class="px-4 py-2 bg-gray-200 rounded disabled:opacity-50">
+              Suivant
+            </button>
+          </div>
+        </div>
+      </div>
+      
+   <!-- Conteneur pour le bouton -->
+    <div class="flex justify-end mt-4">
+        <button type="submit" (click)="sauvegarder()"
+        class=" text-white px-4 py-2 rounded-md hover:bg-indigo-700" style="background-color: #060;">
+        Sauvegarder
+        </button>
+    </div>
+  
+  </div>
+</div>
+
+  
+</body>
+<p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

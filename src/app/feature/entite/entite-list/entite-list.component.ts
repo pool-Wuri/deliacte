@@ -88,8 +88,7 @@ ngOnInit(): void {
   }
   this.searchEntite();
   this.searchChamp();
-  //this.searchtypeoperation();
- // this.search_Procedure();
+
 }
 
 ajouter(){
@@ -176,6 +175,7 @@ saveEntite(){
 
   })
 }
+
 
 fermerModal(){
   this.addboutton=false;

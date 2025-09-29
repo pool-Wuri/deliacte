@@ -61,7 +61,8 @@ export class DemandePageComponent {
   loading=false;
   radioValues: { [key: number]: string } = {};  // Stocke les valeurs des boutons radio par index
   procedureAff!:Procedure;
-
+  entites=new Array <Entite>();
+  champsEntites=new Array <ChampEntite>();
   constructor(private route:ActivatedRoute,
     private procedureService:ProcedureService,
     private operationService:OperationService,
@@ -304,8 +305,7 @@ retourPage(){
 
  // this.location.back();
 }
-entites=new Array <Entite>();
-champsEntites=new Array <ChampEntite>();
+
 
 searchEntity(){
   this.entiteService.search_Entite().subscribe({

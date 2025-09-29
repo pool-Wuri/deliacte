@@ -4,10 +4,10 @@
      <p-progressSpinner></p-progressSpinner>
     </div>
    </div>
-<!--h1>Liste des opérations</h1-->
-<div class=" text-white p-6 rounded-t-lg shadow-md mb-6" style="background-color: #060;">
-    <h1 class="text-2xl font-bold">Liste des entités</h1>
-  </div>
+    <!--h1>Liste des opérations</h1-->
+    <div class=" text-white p-6 rounded-t-lg shadow-md mb-6" style="background-color: #060;">
+        <h1 class="text-2xl font-bold">Liste des entités</h1>
+    </div>
 
   <!-- Toolbar -->
   <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50 p-4 border-b border-gray-200 space-y-3 md:space-y-0">
@@ -164,241 +164,241 @@
   
 
 
-<div id="addoper" 
-     [ngClass]="{'hidden': !addboutton}" 
-     tabindex="-1" 
-     [attr.aria-hidden]="!addboutton" 
-     class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    {{title}}
-                </h3>
-                <button type="button" (click)="fermerModal()"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
-                rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">             
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
-                       
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer le libellé</label>
-                            <input type="text" id="name" name="name"  [(ngModel)]="entite.name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="Libellé" />
-                            <small class="p-error" *ngIf="submitted && !operation.typeOperationId">Entrer le libéllé .</small>
+    <div id="addoper" 
+        [ngClass]="{'hidden': !addboutton}" 
+        tabindex="-1" 
+        [attr.aria-hidden]="!addboutton" 
+        class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{title}}
+                    </h3>
+                    <button type="button" (click)="fermerModal()"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
+                    rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">             
+                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer le libellé</label>
+                                <input type="text" id="name" name="name"  [(ngModel)]="entite.name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="Libellé" />
+                                <small class="p-error" *ngIf="submitted && !operation.typeOperationId">Entrer le libéllé .</small>
 
-                        </div> 
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer la description</label>
-                          
-                            <textarea id="description" name="description" [(ngModel)]="entite.description" 
-                            rows="4" cols="50"
-                            class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                            placeholder="Entrer la description" required></textarea>
-                             <!--input type="text" id="name" name="name" [(ngModel)]="entite.description"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="Description" /-->
-                          
-                        </div> 
-                      
-                      
-                                      
-                    </div>
-            </div>
+                            </div> 
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer la description</label>
+                            
+                                <textarea id="description" name="description" [(ngModel)]="entite.description" 
+                                rows="4" cols="50"
+                                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                placeholder="Entrer la description" required></textarea>
+                                <!--input type="text" id="name" name="name" [(ngModel)]="entite.description"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="Description" /-->
+                            
+                            </div> 
+                        
+                        
+                                        
+                        </div>
+                </div>
 
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button" *ngIf="addUser"  style="background-color: #060;" (click)="saveEntite()"
-                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button" *ngIf="addUser"  style="background-color: #060;" (click)="saveEntite()"
+                    class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
 
-                <button type="button" *ngIf="editbutt" style="background-color: #060;" (click)="saveEdit()"
-                class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
+                    <button type="button" *ngIf="editbutt" style="background-color: #060;" (click)="saveEdit()"
+                    class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Modifier</button>
 
-                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" (click)="fermerModal()"
-                class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" (click)="fermerModal()"
+                    class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div id="addch" 
-     [ngClass]="{'hidden': !addchamp}" 
-     tabindex="-1" 
-     [attr.aria-hidden]="!addchamp" 
-     class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
+    <div id="addch" 
+        [ngClass]="{'hidden': !addchamp}" 
+        tabindex="-1" 
+        [attr.aria-hidden]="!addchamp" 
+        class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    {{title}}
-                </h3>
-                <button type="button" (click)="fermerModal()"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
-                rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">             
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
-                        <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="name" name="name" [(ngModel)]="entiteChamp.name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="nom" />
-                           
-                        </div>
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <input type="text" id="description" name="description" [(ngModel)]="entiteChamp.description"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="description" />                  
-                        </div>
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
-                            <p-dropdown [options]="types" [(ngModel)]="entiteChamp.inputType"  optionValue="id" 
-                            optionLabel="name"
-                          ></p-dropdown>
-                          <small class="p-error" *ngIf="submitted && !entiteChamp.inputType">Ajouter le type de champ.</small>
-
-                        </div> 
-                        <div *ngIf="entiteChamp.inputType === 'CHECKBOX' || entiteChamp.inputType === 'RADIO' || entiteChamp.inputType === 'SELECT'">
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saisir options</label>
-                            <div class="flex items-center">
-                                <input 
-                                  [(ngModel)]="newOption" 
-                                  placeholder="Entrez une option"  
-                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                         focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 
-                                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
-                                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                                />
-                                <button 
-                                  (click)="addOption()" 
-                                  class="ml-2 p-2 bg-green-700 text-white rounded-lg">
-                                  Ajouter
-                                </button>
-                              </div>                       
-                        </div> 
-                        <div>
-                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Requis</label>
-                            <div class="flex" style="margin-top: 15px;" >
-                                <div class="flex items-center me-4">
-                                    <input id="inline-radio" type="radio" [(ngModel)]="entiteChamp.isRequired" value="true" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Oui</label>
-                                </div>
-                                <div class="flex items-center me-4">
-                                    <input id="inline-2-radio" type="radio" [(ngModel)]="entiteChamp.isRequired" value="false" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Non</label>
-                                </div>
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{title}}
+                    </h3>
+                    <button type="button" (click)="fermerModal()"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
+                    rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">             
+                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                                <input type="text" id="name" name="name" [(ngModel)]="entiteChamp.name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="nom" />
+                            
                             </div>
-                           
-                        </div> 
-                        <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT' ">
-                            <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Options disponible</label>
-                            <p-listbox [options]="entiteChamp.entityObjectOptionFields ?? []"   optionLabel="name"></p-listbox>
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <input type="text" id="description" name="description" [(ngModel)]="entiteChamp.description"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="description" />                  
+                            </div>
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                                <p-dropdown [options]="types" [(ngModel)]="entiteChamp.inputType"  optionValue="id" 
+                                optionLabel="name"
+                            ></p-dropdown>
+                            <small class="p-error" *ngIf="submitted && !entiteChamp.inputType">Ajouter le type de champ.</small>
 
-                        </div> 
-                                              
-                    </div>
-            </div>
+                            </div> 
+                            <div *ngIf="entiteChamp.inputType === 'CHECKBOX' || entiteChamp.inputType === 'RADIO' || entiteChamp.inputType === 'SELECT'">
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Saisir options</label>
+                                <div class="flex items-center">
+                                    <input 
+                                    [(ngModel)]="newOption" 
+                                    placeholder="Entrez une option"  
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                            focus:ring-blue-500 focus:border-blue-500 block w-60 p-2.5 
+                                            dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 
+                                            dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                    />
+                                    <button 
+                                    (click)="addOption()" 
+                                    class="ml-2 p-2 bg-green-700 text-white rounded-lg">
+                                    Ajouter
+                                    </button>
+                                </div>                       
+                            </div> 
+                            <div>
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Requis</label>
+                                <div class="flex" style="margin-top: 15px;" >
+                                    <div class="flex items-center me-4">
+                                        <input id="inline-radio" type="radio" [(ngModel)]="entiteChamp.isRequired" value="true" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="inline-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Oui</label>
+                                    </div>
+                                    <div class="flex items-center me-4">
+                                        <input id="inline-2-radio" type="radio" [(ngModel)]="entiteChamp.isRequired" value="false" name="inline-radio-group" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="inline-2-radio" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Non</label>
+                                    </div>
+                                </div>
+                            
+                            </div> 
+                            <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT' ">
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Options disponible</label>
+                                <p-listbox [options]="entiteChamp.entityObjectOptionFields ?? []"   optionLabel="name"></p-listbox>
 
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button"   style="background-color: #060;" (click)="saveChampEntite()"
-                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+                            </div> 
+                                                
+                        </div>
+                </div>
 
-                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" 
-                class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button"   style="background-color: #060;" (click)="saveChampEntite()"
+                    class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+                    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" 
+                    class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<div id="adduser" 
-     [ngClass]="{'hidden': !adddoctype}" 
-     tabindex="-1" 
-     [attr.aria-hidden]="!adddoctype" 
-     class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
+    <div id="adduser" 
+        [ngClass]="{'hidden': !adddoctype}" 
+        tabindex="-1" 
+        [attr.aria-hidden]="!adddoctype" 
+        class="modal fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-500 bg-opacity-50">
 
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    {{title}}
-                </h3>
-                <button type="button" (click)="fermerModal()"
-                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
-                rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4">             
-                    <div class="grid gap-6 mb-6 md:grid-cols-2">
-                        <div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
-                            <input type="text" id="name" name="name" [(ngModel)]="champ.name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="nom" />
-                           
+        <div class="relative p-4 w-full max-w-2xl max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        {{title}}
+                    </h3>
+                    <button type="button" (click)="fermerModal()"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 
+                    rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">             
+                        <div class="grid gap-6 mb-6 md:grid-cols-2">
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                                <input type="text" id="name" name="name" [(ngModel)]="champ.name"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="nom" />
+                            
+                            </div>
+                            <div>
+                                <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                                <input type="text" id="description" name="description" [(ngModel)]="champ.description"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                                dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                                dark:focus:border-blue-500" placeholder="description" />                  
+                            </div>
+                        
+                                                
                         </div>
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <input type="text" id="description" name="description" [(ngModel)]="champ.description"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
-                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="description" />                  
-                        </div>
-                       
-                                              
-                    </div>
-            </div>
+                </div>
 
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button type="button"   style="background-color: #060;" 
-                class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+                <!-- Modal footer -->
+                <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="button"   style="background-color: #060;" 
+                    class="text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
 
-                <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" (click)="fermerModal()"
-                class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;" (click)="fermerModal()"
+                    class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+    <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

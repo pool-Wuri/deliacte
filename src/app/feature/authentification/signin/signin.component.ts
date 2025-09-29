@@ -73,7 +73,7 @@ export class SigninComponent {
 
       this.authentificationService.authenticate(this.utilisateur).subscribe({
         next: response => {
-         //console.log(response);
+         console.log(response);
           if(response.user){
             this.loading=false;
             this.authentificationService.saveToken(response.token);
@@ -194,11 +194,11 @@ export class SigninComponent {
  }
 
  saveMailoublie(){
-  this.dataMailOubli={
-    "email":this.mailOublie,
-    "password":null,
-    "encodeEmail": null
-  }
+    this.dataMailOubli={
+      "email":this.mailOublie,
+      "password":null,
+      "encodeEmail": null
+    }
     this.confirmationService.confirm({
       message: 'Voulez-vous reinitialiser votre mot de passe?',
       header: 'Confirmation',

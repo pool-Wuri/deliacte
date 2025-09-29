@@ -5,6 +5,12 @@ import { environment } from 'src/environnements/environment';
 import { entityObjectOptionFields } from '../models/entite.modele';
 
 const ENTITE_API=environment.apiUrl +"/entity_object";
+const ENTITE_API_DOC_SAVE=environment.apiUrl +"/user-entity-objects";
+
+const ENTITE_API_USER=environment.apiUrl +"/user-entity-objects/user-connected";
+const ENTITE_API_USER_SAVE=environment.apiUrl +"/user-entity-objects/multiples";
+
+
 const CHAMP=environment.apiUrl+ "/entity_objec_field";
 const CHAMPOption=environment.apiUrl+ "/entity_objec_field_option"
 
@@ -29,7 +35,7 @@ export class EntiteService {
       .pipe(
         retry(1),
         tap((data: any) =>{
-          console.log('api.service > get_formulaire > tap > server data :',data)     
+        //  console.log('api.service > get_formulaire > tap > server data :',data)     
 
         }
         )
@@ -163,5 +169,37 @@ export class EntiteService {
       );
   }
 
+  public search_EntiteUser(filterParam =''): Observable<any> {
+    return this.http
+    .get(ENTITE_API_USER , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>{
+        //  console.log('api.service > get_formulaire > tap > server data :',data)     
+
+        }
+        )
+      );
+  }
+
+
+  public saveEntiteUser(entite:any):Observable<any>{
+    return this.http.post<any>(ENTITE_API_USER_SAVE,entite).pipe(
+      tap((data)=>{
+       // console.log(data);
+      })
+    )
+  }
+
+  public saveDoc(doc:any):Observable<any>{
+    return this.http.post<any>(ENTITE_API_DOC_SAVE,doc).pipe(
+      tap((data)=>{
+       // console.log(data);
+      })
+    )
+  }
 
 }
