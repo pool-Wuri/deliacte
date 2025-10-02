@@ -125,6 +125,14 @@
                   type="button">
                   Ajouter
                 </button>
+
+                <button style="background-color: #060;" (click)="ajouterEntit(operation)"
+                class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
+                type="button">
+                Ajouter entité
+              </button>
               </ng-template>
             </p-toolbar>
           
@@ -170,6 +178,71 @@
           
                       <button type="button" title="Modifier" style="background-color: #060;" 
                         (click)="editChamp(champ)"
+                        class="text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-pencil">
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Entité">
+            <p-toolbar styleClass="mb-4 gap-2 flex justify-end ">
+              <ng-template pTemplate="right">
+               
+
+                <button style="background-color: #060;" (click)="ajouterEntit(operation)"
+                class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
+                type="button">
+                Ajouter entité
+              </button>
+              </ng-template>
+            </p-toolbar>
+          
+            <div class="card">
+              <p-table #dt [value]="entitesOperations" styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [globalFilterFields]="['firstName']">
+          
+                <ng-template pTemplate="caption">
+                  <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                      <input pInputText type="text" #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder=" Rechercher" />
+                    </span>
+                  </div>
+                </ng-template>
+          
+                <ng-template pTemplate="header">
+                  <tr class="tableEnt">
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Action</th>
+
+                  </tr>
+                </ng-template>
+          
+                <ng-template pTemplate="body" let-entite>
+                  <tr class="p-selectable-row tableContenu">
+                    <td>{{entite.name}}</td>
+                    <td>{{entite.description}}</td>
+                  
+                    <td>
+                      <button type="button" title="Supprimer" style="background-color: #ff0000;" 
+                        (click)="supprimerChamp(champ)" 
+                        class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eraser">
+                      </button>
+          
+                      <button type="button" title="Modifier" style="background-color: #060;" 
+                        (click)="ajouterChampOperation(entite)"
                         class="text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
                         focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                         text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-pencil">
@@ -350,6 +423,85 @@
         </div>
     </div>
 </div>
+
+<p-dialog [(visible)]="addentite" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+  <div class="card">
+    <p-table [value]="entites" [(selection)]="entitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+
+      <!-- En-tête -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Nom</th>
+          <th>Description</th>
+        </tr>
+      </ng-template>
+
+      <!-- Corps du tableau -->
+      <ng-template pTemplate="body" let-entite>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="entite"></p-tableCheckbox>
+          </td>
+          <td>{{ entite.name }}</td>
+          <td>{{ entite.description }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  
+  </div>
+  <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+  class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+  <button type="button" style="background-color: #060;" (click)="saveEntite()"
+  class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+</p-dialog>
+
+<p-dialog [(visible)]="addchampEntite" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+  <div class="card">
+    <p-table [value]="champsEntites" [(selection)]="champsEntitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+
+      <!-- En-tête -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Obligatoire</th>
+        </tr>
+      </ng-template>
+
+      <!-- Corps du tableau -->
+      <ng-template pTemplate="body" let-champ>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="champ"></p-tableCheckbox>
+          </td>
+          <td>{{ champ.name }}</td>
+          <td>{{ champ.description }}</td>
+          <td>{{ champ.inputType }}</td>
+          <td>{{ champ.isRequired ? 'Oui' : 'Non' }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  
+  </div>
+  <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+  class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+  <button type="button" style="background-color: #060;" (click)="saveChampEntiteOperation()"
+  class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+
+</p-dialog>
+
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 
 <p-dialog  [(visible)]="listeUser" [style]="{width: '900px'}" modal="true" styleClass="p-fluid" >

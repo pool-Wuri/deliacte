@@ -9,6 +9,11 @@ const ENTITE_API_DOC_SAVE=environment.apiUrl +"/user-entity-objects";
 
 const ENTITE_API_USER=environment.apiUrl +"/user-entity-objects/user-connected";
 const ENTITE_API_USER_SAVE=environment.apiUrl +"/user-entity-objects/multiples";
+const ENTITE_API_OPERATION=environment.apiUrl +"/champ-operations";
+const ENTITE_API_OPERATION_LIER=environment.apiUrl +"/operations/lier-entite";
+
+const ENTITE_API_OPERATION_LISTE=environment.apiUrl +"/operations/entites";
+
 
 
 const CHAMP=environment.apiUrl+ "/entity_objec_field";
@@ -194,12 +199,45 @@ export class EntiteService {
     )
   }
 
+  public saveEntiteOperation(entite:any):Observable<any>{
+    return this.http.post<any>(ENTITE_API_OPERATION_LIER,entite).pipe(
+      tap((data)=>{
+       // console.log(data);
+      })
+    )
+  }
+
+  public saveEntiteChampOperation(entite:any,operationId:number):Observable<any>{
+    return this.http.post<any>(ENTITE_API_OPERATION+"/"+operationId+"/add-entities",entite).pipe(
+      tap((data)=>{
+       // console.log(data);
+      })
+    )
+  }
+
   public saveDoc(doc:any):Observable<any>{
     return this.http.post<any>(ENTITE_API_DOC_SAVE,doc).pipe(
       tap((data)=>{
        // console.log(data);
       })
     )
+  }
+
+
+  public search_EntiteByOperation(operationId:number): Observable<any> {
+    return this.http
+    .get(ENTITE_API_OPERATION_LISTE+"?operationId="+operationId , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>{
+        //  console.log('api.service > get_formulaire > tap > server data :',data)     
+
+        }
+        )
+      );
   }
 
 }

@@ -83,7 +83,8 @@ ngOnInit():void{
     this.getProcedure(this.id)
    }
   );
- this.searchEntity()
+ this.searchEntity();
+ this.searchEntiteUser()
  // this.searchChamp()
 }
 
@@ -343,6 +344,46 @@ searchEntity(){
     }
 
   })
+}
+
+  entitesUser:any;
+  entiteChamp=new ChampEntite;
+  currentPage: number = 0;
+  itemsPerPage: number = 2; 
+  searchEntiteUser(){
+    this.loading=true;
+    this.entiteService.search_EntiteUser().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        if(result.status==201 || result.status==200){
+            setTimeout(() => {
+              this.loading=false;
+              this.entitesUser=result.data.entityObjects;
+            //  this.userInfos=result.data.user
+            //console.log(this.entitesUser)
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+            }, 2000);
+          }
+          else{
+            this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+            this.loading=false;
+      }
+    },
+      error:(error)=>{
+        this.loading=false;
+        this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
+
+      }
+
+    })
+  }
+
+prevPage() {
+  if (this.currentPage > 0) this.currentPage--;
+}
+
+nextPage() {
+  if (this.currentPage < this.entitesUser.length - 1) this.currentPage++;
 }
 
 }

@@ -29,7 +29,27 @@
     display:inline-block;
 }
 
-
+:host ::ng-deep {
+    /* Checkbox contour */
+    .p-checkbox .p-checkbox-box {
+      border: 2px solid #6b7280 !important; /* gris-500 */
+      border-radius: 4px; /* arrondi facultatif */
+      background: white; /* fond par défaut */
+    }
+  
+    /* Checkbox cochée */
+    .p-checkbox .p-checkbox-box.p-highlight {
+      background-color: #6b7280 !important; /* fond gris quand coché */
+      border-color: #6b7280 !important; /* garde le contour gris */
+    }
+  
+    /* Icône check */
+    .p-checkbox .p-checkbox-icon {
+      color: #fff !important; /* coche blanche */
+      font-size: 14px;
+    }
+  }
+  
 
 @import "~primeicons/primeicons.css";
 
@@ -68,6 +88,8 @@
             transition-duration: 0.2s;
             color: rgb(255, 255, 255);
             font-size: 14px;
+            border-color: #6b7280 !important;
+
         }
     }
     

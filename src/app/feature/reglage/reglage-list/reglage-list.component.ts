@@ -39,7 +39,9 @@ export class ReglageListComponent {
   user: User | null = null;
   loading:boolean=false;
   entityEnregistre:any
-
+  data: FormData = new FormData();
+  file:any;
+  champEntiteid:string="";
   constructor(
     private TypeOperationService: TypeOperationService,
     private operationService:OperationService,
@@ -63,8 +65,6 @@ export class ReglageListComponent {
   }
 
 
- 
-
   searchEntiteUser(){
     this.loading=true;
     this.entiteService.search_EntiteUser().subscribe({
@@ -75,7 +75,7 @@ export class ReglageListComponent {
               this.loading=false;
               this.entitesUser=result.data.entityObjects;
               this.userInfos=result.data.user
-            console.log(this.entitesUser)
+            //console.log(this.entitesUser)
               this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
             }, 2000);
           }
@@ -102,63 +102,58 @@ export class ReglageListComponent {
   }
 
   sauvegarder(){
-    console.log("=== Données entitesUser ===", this.entitesUser);
+  //  console.log("=== Données entitesUser ===", this.entitesUser);
 
-  this.entityEnregistre = this.entitesUser.flatMap((entity: any) =>
-    entity.entityObjectFields.map((champ: any) => ({
-      name: champ.value ?? "",              // valeur saisie dans le champ
-      entityObjectFieldId: champ.id         // id du champ
-    }))
-  );
+    this.entityEnregistre = this.entitesUser.flatMap((entity: any) =>
+      entity.entityObjectFields.map((champ: any) => ({
+        name: champ.value ?? "",              // valeur saisie dans le champ
+        entityObjectFieldId: champ.id         // id du champ
+      }))
+    );
 
-  console.log("=== Données formatées ===", this.entityEnregistre);
+  // console.log("=== Données formatées ===", this.entityEnregistre);
 
-  this.confirmationService.confirm({
-    message: 'Voulez-vous enregistrer ces informations?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-  accept: () => {
-    this.loading=true;
-    this.entiteService.saveEntiteUser(this.entityEnregistre).subscribe({
-      next:(value)=>{
-        console.log(value)
-          if(value.status==201 || value.status==200){
-            setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
-            }, 2000);
+    this.confirmationService.confirm({
+      message: 'Voulez-vous enregistrer ces informations?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.entiteService.saveEntiteUser(this.entityEnregistre).subscribe({
+          next:(value)=>{
+            console.log(value)
+              if(value.status==201 || value.status==200){
+                setTimeout(() => {
+                  this.loading=false;
+                  this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+                }, 2000);
+              }
+              else{
+                this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+                this.loading=false;
+              }
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
+
           }
-          else{
-            this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
-            this.loading=false;
-          }
+        })
       },
-      complete:()=>{},
-      error:(erreur)=>{
-        this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
-
+      reject:()=>{
+        //this.addboutton=false;
+      
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
+        this.loading=false;
       }
-    })
-  },
-  reject:()=>{
-    //this.addboutton=false;
-  
-    this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
-    this.loading=false;
-  }
 
-  });
+    });
   }
 
   onFileChange(event: any, index: number,pageId:number) {
-    console.log(index);
-    console.log(event);
-    console.log(pageId);
-    console.log(this.entitesUser[pageId])
-    console.log(this.entitesUser[pageId].entityObjectFields[index]);
     this.champEntiteid=this.entitesUser[pageId].entityObjectFields[index].id
     const file = event.target.files[0];
     if (file) {
@@ -167,20 +162,18 @@ export class ReglageListComponent {
     }
   
   }
-  data: FormData = new FormData();
-  file:any;
-  champEntiteid:string="";
+ 
   
   saveFile(){
     this.loading=true;
-    console.log( this.champEntiteid.toString())
+  //  console.log( this.champEntiteid.toString())
     this.data.append('file', this.file, this.file.name );
     this.data.append('entityObjectFieldId', this.champEntiteid.toString());
     console.log(this.data);
     this.entiteService.saveDoc(this.data).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
+        //console.log(result)
         if(result==200 || result==201){
           setTimeout(() => {
             
