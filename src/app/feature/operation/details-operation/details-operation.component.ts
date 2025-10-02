@@ -95,6 +95,7 @@ export class DetailsOperationComponent {
             this.champs=value.data;
             if(this.champs){
               this.champs=this.champs.filter(u=>u.operationId==id);
+              console.log(this.champs)
               this.champs.reverse()
             }
           },
@@ -125,7 +126,8 @@ export class DetailsOperationComponent {
       next:(value)=>{
         this.champs=value.data;
         this.champs=this.champs.filter(u=>u.operationId==this.id)
-        this.champs.reverse()
+      //  this.champs.reverse();
+        console.log(this.champs)
     
       },
       complete:()=>{},
@@ -282,7 +284,6 @@ export class DetailsOperationComponent {
         this.messageService.add({severity:'error', summary: 'Echec', detail: ' Champ non enregistré', life: 3000});
       }
       });
-    
     }
   
   }
@@ -311,233 +312,182 @@ export class DetailsOperationComponent {
   }
 
 
-  retirerUser(user:User){
-    this.operationsIds.operationsIds = []; // Initialiser si nécessaire
-    this.confirmationService.confirm({
-      message: 'Voulez-vous vraiment lui retirer de cette opération?',
-      header: 'Confirmation',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-    accept: () => { 
+    retirerUser(user:User){
+      this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+      this.confirmationService.confirm({
+        message: 'Voulez-vous vraiment lui retirer de cette opération?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => { 
 
-      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Opération retirée', life: 3000});
-        //Actual logic to perform a confirmation
-        
-    },
-    reject:()=>{
-      this.messageService.add({severity:'error', summary: 'Echec', detail: 'Opération non retirée', life: 3000});
-    }
-    });
-
-  }
-
-
-  groupeUser(operation:any){
-  this.operation=operation;
-      this.userService.userOrganisation().subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          this.usergroup1=result.data;
-          if(this.usergroup1){
-            this.operationService.searchResponsable(this.operation.id || 0).subscribe({
-              next:(result)=>{
-                this.usergroup=result.data;
-                if(this.usergroup){
-                  this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
-                }
-              },
-              complete:()=>{},
-              error:(error)=>{
-              }
-            })
-          }
-        },
-        error:(error)=>{
-        }
-      });
-      this.operationsIds={};
-      this.listeUser=true;
-  }
-
-
-  userSelet(){
-    this.confirmationService.confirm({
-      message: 'Voulez-vous ajouter des agents ?',
-      header: 'Confirmation',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-      accept: () => {
-        this.listeUser=false;
-        this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
-        this.loading=true;
-        for(let i=0;i<this.usergroup.length;i++){
-          if(this.usergroup[i].id){
-          this.userService.operationInfo(this.usergroup[i].id).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              if(result){
-                for(let i=0;i<result.data.length;i++){
-                  this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
-                }
-                this.operationsIds.operationsIds?.push(this.operation.id || 0);
-                this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
-                  complete:()=>{},
-                  next:(result)=>{
-                  // console.log(result)
-                    if(result.status==200 || result.status==201){
-                      setTimeout(() => {
-                        this.loading=false;
-                        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
-                        this.searchRespon(this.id ?? 0);
-                      }, 2000);
-                    }
-                    else{
-                      this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
-                      this.loading=false;
-
-                    }
-                  // this.searchUser();
-                  },
-                  error:(error)=>{
-                    console.log(error);
-                    this.loading=false;
-                  }
-              
-                });
-              }
-            
-      
-            },
-            error:(error)=>{
-            }
-          });
-          
-          }
-      
-        }
+        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Opération retirée', life: 3000});
           //Actual logic to perform a confirmation
           
       },
       reject:()=>{
-        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Utilisateur non affecté', life: 3000});
+        this.messageService.add({severity:'error', summary: 'Echec', detail: 'Opération non retirée', life: 3000});
       }
       });
-  }
 
-  retourPage(){
-    this.location.back();
-  }
+    }
 
 
-  onUpload(event: any) {
-    console.log("Réponse brute :", event);
-
-    const body = event?.originalEvent?.body;
-
-    if (body) {
-      if (body.status === 200) {
-        // ✅ Succès
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: body.message || 'Fichier téléversé avec succès'
+    groupeUser(operation:any){
+    this.operation=operation;
+        this.userService.userOrganisation().subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.usergroup1=result.data;
+            if(this.usergroup1){
+              this.operationService.searchResponsable(this.operation.id || 0).subscribe({
+                next:(result)=>{
+                  this.usergroup=result.data;
+                  if(this.usergroup){
+                    this.usergroup1 = this.usergroup1.filter(u => !this.usergroup.some(group => group.id === u.id));
+                  }
+                },
+                complete:()=>{},
+                error:(error)=>{
+                }
+              })
+            }
+          },
+          error:(error)=>{
+          }
         });
+        this.operationsIds={};
+        this.listeUser=true;
+    }
+
+
+    userSelet(){
+      this.confirmationService.confirm({
+        message: 'Voulez-vous ajouter des agents ?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+        accept: () => {
+          this.listeUser=false;
+          this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
+          this.loading=true;
+          for(let i=0;i<this.usergroup.length;i++){
+            if(this.usergroup[i].id){
+            this.userService.operationInfo(this.usergroup[i].id).subscribe({
+              complete:()=>{},
+              next:(result)=>{
+                if(result){
+                  for(let i=0;i<result.data.length;i++){
+                    this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+                  }
+                  this.operationsIds.operationsIds?.push(this.operation.id || 0);
+                  this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({
+                    complete:()=>{},
+                    next:(result)=>{
+                    // console.log(result)
+                      if(result.status==200 || result.status==201){
+                        setTimeout(() => {
+                          this.loading=false;
+                          this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
+                          this.searchRespon(this.id ?? 0);
+                        }, 2000);
+                      }
+                      else{
+                        this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
+                        this.loading=false;
+
+                      }
+                    // this.searchUser();
+                    },
+                    error:(error)=>{
+                      console.log(error);
+                      this.loading=false;
+                    }
+                
+                  });
+                }
+              
+        
+              },
+              error:(error)=>{
+              }
+            });
+            
+            }
+        
+          }
+            //Actual logic to perform a confirmation
+            
+        },
+        reject:()=>{
+          this.messageService.add({severity:'error', summary: 'Echec', detail: ' Utilisateur non affecté', life: 3000});
+        }
+        });
+    }
+
+    retourPage(){
+      this.location.back();
+    }
+
+
+    onUpload(event: any) {
+      console.log("Réponse brute :", event);
+
+      const body = event?.originalEvent?.body;
+
+      if (body) {
+        if (body.status === 200) {
+          // ✅ Succès
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: body.message || 'Fichier téléversé avec succès'
+          });
+        } else {
+          // ⚠️ Erreur logique (même si HTTP est 200)
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Avertissement',
+            detail: body.message || 'Un problème est survenu'
+          });
+        }
       } else {
-        // ⚠️ Erreur logique (même si HTTP est 200)
+        // ❌ Erreur serveur (500, etc.)
         this.messageService.add({
-          severity: 'warn',
-          summary: 'Avertissement',
-          detail: body.message || 'Un problème est survenu'
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Impossible de téléverser le fichier'
         });
       }
-    } else {
-      // ❌ Erreur serveur (500, etc.)
+    }
+
+    onError(event: any) {
+      console.error("Erreur Upload :", event);
+
       this.messageService.add({
         severity: 'error',
-        summary: 'Erreur',
-        detail: 'Impossible de téléverser le fichier'
+        summary: 'Erreur serveur',
+        detail: 'Une erreur est survenue lors du téléversement'
       });
     }
-  }
 
-  onError(event: any) {
-    console.error("Erreur Upload :", event);
+    ajouterEntit(operation:Operation){
+      this.addentite=true;
+      this.searchEntite();
+      this.operationId=operation.id || 0;
+    }
 
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur serveur',
-      detail: 'Une erreur est survenue lors du téléversement'
-    });
-  }
-
-  ajouterEntit(operation:Operation){
-    this.addentite=true;
-    this.searchEntite();
-   // this.entitesSelect=[];
-   this.operationId=operation.id || 0;
-    console.log(this.addentite);
-    console.log(this.operationId)
-  }
-
-  searchEntite(){
-  // this.loading=true;
-    this.entiteService.search_Entite().subscribe({
-      complete:()=>{},
-      next:(result)=>{
-        console.log(result)
-        if(result.status==201 || result.status==200){
-          this.entites=result.data;
-          console.log(this.entites)
-          /* setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
-            }, 2000);*/
-          }
-          else{
-            this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
-            this.loading=false;
-      }
-    },
-      error:(error)=>{
-        this.loading=false;
-        this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
-
-      }
-
-    })
-  }
-
-  saveEntite(){
-    console.log(this.entitesSelect);
-    this.addentite=false;
-    const data = {
-      operationId: this.operationId,
-      entityIds: this.entitesSelect.map(e => e.id)  // ou e.id selon ta structure
-    };
-    console.log(data)
-    this.entiteService.saveEntiteOperation(data).subscribe({
-      next:(result)=>{
-        console.log(result)
-      },
-      complete:()=>{},
-      error:(error)=>{
-        console.log(error)
-      }
-    })
-  }
-
-  searchEntiteByOperation(idOperation:number){
-    // this.loading=true;
-      this.entiteService.search_EntiteByOperation(idOperation).subscribe({
+    searchEntite(){
+      this.entiteService.search_Entite().subscribe({
         complete:()=>{},
         next:(result)=>{
           console.log(result)
           if(result.status==201 || result.status==200){
-            this.entitesOperations=result.data;
+            this.entites=result.data;
             console.log(this.entites)
             /* setTimeout(() => {
                 this.loading=false;
@@ -552,7 +502,78 @@ export class DetailsOperationComponent {
         error:(error)=>{
           this.loading=false;
           this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
-  
+
+        }
+
+      })
+    }
+
+    saveEntite(){
+      const data = {
+        operationId: this.operationId,
+        entityIds: this.entitesSelect.map(e => e.id)  // ou e.id selon ta structure
+      };
+      this.confirmationService.confirm({
+        message: 'Voulez-vous lier cette entité à l\'opération ?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.addentite=false;
+        this.entiteService.saveEntiteOperation(data).subscribe({
+          next:(result)=>{
+            console.log(result)
+            if(result.status==201 || result.status==200){
+          //   this.entitesOperations=result.data;
+            // console.log(this.entites)
+              setTimeout(() => {
+                  this.loading=false;
+                  this.searchEntiteByOperation(this.id);
+                  this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+                }, 2000);
+              }
+              else{
+                this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+                this.loading=false;
+          }
+          },
+          complete:()=>{},
+          error:(error)=>{
+          // console.log(error);
+            this.loading=false;
+          }
+        });      
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Annuler', life: 3000});
+      }
+      });
+    
+    }
+
+    searchEntiteByOperation(idOperation:number){
+      this.entiteService.search_EntiteByOperation(idOperation).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.status==201 || result.status==200){
+            this.entitesOperations=result.data;
+            console.log(this.entites)
+            /* setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+              }, 2000);*/
+            }
+            else{
+              this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+              this.loading=false;
+        }
+        },
+        error:(error)=>{
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
         }
   
       })
@@ -568,33 +589,97 @@ export class DetailsOperationComponent {
       this.entiteService.getChampByEntity(id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result)
+         // console.log(result)
           this.champsEntites=result.data;
          // console.log(this.champsEntites)
         },
         error:(err)=>{
-          console.log(err)
+          //console.log(err)
         }
       })
     }
 
     saveChampEntiteOperation(){
-      console.log(this.champsEntitesSelect);
-      //this.operationId=this.id;
-      this.addchampEntite=false;
-      console.log(this.id)
       const data = {
         entityFieldIds: this.champsEntitesSelect.map(e => e.id)  // ou e.id selon ta structure
       };
-      this.entiteService.saveEntiteChampOperation(data,this.id).subscribe({
-        next:(result)=>{
-          console.log(result)
-        },
-        complete:()=>{},
-        error:(error)=>{
-          console.log(error)
-        }
-      })
+      this.confirmationService.confirm({
+        message: 'Voulez-vous ajouter ces champs de l\'entité ?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.addchampEntite=false;
+        this.entiteService.saveEntiteChampOperation(data,this.id).subscribe({
+          next:(result)=>{
+            if(result.status==201 || result.status==200){
+                  setTimeout(() => {
+                     this.loading=false;
+                     this.searchEntiteByOperation(this.id);
+                     this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+                   }, 2000);
+            }
+            else{
+                   this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+                   this.loading=false;
+            }
+          },
+          complete:()=>{},
+          error:(error)=>{
+            this.loading=false;
+          }
+        });
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Annuler', life: 3000});
+      }
+      });
+
+    }
+
+    retirerEntite(entite:any){
+      this.entitesSelect[0]=entite;
+      const data = {
+        operationId: this.id,
+        entityIds: this.entitesSelect.map((e: { id: any; }) => e.id)  // ou e.id selon ta structure
+      };
+      this.confirmationService.confirm({
+        message: 'Voulez-vous retirer cette entité ?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.addchampEntite=false;
+        this.entiteService.retirerEntiteOperation(data).subscribe({
+          next:(result)=>{
+            if(result.status==201 || result.status==200){
+              setTimeout(() => {
+                 this.loading=false;
+                 this.searchEntiteByOperation(this.id);
+                 this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+               }, 2000);
+             }
+             else{
+               this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+               this.loading=false;
+         }
+          },
+          complete:()=>{},
+          error:(error)=>{
+            //console.log(error)
+          }
+        });
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Annuler', life: 3000});
+      }
+      });
     }
 }
 

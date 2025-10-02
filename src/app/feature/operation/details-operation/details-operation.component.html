@@ -235,7 +235,7 @@
                   
                     <td>
                       <button type="button" title="Supprimer" style="background-color: #ff0000;" 
-                        (click)="supprimerChamp(champ)" 
+                        (click)="retirerEntite(entite)" 
                         class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
                         focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
                         text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eraser">
@@ -424,7 +424,7 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="addentite" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+<p-dialog [(visible)]="addentite" header="Entités" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
   <div class="card">
     <p-table [value]="entites" [(selection)]="entitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
 
@@ -452,16 +452,20 @@
 
     </p-table>
 
-  
   </div>
-  <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
-  class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
-  <button type="button" style="background-color: #060;" (click)="saveEntite()"
-  class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
+  <div class="mt-6">
+    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+      class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+    <button type="button" style="background-color: #060;" (click)="saveEntite()"
+     class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600
+      dark:hover:bg-green-700 dark:focus:ring-green-800">Valider
+    </button>
 
+  </div>
+  
 </p-dialog>
 
-<p-dialog [(visible)]="addchampEntite" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+<p-dialog [(visible)]="addchampEntite" header="Champs" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
   <div class="card">
     <p-table [value]="champsEntites" [(selection)]="champsEntitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
 
@@ -495,11 +499,16 @@
 
   
   </div>
-  <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
-  class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
-  <button type="button" style="background-color: #060;" (click)="saveChampEntiteOperation()"
-  class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Valider</button>
-
+  <div class="mt-6">
+    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+    class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+    <button type="button" style="background-color: #060;" (click)="saveChampEntiteOperation()"
+    class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 
+    font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+    Valider</button>
+  
+  </div>
+  
 </p-dialog>
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
