@@ -69,6 +69,7 @@ export class DossierSuiviComponent implements OnInit {
       }
     }*/
   ];
+  loading:boolean=false;
 
   // Index de l'étape sélectionnée pour l'affichage des détails
   selectedIndex: number = 0;
@@ -117,9 +118,12 @@ id!:number;
 
 
   getDossier(id:any){
+    this.loading=true;
     this.authService.getDossierAfficher(id).subscribe({
       next:(result)=>{
         if(result){
+         // console.log(result)
+         this.loading=false;
           this.steps=result.data;
           for(let i=0;i<this.steps.length;i++){
             if(this.steps[i].status=="active"){
@@ -131,7 +135,16 @@ id!:number;
         }
       },
       complete:()=>{},
-      error:(err)=>{}
+      error:(err)=>{
+        console.log(err);
+        this.messageService.add({severity:'error', summary: 'Erreur', detail: err.error.message, life: 3000});
+        setTimeout(() => {
+          this.loading=false;
+          this.router.navigate(['/deliacte/procedure-published/list']);
+
+        }, 2000);
+
+      }
     })
   }
 }
