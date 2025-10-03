@@ -13,6 +13,7 @@ import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 export class SuiviDemandeComponent {
   numDossier!:any;
   submitted:boolean=false;
+  loading:boolean=false;
 
   constructor(
     private authentificationService: AuthentificationService,

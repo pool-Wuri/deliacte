@@ -1,6 +1,10 @@
 <!-- Loading Overlay -->
-<div *ngIf="loading" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center">
+<div *ngIf="loading" 
+     style="position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; 
+            background-color:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center;">
+  
   <p-progressSpinner></p-progressSpinner>
+  
 </div>
 <p-toast></p-toast>
 
