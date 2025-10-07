@@ -75,21 +75,24 @@ export class SigninComponent {
         next: response => {
          console.log(response);
           if(response.user){
-            this.loading=false;
             this.authentificationService.saveToken(response.token);
             localStorage.setItem('user', JSON.stringify(response.user));
             const userData = localStorage.getItem('user');
             this.messageService.add({severity:'success', summary: 'Success', detail: 'Connexion réussie'});
+
             if (userData) {
               this.user = JSON.parse(userData);
               //console.log(this.user)
             }    
             if(this.user.role=="CITOYEN" || this.user.role=="PROCEDURE_MANAGER" || this.user.role=="AGENT"){
               this.router.navigate(['/deliacte/dossier/list']);
+              this.loading=false;
             }
             else
             setTimeout(()=>{
               this.router.navigate(['/deliacte/dashboard/']);
+              this.loading=false;
+
             },2000)
           }
           else{

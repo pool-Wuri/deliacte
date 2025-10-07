@@ -75,10 +75,13 @@
 
     <!-- Contenu détaillé des étapes -->
     <div class="bg-white rounded-2xl shadow-lg p-6 sm:p-10">
+      <div *ngIf="selectedIndex=== -1">
+        <h1>Cliquez sur l'etat pour voir le dossier</h1>
+       </div>
       <div *ngFor="let step of steps; let i = index">
         <!-- Affiche le contenu seulement pour l'étape sélectionnée -->
+        
         <div *ngIf="i === selectedIndex" class="animate-fadeIn">
-          
           <!-- En-tête du contenu -->
           <div class="flex items-center gap-4 border-b border-gray-200 pb-4 mb-6">
             <h2 class="text-3xl font-bold text-gray-900">{{ step.label }}</h2>
@@ -95,11 +98,19 @@
 
           <!-- Grille des détails -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div *ngFor="let key of getObjectKeys(step.details)" class="bg-gray-50 p-4 rounded-lg">
-              <label class="block text-sm font-medium text-gray-500">{{ key }}</label>
-              <p class="text-base font-semibold text-gray-900">{{ step.details[key] }}</p>
+            <div *ngFor="let key of getObjectKeys(step.details)" 
+                 class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                 
+              <label class="block text-sm font-medium text-gray-500">
+                {{ key }}
+              </label>
+              
+              <p class="text-base font-semibold text-gray-900 break-words truncate">
+                {{ step.details[key] }}
+              </p>
             </div>
           </div>
+          
 
         </div>
       </div>

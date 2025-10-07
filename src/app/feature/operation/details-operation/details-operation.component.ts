@@ -86,48 +86,62 @@ export class DetailsOperationComponent {
   }
 
   getProcedure(id?:number){
+       this.loading=true;
       this.operationService.get_Procedure(id).subscribe({
         complete:()=>{},
         next:(result)=>{
-        this.operation=result.data;
-        this.operationService.searchChamp("").subscribe({
-          next:(value)=>{
-            this.champs=value.data;
-            if(this.champs){
-              this.champs=this.champs.filter(u=>u.operationId==id);
-              console.log(this.champs)
-              this.champs.reverse()
+          //console.log(result)
+          if(result.status==200 ||  result.status==201){
+            this.operation=result.data;
+            this.operationService.searchChamp("").subscribe({
+              next:(value)=>{
+                this.champs=value.data;
+                if(this.champs){
+                  this.champs=this.champs.filter(u=>u.operationId==id);
+                 // console.log(this.champs)
+                  this.champs.reverse()
+                }
+              },
+              complete:()=>{},
+              error:(err)=>{}
+            });
+            if(this.operation.procedureId!==0){
+              this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operation.procedure=result.data;
+                    },
+                  error:(er)=>{
+                  }
+              })
             }
-          },
-          complete:()=>{},
-          error:(err)=>{}
-        });
-        if(this.operation.procedureId!==0){
-          this.procedureService.get_Procedure(this.operation.procedureId).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-              this.operation.procedure=result.data;
-                },
-              error:(er)=>{
-              }
-          })
-        }
-      
+            setTimeout(() => {
+              this.loading=false;
+            }, 2000);
+          
+          
+          }
+          else{
+            this.loading=false;
+          }
       
         },
         error:(er)=>{
+          this.loading=false;
 
         }
       })
   }
 
   searchChamp(){
+    this.loading=true;
     this.operationService.searchChamp("").subscribe({
       next:(value)=>{
         this.champs=value.data;
+        this.loading=false;
         this.champs=this.champs.filter(u=>u.operationId==this.id)
-      //  this.champs.reverse();
-        console.log(this.champs)
+      // this.champs.reverse();
+       // console.log(this.champs)
     
       },
       complete:()=>{},
@@ -303,7 +317,6 @@ export class DetailsOperationComponent {
     this.operationService.searchResponsable(idOperation).subscribe({
       next:(result)=>{
         this.responsUsers=result.data;
-
       },
       complete:()=>{},
       error:(error)=>{
@@ -560,7 +573,7 @@ export class DetailsOperationComponent {
         next:(result)=>{
           if(result.status==201 || result.status==200){
             this.entitesOperations=result.data;
-            console.log(this.entites)
+         //   console.log(this.entites)
             /* setTimeout(() => {
                 this.loading=false;
                 this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
@@ -580,6 +593,7 @@ export class DetailsOperationComponent {
     }
 
     ajouterChampOperation(entite:any){
+     // console.log(entite)
       this.addchampEntite=true;
       this.entityOperation=entite;
       this.searchChampEntite(entite.id)
@@ -589,9 +603,10 @@ export class DetailsOperationComponent {
       this.entiteService.getChampByEntity(id).subscribe({
         complete:()=>{},
         next:(result)=>{
-         // console.log(result)
+         console.log(result.data)
           this.champsEntites=result.data;
-         // console.log(this.champsEntites)
+          this.champsEntites=this.champsEntites.filter(u=>u.isPresent==null);
+          //console.log(this.champsEntites)
         },
         error:(err)=>{
           //console.log(err)
@@ -599,10 +614,27 @@ export class DetailsOperationComponent {
       })
     }
 
+    modifierChamp(champ:any){
+      this.entiteService.updateChamp(champ,champ.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+         // console.log(result)
+        },
+        error:(err)=>{
+          //console.log(err);
+        }
+      })
+    }
+
     saveChampEntiteOperation(){
-      const data = {
-        entityFieldIds: this.champsEntitesSelect.map(e => e.id)  // ou e.id selon ta structure
-      };
+      const data = { 
+        entityFieldIds: this.champsEntitesSelect.map(e => e.id)
+      }
+       // ou e.id selon ta structure };
+      this.champsEntitesSelect = this.champsEntitesSelect.map(e => ({
+        ...e,
+        isPresent: true
+      }))
       this.confirmationService.confirm({
         message: 'Voulez-vous ajouter ces champs de l\'entité ?',
         header: 'Confirmation',
@@ -619,6 +651,7 @@ export class DetailsOperationComponent {
                   setTimeout(() => {
                      this.loading=false;
                      this.searchEntiteByOperation(this.id);
+                    
                      this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
                    }, 2000);
             }

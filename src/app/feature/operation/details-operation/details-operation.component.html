@@ -142,7 +142,7 @@
             <div class="card">
               <p-table #dt [value]="champs" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                 [globalFilterFields]="['firstName']">
           
                 <ng-template pTemplate="caption">
@@ -209,7 +209,7 @@
             <div class="card">
               <p-table #dt [value]="entitesOperations" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                 [globalFilterFields]="['firstName']">
           
                 <ng-template pTemplate="caption">
@@ -272,7 +272,7 @@
             <div class="card">
               <p-table #dt [value]="responsUsers" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                 [globalFilterFields]="['firstName']">
           
                 <ng-template pTemplate="caption">

@@ -105,7 +105,7 @@ export class EntiteService {
 
   public updateChamp(champ:any,id?:number):Observable<any>{
     return this.http
-          .put<any>(CHAMP+'?'+id, champ)
+          .put<any>(CHAMP+'/'+id, champ)
           .pipe(
             tap((data) => {
               //console.log('api.service > update-champ> tap :', data);
