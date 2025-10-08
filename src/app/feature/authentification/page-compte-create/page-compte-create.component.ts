@@ -34,7 +34,7 @@ export class PageCompteCreateComponent {
 
   saveUser(){
     // this.utilisateur1.role="CITOYEN";
-     console.log(this.utilisateur1);
+    // console.log(this.utilisateur1);
      this.submitted=true;
      this.utilisateur1.role=null;
      this.utilisateur1.password="";

@@ -495,17 +495,18 @@ export class DetailsOperationComponent {
     }
 
     searchEntite(){
+   //   this.loading=true;
       this.entiteService.search_Entite().subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result)
+        //  console.log(result)
           if(result.status==201 || result.status==200){
             this.entites=result.data;
-            console.log(this.entites)
-            /* setTimeout(() => {
+           // console.log(this.entites)
+             setTimeout(() => {
                 this.loading=false;
-                this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
-              }, 2000);*/
+              //  this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+              }, 2000);
             }
             else{
               this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
@@ -538,7 +539,7 @@ export class DetailsOperationComponent {
         this.addentite=false;
         this.entiteService.saveEntiteOperation(data).subscribe({
           next:(result)=>{
-            console.log(result)
+         //   console.log(result)
             if(result.status==201 || result.status==200){
           //   this.entitesOperations=result.data;
             // console.log(this.entites)

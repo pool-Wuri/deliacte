@@ -41,7 +41,7 @@ export class IdleService {
     //console.log(localStorage)
     localStorage.removeItem('token'); // adapte si tu utilises JWT
     sessionStorage.clear();
-    console.log(localStorage)
+    //(localStorage)
     this.authServie.logOut();
     // Redirection vers login
     this.router.navigate(['/deliacte/login']);

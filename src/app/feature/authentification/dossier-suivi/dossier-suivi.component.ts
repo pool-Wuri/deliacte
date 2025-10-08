@@ -88,7 +88,7 @@ id!:number;
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      console.log('params récupérés :', params); // Débogage
+     // console.log('params récupérés :', params); // Débogage
       const idParam = params['id'];
       this.id = params['id'] // Convertit en number ou 0 par défaut
      // console.log('ID récupéré :', this.id);
@@ -136,7 +136,7 @@ id!:number;
       },
       complete:()=>{},
       error:(err)=>{
-        console.log(err);
+       // console.log(err);
         this.messageService.add({severity:'error', summary: 'Erreur', detail: err.error.message, life: 3000});
         setTimeout(() => {
           this.loading=false;

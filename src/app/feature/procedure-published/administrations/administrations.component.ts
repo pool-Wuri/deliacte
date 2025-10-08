@@ -39,7 +39,7 @@ export class AdministrationsComponent {
       next:(result)=>{
         if(result){
           this.organisations=result.data;
-          console.log("organfvfv",result);
+          //console.log("organfvfv",result);
            
           this.splitInTwoColumns(this.organisations);
         }

@@ -56,7 +56,7 @@
     >
     <ng-template pTemplate="header">
     <tr>
-        <th style="width:3rem"></th>
+        <th style="width:3rem" ></th>
         <th>Nom</th>
         <th>Description</th>
         <th>Actions</th>
@@ -65,12 +65,12 @@
 
     <ng-template pTemplate="body" let-entite let-expanded="expanded">
         <tr>
-            <td>
+            <td >
                 <button
                     type="button"
                     pButton
                     [pRowToggler]="entite"
-                    class="p-button-text p-button-rounded p-button-plain"
+                    class="p-button-text p-button-rounded p-button-plain z-50"
                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
                     (click)="expandAll(entite.id)"
                 ></button>
@@ -108,7 +108,7 @@
                         [expandedRowKeys]="expandedFieldKeys"
                         (onRowExpand)="onFieldExpand($event)"
                         (onRowCollapse)="onFieldCollapse($event)"
-                        class="w-full"
+                        class="w-full "
                     >
                         <ng-template pTemplate="header">
                         <tr style="background-color: #ff0000;">
@@ -127,7 +127,7 @@
                                 type="button"
                                 pButton
                                 [pRowToggler]="field"
-                                class="p-button-text p-button-rounded p-button-plain"
+                                class="p-button-text p-button-rounded p-button-plain z-50"
                                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
                             ></button>
                             </td>
@@ -320,7 +320,7 @@
                                 </div>
                             
                             </div> 
-                            <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT' ">
+                            <div *ngIf="entiteChamp.inputType === 'CHECKBOX' || entiteChamp.inputType === 'RADIO' || entiteChamp.inputType === 'SELECT' ">
                                 <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Options disponible</label>
                                 <p-listbox [options]="entiteChamp.entityObjectOptionFields ?? []"   optionLabel="name"></p-listbox>
 

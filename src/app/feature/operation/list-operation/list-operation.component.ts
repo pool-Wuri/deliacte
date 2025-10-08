@@ -627,7 +627,7 @@ searchtypeoperation():void{
   
       // Préparer les données du tableau
       const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
-      console.log(this.operations)
+    //  console.log(this.operations)
       const data = this.operations.map(operation => [
         operation.name,
         operation.description,

@@ -95,15 +95,15 @@ export class EntiteService {
   }
 
   ajouterChamp(champ:any):Observable<any>{
-    console.log(champ)
+   // console.log(champ)
     return this.http.post<any>(CHAMP,champ).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }
 
-  public updateChamp(champ:any,id?:number):Observable<any>{
+  public updateChamp(champ:any,id?:string):Observable<any>{
     return this.http
           .put<any>(CHAMP+'/'+id, champ)
           .pipe(

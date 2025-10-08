@@ -179,7 +179,7 @@
         color: #060;
         border-radius: 0%;
     }
-@media screen and (max-width: 960px) {
+/*@media screen and (max-width: 960px) {
     :host ::ng-deep {
         .p-datatable {
             &.p-datatable-customers {
@@ -217,7 +217,7 @@
         }
     }
 
-}
+}*/
 
 :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
     background-color: #060;

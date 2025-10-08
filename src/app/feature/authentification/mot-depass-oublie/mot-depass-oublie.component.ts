@@ -47,7 +47,7 @@ export class MotDepassOublieComponent {
         this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
           complete:()=>{},
           next:(result)=>{
-            console.log(result+"User add");
+          //  console.log(result+"User add");
             setTimeout(() => {
               this.loading=false;
               this.messageService.add({severity:'success', summary: 'Succès', detail: 'Verifier votre boite mail pour valider', life: 3000});
@@ -56,7 +56,7 @@ export class MotDepassOublieComponent {
           
           },
           error:(error)=>{
-           console.log(error);
+          // console.log(error);
             setTimeout(()=>{
               this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Problème de reseau', life: 3000});
               this.loading=false;

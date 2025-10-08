@@ -124,7 +124,7 @@ export class ReglageListComponent {
         this.loading=true;
         this.entiteService.saveEntiteUser(this.entityEnregistre).subscribe({
           next:(value)=>{
-            console.log(value)
+            //console.log(value)
               if(value.status==201 || value.status==200){
                 setTimeout(() => {
                   this.loading=false;
@@ -169,7 +169,7 @@ export class ReglageListComponent {
   //  console.log( this.champEntiteid.toString())
     this.data.append('file', this.file, this.file.name );
     this.data.append('entityObjectFieldId', this.champEntiteid.toString());
-    console.log(this.data);
+    //console.log(this.data);
     this.entiteService.saveDoc(this.data).subscribe({
       complete:()=>{},
       next:(result)=>{

@@ -63,12 +63,12 @@ list2: any[] | undefined;
   champsEntites=new Array <ChampEntite>();
   expandedRowsEntite: { [key: string]: boolean } = {};
   expandedRowKeys: { [key: string]: boolean } = {};
+  expandedFieldKeys: { [key: string]: boolean } = {};
 
 constructor(
   private TypeOperationService: TypeOperationService,
   private operationService:OperationService,
   private entiteService:EntiteService,
-
   private procedureService:ProcedureService,
   private confirmationService:ConfirmationService,
   private messageService:MessageService,
@@ -348,7 +348,6 @@ fermerModal(){
     })
   }
 
-expandedFieldKeys: { [key: string]: boolean } = {};
 
   onFieldExpand(event: any) {
     this.expandedFieldKeys = {};
@@ -408,7 +407,7 @@ expandedFieldKeys: { [key: string]: boolean } = {};
     reject:()=>{
       this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
     }
- });
+  });
  }
 
   

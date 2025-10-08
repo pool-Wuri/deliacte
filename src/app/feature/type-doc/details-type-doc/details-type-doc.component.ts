@@ -208,7 +208,7 @@ export class DetailsTypeDocComponent {
         next:(result)=>{
           this.traitementPass=result.data.traitement;
         this.dossier=result.data.dossiers;
-        console.log(this.dossier)
+       // console.log(this.dossier)
         for(let i=0;i<this.dossier.length;i++){
           if (this.dossier[i].champOperation.inputType === "PDF" ||
             this.dossier[i].champOperation.inputType === "FILE" ||
@@ -235,9 +235,9 @@ export class DetailsTypeDocComponent {
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
-              console.log(result)
+             // console.log(result)
               this.traitement.operationId=result.data[0].id;
-              console.log(this.traitement)
+            //  console.log(this.traitement)
             
             },
             complete:()=>{},
@@ -249,7 +249,7 @@ export class DetailsTypeDocComponent {
           this.userService.operationInfo(this.user?.id).subscribe({
             complete:()=>{},
             next:(result)=>{
-              console.log(result)
+              //console.log(result)
             this.operationService.get_OperationNext(this.idOperationNow).subscribe({
                 next:(result)=>{
                   if(result.data.length>1)
@@ -647,7 +647,7 @@ export class DetailsTypeDocComponent {
       next:(result)=>{
        // console.log(result);
         if(result){
-          console.log(result)
+        //  console.log(result)
           if(result.status==404){
             setTimeout(() => {
               this.loading=false;

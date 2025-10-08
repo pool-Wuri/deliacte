@@ -104,7 +104,7 @@ getProcedure(id?:number){
       this.champs = result.data;
       this.champs.reverse()
 
-      console.log(this.champs)
+     // console.log(this.champs)
       // Empêcher erreur si aucun champ
       if (!this.champs || this.champs.length === 0) {
         this.demandeFor = [];
