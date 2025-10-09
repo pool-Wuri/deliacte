@@ -5,7 +5,6 @@
   <p-progressSpinner></p-progressSpinner>
   
 </div>
-
 <div style="display: inline-flex;">
     <p-button icon="pi pi-arrow-left z-50" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
     <h1 class="p-4">Details Opération</h1>
@@ -72,44 +71,41 @@
         <b>Document chargement</b>
     </div>
 </p-divider>
-<div class="card ">
+<div class="card">
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="right">
 
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-           
+      <p-fileUpload 
+        class="upload-vert custom-upload"
+        mode="advanced"
+        name="file"
+        [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
+        accept=".doc,.docx"
+        maxFileSize="5000000"
+        chooseLabel="Sélectionner un fichier"
+        uploadLabel="Téléverser"
+        cancelLabel="Annuler"
+        invalidFileSizeMessageSummary="Fichier trop gros"
+        invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
+        (onError)="onError($event)"
+        (onUpload)="onUpload($event)"
+        [style]="{width: '100%'}">
+
+        <!-- Message d’erreur -->
+        <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Zone drag & drop -->
+        <ng-template pTemplate="empty">
+          <div class="drag-zone">Glisser-déposer ou appuyez pour choisir un fichier</div>
         </ng-template>
-        <ng-template pTemplate="right">
-            
-            <p-fileUpload 
-            class="upload-vert custom-upload"
-            mode="advanced"
-            name="file"
-            [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
-            accept=".doc,.docx"
-            maxFileSize="5000000"
-            chooseLabel="Sélectionner un fichier"
-            uploadLabel="Téléverser"
-            cancelLabel="Annuler"
-            invalidFileSizeMessageSummary="Fichier trop gros"
-            invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
-            (onError)="onError($event)"
-            (onUpload)="onUpload($event)">
-            
-            <!-- Zone d'affichage du message d'erreur -->
-            <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
-                {{ errorMessage }}
-            </div>
-        
-    
-            <ng-template pTemplate="empty">
-                <div>Glisser-déposer votre fichier ici</div>
-            </ng-template>
-        </p-fileUpload>
-        
-          
-        </ng-template>
-    </p-toolbar>
+      </p-fileUpload>
+
+    </ng-template>
+  </p-toolbar>
 </div>
+
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <!--i class="pi pi-info-circle user"></i-->
@@ -122,20 +118,14 @@
             <p-toolbar styleClass="mb-4 gap-2 flex justify-end ">
               <ng-template pTemplate="right">
                 <button style="background-color: #060;" (click)="ajouterChamp(operation)"
-                  class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                  class="ml-auto text-white from-green-400 via-green-500 to-green-600
                   focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
                   dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
                   type="button">
                   Ajouter
                 </button>
 
-                <button style="background-color: #060;" (click)="ajouterEntit(operation)"
-                class="ml-auto text-white from-green-400 via-green-500 to-green-600 
-                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
-                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
-                type="button">
-                Ajouter entité
-              </button>
+             
               </ng-template>
             </p-toolbar>
           
@@ -427,10 +417,10 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="addentite" header="Entités" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+<p-dialog 
+[(visible)]="addentite" header="Entités" [style]="{width: '900px'}" modal="true"  styleClass="p-fluid custom-dialog">
   <div class="card">
     <p-table [value]="entites" [(selection)]="entitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
-
       <!-- En-tête -->
       <ng-template pTemplate="header">
         <tr>
