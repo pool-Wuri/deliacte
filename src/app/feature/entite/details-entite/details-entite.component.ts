@@ -34,7 +34,7 @@ export class DetailsEntiteComponent {
   ngOnInit():void{
     this.route.params.subscribe(params => {
       this.id = params['id']; 
-    //  console.log(this.id);
+    //  //console.log(this.id);
       if(this.id){
         this.getEntite(this.id);
         this.searchChamp();
@@ -47,12 +47,12 @@ export class DetailsEntiteComponent {
   getEntite(id:string){
     this.entiteService.getEntityByEntity(id).subscribe({
       next:(result)=>{
-      // console.log(result);
+      // //console.log(result);
         this.entite=result.data;
       },
       complete:()=>{},
       error:(error)=>{
-        console.log(error);
+        //console.log(error);
       }
 
     })
@@ -65,12 +65,12 @@ export class DetailsEntiteComponent {
   searchChamp(){
     this.entiteService.searchChamp().subscribe({
       next:(result)=>{
-      console.log(result);
+      //console.log(result);
         this.champsEntites=result.data;
       },
       complete:()=>{},
       error:(error)=>{
-        console.log(error);
+        //console.log(error);
       }
     })
   }
