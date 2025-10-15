@@ -20,7 +20,8 @@ export class ChampEntite{
         public  isRequired?:boolean,
         public   inputType?:string,
         public   entityObjectOptionFields?:any,
-        public   entityObjectId?:string
+        public   entityObjectId?:string,
+        public     isPresent?:boolean
 
     ){
 

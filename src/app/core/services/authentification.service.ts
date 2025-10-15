@@ -100,7 +100,7 @@ export class AuthentificationService {
   oublieservice(mail:any):Observable<any>{
     return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",mail).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }
@@ -109,7 +109,7 @@ export class AuthentificationService {
     console.log(this.API_URL+"/users/updatePassword",newpass)
     return this.http.put<any>(this.API_URL+"/users/updatePassword",newpass).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }

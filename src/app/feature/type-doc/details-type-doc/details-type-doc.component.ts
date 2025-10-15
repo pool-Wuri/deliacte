@@ -207,8 +207,8 @@ export class DetailsTypeDocComponent {
         complete:()=>{},
         next:(result)=>{
           this.traitementPass=result.data.traitement;
-        this.dossier=result.data.dossiers;
-        console.log(this.dossier)
+          this.dossier=result.data.dossiers;
+       // console.log(this.dossier)
         for(let i=0;i<this.dossier.length;i++){
           if (this.dossier[i].champOperation.inputType === "PDF" ||
             this.dossier[i].champOperation.inputType === "FILE" ||
@@ -217,6 +217,7 @@ export class DetailsTypeDocComponent {
           }
         }
         let i = 0;
+        //console.log(this.dossier)
         while (i < this.dossier.length - 1) { 
             if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
                 this.dossierTraiter.push(this.dossier[i + 1]);
@@ -226,6 +227,7 @@ export class DetailsTypeDocComponent {
                 i++;  // Incrémente seulement si aucun élément n'est supprimé
             }
         }
+        //console.log(this.dossierTraiter)
         //fin while
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.isDisabled=false;
@@ -235,9 +237,9 @@ export class DetailsTypeDocComponent {
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           this.operationService.get_OperationNext(this.idOperationNow).subscribe({
             next:(result)=>{
-              console.log(result)
+             // console.log(result)
               this.traitement.operationId=result.data[0].id;
-              console.log(this.traitement)
+            //  console.log(this.traitement)
             
             },
             complete:()=>{},
@@ -252,6 +254,7 @@ export class DetailsTypeDocComponent {
               console.log(result)
             this.operationService.get_OperationNext(this.idOperationNow).subscribe({
                 next:(result)=>{
+                //  console.log(result)
                   if(result.data.length>1)
                   {
                     if(result.data[0].operationPreviousId==this.idOperationNow){
@@ -267,7 +270,6 @@ export class DetailsTypeDocComponent {
                     }
                     this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                       next:(result)=>{
-                      
                         this.champs=result.data;
                         if (this.champs){
                           this.demandeFor = this.champs.map(champ => ({
@@ -286,6 +288,8 @@ export class DetailsTypeDocComponent {
                   else{
                     if(result.data[0].operationPreviousId==this.idOperationNow){
                       this.operationnow=result.data[0];
+                    //  console.log(this.operationnow)
+
                       this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
                         next:(result)=>{
                           this.operationPrecedent=result.data;
@@ -295,7 +299,7 @@ export class DetailsTypeDocComponent {
                         error:(err)=>{}
                       });
                       this.traitement.operationId=result.data[0].id;
-    
+                   //   console.log(result.data)
                       this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
                         next:(result)=>{
                         // this.numDossier=result.message;
@@ -647,7 +651,7 @@ export class DetailsTypeDocComponent {
       next:(result)=>{
        // console.log(result);
         if(result){
-          console.log(result)
+        //  console.log(result)
           if(result.status==404){
             setTimeout(() => {
               this.loading=false;

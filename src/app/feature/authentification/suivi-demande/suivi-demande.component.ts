@@ -12,7 +12,8 @@ import { UtilisateurService } from 'src/app/core/services/utilisateur.service';
 })
 export class SuiviDemandeComponent {
   numDossier!:any;
-
+  submitted:boolean=false;
+  loading:boolean=false;
 
   constructor(
     private authentificationService: AuthentificationService,
@@ -28,7 +29,11 @@ export class SuiviDemandeComponent {
   }
   
   validerDemande(dossierNumbur:any){
-    this.router.navigate(['/deliacte/login/details', dossierNumbur]);
+    this.submitted=true;
+    if(dossierNumbur){
+      this.router.navigate(['/deliacte/login/details', dossierNumbur]);
+
+    }
    }
 
  

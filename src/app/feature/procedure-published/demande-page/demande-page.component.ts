@@ -83,7 +83,7 @@ ngOnInit():void{
     this.getProcedure(this.id)
    }
   );
- this.searchEntity()
+ //this.searchEntity()
  // this.searchChamp()
 }
 
@@ -102,7 +102,9 @@ getProcedure(id?:number){
     next: (result) => {
       this.numDossier = result.message;
       this.champs = result.data;
-  
+      this.champs.reverse()
+
+     // console.log(this.champs)
       // Empêcher erreur si aucun champ
       if (!this.champs || this.champs.length === 0) {
         this.demandeFor = [];
@@ -307,7 +309,7 @@ retourPage(){
 }
 
 
-searchEntity(){
+/*searchEntity(){
   this.entiteService.search_Entite().subscribe({
     complete:()=>{},
     next:(result)=>{
@@ -343,6 +345,6 @@ searchEntity(){
     }
 
   })
-}
+}*/
 
 }

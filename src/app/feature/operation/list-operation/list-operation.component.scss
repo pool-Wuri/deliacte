@@ -80,11 +80,35 @@
     margin-left: 30px; /* Espacement à droite du bouton Oui */
 }
 
-:host ::ng-deep .acceptButton {
-    margin-left: 10px; /* Essayer avec !important si nécessaire */
+/*:host ::ng-deep .acceptButton {
+    margin-left: 10px; 
     border-color: rgb(249 250 251);
     background-attachment: fixed;
-}
+}*/
+
+:host ::ng-deep .p-confirm-dialog {
+    border-radius: 1rem; /* coins arrondis */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #16a34a, #4ade80);
+    color: white;
+    font-weight: 600;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content {
+    text-align: center;
+    font-size: 1rem;
+    padding: 1.5rem;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
 .cherch input{
     border-radius: 0.5rem;
     border-color: rgb(209 213 219);}

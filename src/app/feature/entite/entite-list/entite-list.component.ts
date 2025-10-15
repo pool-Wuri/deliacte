@@ -63,12 +63,12 @@ list2: any[] | undefined;
   champsEntites=new Array <ChampEntite>();
   expandedRowsEntite: { [key: string]: boolean } = {};
   expandedRowKeys: { [key: string]: boolean } = {};
+  expandedFieldKeys: { [key: string]: boolean } = {};
 
 constructor(
   private TypeOperationService: TypeOperationService,
   private operationService:OperationService,
   private entiteService:EntiteService,
-
   private procedureService:ProcedureService,
   private confirmationService:ConfirmationService,
   private messageService:MessageService,
@@ -251,7 +251,7 @@ fermerModal(){
 
 
   saveChampEntite(){
-    console.log(this.entiteChamp);
+   // console.log(this.entiteChamp);
     this.confirmationService.confirm({
       message: 'Voulez-vous sauvegarder ce champ?',
       header: 'Confirmation',
@@ -263,7 +263,7 @@ fermerModal(){
       this.loading=true;
       this.entiteService.ajouterChamp(this.entiteChamp).subscribe({
         next:(value)=>{
-          console.log(value)
+         // console.log(value)
           this.addchamp=false;
          if(value.status==201 || value.status==200){
         /*  if(value.data.entityObjectOptionFields.length>0){
@@ -293,7 +293,7 @@ fermerModal(){
         complete:()=>{},
         error:(err)=>{
           this.loading=false;
-          console.log(err)
+          //console.log(err)
         }
       })
       //this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ enrégistré', life: 3000});
@@ -315,7 +315,7 @@ fermerModal(){
     }
  //   this.optionAdd;
     this.entiteChamp.entityObjectOptionFields.push(this.optionAdd);
-    console.log(this.entiteChamp)
+   // console.log(this.entiteChamp)
    
    this.newOption='';
   }
@@ -343,12 +343,11 @@ fermerModal(){
        // console.log(this.champsEntites)
       },
       error:(err)=>{
-        console.log(err)
+        //console.log(err)
       }
     })
   }
 
-expandedFieldKeys: { [key: string]: boolean } = {};
 
   onFieldExpand(event: any) {
     this.expandedFieldKeys = {};
@@ -363,10 +362,10 @@ expandedFieldKeys: { [key: string]: boolean } = {};
     this.entiteService.searchChamp().subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
+       // console.log(result)
       },
       error:(err)=>{
-        console.log(err)
+        //console.log(err)
       }
 
 
@@ -408,7 +407,7 @@ expandedFieldKeys: { [key: string]: boolean } = {};
     reject:()=>{
       this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
     }
- });
+  });
  }
 
   
@@ -482,7 +481,7 @@ expandedFieldKeys: { [key: string]: boolean } = {};
       doc.save('Liste_des_entités.pdf');
   
     } catch (error) {
-      console.error("Erreur lors de la génération du PDF :", error);
+      //console.error("Erreur lors de la génération du PDF :", error);
       // Gérer l'erreur, par exemple en affichant un message à l'utilisateur
     }
   }

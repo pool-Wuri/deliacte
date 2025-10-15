@@ -98,6 +98,7 @@ procedure=new Procedure;
       complete:()=>{},
       next:(result)=>{
         if(result.status==201 || result.status==200){
+          this.loading=false;
           this.procedures=result.data;
           this.proceduresBrouillon=this.procedures.filter(u=>u.status=="DRAFT");
           this.proceduresArchiv=this.procedures.filter(u=>u.status=="ARCHIVED");
@@ -123,7 +124,6 @@ procedure=new Procedure;
             ...p,
             organisationName: p.organisation?.name || ''
           }));
-          this.loading=false;
         }
         else{
           setTimeout(() => {
@@ -293,12 +293,13 @@ procedure=new Procedure;
       this.procedureService.delete_procedure(procedure.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          if(result){
+          this.loading=true;
             this.messageService.add({severity:'success', summary: 'Succès', detail: 'procedure supprimée', life: 3000});      
             setTimeout(() => {
               this.search_Procedure();
+              this.loading=false;
             }, 2000);
-          }
+          
      
         },
         error:(error)=>{

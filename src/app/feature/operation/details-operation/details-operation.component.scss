@@ -29,7 +29,27 @@
     display:inline-block;
 }
 
-
+:host ::ng-deep {
+    /* Checkbox contour */
+    .p-checkbox .p-checkbox-box {
+      border: 2px solid #6b7280 !important; /* gris-500 */
+      border-radius: 4px; /* arrondi facultatif */
+      background: white; /* fond par défaut */
+    }
+  
+    /* Checkbox cochée */
+    .p-checkbox .p-checkbox-box.p-highlight {
+      background-color: #6b7280 !important; /* fond gris quand coché */
+      border-color: #6b7280 !important; /* garde le contour gris */
+    }
+  
+    /* Icône check */
+    .p-checkbox .p-checkbox-icon {
+      color: #fff !important; /* coche blanche */
+      font-size: 14px;
+    }
+  }
+  
 
 @import "~primeicons/primeicons.css";
 
@@ -68,6 +88,8 @@
             transition-duration: 0.2s;
             color: rgb(255, 255, 255);
             font-size: 14px;
+            border-color: #6b7280 !important;
+
         }
     }
     
@@ -157,7 +179,13 @@
         color: #060;
         border-radius: 0%;
     }
-@media screen and (max-width: 960px) {
+
+    ::ng-deep .p-tabview-nav {
+        position: relative;
+        z-index: 50 !important;
+      }
+      
+/*@media screen and (max-width: 960px) {
     :host ::ng-deep {
         .p-datatable {
             &.p-datatable-customers {
@@ -195,7 +223,7 @@
         }
     }
 
-}
+}*/
 
 :host ::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
     background-color: #060;
@@ -267,6 +295,18 @@
     }
 }
 
+::ng-deep .custom-dialog {
+    width: 90vw !important;      /* occupe 90% de la largeur de l'écran */
+    max-width: 900px !important; /* mais jamais plus grand que 900px */
+  }
+  
+  @media (max-width: 600px) {
+    ::ng-deep .custom-dialog {
+      width: 95vw !important;  /* sur très petits écrans */
+      margin: 0 !important;    /* enlève les marges */
+    }
+  }
+
 /* Desktop : même largeur fixe */
 ::ng-deep .custom-upload .p-button {
     min-width: 180px; /* largeur fixe identique */
@@ -284,6 +324,62 @@
       min-width: 100% !important;
       max-width: 100% !important;
       margin-bottom: 8px; /* espace entre boutons */
+    }
+  }
+  :host ::ng-deep .p-confirm-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #16a34a, #4ade80);
+    color: white;
+    font-weight: 600;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content {
+    text-align: center;
+    font-size: 1rem;
+    padding: 1.5rem;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  ::ng-deep .custom-upload {
+    width: 100% !important;
+  }
+  
+  ::ng-deep .custom-upload .p-fileupload-content {
+    text-align: center;
+    padding: 1rem;
+    border: 2px dashed #d1d5db; /* gris clair */
+    border-radius: 8px;
+  }
+  
+  .drag-zone {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+  
+  /* Adaptation mobile */
+  @media (max-width: 600px) {
+    ::ng-deep .custom-upload .p-fileupload-content {
+      border: none;
+      padding: 0.5rem;
+    }
+  
+    .drag-zone {
+      font-size: 0.8rem;
+      color: #374151; /* un peu plus sombre pour lisibilité */
+    }
+  
+    ::ng-deep .custom-upload .p-fileupload-buttonbar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    ::ng-deep .custom-upload .p-button {
+      width: 100% !important; /* Boutons pleine largeur */
     }
   }
   

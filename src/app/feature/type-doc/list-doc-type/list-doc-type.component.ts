@@ -177,6 +177,7 @@ getDossier(){
         next:(result)=>{
           if(result.status==200 || result.status==201){
             this.doosierUser=result.data;
+           // console.log(this.doosierUser)
             this.loading=false;
           }
           else{

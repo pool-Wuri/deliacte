@@ -21,6 +21,7 @@ export class DetailsProcedureComponent {
   user: User | null = null;
   procedures=new Array <Procedure>();
   champs=new Array <ChampOperation>();
+  loading:boolean=false;
 
   constructor(private route:ActivatedRoute,
       private procedureService:ProcedureService,
@@ -48,7 +49,9 @@ export class DetailsProcedureComponent {
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
   }
+
   getProcedure(id?:number){
+    this.loading=true
     this.procedureService.getUserById(id).subscribe({
       complete:()=>{},
       next:(result)=>{
@@ -57,13 +60,20 @@ export class DetailsProcedureComponent {
       error:(er)=>{
       }
     })
-
     this.procedureService.get_Procedure(id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        this.procedure=result.data;
+        if(result){
+          this.procedure=result.data;
+          setTimeout(() => {
+            this.loading=false;
+
+          }, 2000);
+          
+        }
       },
       error:(error)=>{
+        this.loading=false;
       }
     })
   }
@@ -83,7 +93,7 @@ export class DetailsProcedureComponent {
     this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
 }
 
-retourPage(){
-  this.location.back();
-}
+  retourPage(){
+    this.location.back();
+  }
 }

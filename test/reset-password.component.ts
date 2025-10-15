@@ -13,7 +13,6 @@ export function passwordMatchValidator(control: AbstractControl): ValidationErro
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
 
@@ -100,11 +99,11 @@ export class ResetPasswordComponent implements OnInit {
   // Méthode appelée à la soumission du formulaire
   onSubmit(): void {
     if (this.resetForm.valid) {
-      console.log('Formulaire valide, envoi des données...', this.resetForm.value);
+    //  console.log('Formulaire valide, envoi des données...', this.resetForm.value);
       // Ici, vous appelleriez votre service pour envoyer la requête HTTP
       // this.authService.resetPassword(this.resetForm.value).subscribe(...);
     } else {
-      console.log('Formulaire invalide');
+    //  console.log('Formulaire invalide');
       // Marquer tous les champs comme "touchés" pour afficher les erreurs
       this.resetForm.markAllAsTouched();
     }

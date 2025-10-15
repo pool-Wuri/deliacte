@@ -305,3 +305,26 @@
     100% { transform: rotate(360deg); }
   }
   
+  :host ::ng-deep .p-confirm-dialog {
+    border-radius: 1rem; /* coins arrondis */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #16a34a, #4ade80);
+    color: white;
+    font-weight: 600;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-content {
+    text-align: center;
+    font-size: 1rem;
+    padding: 1.5rem;
+  }
+  
+  :host ::ng-deep .p-confirm-dialog .p-dialog-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  

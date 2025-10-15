@@ -1,9 +1,11 @@
 <p-toast></p-toast>
-<div *ngIf="loading" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
-    <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
-     <p-progressSpinner></p-progressSpinner>
-    </div>
-   </div>
+<div *ngIf="loading" 
+     style="position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; 
+            background-color:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center;">
+  
+  <p-progressSpinner></p-progressSpinner>
+  
+</div>
     <!--h1>Liste des opérations</h1-->
     <div class=" text-white p-6 rounded-t-lg shadow-md mb-6" style="background-color: #060;">
         <h1 class="text-2xl font-bold">Liste des entités</h1>
@@ -54,7 +56,7 @@
     >
     <ng-template pTemplate="header">
     <tr>
-        <th style="width:3rem"></th>
+        <th style="width:3rem" ></th>
         <th>Nom</th>
         <th>Description</th>
         <th>Actions</th>
@@ -63,12 +65,12 @@
 
     <ng-template pTemplate="body" let-entite let-expanded="expanded">
         <tr>
-            <td>
+            <td >
                 <button
                     type="button"
                     pButton
                     [pRowToggler]="entite"
-                    class="p-button-text p-button-rounded p-button-plain"
+                    class="p-button-text p-button-rounded p-button-plain z-50"
                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
                     (click)="expandAll(entite.id)"
                 ></button>
@@ -106,7 +108,7 @@
                         [expandedRowKeys]="expandedFieldKeys"
                         (onRowExpand)="onFieldExpand($event)"
                         (onRowCollapse)="onFieldCollapse($event)"
-                        class="w-full"
+                        class="w-full "
                     >
                         <ng-template pTemplate="header">
                         <tr style="background-color: #ff0000;">
@@ -125,7 +127,7 @@
                                 type="button"
                                 pButton
                                 [pRowToggler]="field"
-                                class="p-button-text p-button-rounded p-button-plain"
+                                class="p-button-text p-button-rounded p-button-plain z-50"
                                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
                             ></button>
                             </td>
@@ -318,7 +320,7 @@
                                 </div>
                             
                             </div> 
-                            <div *ngIf="champ.inputType === 'CHECKBOX' || champ.inputType === 'RADIO' || champ.inputType === 'SELECT' ">
+                            <div *ngIf="entiteChamp.inputType === 'CHECKBOX' || entiteChamp.inputType === 'RADIO' || entiteChamp.inputType === 'SELECT' ">
                                 <label for="" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Options disponible</label>
                                 <p-listbox [options]="entiteChamp.entityObjectOptionFields ?? []"   optionLabel="name"></p-listbox>
 

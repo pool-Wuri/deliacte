@@ -1,8 +1,10 @@
-<div *ngIf="loading" style="position:absolute;z-index:100;width:100%;height:100%;background-color:black;opacity: 0.7;left:0%;top:0%">
-    <div style="position:absolute;z-index:100;top:40%;left:45%;background-color:black;opacity: 0.7;">
-     <p-progressSpinner></p-progressSpinner>
-    </div>
-   </div>
+<div *ngIf="loading" 
+     style="position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; 
+            background-color:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center;">
+  
+  <p-progressSpinner></p-progressSpinner>
+  
+</div>
 <div style="display: inline-flex;">
     <p-button icon="pi pi-arrow-left z-50" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
     <h1 class="p-4">Details Opération</h1>
@@ -70,43 +72,40 @@
     </div>
 </p-divider>
 <div class="card">
+  <p-toolbar styleClass="mb-4 gap-2">
+    <ng-template pTemplate="right">
 
-    <p-toolbar styleClass="mb-4 gap-2">
-        <ng-template pTemplate="left">
-           
+      <p-fileUpload 
+        class="upload-vert custom-upload"
+        mode="advanced"
+        name="file"
+        [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
+        accept=".doc,.docx"
+        maxFileSize="5000000"
+        chooseLabel="Sélectionner un fichier"
+        uploadLabel="Téléverser"
+        cancelLabel="Annuler"
+        invalidFileSizeMessageSummary="Fichier trop gros"
+        invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
+        (onError)="onError($event)"
+        (onUpload)="onUpload($event)"
+        [style]="{width: '100%'}">
+
+        <!-- Message d’erreur -->
+        <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Zone drag & drop -->
+        <ng-template pTemplate="empty">
+          <div class="drag-zone">Glisser-déposer ou appuyez pour choisir un fichier</div>
         </ng-template>
-        <ng-template pTemplate="right">
-            
-            <p-fileUpload 
-            class="upload-vert custom-upload"
-            mode="advanced"
-            name="file"
-            [url]="'http://188.166.86.36:8080/deliacte/v1/operations/template/' + id"
-            accept=".doc,.docx"
-            maxFileSize="5000000"
-            chooseLabel="Sélectionner un fichier"
-            uploadLabel="Téléverser"
-            cancelLabel="Annuler"
-            invalidFileSizeMessageSummary="Fichier trop gros"
-            invalidFileSizeMessageDetail="Le fichier ne doit pas dépasser 5 Mo"
-            (onError)="onError($event)"
-            (onUpload)="onUpload($event)">
-            
-            <!-- Zone d'affichage du message d'erreur -->
-            <div *ngIf="errorMessage" class="mt-2 text-red-600 font-medium">
-                {{ errorMessage }}
-            </div>
-        
-    
-            <ng-template pTemplate="empty">
-                <div>Glisser-déposer votre fichier ici</div>
-            </ng-template>
-        </p-fileUpload>
-        
-          
-        </ng-template>
-    </p-toolbar>
+      </p-fileUpload>
+
+    </ng-template>
+  </p-toolbar>
 </div>
+
 <p-divider align="center">
     <div class="inline-flex align-items-center" style="color:#060;">
         <!--i class="pi pi-info-circle user"></i-->
@@ -115,23 +114,25 @@
 </p-divider>
 <div class="card opera" >
     <p-tabView>
-          <p-tabPanel header="Champ">
+          <p-tabPanel header="Champ" class="z-50">
             <p-toolbar styleClass="mb-4 gap-2 flex justify-end ">
               <ng-template pTemplate="right">
                 <button style="background-color: #060;" (click)="ajouterChamp(operation)"
-                  class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                  class="ml-auto text-white from-green-400 via-green-500 to-green-600
                   focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
                   dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
                   type="button">
                   Ajouter
                 </button>
+
+             
               </ng-template>
             </p-toolbar>
           
             <div class="card">
               <p-table #dt [value]="champs" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                 [globalFilterFields]="['firstName']">
           
                 <ng-template pTemplate="caption">
@@ -180,6 +181,71 @@
               </p-table>
             </div>
           </p-tabPanel>
+          <p-tabPanel header="Entité">
+            <p-toolbar styleClass="mb-4 gap-2 flex justify-end ">
+              <ng-template pTemplate="right">
+               
+
+                <button style="background-color: #060;" (click)="ajouterEntit(operation)"
+                class="ml-auto text-white from-green-400 via-green-500 to-green-600 
+                focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 
+                dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" 
+                type="button">
+                Ajouter entité
+              </button>
+              </ng-template>
+            </p-toolbar>
+          
+            <div class="card">
+              <p-table #dt [value]="entitesOperations" styleClass="p-datatable-customers" [rowHover]="true" 
+                [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
+                [globalFilterFields]="['firstName']">
+          
+                <ng-template pTemplate="caption">
+                  <div class="flex">
+                    <span class="p-input-icon-left ml-auto cherch">
+                      <input pInputText type="text" #searchInput 
+                        (input)="dt.filterGlobal(searchInput.value, 'contains')" 
+                        placeholder=" Rechercher" />
+                    </span>
+                  </div>
+                </ng-template>
+          
+                <ng-template pTemplate="header">
+                  <tr class="tableEnt">
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Action</th>
+
+                  </tr>
+                </ng-template>
+          
+                <ng-template pTemplate="body" let-entite>
+                  <tr class="p-selectable-row tableContenu">
+                    <td>{{entite.name}}</td>
+                    <td>{{entite.description}}</td>
+                  
+                    <td>
+                      <button type="button" title="Supprimer" style="background-color: #ff0000;" 
+                        (click)="retirerEntite(entite)" 
+                        class="text-white from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-0 pi pi-eraser">
+                      </button>
+          
+                      <button type="button" title="Modifier" style="background-color: #060;" 
+                        (click)="ajouterChampOperation(entite)"
+                        class="text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br 
+                        focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full 
+                        text-sm p-2.5 text-center inline-flex items-center mx-1 pi pi-pencil">
+                      </button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </p-tabPanel>
           <p-tabPanel header="Groupe Utilisateur">
             <p-toolbar styleClass="mb-4 gap-2 flex justify-end">
               <ng-template pTemplate="right">
@@ -196,7 +262,7 @@
             <div class="card">
               <p-table #dt [value]="responsUsers" styleClass="p-datatable-customers" [rowHover]="true" 
                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
-                [paginator]="true" currentPageReportTemplate="Liste {first} de {last} à {totalRecords} entrées"
+                [paginator]="true" currentPageReportTemplate="Liste {first} à {last} sur {totalRecords} entrées"
                 [globalFilterFields]="['firstName']">
           
                 <ng-template pTemplate="caption">
@@ -350,6 +416,94 @@
         </div>
     </div>
 </div>
+
+<p-dialog 
+[(visible)]="addentite" header="Entités" [style]="{width: '900px'}" modal="true"  styleClass="p-fluid custom-dialog">
+  <div class="card">
+    <p-table [value]="entites" [(selection)]="entitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+      <!-- En-tête -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Nom</th>
+          <th>Description</th>
+        </tr>
+      </ng-template>
+
+      <!-- Corps du tableau -->
+      <ng-template pTemplate="body" let-entite>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="entite"></p-tableCheckbox>
+          </td>
+          <td>{{ entite.name }}</td>
+          <td>{{ entite.description }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  </div>
+  <div class="mt-6">
+    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+      class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+    <button type="button" style="background-color: #060;" (click)="saveEntite()"
+     class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600
+      dark:hover:bg-green-700 dark:focus:ring-green-800">Valider
+    </button>
+
+  </div>
+  
+</p-dialog>
+
+<p-dialog [(visible)]="addchampEntite" header="Champs" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+  <div class="card">
+    <p-table [value]="champsEntites" [(selection)]="champsEntitesSelect"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+
+      <!-- En-tête -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Obligatoire</th>
+        </tr>
+      </ng-template>
+
+      <!-- Corps du tableau -->
+      <ng-template pTemplate="body" let-champ>
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="champ"></p-tableCheckbox>
+          </td>
+          <td>{{ champ.name }}</td>
+          <td>{{ champ.description }}</td>
+          <td>{{ champ.inputType }}</td>
+          <td>{{ champ.isRequired ? 'Oui' : 'Non' }}</td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+
+  
+  </div>
+  <div class="mt-6">
+    <button (click)="fermerModal()" type="button" style="background-color: #ff0000;"  
+    class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+    <button type="button" style="background-color: #060;" (click)="saveChampEntiteOperation()"
+    class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 
+    font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+    Valider</button>
+  
+  </div>
+  
+</p-dialog>
+
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 
 <p-dialog  [(visible)]="listeUser" [style]="{width: '900px'}" modal="true" styleClass="p-fluid" >
