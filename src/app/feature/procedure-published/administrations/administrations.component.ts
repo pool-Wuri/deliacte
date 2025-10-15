@@ -16,8 +16,9 @@ export class AdministrationsComponent {
    leftColumn: Organisation[] = [];
   rightColumn: Organisation[] = [];
 
- filteredOrganisations: any[] = [];
+// filteredOrganisations: any[] = [];
   searchTerm: string = '';
+  filteredOrganisations = [...this.organisations];
   constructor(
     private organisationService: OrganisationService,
     private router: Router,
@@ -32,7 +33,7 @@ export class AdministrationsComponent {
 
   
 
-  searchOrganisation():void{
+  searchOrganisation1():void{
     
     this.organisationService.search_Organisationscitoyen().subscribe({
       complete:()=>{},
@@ -53,6 +54,34 @@ export class AdministrationsComponent {
     })
    }
 
+
+    onSearch() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredOrganisations = this.organisations.filter(proc =>
+      proc.name?.toLowerCase().includes(term) ||
+      proc.description?.toLowerCase().includes(term) 
+     
+    );
+
+    // Réinitialiser la pagination après recherche
+    //this.currentPage = 1;
+  }
+
+
+searchOrganisation(): void {
+  this.organisationService.research_Organisationscitoyen(this.searchTerm).subscribe({
+    next: (result) => {
+      if (result) {
+        this.organisations = result.data;
+        this.splitInTwoColumns(this.organisations);
+      }
+    },
+    error: (error) => {
+      this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
+    }
+  });
+}
 
 
    private splitInTwoColumns(data: Organisation[] | null | undefined) {

@@ -48,6 +48,24 @@ export class OrganisationService {
   }
 
 
+  public research_Organisationscitoyen(term: string): Observable<any> {
+  return this.http
+    .get(ORGANISATIONCITOYEN_API, {
+      headers: this.httpParams,
+      responseType: 'json',
+      params: { search: term }   // 👈 ajoute le paramètre search
+    })
+    .pipe(
+      retry(1),
+      tap((data: any) => {
+        // Tu peux logger si besoin
+        console.log("Résultat recherche:", data);
+      })
+    );
+}
+
+
+
   public saveOrganisation (organisation:any): Observable<any>{
     return this.http.post<any>(ORGANISATION_API,organisation).pipe(
       tap((data)=>{
