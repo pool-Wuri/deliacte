@@ -33,6 +33,7 @@ procedures=new Array<Procedure>();
 procedure=new Procedure; 
 user: User | null = null;
 addchamp:boolean=false;
+editchamp:boolean=false;
 adddoctype:boolean=false;
 champ=new ChampOperation;
 loading:boolean=false;
@@ -183,6 +184,7 @@ fermerModal(){
   this.editbutt=false;
   this.addchamp=false;
   this.adddoctype=false;
+  this.editchamp=false;
   this.loading=false;
  }
 
@@ -236,17 +238,74 @@ fermerModal(){
   });
  }
 
+saveEditChamp(){
+            console.log(this.entiteChamp);
+  this.confirmationService.confirm({
+    message: 'Voulez-vous modifier cet champ entité?',
+    header: 'Confirmation',
+    acceptLabel:'Oui',
+    rejectLabel:'Non',
+    icon: 'pi pi-exclamation-triangle',
+    acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.loading=true;
+      this.entiteService.updateChamp(this.entiteChamp,this.entiteChamp.id).subscribe({
+        next:(value)=>{
+          console.log(value);
+          this.addboutton=false;
+          this.editbutt=false;   
+          if(value.status==201 || value.status==200){
+            setTimeout(() => {
+              this.loading=false;
+              this.searchEntite();
+              this.searchChamp();
+              this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+            }, 2000);
+          }
+          else{
+            this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+            this.loading=false;
+          }
+        },
+        complete:()=>{},
+        error:(erreur)=>{
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
+        }
+      })        
+    },
+    reject:()=>{
+      //this.addboutton=false;
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
+    }
+  });
+ }
+
+
  detailsEntite(entite:Entite){
   this.router.navigate(['/deliacte/entite/details',entite.id])
   }
 
   ajouterChampEntite(entite:any){
     this.addchamp=true
+    this.addUser=true;
+    this.editchamp=false;
     this.title="Ajouter champ";
     this.entiteChamp={};
     this.entiteChamp.entityObjectId=entite.id;
     this.entiteChamp.entityObjectOptionFields=[];
     //console.log(this.entiteChamp)
+  }
+
+
+  
+   modifierChampEntite(entite:ChampEntite){
+    this.addchamp=true;
+    this.addUser=false;
+    this.editchamp=true;
+    this.title="Modifier champ";
+    this.entiteChamp=entite;
+    
   }
 
 
@@ -389,6 +448,46 @@ fermerModal(){
             setTimeout(() => {
               this.loading=false;
               this.searchEntite();
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+            }, 2000);
+          }
+          else{
+            this.loading=false;
+            this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
+          }
+        
+        },
+        error:(error)=>{
+          this.loading=false;
+        }
+    
+      })
+    },
+    reject:()=>{
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
+    }
+  });
+ }
+
+
+ deleteChampEntite(entiteChamp:ChampEntite){
+  this.confirmationService.confirm({
+     message: 'Voulez-vous vraiment supprimer cet champ entité?',
+     header: 'Suppression',
+     acceptLabel:'Oui',
+     rejectLabel:'Non',
+     icon: 'pi pi-exclamation-triangle',
+     acceptButtonStyleClass:'acceptButton',
+    accept: () => {
+      this.loading=true;
+      this.entiteService.delete_Champ(entiteChamp.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result.status==200 || result.status==201){
+            setTimeout(() => {
+              this.loading=false;
+              this.searchEntite();
+              this.searchChamp();
               this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
             }, 2000);
           }

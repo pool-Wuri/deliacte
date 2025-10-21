@@ -135,7 +135,7 @@ export class EntiteService {
   }
 
 
-  public delete_Champ(champId?: number): Observable<any> {
+  public delete_Champ(champId?: string | number): Observable<any> {
     return this.http
       .delete(CHAMP + '/' + champId, {
         headers: this.httpParams,
