@@ -198,10 +198,19 @@ export class ListOrganisationsComponent implements OnInit {
        acceptButtonStyleClass:'acceptButton',
      accept: () => {
        this.assignModal=false;
+       this.loading=true;
        this.organisationService.delete_organisation(organisation.id).subscribe({
          complete:()=>{},
          next:(result)=>{
-          this.searchOrganisation();
+          if(result){
+            console.log(result)
+            setTimeout(() => {
+              this.searchOrganisation();
+              this.loading=false;
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+
+            }, 2000);
+          }
          },
          error:(error)=>{
            

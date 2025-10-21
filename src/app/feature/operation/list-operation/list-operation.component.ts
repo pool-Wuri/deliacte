@@ -398,55 +398,58 @@ searchtypeoperation():void{
 
   onSortChange(event: { value: any; }) {
      this.proced = event.value;
-    this.operationService.get_Operation(this.proced.id).subscribe({
-      next:(value)=>{
-        if(value){
-          this.operations=value.data;
-         // console.log(this.operations)
-          for(let i=0;i<this.operations.length;i++){
-            this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].procedure=result.data;
-                  },
-              error:(er)=>{
+     this.loading=true;
+      this.operationService.get_Operation(this.proced.id).subscribe({
+        next:(value)=>{
+          if(value){
+            this.operations=value.data;
+            for(let i=0;i<this.operations.length;i++){
+              this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operations[i].procedure=result.data;
+                  this.loading=false;
+                    },
+                error:(er)=>{
+                  this.loading=false;
+                }
+              });
+            if(this.operations[i].operationNextId){
+              this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operations[i].operationNextId=result.data;
+                  this.loading=false;
+                }
               }
-            });
-          if(this.operations[i].operationNextId){
-            this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].operationNextId=result.data;
-              }
+            );
             }
-          );
-          }
-          else
-          {
-            this.operations[i].operationNextId="";
-  
-          }
-          if(this.operations[i].operationPreviousId){
-            this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
-              complete:()=>{},
-              next:(result)=>{
-                this.operations[i].operationPreviousId=result.data;
-              }
+            else
+            {
+              this.operations[i].operationNextId="";
+    
             }
-          );
+            if(this.operations[i].operationPreviousId){
+              this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
+                complete:()=>{},
+                next:(result)=>{
+                  this.operations[i].operationPreviousId=result.data;
+                }
+              }
+            );
+            }
+            else
+            {
+              this.operations[i].operationPreviousId="";
+    
+            }
+            }
           }
-          else
-          {
-            this.operations[i].operationPreviousId="";
-  
-          }
-          }
-        }
-      
-      },
-      complete:()=>{},
-      error:(err)=>{}
-    });
+        
+        },
+        complete:()=>{},
+        error:(err)=>{}
+      });
   }
 
   groupeUser(){

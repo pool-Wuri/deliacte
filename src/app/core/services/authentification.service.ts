@@ -98,6 +98,10 @@ export class AuthentificationService {
   }
 
   oublieservice(mail:any):Observable<any>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    
     return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",mail).pipe(
       tap((data)=>{
        // console.log(data);
@@ -106,7 +110,7 @@ export class AuthentificationService {
   }
 
   validerPass(newpass:any):Observable<any>{
-    console.log(this.API_URL+"/users/updatePassword",newpass)
+   // console.log(this.API_URL+"/users/updatePassword",newpass)
     return this.http.put<any>(this.API_URL+"/users/updatePassword",newpass).pipe(
       tap((data)=>{
        // console.log(data);
