@@ -192,7 +192,8 @@ searchtypeoperation():void{
  saveOperation(){
   this.operation.isActive=false;
   this.submitted=true;
-  if(this.operation.typeOperationId){
+//  console.log(this.operation)
+  if(this.operation.name){
     this.confirmationService.confirm({
       message: 'Voulez-vous enregistrer cette opération?',
       header: 'Confirmation',
@@ -398,7 +399,6 @@ searchtypeoperation():void{
 
   onSortChange(event: { value: any; }) {
      this.proced = event.value;
-     this.loading=true;
       this.operationService.get_Operation(this.proced.id).subscribe({
         next:(value)=>{
           if(value){
@@ -408,10 +408,8 @@ searchtypeoperation():void{
                 complete:()=>{},
                 next:(result)=>{
                   this.operations[i].procedure=result.data;
-                  this.loading=false;
                     },
                 error:(er)=>{
-                  this.loading=false;
                 }
               });
             if(this.operations[i].operationNextId){
@@ -419,7 +417,7 @@ searchtypeoperation():void{
                 complete:()=>{},
                 next:(result)=>{
                   this.operations[i].operationNextId=result.data;
-                  this.loading=false;
+                 // this.loading=false;
                 }
               }
             );

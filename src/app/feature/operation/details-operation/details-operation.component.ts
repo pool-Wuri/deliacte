@@ -502,7 +502,7 @@ export class DetailsOperationComponent {
         //  console.log(result)
           if(result.status==201 || result.status==200){
             this.entites=result.data;
-           // console.log(this.entites)
+            console.log(this.entites)
              setTimeout(() => {
                 this.loading=false;
               //  this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
@@ -574,7 +574,7 @@ export class DetailsOperationComponent {
         next:(result)=>{
             if(result.status==201 || result.status==200){
             this.entitesOperations=result.data;
-            //console.log(this.entites)
+           // console.log(this.entitesOperations)
             /* setTimeout(() => {
                 this.loading=false;
                 this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
@@ -605,7 +605,7 @@ export class DetailsOperationComponent {
         next:(result)=>{
           this.champsEntites=result.data;
           this.champsEntitesSelect=this.champsEntites.filter(u=>u.isPresent==true);
-          
+          console.log(this.champsEntites)
         },
         error:(err)=>{
           //console.log(err)

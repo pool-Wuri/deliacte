@@ -277,28 +277,40 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">             
                     <div class="grid gap-6 mb-6 md:grid-cols-2">
-                        <!--div>
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom</label>
+                        <div>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé</label>
                             <input type="text" id="name" name="name" [(ngModel)]="operation.name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
-                            dark:focus:border-blue-500" placeholder="nom" />
-                           
-                        </div-->
+                            dark:focus:border-blue-500" placeholder="Entrer le libellé" />
+                            <small class="p-error" *ngIf="submitted && !operation.name">Entrer le libéllé de l'opération .</small>
+
+                        </div>
                         <div>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Entrer le verbe au participe passé</label>
+                            <input type="text" id="name" name="name" [(ngModel)]="operation.verbeOperation"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                            focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 
+                            dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 
+                            dark:focus:border-blue-500" placeholder="Entrer le participe passé du verbe correspondant à l'opération" />
+                            <small class="p-error" *ngIf="submitted && !operation.verbeOperation">Le verbe est requis.</small>
+
+                        </div>
+              
+                        <!--div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Libellé de l'opération</label>
                             <p-dropdown [options]="typeoperations"  [(ngModel)]="operation.typeOperationId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
                           <small class="p-error" *ngIf="submitted && !operation.typeOperationId">choisir le libéllé de l'opération .</small>
 
-                        </div> 
-                        <div [class.disabled]="true">
+                        </div--> 
+                        <!--div [class.disabled]="true">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedure</label>
                             <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
                           ></p-dropdown>
                           
-                        </div> 
+                        </div--> 
                         <!--div>
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero d'ordre</label>
                             <p-dropdown [options]="[1,2,3,4,5]"  [(ngModel)]="operation.numeroOrdre" 
@@ -315,6 +327,17 @@
                           ></p-dropdown>
                         </div> 
                                       
+                    </div>
+                    <div class="grid gap-6 mb-6 md:grid-cols-0">
+                        <div>
+                            <label for="description" class="block mb-4 text-sm font-medium text-gray-900 dark:text-white">Description<span class="text-red-500">*</span></label>
+                            <textarea id="description" name="description" [(ngModel)]="operation.description" 
+                                rows="4" cols="50"
+                                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                                placeholder="Entrer la description de l'operation" required></textarea>
+                                <small class="p-error" *ngIf="submitted && !operation.description">Ajouter une description de l'operation.</small>
+
+                        </div>
                     </div>
             </div>
 
