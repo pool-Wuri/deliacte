@@ -48,6 +48,7 @@ export class SigninComponent {
   ngOnInit(): void {
     this.initForm();
     this.currentUrl = this.router.url;
+    this.authentificationService.logOut();
   }
 
   initForm(){

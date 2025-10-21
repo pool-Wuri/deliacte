@@ -37,10 +37,8 @@ export class ResetPassComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-     // console.log('params récupérés :', params); // Débogage
       const idParam = params['id'];
       this.id = params['id'] // Convertit en number ou 0 par défaut
-      //console.log('ID récupéré :', this.id);
     });
   }
 

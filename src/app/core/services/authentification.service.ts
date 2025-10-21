@@ -101,20 +101,20 @@ export class AuthentificationService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
-    console.log(mail)
     return this.http.post<any>(`${this.API_URL}/users/sendPasswordRejectionRequest`, mail).pipe(
       tap((data) => {
-        console.log('Requête envoyée sans token');
-        console.log(data)
+        //console.log('Requête envoyée sans token');
+       // console.log(data)
       })
     );
   }
 
   validerPass(newpass:any):Observable<any>{
-   // console.log(this.API_URL+"/users/updatePassword",newpass)
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
     return this.http.put<any>(this.API_URL+"/users/updatePassword",newpass).pipe(
       tap((data)=>{
-       // console.log(data);
       })
     )
   }
