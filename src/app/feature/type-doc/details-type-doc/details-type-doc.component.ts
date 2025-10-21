@@ -251,7 +251,7 @@ export class DetailsTypeDocComponent {
           this.userService.operationInfo(this.user?.id).subscribe({
             complete:()=>{},
             next:(result)=>{
-              console.log(result)
+             // console.log(result)
             this.operationService.get_OperationNext(this.idOperationNow).subscribe({
                 next:(result)=>{
                 //  console.log(result)

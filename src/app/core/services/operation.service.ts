@@ -127,7 +127,7 @@ export class OperationService {
   ajouterChamp(champ:any):Observable<any>{
     return this.http.post<any>(CHAMP,champ).pipe(
       tap((data)=>{
-        console.log(data);
+       // console.log(data);
       })
     )
   }

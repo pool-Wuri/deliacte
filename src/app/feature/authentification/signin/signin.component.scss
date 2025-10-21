@@ -49,3 +49,24 @@ a.active {
   justify-content: center;
   gap: 1rem;
 }
+
+/* ==========================================================================
+   1. CONFIGURATION DE BASE ET VARIABLES
+   ========================================================================== */
+
+
+   .bg-burkina-red {
+    background-color: #E31E24; /* rouge Burkina */
+  }
+  
+  .bg-burkina-yellow {
+    background-color: #FCD116; /* jaune Burkina */
+  }
+  
+  .bg-burkina-green {
+    background-color: #009639; /* vert Burkina */
+  }
+  
+  .font-sans {
+    font-family: 'Inter', sans-serif;
+  }

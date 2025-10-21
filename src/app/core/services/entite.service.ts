@@ -238,11 +238,13 @@ export class EntiteService {
       .pipe(
         retry(1),
         tap((data: any) =>{
-        //  console.log('api.service > get_formulaire > tap > server data :',data)     
-
+        //console.log('api.service > get_formulaire > tap > server data :',data)     
         }
         )
       );
   }
+
+
+  
 
 }
