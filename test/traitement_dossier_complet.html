@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traitement de Dossier - Burkina Faso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bf-red': '#EF2B2D',
+                        'bf-green': '#00853F',
+                        'bf-yellow': '#FCD116',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bf {
+            background: linear-gradient(135deg, #00853F 0%, #009B4D 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 133, 63, 0.1), 0 2px 4px -1px rgba(0, 133, 63, 0.06);
+        }
+        .card-shadow-strong {
+            box-shadow: 0 10px 15px -3px rgba(0, 133, 63, 0.2), 0 4px 6px -2px rgba(0, 133, 63, 0.1);
+        }
+        .badge-bf {
+            background: linear-gradient(90deg, #EF2B2D 0%, #EF2B2D 33%, #FCD116 33%, #FCD116 66%, #00853F 66%, #00853F 100%);
+            height: 4px;
+        }
+        .file-upload-area {
+            border: 2px dashed #9ca3af;
+            transition: all 0.3s ease;
+        }
+        .file-upload-area:hover {
+            border-color: #00853F;
+            background-color: #f0fdf4;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #00853F;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #00853F;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- En-tête avec les couleurs du Burkina Faso -->
+    <div class="badge-bf"></div>
+    <div class="gradient-bf text-white py-6 mb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button class="bg-white/20 p-3 rounded-lg backdrop-blur-sm hover:bg-white/30 transition-colors">
+                        <i class="fas fa-arrow-left text-2xl"></i>
+                    </button>
+                    <div class="bg-white/20 p-3 rounded-lg backdrop-blur-sm">
+                        <i class="fas fa-folder-open text-3xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">Traitement de Dossier</h1>
+                        <p class="text-green-100 mt-1">Référence: #DOS-2025-001234</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <!-- COLONNE GAUCHE : Dossier (Informations préremplies) -->
+            <div class="space-y-6">
+                
+                <!-- Section : Dossier -->
+                <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
+                    <div class="bg-gradient-to-r from-bf-green to-green-600 px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-folder text-white text-xl"></i>
+                            <h2 class="text-xl font-bold text-white">Dossier</h2>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        
+                        <!-- TEXT Input -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Nom complet</label>
+                            <input type="text" value="OUEDRAOGO Abdoulaye" readonly
+                                   class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 font-medium">
+                        </div>
+
+                        <!-- EMAIL Input -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Adresse e-mail</label>
+                            <input type="email" value="abdoulaye.ouedraogo@email.bf" readonly
+                                   class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 font-medium">
+                        </div>
+
+                        <!-- NUMBER Input -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Numéro de téléphone</label>
+                            <input type="tel" value="+226 70 12 34 56" readonly
+                                   class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 font-medium">
+                        </div>
+
+                        <!-- DATE Input -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Date de naissance</label>
+                            <input type="date" value="1990-03-15" readonly
+                                   class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 font-medium">
+                        </div>
+
+                        <!-- SELECT (readonly) -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Type de document</label>
+                            <div class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900 font-medium">
+                                Carte Nationale d'Identité
+                            </div>
+                        </div>
+
+                        <!-- RADIO (readonly) -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Genre</label>
+                            <div class="flex gap-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full border-2 border-bf-green flex items-center justify-center">
+                                        <div class="w-3 h-3 rounded-full bg-bf-green"></div>
+                                    </div>
+                                    <span class="text-gray-900 font-medium">Masculin</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>
+                                    <span class="text-gray-500">Féminin</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TEXTAREA (readonly) -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Adresse complète</label>
+                            <div class="w-full px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-900">
+                                Secteur 15, Avenue Kwame Nkrumah, Ouagadougou, Burkina Faso
+                            </div>
+                        </div>
+
+                        <!-- CHECKBOX (readonly) -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Documents fournis</label>
+                            <div class="space-y-2">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-bf-green text-lg"></i>
+                                    <span class="text-gray-900">Acte de naissance</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-check-circle text-bf-green text-lg"></i>
+                                    <span class="text-gray-900">Certificat de résidence</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-times-circle text-gray-400 text-lg"></i>
+                                    <span class="text-gray-500">Justificatif de domicile</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RANGE (readonly) -->
+                        <div class="bg-green-50 border-l-4 border-bf-green rounded-lg p-4">
+                            <label class="block text-sm font-semibold text-gray-600 mb-2">Niveau de priorité</label>
+                            <div class="flex items-center gap-4">
+                                <input type="range" value="75" min="0" max="100" disabled
+                                       class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-not-allowed">
+                                <span class="text-bf-green font-bold text-lg">75%</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Section : Documents Joints -->
+                <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
+                    <div class="bg-gradient-to-r from-bf-yellow to-yellow-500 px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-paperclip text-gray-800 text-xl"></i>
+                            <h2 class="text-xl font-bold text-gray-800">Documents Joints</h2>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            <!-- Document 1 - PDF -->
+                            <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div class="bg-bf-red text-white w-12 h-12 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-file-pdf text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">CNIB.pdf</p>
+                                        <p class="text-sm text-gray-500">PDF • 2.4 MB</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-eye mr-1"></i> Voir
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-download mr-1"></i> Télécharger
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Document 2 - PDF -->
+                            <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div class="bg-bf-red text-white w-12 h-12 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-file-pdf text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Acte_Naissance.pdf</p>
+                                        <p class="text-sm text-gray-500">PDF • 1.8 MB</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-eye mr-1"></i> Voir
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-download mr-1"></i> Télécharger
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Document 3 - IMAGE -->
+                            <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div class="bg-blue-500 text-white w-12 h-12 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-file-image text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Photo_Identite.jpg</p>
+                                        <p class="text-sm text-gray-500">JPEG • 856 KB</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-eye mr-1"></i> Voir
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-download mr-1"></i> Télécharger
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Document 4 - FILE -->
+                            <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:shadow-md transition-shadow">
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div class="bg-purple-500 text-white w-12 h-12 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-file text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-900">Certificat_Residence.docx</p>
+                                        <p class="text-sm text-gray-500">DOCX • 124 KB</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="px-4 py-2 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-eye mr-1"></i> Voir
+                                    </button>
+                                    <button class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium text-sm">
+                                        <i class="fas fa-download mr-1"></i> Télécharger
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COLONNE DROITE : Traitement (À remplir) -->
+            <div class="space-y-6">
+                
+                <!-- Section : Traitement -->
+                <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-clipboard-check text-white text-xl"></i>
+                            <h2 class="text-xl font-bold text-white">Traitement</h2>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        
+                        <!-- TEXT Input -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Référence de traitement <span class="text-bf-red">*</span>
+                            </label>
+                            <input type="text" placeholder="Entrez la référence"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all">
+                        </div>
+
+                        <!-- SELECT -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Statut du dossier <span class="text-bf-red">*</span>
+                            </label>
+                            <select class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all">
+                                <option value="">Sélectionner un statut</option>
+                                <option value="en_cours">En cours de traitement</option>
+                                <option value="complet">Dossier complet</option>
+                                <option value="incomplet">Dossier incomplet</option>
+                                <option value="suspendu">Suspendu</option>
+                            </select>
+                        </div>
+
+                        <!-- RADIO -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Niveau de priorité <span class="text-bf-red">*</span>
+                            </label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="priorite" value="basse" class="w-5 h-5 text-bf-green border-gray-300 focus:ring-bf-green">
+                                    <span class="text-gray-700 font-medium">Basse</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="priorite" value="normale" checked class="w-5 h-5 text-bf-yellow border-gray-300 focus:ring-bf-yellow">
+                                    <span class="text-gray-700 font-medium">Normale</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="priorite" value="haute" class="w-5 h-5 text-bf-red border-gray-300 focus:ring-bf-red">
+                                    <span class="text-gray-700 font-medium">Haute</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- NUMBER -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Délai de traitement (jours)
+                            </label>
+                            <input type="number" min="1" max="30" value="7" placeholder="Nombre de jours"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all">
+                        </div>
+
+                        <!-- DATE -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Date limite de traitement
+                            </label>
+                            <input type="date"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all">
+                        </div>
+
+                        <!-- RANGE -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Score de conformité <span id="rangeValue" class="text-bf-green font-bold">50%</span>
+                            </label>
+                            <input type="range" min="0" max="100" value="50" 
+                                   oninput="document.getElementById('rangeValue').textContent = this.value + '%'"
+                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- CHECKBOX -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-3">
+                                Documents manquants
+                            </label>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" class="w-5 h-5 text-bf-green border-gray-300 rounded focus:ring-bf-green">
+                                    <span class="text-gray-700">Certificat de résidence</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" class="w-5 h-5 text-bf-green border-gray-300 rounded focus:ring-bf-green">
+                                    <span class="text-gray-700">Justificatif de domicile</span>
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer p-3 rounded-lg hover:bg-gray-50">
+                                    <input type="checkbox" class="w-5 h-5 text-bf-green border-gray-300 rounded focus:ring-bf-green">
+                                    <span class="text-gray-700">Attestation d'emploi</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Email de notification
+                            </label>
+                            <input type="email" placeholder="agent@administration.bf"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all">
+                        </div>
+
+                        <!-- PASSWORD -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Code de validation
+                            </label>
+                            <div class="relative">
+                                <input type="password" id="passwordField" placeholder="Entrez le code"
+                                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all pr-12">
+                                <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <i class="fas fa-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- TEXTAREA -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Commentaire de traitement
+                            </label>
+                            <textarea rows="4" placeholder="Écrivez votre commentaire..."
+                                      class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all resize-none"></textarea>
+                        </div>
+
+                        <!-- FILE Upload -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Joindre un document complémentaire
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="file" id="fileInput" 
+                                       class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-bf-green hover:file:bg-green-100">
+                                <button type="button" class="px-6 py-3 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium whitespace-nowrap">
+                                    <i class="fas fa-upload mr-1"></i> Envoyer
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- IMAGE Upload -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Photo de vérification
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="file" accept="image/*" 
+                                       class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-bf-green hover:file:bg-green-100">
+                                <button type="button" class="px-6 py-3 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium whitespace-nowrap">
+                                    <i class="fas fa-upload mr-1"></i> Envoyer
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PDF Upload -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                Rapport d'analyse (PDF)
+                            </label>
+                            <div class="flex gap-2">
+                                <input type="file" accept=".pdf" 
+                                       class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-bf-green hover:file:bg-green-100">
+                                <button type="button" class="px-6 py-3 bg-bf-green text-white rounded-lg hover:bg-green-700 transition-colors font-medium whitespace-nowrap">
+                                    <i class="fas fa-upload mr-1"></i> Envoyer
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Section : Analyse finale -->
+                <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
+                    <div class="bg-gradient-to-r from-purple-600 to-purple-700 px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-chart-line text-white text-xl"></i>
+                            <h2 class="text-xl font-bold text-white">Analyse Finale</h2>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Commentaire d'analyse
+                        </label>
+                        <textarea rows="6" placeholder="Rédigez votre analyse détaillée du dossier..."
+                                  class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-bf-green focus:border-bf-green transition-all resize-none"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Boutons d'action en bas -->
+        <div class="mt-8 bg-white rounded-xl card-shadow-strong p-6">
+            <div class="flex flex-col sm:flex-row gap-4 justify-end items-center">
+                <button type="button" class="w-full sm:w-auto px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all font-semibold text-lg">
+                    <i class="fas fa-save mr-2"></i>
+                    Enregistrer le brouillon
+                </button>
+                <button type="button" onclick="confirmerRejet()" class="w-full sm:w-auto px-8 py-4 bg-bf-red text-white rounded-lg hover:bg-red-700 transition-all font-semibold text-lg shadow-lg hover:shadow-xl">
+                    <i class="fas fa-times-circle mr-2"></i>
+                    Rejeter le dossier
+                </button>
+                <button type="button" onclick="confirmerValidation()" class="w-full sm:w-auto px-8 py-4 gradient-bf text-white rounded-lg hover:shadow-xl transition-all font-semibold text-lg shadow-lg">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Valider le dossier
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordField = document.getElementById('passwordField');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Confirmation avant validation
+        function confirmerValidation() {
+            if (confirm('Êtes-vous sûr de vouloir valider ce dossier ?')) {
+                alert('✅ Dossier validé avec succès !');
+                // Ici, vous ajouteriez l'appel API pour valider
+            }
+        }
+
+        // Confirmation avant rejet
+        function confirmerRejet() {
+            if (confirm('Êtes-vous sûr de vouloir rejeter ce dossier ?')) {
+                alert('❌ Dossier rejeté.');
+                // Ici, vous ajouteriez l'appel API pour rejeter
+            }
+        }
+    </script>
+</body>
+</html>
+
