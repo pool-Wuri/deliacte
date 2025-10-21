@@ -101,12 +101,13 @@ export class AuthentificationService {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
-    
-    return this.http.post<any>(this.API_URL+"/users/sendPasswordRejectionRequest",mail).pipe(
-      tap((data)=>{
-       // console.log(data);
+    console.log(mail)
+    return this.http.post<any>(`${this.API_URL}/users/sendPasswordRejectionRequest`, mail).pipe(
+      tap((data) => {
+        console.log('Requête envoyée sans token');
+        console.log(data)
       })
-    )
+    );
   }
 
   validerPass(newpass:any):Observable<any>{
