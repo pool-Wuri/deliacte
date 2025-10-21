@@ -76,17 +76,20 @@
   
 
 
-
-
-<div class="card mt-24">
+<div class="card mt-24 w-full bg-white rounded-lg border-2 border-green-500 shadow-lg p-6 transition-all duration-300 hover:shadow-2xl hover:shadow-green-200">
     <div style="display: inline-flex;">
-        <p-button icon="pi pi-arrow-left" (onClick)="retourPage()" [rounded]="true" [text]="true" title="retour en arrière" [raised]="true" severity="help" />
-        <!--h1 class="p-4" *ngIf="procedureAff">{{procedureAff.name}}</h1-->
+    
     </div>
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 *ngIf="procedureAff"  class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">{{procedureAff.name}}</h2>
-    </div> 
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="flex items-center gap-3 mb-4">
+        <div class="bg-green-100 p-3 rounded-lg">
+        <i class="fas fa-id-card text-green-700 text-2xl"></i>
+        </div>
+        <h1 *ngIf="procedureAff" class="text-2xl font-semibold text-gray-800">
+        {{procedureAff.name}}
+        </h1>
+  </div>
+
+    <div class="flex min-h-full flex-col justify-center px-6 py-6 lg:px-0">
 
         <div class="grid gap-6 mb-6 md:grid-cols-2" [class.disabled]="isDisabled" >
             
@@ -96,14 +99,25 @@
                     <div *ngIf="['TEXT', 'RANGE', 'NUMBER', 'EMAIL', 'PASSWORD', 'DATE'].includes(champ.inputType)" class="col-span-1">
                         <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }} <span class="text-red-500">*</span></label>
                         <input [type]="champ.inputType" [id]="'input-' + i" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                             required [(ngModel)]="demandeFor[i].name"/>
                             <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
                     </div>
                     <div *ngIf="champ.inputType === 'TEXTAREA'" class="col-span-1">
                         <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }} <span class="text-red-500">*</span></label>
-                        <textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                        <textarea id="message"
+                            [(ngModel)]="demandeFor[i].name"
+                            class="block w-full h-10 p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
+                                    focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 
+                                    dark:placeholder-gray-400 dark:text-white resize-y"
+                            placeholder="Écrivez votre texte ici...">
+                        </textarea>
+
+                        <!--<textarea id="message" rows="4" [(ngModel)]="demandeFor[i].name" 
+                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 
+                        focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 
+                        dark:placeholder-gray-400 dark:text-white" placeholder="Write your thoughts here..."></textarea>-->
                         <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
                     </div>
@@ -118,7 +132,7 @@
                                         [value]="option.name" 
                                         name="radio-group-{{i}}"                    
                                         [(ngModel)]="demandeFor[i].name"    
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
                                     <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
@@ -137,7 +151,7 @@
                                         [value]="option.name" 
                                         [(ngModel)]="demandeFor[i].name"  
                                         (change)="onOptionChange(option, i)" 
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 dark:focus:ring-red-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                     <label [for]="'option-' + i + '-' + j" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{option.name}}</label>
                                     <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
@@ -160,14 +174,14 @@
                                 (change)="onFileChange($event, i)">
                     
                             <!-- Save Button -->
-                            <button (click)="saveFile()" style="background-color: #060;"  class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                                Save
+                            <button (click)="saveFile()" style="background-color: #060;"  class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                                Enregistrer
                             </button>
                         </div>
                     </div>          
                     <div *ngIf="champ.inputType === 'SELECT'" class="col-span-1">
                         <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }}<span class="text-red-500">*</span></label>
-                        <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select [id]="'select-' + i" [(ngModel)]="demandeFor[i].name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                             <option selected>Choisir {{ champ.name }}</option>
                             <option *ngFor="let option of champ.options" [value]="option.name">{{ option.name }}</option>
                         </select>
@@ -180,7 +194,7 @@
                         </div>
                         <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ champ.name }} <span class="text-red-500">*</span></label>
                         <input [type]="champ.inputType" [id]="'input-' + i" 
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-transparent block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
                             required [(ngModel)]="demandeFor[i].name"/>
                             <small class="p-error" *ngIf="submitted && champ.isRequired && !demandeFor[i].name"> {{champ.name}} est requis.</small>
 
@@ -190,27 +204,49 @@
             </ng-container>
             
         </div>
-        
-        <div class="flex">
-            <div class="flex items-center h-5">
-                <input id="helper-checkbox" aria-describedby="helper-checkbox-text" type="checkbox"
-                (change)="infosVerifier()" 
-                value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            </div>
-            <div class="ms-2 text-sm">
-                <label for="helper-checkbox" class="font-medium text-gray-900 dark:text-gray-300">
-                    Attention ces informations ne peuvent être modifiées après soumission. Veuillez cocher la case après vérification.
-                </label>
-            </div>
+
+         <div class="flex items-center justify-start gap-3 mt-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" (change)="infosVerifier()" class="sr-only peer">
+                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-300 rounded-full peer peer-checked:bg-green-600 transition-all duration-300"></div>
+                <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md peer-checked:translate-x-full transition-transform duration-300"></div>
+            </label>
+            <span class="text-gray-800 text-sm font-medium">
+                Attention : ces informations ne peuvent être modifiées après soumission. Veuillez cocher la case après vérification.
+            </span>
         </div>
         
-        <button (click)="finDemande()" [class.disabled]="!isDisabled" class="mt-4 text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" style="background-color: #060;">
-            Envoyer
-        </button>
+       
+        
+
         
        
+       
     </div>
+
+    <!-- Pied de page -->
+        <div class="flex justify-end gap-3 mt-6 p-4 border-t border-gray-200 bg-gray-50/50">
+            <!-- Bouton Annuler -->
+           <p-button (onClick)="retourPage()"  class="px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300">
+                Annuler
+            </p-button>
+
+            <!-- Bouton Envoyer -->
+            <button (click)="finDemande()" [class.disabled]="!isDisabled" 
+                class="px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300" style="background-color: #060;">
+                Envoyer
+            </button>
+        </div>
+
 </div>
+
+
+
+
+
+
+
+
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 
