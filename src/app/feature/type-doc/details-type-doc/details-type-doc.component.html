@@ -63,12 +63,146 @@
         </p-divider>
     </div> 
 
-     
+    <div *ngIf="user?.role=='CITOYEN'">
+
+        <div class="sm:w-full sm:max-w-sm">
+                <h2 class="text-xl font-bold mb-4 ml-4">Dossiers</h2>
+                </div>
+
+               <!-- Container : 1 colonne mobile, 2 colonnes md+ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 disabled-section card p-6 rounded-xl shadow-md bg-white"
+                    [class.disabled]="isDisabled">
+
+                <ng-container *ngFor="let champ of dossier; let i = index">
+
+                    <!-- Inputs simples : 1 col mobile, 1 col sur la grille de 2 (donc 50% sur md+) -->
+                    <div *ngIf="['TEXT','RANGE','NUMBER','EMAIL','PASSWORD','DATE'].includes(champ.champOperation.inputType)"
+                        class="col-span-1 w-full">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.champOperation.name }}
+                    </label>
+                    <input [type]="champ.inputType" [id]="'input-' + i" [(ngModel)]="champ.name" required
+                            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-yellow-400 focus:border-yellow-400 box-border" />
+                    </div>
+
+                    <!-- Textarea : prend toute la ligne sur mobile (grid-cols-1) ET sur md+ (col-span-2) -->
+                    <div *ngIf="champ.champOperation.inputType === 'TEXTAREA'" class="col-span-1 md:col-span-2">
+                    <label [for]="'input-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.champOperation.name }}
+                    </label>
+                    <textarea rows="4" [(ngModel)]="champ.name"
+                                class="w-full p-2 border border-gray-300 rounded-lg focus:ring-yellow-400 focus:border-yellow-400 resize-y box-border"
+                                placeholder="Entrer les informations ici"></textarea>
+                    </div>
+
+                    <!-- Radio : 1 colonne (donc 50% sur md+) -->
+                    <div *ngIf="champ.champOperation.inputType === 'RADIO'" class="col-span-1 w-full">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.champOperation.name }}
+                    </label>
+                    <div class="flex flex-wrap gap-4">
+                        <div *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center">
+                        <input [id]="'radio-' + i + '-' + j" type="radio"
+                                [value]="option.name" [(ngModel)]="champ.name"
+                                [name]="'radio-group-' + i"
+                                class="h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500"/>
+                        <label [for]="'radio-' + i + '-' + j" class="ml-1 text-sm text-gray-900 dark:text-gray-300">
+                            {{ option.name }}
+                        </label>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Checkbox : 1 colonne (50% sur md+) -->
+                    <div *ngIf="champ.champOperation.inputType === 'CHECKBOX'" class="col-span-1">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.champOperation.name }}
+                    </label>
+                    <div class="flex flex-wrap">
+                        <div *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center mr-4">
+                        <input [id]="'checkbox-' + i + '-' + j" type="checkbox"
+                                [value]="option.name" [(ngModel)]="champ.name"
+                                (change)="onOptionChange(option, i)"
+                                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500">
+                        <label [for]="'checkbox-' + i + '-' + j" class="ml-2 text-sm text-gray-900">{{ option.name }}</label>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Select : 1 colonne (50% sur md+) -->
+                    <div *ngIf="champ.champOperation.inputType === 'SELECT'" class="col-span-1">
+                    <label [for]="'select-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        {{ champ.champOperation.name }}
+                    </label>
+                    <select [id]="'select-' + i" [(ngModel)]="champ.name"
+                            class="w-full p-2 border border-gray-300 rounded-lg focus:ring-yellow-400 focus:border-yellow-400 box-border">
+                        <option selected>Choisir {{ champ.champOperation.name }}</option>
+                        <option *ngFor="let option of champ.champOperation.options" [value]="option.name">
+                        {{ option.name }}
+                        </option>
+                    </select>
+                    </div>
+
+                </ng-container>
+                </div>
+
+                <div class="card p-6 mt-6 rounded-xl shadow-md bg-white">
+                    <h2 class="text-xl font-bold mb-4">Documents joints</h2>
+                    <div style="background-color: #ff0000; overflow-x:auto;">
+                        <p-table #dt [value]="document" styleClass="p-datatable-customers" [rowHover]="true" 
+                                 [rows]="5" [showCurrentPageReport]="true" [rowsPerPageOptions]="[5,10,15,25,50]" dataKey="id"
+                                 [paginator]="true" currentPageReportTemplate="Ligne {first} à {last} pour {totalRecords} entrées"
+                                 [globalFilterFields]="['firstName','lastName','email']">
+                
+                            <ng-template pTemplate="header">
+                                <tr class="tableEnt">
+                                    <th>Nom</th>
+                                    <th>Type</th>
+                                    <th style="width: 250px;">Actions</th>
+                                </tr>
+                            </ng-template>
+                
+                            <ng-template pTemplate="body" let-doc>
+                                <tr class="p-selectable-row tableContenu">
+                                    <td>{{doc.champOperation.name}}</td>
+                                    <td>{{doc.champOperation.inputType}}</td>
+                                    <td>
+                                        <div class="flex gap-2">
+                                            <button (click)="voirDoc(doc)" style="background-color: #060;" type="button"
+                                                    class="text-white bg-green-600 hover:bg-green-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                                                Voir
+                                            </button>
+                                            <button (click)="telechargerDoc(doc)" type="button" style="background-color: #060;"
+                                                    class="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                                                Télécharger
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="3">Document non trouvé</td>
+                                </tr>
+                            </ng-template>
+                
+                        </p-table>
+                    </div>
+                </div>
+
+
+    </div>
+                
+
+
 
 
     
     <div class="flex flex-col md:flex-row justify-between items-stretch px-4 md:px-6 py-4 gap-4 md:gap-6" >
-        <div class="text-left card p-4 md:p-6 rounded-xl shadow-md w-full md:w-[50%]" >
+
+
+             <div  *ngIf="user?.role!=='CITOYEN'" class="text-left card p-4 md:p-6 rounded-xl shadow-md w-full md:w-[50%]" >
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm" >
                     <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Dossier</h2>
                 </div>  
@@ -133,23 +267,7 @@
                             </div>
                         </div>
                     
-                        <!-- Fichiers -->
-                        <!--div *ngIf="['PDF', 'FILE', 'IMAGE'].includes(champ.champOperation.inputType)" class="col-span-2">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            {{ champ.champOperation.name }}
-                            </label>
-                            <div class="flex items-center space-x-2">
-                            <input type="file" id="file_input_{{i}}"
-                                    (change)="onFileChange($event, i)"
-                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer 
-                                            bg-gray-50 focus:outline-none dark:bg-gray-700 dark:border-gray-600">
-                            <button (click)="saveFile()" style="background-color: #060;"
-                                    class="px-4 py-2 text-white font-semibold rounded-lg hover:bg-green-700">
-                                Save
-                            </button>
-                            </div>
-                        </div-->
-                    
+                       
                         <!-- Select -->
                         <div *ngIf="champ.champOperation.inputType === 'SELECT'" class="col-span-1">
                             <label [for]="'select-' + i" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -210,7 +328,12 @@
                         </p-table>
                     </div>
                 </div>
-        </div>
+            </div>
+
+     
+       
+        
+        
         <div *ngIf="user?.role!=='CITOYEN'" class="text-right card p-4 md:p-6 rounded-xl shadow-md w-full md:w-[50%]" >
                 <hr class="border-t border-gray-300 my-6">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm" >

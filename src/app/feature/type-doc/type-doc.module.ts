@@ -36,6 +36,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     TypeDocComponent,
     ListDocTypeComponent,
     DetailsTypeDocComponent,
+    
 
   ],
   imports: [
