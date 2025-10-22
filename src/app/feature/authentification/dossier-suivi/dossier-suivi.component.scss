@@ -328,3 +328,7 @@
     gap: 1rem;
   }
   
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
