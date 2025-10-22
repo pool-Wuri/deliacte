@@ -355,12 +355,14 @@ procedure=new Procedure;
   }
 
   publier(procedure:Procedure){
+    this.loading=true;
     this.operationService.get_Operation(procedure.id).subscribe({
       next:(value)=>{
         this.procedureService.get_Champ(procedure.id).subscribe({
           next:(result)=>{
             this.champs=result.data;
-           // console.log(this.champs.length)
+            this.loading=false;
+          // console.log(this.champs.length)
             if(value.data.length<=0 ||  this.champs.length<=0 ){
               this.messageService.add({severity:'error', summary: 'Publication pas possible', detail: 'Aucune opération et champ disponible pour cette procedure', life: 3000});
             }
@@ -419,9 +421,12 @@ procedure=new Procedure;
      
       },
       complete:()=>{},
-      error:(err)=>{}
-    })
-   
+      error:(err)=>{
+        this.loading=false;
+      }
+    });
+
+
    
   }
 

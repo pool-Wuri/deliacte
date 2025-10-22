@@ -254,6 +254,7 @@ saveEditChamp(){
           console.log(value);
           this.addboutton=false;
           this.editbutt=false;   
+          this.addchamp=false;
           if(value.status==201 || value.status==200){
             setTimeout(() => {
               this.loading=false;

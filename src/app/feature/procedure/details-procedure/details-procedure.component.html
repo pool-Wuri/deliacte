@@ -15,63 +15,81 @@
 
 <div *ngIf="user && user.role !== 'PROCEDURE_MANAGER'">
 
-    <div class="card">
-        <h4 class="card-title">-- Details type opération --</h4>
-        <div class="input-container">
-            <!-- Champ 1 -->
-            <div class="input-item">
-                <label for="inputField1" class="custom-label">Nom de la procédure</label>
+    <div class="card bg-white shadow-md rounded-xl p-6 border border-gray-100">
+        <h4 class="card-title text-lg font-semibold text-burkina-green mb-4 border-b border-gray-200 pb-2">
+          — Détails type d’opération —
+        </h4>
+      
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" >
+          <!-- Nom de la procédure -->
+          <div class="input-item" >
+            <label class="block text-sm font-semibold text-gray-900 mb-2">
+              Nom de la procédure
+            </label>
+            <input
+              type="text"
+              style="width: 70%;;"
+              pInputText
+              [value]="procedure.name"
+              readonly
+              class="w-full bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-md shadow-sm 
+                     focus:ring-0 focus:border-gray-300 px-3 py-2 cursor-default"
+            />
+          </div>
+             <!-- Statut -->
+             <div class="input-item">
+                <label class="block text-sm font-semibold text-gray-900 mb-2">
+                  Statut
+                </label>
                 <input
-                    id="inputField1"
-                    type="text"
-                    pInputText
-                    [value]="procedure.name"
-    
-                    class="custom-input"
-                    readonly
+                style="width: 70%;;"
+                  type="text"
+                  pInputText
+                  [value]="parseStatus(procedure.status)"
+                  readonly
+                  class="w-full bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-md shadow-sm 
+                         focus:ring-0 focus:border-gray-300 px-3 py-2 cursor-default"
                 />
-            </div>
-            <!-- Champ 2 -->
-    
-            <div class="input-item">
-                <label for="inputField1" class="custom-label">Description</label>
-                <input
-                    id="inputField1"
-                    type="text"
-                    pInputText
-                    class="custom-input"
-                    readonly
-                    [value]="procedure.description"
-                />
-            </div>
-            <div class="input-item">
-                <label for="inputField1" class="custom-label">Statut</label>
-                <input
-                    id="inputField1"
-                    type="text"
-                    pInputText
-                    class="custom-input"
-                    readonly
-                    [value]="parseStatus(procedure.status)"
-                />
-            </div>
-            <div class="input-item" *ngIf="procedure.organisation">
-                <label for="inputField1" class="custom-label">Organisation</label>
-                <input
-                    id="inputField1"
-                    type="text"
-                    pInputText
-                    class="custom-input"
-                    readonly
-                    [value]="procedure.organisation.name ? procedure.organisation.name : '---------------'"
-                />
-            </div>
-    
-    
-           
-            
-        </div> <br>
-    </div>
+              </div>
+      
+          <!-- Description -->
+          <div class="input-item">
+            <label class="block text-sm font-semibold text-gray-900 mb-2">
+              Description
+            </label>
+            <textarea
+            id="description"
+            pInputTextarea
+            [value]="procedure.description"
+            readonly
+            rows="5"
+            style="width: 70%;;"
+            class="w-full bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-md shadow-sm 
+                   focus:ring-0 focus:border-gray-300 px-3 py-2 cursor-default resize-none"
+          ></textarea>
+          </div>
+      
+       
+      
+          <!-- Organisation -->
+          <div class="input-item" *ngIf="procedure.organisation">
+            <label class="block text-sm font-semibold text-gray-900 mb-2">
+              Organisation
+            </label>
+            <input
+              type="text"
+              style="width: 70%;;"
+              pInputText
+              [value]="procedure.organisation.name ? procedure.organisation.name : '---------------'"
+              readonly
+              class="w-full bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-md shadow-sm 
+                     focus:ring-0 focus:border-gray-300 px-3 py-2 cursor-default"
+            />
+          </div>
+        </div>
+      </div>
+      
+      
     <div class="card">
         <h4 class="card-title">-- Utilisateurs --</h4>
         <div class="card">
