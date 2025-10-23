@@ -158,9 +158,9 @@ export class EntiteService {
     )
   }
 
-  getChampByEntity(id?:string): Observable<any> {
+  getChampByEntity(entityObjectId?:string,operationId?:string): Observable<any> {
     return this.http
-      .get(CHAMP+ '/by-entity/' + id, {
+      .get(`${CHAMP}/by-entity/${entityObjectId}/by-operation/${operationId}`, {
         headers: this.httpParams,
         responseType: 'json',
       })

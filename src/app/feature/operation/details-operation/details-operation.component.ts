@@ -99,8 +99,7 @@ export class DetailsOperationComponent {
                 this.champs=value.data;
                 if(this.champs){
                   this.champs=this.champs.filter(u=>u.operationId==id);
-                 // console.log(this.champs)
-                  this.champs.reverse()
+                 // this.champs.reverse()
                 }
               },
               complete:()=>{},
@@ -140,10 +139,7 @@ export class DetailsOperationComponent {
       next:(value)=>{
         this.champs=value.data;
         this.loading=false;
-        this.champs=this.champs.filter(u=>u.operationId==this.id)
-      // this.champs.reverse();
-       // console.log(this.champs)
-    
+        this.champs=this.champs.filter(u=>u.operationId==this.id);
       },
       complete:()=>{},
       error:(err)=>{}
@@ -164,7 +160,7 @@ export class DetailsOperationComponent {
       this.operationService.delete_Champ(champ.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result)
+       // console.log(result)
           if(result.status==201 || result.status==200){
             setTimeout(() => {
               this.loading=false;
@@ -521,7 +517,7 @@ export class DetailsOperationComponent {
         //  console.log(result)
           if(result.status==201 || result.status==200){
             this.entites=result.data;
-            console.log(this.entites)
+            //console.log(this.entites)
              setTimeout(() => {
                 this.loading=false;
               //  this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
@@ -615,11 +611,11 @@ export class DetailsOperationComponent {
     ajouterChampOperation(entite:any){
       this.addchampEntite=true;
       this.entityOperation=entite;
-      this.searchChampEntite(entite.id)
+      this.searchChampEntite(entite.id,this.id)
     }
 
-    searchChampEntite(id:string){
-      this.entiteService.getChampByEntity(id).subscribe({
+    searchChampEntite(identity:string,idOperation:any){
+      this.entiteService.getChampByEntity(identity,idOperation).subscribe({
         complete:()=>{},
         next:(result)=>{
           this.champsEntites=result.data;
@@ -646,6 +642,9 @@ export class DetailsOperationComponent {
     }
 
     saveChampEntiteOperation(){
+      this.champsEntitesSelect = this.champsEntitesSelect.filter(
+        item => !this.champsEntitesSelectPass.some(selected => selected.id === item.id)
+      );  
       const data = { 
         entityFieldIds: this.champsEntitesSelect.map(e => e.id)
       }
@@ -654,8 +653,7 @@ export class DetailsOperationComponent {
         ...e,
         isPresent: true
       }));
-    //  this.champsEntitesSelectPass=this.entitesSelect
-      console.log(this.champsEntitesSelect)
+          
       this.confirmationService.confirm({
         message: 'Voulez-vous ajouter ces champs de l\'entité ?',
         header: 'Confirmation',
