@@ -33,8 +33,10 @@ select:disabled:focus {
 .timeline-wrapper {
   max-height: 420px; /* ajuste selon ton besoin */
   overflow-y: auto;
-  padding-right: 6px; /* espace pour le scroll */
+  padding-right: 6px;
+   /* espace pour le scroll */
 }
+
 
 /* style global timeline */
 .custom-timeline {
