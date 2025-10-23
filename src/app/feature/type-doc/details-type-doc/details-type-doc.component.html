@@ -42,16 +42,36 @@
       <div class="inline-flex" style="color:#060;"><b>État de mon dossier</b></div>
     </p-divider>
 
-    <p-timeline [value]="events2" layout="horizontal" align="top">
-      <ng-template pTemplate="marker" let-event>
-        <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
-          <i [ngClass]="event.icon"></i>
-        </span>
-      </ng-template>
-      <ng-template pTemplate="content" let-event>
-        <div class="event-content">{{ event.status }}</div>
-      </ng-template>
-    </p-timeline>
+    <!-- Wrapper avec scroll si nécessaire -->
+    <div class="timeline-wrapper">
+      <!-- timeline verticale -->
+      <p-timeline [value]="events2" layout="vertical" align="alternate" class="custom-timeline">
+
+        <ng-template pTemplate="marker" let-event>
+          <span
+            class="custom-marker shadow-2"
+            [style.backgroundColor]="event.color"
+            [attr.title]="event.status">
+            <i [ngClass]="event.icon"></i>
+          </span>
+        </ng-template>
+
+        <ng-template pTemplate="content" let-event>
+          <div class="event-card">
+            <div class="event-header">
+              <div class="event-title">{{ event.status }}</div>
+              <div class="event-meta">
+                <!-- si tu as une date ou commentaire : -->
+                <small *ngIf="event.date">{{ event.date | date:'short' }}</small>
+              </div>
+            </div>
+            <div class="event-body" *ngIf="event.description">
+              {{ event.description }}
+            </div>
+          </div>
+        </ng-template>
+      </p-timeline>
+    </div>
   </div>
 
   <div class="bg-white rounded-xl card-shadow-strong p-4 mb-8">
@@ -78,7 +98,7 @@
   <div class="space-y-6">
 
     <!-- Dossier (boucle existante, re-stylée façon cartes vertes) -->
-    <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
+    <div class="bg-white rounded-xl card-shadow-strong overflow-hidden dossier">
       <div class="bg-gradient-to-r from-[#00853F] to-green-600 px-6 py-3">
         <div class="flex items-center gap-3">
           <i class="pi pi-folder text-white text-xl"></i>
@@ -86,20 +106,20 @@
         </div>
       </div>
 
-      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 disabled-section" [class.disabled]="isDisabled">
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 disabled-section" [class.disabled]="isDisabled" [ngClass]="{'div-disabled': true}">
         <ng-container *ngFor="let champ of dossier; let i = index">
 
           <!-- TEXT / NUMBER / EMAIL / PASSWORD / DATE / RANGE -->
           <div *ngIf="['TEXT','RANGE','NUMBER','EMAIL','PASSWORD','DATE'].includes(champ.champOperation.inputType)">
             <label class="block text-sm font-semibold text-gray-600 mb-2">{{ champ.champOperation.name }}</label>
-            <input [type]="champ.inputType" [(ngModel)]="champ.name" [disabled]="true"
+            <input [type]="champ.inputType" [(ngModel)]="champ.name"
                    class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FCD116] focus:border-[#FCD116]" />
           </div>
 
           <!-- TEXTAREA -->
           <div class="md:col-span-2" *ngIf="champ.champOperation.inputType==='TEXTAREA'">
             <label class="block text-sm font-semibold text-gray-600 mb-2">{{ champ.champOperation.name }}</label>
-            <textarea rows="4" [(ngModel)]="champ.name" [disabled]="true"
+            <textarea rows="4" [(ngModel)]="champ.name"
                       class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FCD116] focus:border-[#FCD116] resize-none"></textarea>
           </div>
 
@@ -108,7 +128,7 @@
             <label class="block text-sm font-semibold text-gray-600 mb-2">{{ champ.champOperation.name }}</label>
             <div class="flex flex-wrap gap-4">
               <label *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center gap-2 cursor-pointer">
-                <input type="radio" [name]="'radio-group-dossier-'+i" [value]="option.name" [disabled]="true" [(ngModel)]="champ.name" class="w-4 h-4 text-[#00853F]">
+                <input type="radio" [name]="'radio-group-dossier-'+i" [value]="option.name" [(ngModel)]="champ.name" class="w-4 h-4 text-[#00853F]">
                 <span class="text-gray-700">{{ option.name }}</span>
               </label>
             </div>
@@ -119,7 +139,7 @@
             <label class="block text-sm font-semibold text-gray-600 mb-2">{{ champ.champOperation.name }}</label>
             <div class="flex flex-wrap gap-4">
               <label *ngFor="let option of champ.champOperation.options; let j = index" class="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" [value]="option.name" [(ngModel)]="champ.name" [disabled]="true" (change)="onOptionChange(option, i)" class="w-4 h-4 text-[#00853F]">
+                <input type="checkbox" [value]="option.name" [(ngModel)]="champ.name" (change)="onOptionChange(option, i)" class="w-4 h-4 text-[#00853F]">
                 <span class="text-gray-700">{{ option.name }}</span>
               </label>
             </div>
@@ -131,7 +151,7 @@
             <select [(ngModel)]="champ.name"
                     class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FCD116] focus:border-[#FCD116]">
               <option selected>Choisir {{ champ.champOperation.name }}</option>
-              <option *ngFor="let option of champ.champOperation.options" [disabled]="true" [value]="option.name">{{ option.name }}</option>
+              <option *ngFor="let option of champ.champOperation.options"  [value]="option.name">{{ option.name }}</option>
             </select>
           </div>
 
@@ -201,20 +221,20 @@
       </div>
 
       <div class="p-6">
-        <div class="grid gap-6 md:grid-cols-2 bg-gray-50 p-4 rounded-lg" [class.disabled]="isDisabled">
+        <div class="grid gap-6 md:grid-cols-2 bg-gray-50 p-4 rounded-lg" [class.disabled]="isDisabled" [ngClass]="{'div-disabled': true}">
           <ng-container *ngFor="let champ of dossierTraiter; let i = index">
 
             <!-- TEXT / NUMBER / EMAIL / PASSWORD / DATE -->
             <div *ngIf="['TEXT','RANGE','NUMBER','EMAIL','PASSWORD','DATE'].includes(champ.champOperation.inputType)">
               <label class="block text-sm font-semibold text-gray-700 mb-2">{{ champ.champOperation.name }}</label>
-              <input [type]="champ.inputType" [(ngModel)]="champ.name" [disabled]="true"
+              <input [type]="champ.inputType" [(ngModel)]="champ.name"
                      class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00853F] focus:border-[#00853F]">
             </div>
 
             <!-- TEXTAREA -->
             <div *ngIf="champ.champOperation.inputType==='TEXTAREA'">
               <label class="block text-sm font-semibold text-gray-700 mb-2">{{ champ.champOperation.name }}</label>
-              <textarea rows="4" [(ngModel)]="champ.name" [disabled]="true"
+              <textarea rows="4" [(ngModel)]="champ.name"
                         class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00853F] focus:border-[#00853F] resize-none"></textarea>
             </div>
 
@@ -223,7 +243,7 @@
               <label class="block text-sm font-semibold text-gray-700 mb-2">{{ champ.champOperation.name }}</label>
               <div class="flex flex-wrap gap-4">
                 <label *ngFor="let option of champ.champOperation.options; let j=index" class="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" [name]="'radio-group-traiter-'+i" [value]="option.name" [disabled]="true" [(ngModel)]="champ.name" class="w-5 h-5 text-[#00853F]">
+                  <input type="radio" [name]="'radio-group-traiter-'+i" [value]="option.name" [(ngModel)]="champ.name" class="w-5 h-5 text-[#00853F]">
                   <span class="text-gray-700">{{ option.name }}</span>
                 </label>
               </div>
@@ -234,7 +254,7 @@
               <label class="block text-sm font-semibold text-gray-700 mb-2">{{ champ.champOperation.name }}</label>
               <div class="flex flex-wrap gap-4">
                 <label *ngFor="let option of champ.champOperation.options; let j=index" class="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" [value]="option.name" [(ngModel)]="champ.name" [disabled]="true" (change)="onOptionChange(option, i)" class="w-5 h-5 text-[#EF2B2D]">
+                  <input type="checkbox" [value]="option.name" [(ngModel)]="champ.name" (change)="onOptionChange(option, i)" class="w-5 h-5 text-[#EF2B2D]">
                   <span class="text-gray-700">{{ option.name }}</span>
                 </label>
               </div>
@@ -256,7 +276,7 @@
               <select [(ngModel)]="champ.name"
                       class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00853F] focus:border-[#00853F]">
                 <option selected>Choisir {{ champ.champOperation.name }}</option>
-                <option *ngFor="let option of champ.champOperation.options" [disabled]="true" [value]="option.name">{{ option.name }}</option>
+                <option *ngFor="let option of champ.champOperation.options" [value]="option.name">{{ option.name }}</option>
               </select>
             </div>
 
