@@ -29,28 +29,79 @@ select:disabled:focus {
   cursor: not-allowed;
 }
 
-/* Marker de timeline */
+/* wrapper qui limite la hauteur et active le scroll */
+.timeline-wrapper {
+  max-height: 420px; /* ajuste selon ton besoin */
+  overflow-y: auto;
+  padding-right: 6px; /* espace pour le scroll */
+}
+
+/* style global timeline */
+.custom-timeline {
+  padding-left: 12px; /* ajuste l'alignement */
+}
+
+/* marker rond et propre */
 .custom-marker {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
   font-size: 1rem;
+  box-shadow: 0 6px 18px rgba(8, 15, 52, 0.08);
 }
 
-/* Contenu de l’événement */
-.event-content {
+/* carte de contenu de chaque étape */
+.event-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(2, 6, 23, 0.04);
+  box-shadow: 0 6px 18px rgba(8, 15, 52, 0.04);
+}
+
+/* header avec titre et méta */
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.event-title {
+  font-weight: 600;
   font-size: 0.95rem;
-  color: #333;
-  text-align: center;
-  word-wrap: break-word; /* texte à la ligne */
+  color: #0b2540;
 }
 
-/* Empêche le débordement global */
-.p-timeline {
-  white-space: nowrap;
+/* description / détails plus légers */
+.event-body {
+  margin-top: 6px;
+  font-size: 0.88rem;
+  color: #475569;
+}
+
+/* rendre plus visible les étapes "déjà faites" si event.color est vert ou #060 */
+.custom-marker[style*="#060"],
+.custom-marker[style*="rgb(0, 96, 0)"],
+.custom-marker[style*="green"] {
+  box-shadow: 0 4px 14px rgba(6, 128, 0, 0.18);
+}
+
+/* responsive : réduire la taille du marqueur sur mobile */
+@media (max-width: 640px) {
+  .custom-marker {
+    width: 34px;
+    height: 34px;
+    font-size: 0.9rem;
+  }
+
+  .timeline-wrapper {
+    max-height: 360px;
+  }
 }
 
