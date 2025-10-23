@@ -151,6 +151,7 @@ export class DetailsOperationComponent {
   }
 
   supprimerChamp(champ:ChampOperation){
+    this.loading=true;
     this.confirmationService.confirm({
       message: 'Voulez-vous vraiment supprimer ce champ?',
       header: 'Suppression',
@@ -162,13 +163,28 @@ export class DetailsOperationComponent {
       this.operationService.delete_Champ(champ.id).subscribe({
         complete:()=>{},
         next:(result)=>{
-        this.searchChamp();
+          console.log(result)
+          if(result.status==201 || result.status==200){
+            setTimeout(() => {
+              this.loading=false;
+              this.searchChamp();
+              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+  
+            }, 2000);
+          }
+          else{
+            this.loading=false;
+            this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+         
+          }
+       
         },
         error:(error)=>{
+          this.loading=false;
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
         }
     
       })
-      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ supprimé', life: 3000});      
     },
     reject:()=>{
       this.messageService.add({severity:'error', summary: 'Echec', detail: 'Champ non supprimé', life: 3000});
@@ -201,7 +217,9 @@ export class DetailsOperationComponent {
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
+      this.addchamp=false;
       this.optionResult=this.champ.options;
+      this.loading=true
       this.operationService.updateChamp(this.champ,this.champ.id).subscribe({
         next:(value)=>{
           if(value.data){
@@ -222,6 +240,7 @@ export class DetailsOperationComponent {
           this.addchamp=false;
           this.editbutton=false;
           this.addbutton=false;
+          this.loading=false;
         },
         complete:()=>{},
         error:(err)=>{
@@ -229,13 +248,12 @@ export class DetailsOperationComponent {
           this.addbutton=false;
         }
       })
-      this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ modifié', life: 3000});
-        //Actual logic to perform a confirmation
+     // this.messageService.add({severity:'success', summary: 'Succès', detail: 'Champ modifié', life: 3000});
         
     },
     reject:()=>{
       this.addchamp=false;
-      this.messageService.add({severity:'error', summary: 'Echec', detail: ' Champ non modifié', life: 3000});
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Champ non modifié', life: 3000});
     }
     });
   }
@@ -650,7 +668,7 @@ export class DetailsOperationComponent {
                   setTimeout(() => {
                      this.loading=false;
                      this.searchEntiteByOperation(this.id);
-                    
+                    this.searchChamp();
                      this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
                    }, 2000);
             }
