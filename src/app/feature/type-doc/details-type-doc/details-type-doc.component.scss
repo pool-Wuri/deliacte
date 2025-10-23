@@ -1,7 +1,7 @@
 /* 🟡 Styles pour tous les champs désactivés */
 input:disabled,
 textarea:disabled,
-select:disabled {
+select:disabled, .dossier:disabled {
   background-color: #f3f3f3;
   color: #777;
   cursor: not-allowed;
@@ -20,4 +20,36 @@ textarea:disabled:focus,
 select:disabled:focus {
   outline: none;
   box-shadow: none;
+}
+
+.div-disabled {
+  opacity: 0.6;            /* rend tout plus clair/grisé */
+  pointer-events: none;     /* bloque les clics et interactions */
+  background-color: #f9f9f9; /* fond légèrement grisé */
+  cursor: not-allowed;
+}
+
+/* Marker de timeline */
+.custom-marker {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+}
+
+/* Contenu de l’événement */
+.event-content {
+  font-size: 0.95rem;
+  color: #333;
+  text-align: center;
+  word-wrap: break-word; /* texte à la ligne */
+}
+
+/* Empêche le débordement global */
+.p-timeline {
+  white-space: nowrap;
 }
