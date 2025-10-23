@@ -37,22 +37,36 @@
 
 <!-- Bloc citoyen : état + actions document (conservé, re-stylé) -->
 <div class="max-w-7xl mx-auto px-4" *ngIf="user?.role==='CITOYEN'">
-  <div class="bg-white rounded-xl card-shadow-strong p-4 mb-6">
-    <p-divider align="left">
-      <div class="inline-flex" style="color:#060;"><b>État de mon dossier</b></div>
-    </p-divider>
+  <!-- Timeline verticale responsive et scrollable -->
+<div class="bg-white rounded-xl card-shadow-strong p-6 mb-6 shadow-md w-full overflow-hidden">
+  <p-divider align="left">
+    <div class="inline-flex items-center text-green-700 font-bold text-lg">
+      État de mon dossier
+    </div>
+  </p-divider>
 
-    <p-timeline [value]="events2" layout="horizontal" align="top">
+  <!-- Conteneur scrollable vertical -->
+  <div class="max-h-96 overflow-y-auto pr-2">
+    <p-timeline [value]="events2" layout="vertical" align="top" class="w-full">
+      <!-- Marker -->
       <ng-template pTemplate="marker" let-event>
-        <span class="custom-marker shadow-2" [style.backgroundColor]="event.color">
+        <span class="custom-marker shadow-md flex items-center justify-center" 
+              [style.backgroundColor]="event.color">
           <i [ngClass]="event.icon"></i>
         </span>
       </ng-template>
+
+      <!-- Contenu -->
       <ng-template pTemplate="content" let-event>
-        <div class="event-content">{{ event.status }}</div>
+        <div class="event-content px-3 py-2 bg-gray-50 rounded-lg shadow-sm text-center break-words">
+          {{ event.status }}
+        </div>
       </ng-template>
     </p-timeline>
   </div>
+</div>
+
+
 
   <div class="bg-white rounded-xl card-shadow-strong p-4 mb-8">
     <p-divider align="left">
