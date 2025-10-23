@@ -82,74 +82,74 @@ constructor(
 
 }
 
-ngOnInit(): void {   
- const userData = localStorage.getItem('user');
-  if (userData) {
-    this.user = JSON.parse(userData);
-  }
-  this.searchEntite();
-  this.searchChamp();
-
-}
-
-ajouter(){
-  this.addboutton=true;
-  this.addUser=true;
-  this.editbutt=false;
-  this.title="Formulaire d'ajout d'une entité";
-  this.entite={};
-
-}
-
-saveEntite(){
-  this.entite.isActive=false;
-  this.entite.numeroOrdre=1;
-  this.submitted=true;
-  if(this.entite.name){
-    this.confirmationService.confirm({
-      message: 'Voulez-vous enregistrer cette entite?',
-      header: 'Confirmation',
-      acceptLabel:'Oui',
-      rejectLabel:'Non',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.loading=true;
-      this.entiteService.saveEntite(this.entite).subscribe({
-        next:(value)=>{
-            this.addboutton=false;
-            if(value.status==201 || value.status==200){
-              setTimeout(() => {
-                this.loading=false;
-                this.searchEntite();
-                this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
-              }, 2000);
-            }
-            else{
-              this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
-              this.loading=false;
-            }
-        },
-        complete:()=>{},
-        error:(erreur)=>{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
-
-        }
-      })
-    },
-    reject:()=>{
-      //this.addboutton=false;
-      this.addboutton=true;
-      this.addUser=true;
-      this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
-      this.loading=false;
+  ngOnInit(): void {   
+  const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
     }
+    this.searchEntite();
+    this.searchChamp();
 
-    });
   }
-  
- }
+
+  ajouter(){
+    this.addboutton=true;
+    this.addUser=true;
+    this.editbutt=false;
+    this.title="Formulaire d'ajout d'une entité";
+    this.entite={};
+
+  }
+
+  saveEntite(){
+    this.entite.isActive=false;
+    this.entite.numeroOrdre=1;
+    this.submitted=true;
+    if(this.entite.name){
+      this.confirmationService.confirm({
+        message: 'Voulez-vous enregistrer cette entite?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.entiteService.saveEntite(this.entite).subscribe({
+          next:(value)=>{
+              this.addboutton=false;
+              if(value.status==201 || value.status==200){
+                setTimeout(() => {
+                  this.loading=false;
+                  this.searchEntite();
+                  this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+                }, 2000);
+              }
+              else{
+                this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+                this.loading=false;
+              }
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
+
+          }
+        })
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.addboutton=true;
+        this.addUser=true;
+        this.editbutt=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
+        this.loading=false;
+      }
+
+      });
+    }
+    
+  }
 
  searchEntite(){
   this.loading=true;
@@ -175,10 +175,10 @@ saveEntite(){
     }
 
   })
-}
+  }
 
 
-fermerModal(){
+  fermerModal(){
   this.addboutton=false;
   this.addUser=false;
   this.editbutt=false;
@@ -238,28 +238,31 @@ fermerModal(){
   });
  }
 
-saveEditChamp(){
-            console.log(this.entiteChamp);
+  saveEditChamp(){
   this.confirmationService.confirm({
-    message: 'Voulez-vous modifier cet champ entité?',
+    message: 'Voulez-vous modifier ce champ entité?',
     header: 'Confirmation',
     acceptLabel:'Oui',
     rejectLabel:'Non',
     icon: 'pi pi-exclamation-triangle',
     acceptButtonStyleClass:'acceptButton',
     accept: () => {
-      this.loading=true;
+     this.loading=true;
+     this.addboutton=false;
+     this.editbutt=false;   
+     this.addchamp=false;
       this.entiteService.updateChamp(this.entiteChamp,this.entiteChamp.id).subscribe({
         next:(value)=>{
-          console.log(value);
-          this.addboutton=false;
-          this.editbutt=false;   
-          this.addchamp=false;
+        //  console.log(value);
+          this.loading=false;
+
           if(value.status==201 || value.status==200){
             setTimeout(() => {
-              this.loading=false;
-              this.searchEntite();
-              this.searchChamp();
+            //  this.searchEntite();
+           //   this.searchChamp();
+             // this.expandAll(this.entiteChamp.id)
+             window.location.reload();
+
               this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
             }, 2000);
           }
@@ -283,11 +286,11 @@ saveEditChamp(){
  }
 
 
- detailsEntite(entite:Entite){
+  detailsEntite(entite:Entite){
   this.router.navigate(['/deliacte/entite/details',entite.id])
   }
 
-  ajouterChampEntite(entite:any){
+    ajouterChampEntite(entite:any){
     this.addchamp=true
     this.addUser=true;
     this.editchamp=false;
@@ -342,6 +345,7 @@ saveEditChamp(){
             setTimeout(() => {
               this.loading=false;
               this.searchEntite();
+              this.searchChamp();
               this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
             }, 2000);
           }
@@ -392,7 +396,7 @@ saveEditChamp(){
     // Quand on referme manuellement
     delete this.expandedRowKeys[event.data.id];
   }
-  expandAll(id:string) {
+  expandAll(id:any) {
    // console.log(id)
     this.champsEntites=[];
     this.entiteService.getChampByEntity(id).subscribe({
@@ -400,7 +404,7 @@ saveEditChamp(){
       next:(result)=>{
       //  console.log(result)
         this.champsEntites=result.data;
-       // console.log(this.champsEntites)
+        //console.log(this.champsEntites)
       },
       error:(err)=>{
         //console.log(err)
@@ -422,7 +426,7 @@ saveEditChamp(){
     this.entiteService.searchChamp().subscribe({
       complete:()=>{},
       next:(result)=>{
-       // console.log(result)
+       console.log(result)
       },
       error:(err)=>{
         //console.log(err)
@@ -484,11 +488,14 @@ saveEditChamp(){
       this.entiteService.delete_Champ(entiteChamp.id).subscribe({
         complete:()=>{},
         next:(result)=>{
+          console.log(result)
           if(result.status==200 || result.status==201){
             setTimeout(() => {
-              this.loading=false;
-              this.searchEntite();
-              this.searchChamp();
+              setTimeout(() => {
+                this.loading=false;
+                window.location.reload();
+              }, 2000);
+            
               this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
             }, 2000);
           }
