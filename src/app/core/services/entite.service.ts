@@ -171,6 +171,20 @@ export class EntiteService {
         )
       );
   }
+  getChampByEntity2(entityObjectId?:string): Observable<any> {
+    return this.http
+      .get(`${CHAMP}/by-entity/${entityObjectId}`, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+        {}
+        )
+      );
+  }
+
 
   public search_EntiteUser(filterParam =''): Observable<any> {
     return this.http

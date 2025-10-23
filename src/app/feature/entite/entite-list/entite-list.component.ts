@@ -344,8 +344,11 @@ constructor(
           }*/
             setTimeout(() => {
               this.loading=false;
-              this.searchEntite();
-              this.searchChamp();
+              window.location.reload();
+
+          //    this.searchEntite();
+          //    this.searchChamp();
+          
               this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
             }, 2000);
           }
@@ -399,7 +402,7 @@ constructor(
   expandAll(id:any) {
    // console.log(id)
     this.champsEntites=[];
-    this.entiteService.getChampByEntity(id).subscribe({
+    this.entiteService.getChampByEntity2(id).subscribe({
       complete:()=>{},
       next:(result)=>{
       //  console.log(result)

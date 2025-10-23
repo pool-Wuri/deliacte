@@ -13,6 +13,7 @@ import { UploadEvent } from 'primeng/fileupload';
 import { UploadIcon } from 'primeng/icons/upload';
 import { EntiteService } from 'src/app/core/services/entite.service';
 import { ChampEntite, Entite } from 'src/app/core/models/entite.modele';
+import { Column } from 'jspdf-autotable';
 
 @Component({
   selector: 'app-details-operation',
@@ -59,6 +60,7 @@ export class DetailsOperationComponent {
   champsEntites=new Array <ChampEntite>();
   champsEntitesSelect: any[] = []; // plusieurs lignes sélectionnées
   champsEntitesSelectPass: any[] = []; // plusieurs lignes sélectionnées
+  cols!: Column[];
 
   constructor(
     private route:ActivatedRoute,
@@ -732,6 +734,11 @@ export class DetailsOperationComponent {
         this.messageService.add({severity:'error', summary: 'Echec', detail: ' Annuler', life: 3000});
       }
       });
+    }
+
+
+    ordoner(champ:any){
+      console.log(champ)
     }
 }
 
