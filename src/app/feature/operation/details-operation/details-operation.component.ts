@@ -58,6 +58,7 @@ export class DetailsOperationComponent {
   entityOperation!:Entite;
   champsEntites=new Array <ChampEntite>();
   champsEntitesSelect: any[] = []; // plusieurs lignes sélectionnées
+  champsEntitesSelectPass: any[] = []; // plusieurs lignes sélectionnées
 
   constructor(
     private route:ActivatedRoute,
@@ -623,7 +624,8 @@ export class DetailsOperationComponent {
         next:(result)=>{
           this.champsEntites=result.data;
           this.champsEntitesSelect=this.champsEntites.filter(u=>u.isPresent==true);
-          console.log(this.champsEntites)
+          this.champsEntitesSelectPass=this.champsEntitesSelect;
+          //console.log(this.champsEntites)
         },
         error:(err)=>{
           //console.log(err)
@@ -652,6 +654,8 @@ export class DetailsOperationComponent {
         ...e,
         isPresent: true
       }));
+    //  this.champsEntitesSelectPass=this.entitesSelect
+      console.log(this.champsEntitesSelect)
       this.confirmationService.confirm({
         message: 'Voulez-vous ajouter ces champs de l\'entité ?',
         header: 'Confirmation',
