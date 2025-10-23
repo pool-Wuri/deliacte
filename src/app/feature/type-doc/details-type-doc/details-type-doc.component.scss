@@ -1,7 +1,7 @@
 /* 🟡 Styles pour tous les champs désactivés */
 input:disabled,
 textarea:disabled,
-select:disabled {
+select:disabled, .dossier:disabled {
   background-color: #f3f3f3;
   color: #777;
   cursor: not-allowed;
@@ -20,4 +20,11 @@ textarea:disabled:focus,
 select:disabled:focus {
   outline: none;
   box-shadow: none;
+}
+
+.div-disabled {
+  opacity: 0.6;            /* rend tout plus clair/grisé */
+  pointer-events: none;     /* bloque les clics et interactions */
+  background-color: #f9f9f9; /* fond légèrement grisé */
+  cursor: not-allowed;
 }
