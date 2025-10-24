@@ -5,6 +5,7 @@ import autoTable from 'jspdf-autotable';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { ChampType, Operation } from 'src/app/core/models/operation.model';
+import { Organisation } from 'src/app/core/models/organisation.model';
 import { Procedure } from 'src/app/core/models/procedure.model';
 import { TypeOperation } from 'src/app/core/models/type-operation';
 import { OperationAssign, User } from 'src/app/core/models/user.model';
@@ -49,6 +50,14 @@ list2: any[] | undefined;
   sortField!: string;
   procedurechoisi=new Procedure;
   submitted: boolean=false;
+  modifForm:boolean=false;
+  organisations=Array <Organisation>();
+  organisationChoisi:any;
+  procedureChoisi:any;
+  proceduresAll=new Array<Procedure>();
+  operationsAll=new Array <Operation>();
+
+
 
 constructor(
   private TypeOperationService: TypeOperationService,
@@ -72,6 +81,7 @@ ngOnInit(): void {
   }
   this.searchtypeoperation();
   this.search_Procedure();
+  this.searchAllOrganisation()
 }
 
 searchUser(){
@@ -171,12 +181,55 @@ searchtypeoperation():void{
       this.operation.procedureId=this.procedurechoisi.id;
       this.search_Procedure();
       this.submitted=false;
+      this.modifForm=false;
     }
     else{
       this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Veuillez choisir la procedure d\'abord', life: 3000});
 
     }
   
+  }
+
+  searchAllOrganisation(){
+    this.operationService.searchOrganisation().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.organisations=result.data
+       // console.log(this.organisations)
+      },
+      error:(error)=>{
+      }
+  
+    })
+  }
+
+
+  getProceduresByOrganisation(organisationId:any){
+    console.log(organisationId)
+    this.operationService.searchProcedureByOrg(organisationId.value).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+      //  this.organisations=result.data
+        //console.log(result);
+        this.proceduresAll=result.data
+      },
+      error:(error)=>{
+      }
+    });
+  }
+
+  getOperationByProcedure(procedId:any){
+   // console.log(procedId)
+    this.operationService.searchOperationByProcedure(procedId.value).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+      //  this.organisations=result.data
+        //console.log(result);
+        this.operationsAll=result.data
+      },
+      error:(error)=>{
+      }
+    });
   }
 
   fermerModal(){
@@ -277,6 +330,8 @@ searchtypeoperation():void{
         next:(value)=>{
           this.addboutton=false;
           this.editbutt=false;   
+          this.modifForm=false;
+
           if(value.status==201 || value.status==200){
             setTimeout(() => {
               this.loading=false;
@@ -310,6 +365,8 @@ searchtypeoperation():void{
   this.title="Modifier opération";
   this.operation=operation;
   this.search_Procedure();
+  this.modifForm=true;
+
  }
 
  deleteOperation(operation:Operation){

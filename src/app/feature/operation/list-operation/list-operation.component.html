@@ -305,25 +305,25 @@
                           <small class="p-error" *ngIf="submitted && !operation.typeOperationId">choisir le libéllé de l'opération .</small>
 
                         </div--> 
-                        <!--div [class.disabled]="true">
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Procedure</label>
-                            <p-dropdown [options]="procedures" [(ngModel)]="operation.procedureId"  optionValue="id" optionLabel="name"
+                        <div  *ngIf="modifForm">
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choisir l'organisation</label>
+                            <p-dropdown [options]="organisations"  [(ngModel)]="organisationChoisi"  optionValue="id" optionLabel="name" (onChange)="getProceduresByOrganisation($event)"
                           ></p-dropdown>
                           
-                        </div--> 
-                        <!--div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Numero d'ordre</label>
-                            <p-dropdown [options]="[1,2,3,4,5]"  [(ngModel)]="operation.numeroOrdre" 
-                          ></p-dropdown>
-                        </div--> 
-                        <div>
-                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suivant</label>
-                            <p-dropdown [options]="operations"  [(ngModel)]="operation.operationNextId" optionValue="id"  optionLabel="name"
+                        </div> 
+                        <div *ngIf="modifForm">
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choisir la procedure</label>
+                            <p-dropdown [options]="proceduresAll"  [(ngModel)]="procedureChoisi" optionValue="id" optionLabel="name" (onChange)="getOperationByProcedure($event)"
                           ></p-dropdown>
                         </div> 
-                        <div>
+                        <div *ngIf="modifForm">
+                            <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Suivant</label>
+                            <p-dropdown [options]="operationsAll"  [(ngModel)]="operation.operationNextId" optionValue="id"  optionLabel="name"
+                          ></p-dropdown>
+                        </div> 
+                        <div *ngIf="modifForm">
                             <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Precedent</label>
-                            <p-dropdown [options]="operations"  [(ngModel)]="operation.operationPreviousId" optionValue="id"  optionLabel="name"
+                            <p-dropdown [options]="operationsAll"  [(ngModel)]="operation.operationPreviousId" optionValue="id"  optionLabel="name"
                           ></p-dropdown>
                         </div> 
                                       

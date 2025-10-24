@@ -736,10 +736,50 @@ export class DetailsOperationComponent {
       });
     }
 
-
-    ordoner(champ:any){
-      console.log(champ)
+    ordoner(champ: any[]) {
+    //  console.log(champ);
+      champ=champ.map(c => c.id);
+      const payload = { ids: champ };
+    //  console.log(payload)
+      this.confirmationService.confirm({
+        message: 'Voulez-vous ordonner cette liste?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.operationService.ordonnerChamp(payload).subscribe({
+          next: (result) => {
+            if(result.status==201 || result.status==200){
+              setTimeout(() => {
+                 this.loading=false;
+               //  this.searchChamp();
+                 this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+               }, 2000);
+             }
+             else{
+               this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+               this.loading=false;
+         }
+          },
+          error: (err) => {
+            console.error('Erreur lors de l’ordonnancement du champ :', err);
+          },
+          complete: () => {
+            console.log('Ordonnancement terminé.');
+          }
+        });
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Echec', detail: ' Annuler', life: 3000});
+      }
+      });
+  
     }
+    
 }
+
 
 
