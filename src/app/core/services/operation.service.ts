@@ -12,6 +12,11 @@ const RESPONSABLE_API=environment.apiUrl+ "/option-champ-operation"
 const OPERATION_BYPROCEDURE_API=environment.apiUrl +"/operations/procedure";
 const CHAMP_API=environment.apiUrl +"/champ-operations/champByOperation";
 const OPERATIONNextBYID=environment.apiUrl +"/operations/previousAndNext";
+const ORDONNER=environment.apiUrl + "/champ-operations/ordonner";
+const ORGANISATION=environment.apiUrl + "/organisations/allorganisation";
+const ORGANISATIONProcedure=environment.apiUrl + "/procedures/procedureByorganisation";
+const ProcedureOPERATION=environment.apiUrl + "/operations/procedure";
+
 
 @Injectable({
   providedIn: 'root'
@@ -164,6 +169,53 @@ export class OperationService {
   }
 
 
+  searchOrganisation(filterParam =''): Observable<any> {
+    return this.http
+    .get(ORGANISATION , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+          {
+            console.log(
+            'api.service > get_formulaire > tap > server data :',
+            data
+          )  
+        }
+
+        )
+      );
+  }
+
+  searchProcedureByOrg(OrganisationId?:number): Observable<any> {
+    return this.http
+      .get(ORGANISATIONProcedure+ '/' + OrganisationId, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+         {}
+        )
+      );
+  }
+  searchOperationByProcedure(procedureId?:number): Observable<any> {
+    return this.http
+      .get(ProcedureOPERATION+ '/' + procedureId, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+         {}
+        )
+      );
+  }
+
   public delete_Champ(champId?: number): Observable<any> {
     return this.http
       .delete(CHAMP + '/' + champId, {
@@ -215,6 +267,16 @@ export class OperationService {
          {}
         )
       );
+  }
+
+  ordonnerChamp(idChamps:any):Observable<any>{
+    return this.http
+          .put<any>(ORDONNER, idChamps)
+          .pipe(
+            tap((data) => {
+              //console.log('api.service > update-champ> tap :', data);
+            })
+          );
   }
 
 }

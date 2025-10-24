@@ -102,7 +102,7 @@ getProcedure(id?:number){
     next: (result) => {
       this.numDossier = result.message;
       this.champs = result.data;
-      this.champs.reverse()
+    //  this.champs.reverse()
 
      // console.log(this.champs)
       // Empêcher erreur si aucun champ
