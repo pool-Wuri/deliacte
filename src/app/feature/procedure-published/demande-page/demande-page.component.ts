@@ -212,13 +212,22 @@ updateCheckbox(index: number) {
 
 
 finDemande(){
+ // console.log(this.demandeFor)
     this.indexRequis=[]; // pour la verification des champs requis
-    let tousVrais = false;  // On suppose d'abord que tous les éléments sont vrais 
+    let tousVrais = false;
+    this.champs.forEach(champ => {
+      if (champ.isRequired == null) {
+        champ.isRequired = false;
+      }
+    });
+    console.log(this.champs)  // On suppose d'abord que tous les éléments sont vrais 
     for(let i=0;i<this.champs.length;i++){
       if(this.champs[i].isRequired){
         this.indexRequis.push(i);
       }
+      
     }
+   // console.log(this.indexRequis)
     if(this.indexRequis.length==0){
       tousVrais=true;
     }
@@ -241,6 +250,8 @@ finDemande(){
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
+    console.log(tousVrais)
+    //tousVrais=true;
   //  this.saveFile();
     //const data: FormData = new FormData();
     if(tousVrais){
