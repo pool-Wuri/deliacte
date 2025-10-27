@@ -122,7 +122,7 @@ export class DetailsTypeDocComponent {
         complete:()=>{},
         next:(result)=>{
          this.dossier=result.data.dossiers;
-        // console.log(this.dossier)
+      //   console.log(this.dossier)
          this.numDossier=result.data.traitement.numeroDossier;
          let i = 0;
          while (i < this.dossier.length - 1) { 
@@ -162,10 +162,10 @@ export class DetailsTypeDocComponent {
                   icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
                   color: "#c8c8c8", // Gris par défaut
                 }));
-               // console.log(this.events2);
-                //console.log(this.traitement)
+             //   console.log(this.events2);
+            //    console.log(this.traitement)
                  for (let i = 0; i < this.events2.length; i++) {
-                  if(this.events2[i].status==this.traitement.status){
+                  if(this.events2[i].status==this.traitement.statusDossier){
                     this.events2[i].color = '#4caf50';
                     limit = i;
                   }

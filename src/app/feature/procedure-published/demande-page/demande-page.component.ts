@@ -104,7 +104,7 @@ getProcedure(id?:number){
       this.champs = result.data;
     //  this.champs.reverse()
 
-     // console.log(this.champs)
+      console.log(this.champs)
       // Empêcher erreur si aucun champ
       if (!this.champs || this.champs.length === 0) {
         this.demandeFor = [];
@@ -213,6 +213,7 @@ updateCheckbox(index: number) {
 
 finDemande(){
  // console.log(this.demandeFor)
+ this.submitted=true;
     this.indexRequis=[]; // pour la verification des champs requis
     let tousVrais = false;
     this.champs.forEach(champ => {
@@ -220,7 +221,7 @@ finDemande(){
         champ.isRequired = false;
       }
     });
-    console.log(this.champs)  // On suppose d'abord que tous les éléments sont vrais 
+   // console.log(this.champs)  // On suppose d'abord que tous les éléments sont vrais 
     for(let i=0;i<this.champs.length;i++){
       if(this.champs[i].isRequired){
         this.indexRequis.push(i);
@@ -240,7 +241,9 @@ finDemande(){
         }
       }
     }
+
     this.traitement.isActive=true;
+   // console.log(this.traitement)
     this.indexSave.sort((a, b) => b - a);
     this.submitted=true;
     for(let i=0;i<this.indexSave.length;i++){
@@ -250,7 +253,8 @@ finDemande(){
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
-    console.log(tousVrais)
+  //  console.log(JSON.stringify(this.data1, null, 2));
+    // console.log(tousVrais)
     //tousVrais=true;
   //  this.saveFile();
     //const data: FormData = new FormData();
@@ -282,6 +286,7 @@ finDemande(){
                 complete:()=>{
                 },
                 error:(error)=>{
+                  this.loading=false;
                   this.messageService.add({
                     severity: 'error',
                     summary: 'Erreur',
@@ -294,8 +299,8 @@ finDemande(){
             complete:()=>{},
             error:(error)=>{
               this.messageService.add({severity:'error', summary: 'Erreur', detail: error, life: 3000});
-
-            }
+              this.loading=false;
+                        }
           });
          
         },
