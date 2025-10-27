@@ -23,10 +23,11 @@ addboutton:boolean=false;
 addUser:boolean=false;
 editbutt:boolean=false;
 title:string="";
-procedures=new Array <Procedure>();
-proceduresBrouillon=new Array <Procedure>();
-proceduresArchiv=new Array <Procedure>();
-proceduresPublie=new Array <Procedure>();
+//procedures=new Array <Procedure>();
+procedures: any[] = [];
+proceduresBrouillon: any[] = [];
+proceduresPublie: any[] = [];
+proceduresArchiv: any[] = [];
 @ViewChild('dt') dt!: Table; // <- référence au p-table
 organisations=new Array <Organisation>();
 statuts:any[]=[{value:"ARCHIVED",label:"Archivée"},{value:"DRAFT",label:"Brouillon"},{value:"PUBLISHED",label:"Publiée"}]
@@ -65,6 +66,7 @@ procedure=new Procedure;
     const userData = localStorage.getItem('user');
     if (userData) {
       this.user = JSON.parse(userData);
+      console.log(this.user)
     }
    }
 

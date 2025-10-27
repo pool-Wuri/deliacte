@@ -63,6 +63,44 @@
             />
         </div>
     </div>
+    <div class="input-container" *ngIf="operationSuivPrece.next">
+      <div class="input-item">
+        <label class="custom-label">Suivant</label>
+        <p-multiSelect
+          class="custom-input mSelect"
+          [options]="operationSuivPrece.next"
+          [(ngModel)]="operation.nextOperationIds"
+          optionLabel="name"
+          optionValue="id"
+          selectedItemsLabel="{0} éléments sélectionnés"
+          defaultLabel="Sélectionner..."
+          [filter]="true"
+          filterPlaceholder="Rechercher..."
+        >
+        </p-multiSelect>
+      </div>
+     
+      
+    </div>
+    <div class="input-container" *ngIf="operationSuivPrece.previous">
+      <div class="input-item">
+        <label class="custom-label">Précédent</label>
+        <p-multiSelect
+          class="custom-input mSelect"
+          [options]="operationSuivPrece.previous"
+          [(ngModel)]="operation.previousOperationIds"
+          optionLabel="name"
+          optionValue="id"
+          selectedItemsLabel="{0} éléments sélectionnés"
+          defaultLabel="Sélectionner..."
+          [filter]="true"
+          filterPlaceholder="Rechercher..."
+        >
+        </p-multiSelect>
+      
+      </div>
+  
+  </div>
 </div>
 
 <p-divider align="center">
@@ -160,7 +198,7 @@
                 <ng-template pTemplate="body" let-rowData let-champ  let-index="rowIndex">
                   <tr class="p-selectable-row tableContenu" [pReorderableRow]="index">
                     <td>
-                      <span class="pi pi-bars" pReorderableRowHandle></span>
+                      <span class="pi pi-arrows-v" pReorderableRowHandle></span>
                   </td>
                     <td>{{champ.name}}</td>
                     <td>{{champ.description}}</td>

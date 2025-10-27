@@ -11,8 +11,8 @@ export class Operation{
         public typeOperationId?:number,
         public typeOperation?:any,
         public numeroOrdre?:number,
-        public operationNextId?:any,
-        public operationPreviousId?:any,
+        public nextOperationIds?:any,
+        public previousOperationIds?:any,
         public intervenants?:any[],
         public verbeOperation?:string
 

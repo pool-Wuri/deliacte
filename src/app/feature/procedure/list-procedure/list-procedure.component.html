@@ -34,7 +34,7 @@
       class="hidden lg:inline-flex text-red-700 border border-red-700 hover:bg-red-700 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
       Exporter
       </button>
-      <button *ngIf="user?.role !== 'PROCEDURE_MANAGER'" type="button" (click)="ajouter()" style="background-color: #060;"
+      <button *ngIf="user?.role !== 'PROCEDURE_MANAGER' && user?.role !== 'AGENT'" type="button" (click)="ajouter()" style="background-color: #060;"
       class=" text-white hover:bg-green-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-200">
       Ajouter une procédure
       </button>
@@ -67,7 +67,7 @@
       <ng-template pTemplate="body" let-procedure>
         <tr class="hover:bg-gray-50">
           <td class="px-6 py-3">{{ procedure.name }}</td>
-          <td class="px-6 py-3">{{ procedure.organisation.name }}</td>
+          <td class="px-6 py-3">{{ procedure.organisation?.name }}</td>
           <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
           <td class="px-6 py-3 flex flex-wrap gap-2">
 
@@ -125,12 +125,12 @@
             <ng-template pTemplate="body" let-procedure>
               <tr class="hover:bg-gray-50">
                 <td class="px-6 py-3">{{ procedure.name }}</td>
-                <td class="px-6 py-3">{{ procedure.organisation.name }}</td>
+                <td class="px-6 py-3">{{ procedure.organisation?.name }}</td>
                 <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
                 <td class="px-6 py-3 flex flex-wrap gap-2">
-                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-                  <button type="button" title="Modifier" (click)="editProcedure(procedure)" style="background-color: #060;" class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
-                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+                  <button type="button" title="Visualiser"  (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                  <button type="button" title="Modifier" *ngIf="user && user.role !== 'AGENT'" (click)="editProcedure(procedure)" style="background-color: #060;" class=" text-white hover:bg-green-700 font-medium rounded-full p-2.5 pi pi-pencil transition-colors duration-200"></button>
+                  <button type="button" title="Supprimer" *ngIf="user && user.role !== 'AGENT'" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
                 </td>
               </tr>
             </ng-template>
@@ -158,8 +158,8 @@
                 <td class="px-6 py-3">{{ procedure.organisationName }}</td>
                 <td class="px-6 py-3">{{ parseStatus(procedure.status) }}</td>
                 <td class="px-6 py-3 flex flex-wrap gap-2">
-                  <button type="button" title="Visualiser" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-                  <button type="button" title="Supprimer" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
+                  <button type="button" title="Visualiser" *ngIf="user && user.role !== 'AGENT'" (click)="detailsProcedure(procedure)" class="bg-white text-green-700 hover:bg-green-100 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                  <button type="button" title="Supprimer" *ngIf="user && user.role !== 'AGENT'" (click)="deleteProcedure(procedure)" style="background-color: #ff0000;" class=" text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
                 </td>
               </tr>
             </ng-template>

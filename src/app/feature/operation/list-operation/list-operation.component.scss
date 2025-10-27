@@ -286,3 +286,85 @@
         }
     }
 }
+
+
+/* Style général du multiselect */
+:host ::ng-deep .mSelect .p-multiselect {
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    background-color: #f9fafb !important;
+    transition: all 0.2s ease;
+    min-height: 40px;
+  }
+  ::ng-deep .p-multiselect {
+    width: 100% !important; /* ou une largeur fixe comme 400px */
+    border-radius: 8px; /* pour arrondir les bords si tu veux */
+  }
+  
+  :host ::ng-deep .mSelect .p-multiselect:hover {
+    border-color: #3b82f6 !important; /* Bleu clair au survol */
+  }
+  
+  :host ::ng-deep .mSelect .p-multiselect-label {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  /* ✅ Style du panneau déroulant */
+  :host ::ng-deep .p-multiselect-panel {
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    overflow: hidden;
+  }
+  
+  /* ✅ Champ de recherche interne (style searchForm) */
+  :host ::ng-deep .p-multiselect-filter-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #3b82f6 !important;  /* Bordure bleue comme sur ton champ de recherche */
+    border-radius: 8px !important;
+    padding: 4px 8px;
+    margin: 8px 10px;
+    background-color: #f9fafb !important;
+  }
+  
+  :host ::ng-deep .p-multiselect-filter {
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size: 14px;
+    flex: 1;
+    color: #374151;
+  }
+  
+  :host ::ng-deep .p-multiselect-filter-icon {
+    color: #6b7280;
+  }
+  
+  /* Supprime le cadre bleu double lors du focus */
+  :host ::ng-deep .p-multiselect-filter:focus {
+    box-shadow: none !important;
+  }
+  
+  /* ✅ Élément individuel */
+  :host ::ng-deep .p-multiselect-item {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  :host ::ng-deep .p-multiselect-item:hover {
+    background-color: #f3f4f6;
+  }
+  
+  /* ✅ Message "No results found" */
+  :host ::ng-deep .p-multiselect-empty-message {
+    color: #6b7280;
+    font-size: 14px;
+    padding: 10px;
+  }
+  
+

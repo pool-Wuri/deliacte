@@ -189,6 +189,7 @@ getDossier(){
           }
         },
         error:(error)=>{
+          this.loading=false;
         }
       });
       

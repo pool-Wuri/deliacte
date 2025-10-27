@@ -5,6 +5,7 @@ import { environment } from 'src/environnements/environment';
 
 
 const PROCEDURE_API=environment.apiUrl +"/operations";
+const OPERATION_API=environment.apiUrl +"/operations/previous-next-operations";
 const USER_API=environment.apiUrl + "/users"
 const CHAMP=environment.apiUrl+ "/champ-operations";
 const CHAMPOption=environment.apiUrl+ "/option-champ-operation"
@@ -16,6 +17,7 @@ const ORDONNER=environment.apiUrl + "/champ-operations/ordonner";
 const ORGANISATION=environment.apiUrl + "/organisations/allorganisation";
 const ORGANISATIONProcedure=environment.apiUrl + "/procedures/procedureByorganisation";
 const ProcedureOPERATION=environment.apiUrl + "/operations/procedure";
+const OPERATIONPROCEDURE=environment.apiUrl + "/operations/operations-by-procedure"
 
 
 @Injectable({
@@ -61,7 +63,31 @@ export class OperationService {
             })
           );
   }
-
+  
+  public suivantoperatione(ids:any,id?:number):Observable<any>{
+    console.log(PROCEDURE_API+'/'+id+"/next")
+    console.log(ids)
+    return this.http
+          .put<any>(PROCEDURE_API+'/'+id+"/next", ids)
+          .pipe(
+            tap((data) => {
+              //console.log('api.service > update-procedure> tap :', data);
+            })
+          );
+  }
+  
+  public precedentoperatione(ids:any,id?:number):Observable<any>{
+    console.log(PROCEDURE_API+'/'+id+"/previous");
+    console.log(ids)
+    return this.http
+          .put<any>(PROCEDURE_API+'/'+id+"/previous", ids)
+          .pipe(
+            tap((data) => {
+              //console.log('api.service > update-procedure> tap :', data);
+            })
+          );
+  }
+  
 
   public delete_operation(operationId?: number): Observable<any> {
     return this.http
@@ -96,9 +122,26 @@ export class OperationService {
       );
   }
 
+
+  public get_OperationById(id?:number): Observable<any> {
+    return this.http
+      .get(OPERATION_API+ '/' + id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>{
+          
+        }
+        //  console.log()
+         // console.log( 'api.service > get_formulaire > tap > server data :',data  )
+        )
+      );
+  }
   public get_Operation(id?:number): Observable<any> {
     return this.http
-      .get(OPERATION_BYPROCEDURE_API+ '/' + id, {
+      .get(OPERATIONPROCEDURE+ '/' + id, {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -277,6 +320,20 @@ export class OperationService {
               //console.log('api.service > update-champ> tap :', data);
             })
           );
+  }
+
+  public get_OperationByProceure(idProcedure?:number): Observable<any> {
+    return this.http
+      .get(OPERATIONPROCEDURE+ '/' + idProcedure, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data) =>
+        {}
+        )
+      );
   }
 
 }

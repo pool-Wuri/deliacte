@@ -56,6 +56,9 @@ list2: any[] | undefined;
   procedureChoisi:any;
   proceduresAll=new Array<Procedure>();
   operationsAll=new Array <Operation>();
+  operationsAll1=new Array <Operation>();
+  suiv:boolean=false;
+  preced:boolean=false;
 
 
 
@@ -81,35 +84,36 @@ ngOnInit(): void {
   }
   this.searchtypeoperation();
   this.search_Procedure();
-  this.searchAllOrganisation()
+  this.searchAllOrganisation();
+
 }
 
-searchUser(){
-  this.userService.allUser().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.utilisateurs=result.data;
-    },
-    error:(error)=>{
-    }
+  searchUser(){
+    this.userService.allUser().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.utilisateurs=result.data;
+      },
+      error:(error)=>{
+      }
 
-  })
-}
+    })
+  }
 
 
-searchtypeoperation():void{
-  this.TypeOperationService.search_Typeoperation().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.typeoperations=result.data;
-    },
-    error:(error)=>{
-    }
+  searchtypeoperation():void{
+    this.TypeOperationService.search_Typeoperation().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.typeoperations=result.data;
+      },
+      error:(error)=>{
+      }
 
-  })
+    })
 
- }
- 
+  }
+  
  search_Procedure():void{
   this.procedureService.search_Procedure().subscribe({
     complete:()=>{},
@@ -130,7 +134,7 @@ searchtypeoperation():void{
     error:(er)=>{
     }
   })
-}
+  }
 
  searchOperation(procedureId:number):void{
     this.operationService.get_Operation(procedureId).subscribe({
@@ -205,13 +209,13 @@ searchtypeoperation():void{
 
 
   getProceduresByOrganisation(organisationId:any){
-    console.log(organisationId)
+  //  console.log(organisationId)
     this.operationService.searchProcedureByOrg(organisationId.value).subscribe({
       complete:()=>{},
       next:(result)=>{
       //  this.organisations=result.data
         //console.log(result);
-        this.proceduresAll=result.data
+        this.proceduresAll=result.data;
       },
       error:(error)=>{
       }
@@ -220,17 +224,33 @@ searchtypeoperation():void{
 
   getOperationByProcedure(procedId:any){
    // console.log(procedId)
-    this.operationService.searchOperationByProcedure(procedId.value).subscribe({
+    this.operationService.get_OperationByProceure(procedId.value).subscribe({
       complete:()=>{},
       next:(result)=>{
       //  this.organisations=result.data
-        //console.log(result);
-        this.operationsAll=result.data
+        console.log(result);
+        this.operationsAll=result.data;
+        this.operationsAll1=result.data
+
       },
       error:(error)=>{
       }
     });
   }
+  
+
+  getOperationByProcedure2(procedId:any){
+    // console.log(procedId)
+     this.operationService.get_OperationByProceure(procedId).subscribe({
+       complete:()=>{},
+       next:(result)=>{
+         console.log(result);
+         this.operationsAll=result.data
+       },
+       error:(error)=>{
+       }
+     });
+   }
 
   fermerModal(){
   this.addboutton=false;
@@ -242,24 +262,96 @@ searchtypeoperation():void{
   this.loading=false;
  }
 
- saveOperation(){
-  this.operation.isActive=false;
-  this.submitted=true;
-//  console.log(this.operation)
-  if(this.operation.name){
+  saveOperation(){
+    this.operation.isActive=false;
+    this.submitted=true;
+  //  console.log(this.operation)
+    if(this.operation.name){
+      this.confirmationService.confirm({
+        message: 'Voulez-vous enregistrer cette opération?',
+        header: 'Confirmation',
+        acceptLabel:'Oui',
+        rejectLabel:'Non',
+        icon: 'pi pi-exclamation-triangle',
+        acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.operationService.saveProcedure(this.operation).subscribe({
+          next:(value)=>{
+            if(value){
+              this.addboutton=false;
+              if(value.status==201 || value.status==200){
+                setTimeout(() => {
+                  this.loading=false;
+                  this.onSortChange({ value: this.proced });
+                  this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+                }, 2000);
+              }
+              else{
+                this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+                this.loading=false;
+              }
+              this.operationService.search_Procedure("").subscribe({
+                next:(value)=>{
+                  this.operations=value.data;
+                  this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
+                  this.operations.reverse();
+                  for(let i=0;i<this.operations.length;i++){
+                    this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                      complete:()=>{},
+                      next:(result)=>{
+                        this.operations[i].procedure=result.data;
+                      },
+                      error:(er)=>{
+
+                      }
+                    })
+                  }
+              
+                },
+                complete:()=>{},
+                error:(err)=>{}
+              });
+            }    
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+            this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
+
+          }
+        })
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.addboutton=true;
+        this.addUser=true;
+        this.editbutt=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
+        this.loading=false;
+      }
+
+      });
+    }
+    
+  }
+
+  saveEdit(){
+    this.operation.isActive=false;
     this.confirmationService.confirm({
-      message: 'Voulez-vous enregistrer cette opération?',
+      message: 'Voulez-vous modifier cette opération?',
       header: 'Confirmation',
       acceptLabel:'Oui',
       rejectLabel:'Non',
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.loading=true;
-      this.operationService.saveProcedure(this.operation).subscribe({
-        next:(value)=>{
-          if(value){
+      accept: () => {
+        this.loading=true;
+        this.operationService.updateprocedure(this.operation,this.operation.id).subscribe({
+          next:(value)=>{
             this.addboutton=false;
+            this.editbutt=false;   
+            this.modifForm=false;
+
             if(value.status==201 || value.status==200){
               setTimeout(() => {
                 this.loading=false;
@@ -271,145 +363,204 @@ searchtypeoperation():void{
               this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
               this.loading=false;
             }
-            this.operationService.search_Procedure("").subscribe({
-              next:(value)=>{
-                this.operations=value.data;
-                this.operations=this.operations.filter(u=>u.procedureId===this.procedurechoisi.id);
-                this.operations.reverse();
-                for(let i=0;i<this.operations.length;i++){
-                  this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-                    complete:()=>{},
-                    next:(result)=>{
-                      this.operations[i].procedure=result.data;
-                    },
-                    error:(er)=>{
-
-                    }
-                  })
-                }
-             
-              },
-              complete:()=>{},
-              error:(err)=>{}
-            });
-          }    
-        },
-        complete:()=>{},
-        error:(erreur)=>{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: erreur, life: 3000});
-
-        }
-      })
-    },
-    reject:()=>{
-      //this.addboutton=false;
-      this.addboutton=true;
-      this.addUser=true;
-      this.editbutt=false;
-      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Opération non enregistrée', life: 3000});
-      this.loading=false;
-    }
-
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+            this.loading=false;
+            this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
+          }
+        })        
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
+      }
     });
   }
-  
- }
 
- saveEdit(){
-  this.operation.isActive=false;
-  this.confirmationService.confirm({
-    message: 'Voulez-vous modifier cette opération?',
-    header: 'Confirmation',
-    acceptLabel:'Oui',
-    rejectLabel:'Non',
-    icon: 'pi pi-exclamation-triangle',
-    acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.loading=true;
-      this.operationService.updateprocedure(this.operation,this.operation.id).subscribe({
-        next:(value)=>{
-          this.addboutton=false;
-          this.editbutt=false;   
-          this.modifForm=false;
-
-          if(value.status==201 || value.status==200){
-            setTimeout(() => {
+  saveSuivant(){
+    this.operation.isActive=false;
+    const ids = {
+      ids: this.operation?.nextOperationIds || []
+    };
+    console.log(ids)
+    this.confirmationService.confirm({
+      message: 'Voulez-vous modifier cette opération?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.operationService.suivantoperatione(ids,this.operation.id).subscribe({
+          next:(value)=>{
+            this.addboutton=false;
+            this.editbutt=false;   
+            this.modifForm=false;
+            this.preced=false;
+            this.suiv=false;
+            console.log(value)
+            if(value.status==201 || value.status==200){
+              setTimeout(() => {
+                this.loading=false;
+                this.onSortChange({ value: this.proced });
+                this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+              }, 2000);
+            }
+            else{
+              this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
               this.loading=false;
-              this.onSortChange({ value: this.proced });
-              this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
-            }, 2000);
-          }
-          else{
-            this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+            }
+          },
+          complete:()=>{},
+          error:(erreur)=>{
             this.loading=false;
+            this.preced=false;
+            this.suiv=false;
+            this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
           }
-        },
-        complete:()=>{},
-        error:(erreur)=>{
-          this.loading=false;
-          this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
-        }
-      })        
-    },
-    reject:()=>{
-      //this.addboutton=false;
-      this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
-    }
-  });
- }
-
- edit(operation:Operation){
-  this.addboutton = true; // Ouvre le modal
-  this.addUser=false;
-  this.editbutt=true;
-  this.title="Modifier opération";
-  this.operation=operation;
-  this.search_Procedure();
-  this.modifForm=true;
-
- }
-
- deleteOperation(operation:Operation){
-  this.confirmationService.confirm({
-     message: 'Voulez-vous vraiment supprimer cette opération?',
-     header: 'Suppression',
-     acceptLabel:'Oui',
-     rejectLabel:'Non',
-     icon: 'pi pi-exclamation-triangle',
-     acceptButtonStyleClass:'acceptButton',
-    accept: () => {
-      this.loading=true;
-      this.operationService.delete_operation(operation.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          if(result.status==200 || result.status==201){
-            setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
-              this.onSortChange({ value: this.proced });
-            }, 2000);
-          }
-          else{
-            this.loading=false;
-            this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
-          }
-        
-        },
-        error:(error)=>{
-          this.loading=false;
-        }
-    
-      })
-    },
-    reject:()=>{
-      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
-    }
- });
- }
-
- detailsOperation(operation:Operation){
-  this.router.navigate(['/deliacte/operation/details',operation.id])
+        })        
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
+      }
+    });
   }
+  saveprevious(){
+    this.operation.isActive=false;
+    const ids = {
+      ids: this.operation?.previousOperationIds || []
+    };
+    console.log(ids)
+    this.confirmationService.confirm({
+      message: 'Voulez-vous modifier cette opération?',
+      header: 'Confirmation',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.operationService.precedentoperatione(ids,this.operation.id).subscribe({
+          next:(value)=>{
+            this.addboutton=false;
+            this.editbutt=false;   
+            this.modifForm=false;
+            this.preced=false;
+            this.suiv=false;
+            console.log(value)
+            if(value.status==201 || value.status==200){
+              setTimeout(() => {
+                this.loading=false;
+                this.onSortChange({ value: this.proced });
+                this.messageService.add({severity:'success', summary: 'Succès', detail: value.message, life: 3000});
+              }, 2000);
+            }
+            else{
+              this.messageService.add({severity:'error', summary: value.error, detail: value.message, life: 3000});
+              this.loading=false;
+            }
+          },
+          complete:()=>{},
+          error:(erreur)=>{
+            this.loading=false;
+            this.preced=false;
+            this.suiv=false;
+            this.messageService.add({severity:'error', summary: 'Modification', detail: erreur, life: 3000});        
+          }
+        })        
+      },
+      reject:()=>{
+        //this.addboutton=false;
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: ' Annuler la modification', life: 3000});
+      }
+    });
+  }
+  edit(operation:Operation){
+    this.addboutton = true; // Ouvre le modal
+    console.log(operation)
+    this.addUser=false;
+    this.editbutt=true;
+    this.title="Modifier opération";
+    this.operation=operation;
+    this.search_Procedure();
+    this.modifForm=true;
+
+  }
+  editsuivant(operation:Operation){
+    this.suiv=true;
+    this.preced=false;
+    this.organisationChoisi={};
+    this.procedureChoisi={};
+    this.addboutton = true; // Ouvre le modal
+    console.log(operation)
+    this.addUser=false;
+    this.editbutt=true;
+    this.title="Modifier opération";
+    this.operation=operation;
+    this.search_Procedure();
+    this.modifForm=true;
+
+  }
+  editprecedent(operation:Operation){
+    this.preced=true;
+    this.suiv=false;
+    this.organisationChoisi={};
+    this.procedureChoisi={};
+    this.addboutton = true; // Ouvre le modal
+    console.log(operation)
+    this.addUser=false;
+    this.editbutt=true;
+    this.title="Modifier opération";
+    this.operation=operation;
+    this.search_Procedure();
+    this.modifForm=true;
+
+  }
+
+  deleteOperation(operation:Operation){
+    this.confirmationService.confirm({
+      message: 'Voulez-vous vraiment supprimer cette opération?',
+      header: 'Suppression',
+      acceptLabel:'Oui',
+      rejectLabel:'Non',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass:'acceptButton',
+      accept: () => {
+        this.loading=true;
+        this.operationService.delete_operation(operation.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result.status==200 || result.status==201){
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'success', summary: 'Succès', detail: result.message, life: 3000});
+                this.onSortChange({ value: this.proced });
+              }, 2000);
+            }
+            else{
+              this.loading=false;
+              this.messageService.add({severity:'error', summary: 'Suppression', detail: result.error, life: 3000});      
+            }
+          
+          },
+          error:(error)=>{
+            this.loading=false;
+          }
+      
+        })
+      },
+      reject:()=>{
+        this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Suppression annulée', life: 3000});
+      }
+  });
+  }
+
+  detailsOperation(operation:Operation){
+    this.router.navigate(['/deliacte/operation/details',operation.id])
+    }
 
   ajouterChamp(operation:any){
     this.addchamp=true
@@ -459,52 +610,60 @@ searchtypeoperation():void{
       this.operationService.get_Operation(this.proced.id).subscribe({
         next:(value)=>{
           if(value){
+          //  console.log(value)
             this.operations=value.data;
-            for(let i=0;i<this.operations.length;i++){
-              this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
-                complete:()=>{},
-                next:(result)=>{
-                  this.operations[i].procedure=result.data;
-                    },
-                error:(er)=>{
+           // console.log(this.operations)
+           /* if(this.operations){
+              for(let i=0;i<this.operations.length;i++){
+                this.procedureService.get_Procedure( this.operations[i].procedureId).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    this.operations[i].procedure=result.data;
+                      },
+                  error:(er)=>{
+                    console.log(er)
+                  }
+                });
+              if(this.operations[i].operationNextId){
+                this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    this.operations[i].operationNextId=result.data;
+                   // this.loading=false;
+                  }
                 }
-              });
-            if(this.operations[i].operationNextId){
-              this.operationService.get_Procedure(this.operations[i].operationNextId).subscribe({
-                complete:()=>{},
-                next:(result)=>{
-                  this.operations[i].operationNextId=result.data;
-                 // this.loading=false;
-                }
+              );
               }
-            );
-            }
-            else
-            {
-              this.operations[i].operationNextId="";
-    
-            }
-            if(this.operations[i].operationPreviousId){
-              this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
-                complete:()=>{},
-                next:(result)=>{
-                  this.operations[i].operationPreviousId=result.data;
-                }
+              else
+              {
+                this.operations[i].operationNextId="";
+      
               }
-            );
-            }
-            else
-            {
-              this.operations[i].operationPreviousId="";
-    
-            }
-            }
+              if(this.operations[i].operationPreviousId){
+                this.operationService.get_Procedure(this.operations[i].operationPreviousId).subscribe({
+                  complete:()=>{},
+                  next:(result)=>{
+                    this.operations[i].operationPreviousId=result.data;
+                  }
+                }
+              );
+              }
+              else
+              {
+                this.operations[i].operationPreviousId="";
+      
+              }
+              }
+            }*/
+         
           }
         
         },
         complete:()=>{},
         error:(err)=>{}
       });
+   //   console.log(this.proced)
+   //   this.getOperationByProcedure2(this.proced.id)
   }
 
   groupeUser(){
@@ -607,34 +766,6 @@ searchtypeoperation():void{
     
   }
 
-  generatePDF() {
-    // Create a new PDF document.
-    const doc = new jsPDF();
-  
-    // Add content to the PDF.
-    doc.setFontSize(16);
-    doc.text('Liste des opérations', 10, 10);
-    doc.setFontSize(12);
-    
-    // Create a table using `jspdf-autotable`.
-    const headers = [['Nom', 'Description', 'Suivant',"Précédent"]];
-    const data = this.operations.map(operation => [
-      operation.name,
-      operation.description,
-      operation.operationNextId,
-      operation.operationPreviousId
-    ]);
-    
-    autoTable(doc, {
-      head: headers,
-      body: data,
-      startY: 30, // Adjust the `startY` position as needed.
-    });
-  
-    
-    // Save the PDF.
-    doc.save('Liste_user.pdf');
-  }
   
   private async getBase64ImageFromUrl(url: string): Promise<string> {
     const response = await fetch(url);
@@ -689,8 +820,8 @@ searchtypeoperation():void{
       const data = this.operations.map(operation => [
         operation.name,
         operation.description,
-        operation.operationNextId.name || "---",
-        operation.operationPreviousId.name  || "---"
+        operation.nextOperationIds.name || "---",
+        operation.previousOperationIds.name  || "---"
       ]);
   
       // Créer le tableau
@@ -713,4 +844,6 @@ searchtypeoperation():void{
       // Gérer l'erreur, par exemple en affichant un message à l'utilisateur
     }
   }
+
+
 }

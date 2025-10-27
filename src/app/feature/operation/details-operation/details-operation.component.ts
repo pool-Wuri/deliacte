@@ -61,6 +61,7 @@ export class DetailsOperationComponent {
   champsEntitesSelect: any[] = []; // plusieurs lignes sélectionnées
   champsEntitesSelectPass: any[] = []; // plusieurs lignes sélectionnées
   cols!: Column[];
+  operationSuivPrece:any=[];
 
   constructor(
     private route:ActivatedRoute,
@@ -81,7 +82,8 @@ export class DetailsOperationComponent {
       if(this.id){
         this.getProcedure(this.id)
         this.searchRespon(this.id);
-        this.searchEntiteByOperation(this.id)
+        this.searchEntiteByOperation(this.id);
+        this.getNextAndPrevious(this.id);
       }
     }
     );
@@ -96,6 +98,7 @@ export class DetailsOperationComponent {
           //console.log(result)
           if(result.status==200 ||  result.status==201){
             this.operation=result.data;
+            console.log(this.operation)
             this.operationService.searchChamp("").subscribe({
               next:(value)=>{
                 this.champs=value.data;
@@ -134,6 +137,29 @@ export class DetailsOperationComponent {
         }
       })
   }
+
+  getNextAndPrevious(id?:number){
+    this.loading=true;
+   this.operationService.get_OperationById(id).subscribe({
+     complete:()=>{},
+     next:(result)=>{
+       //console.log(result)
+       if(result.status==200 ||  result.status==201){
+        this.operationSuivPrece=result.data;
+         console.log( this.operationSuivPrece)
+       
+       }
+       else{
+         this.loading=false;
+       }
+   
+     },
+     error:(er)=>{
+       this.loading=false;
+
+     }
+   })
+}
 
   searchChamp(){
     this.loading=true;
