@@ -98,7 +98,7 @@ export class DetailsOperationComponent {
           //console.log(result)
           if(result.status==200 ||  result.status==201){
             this.operation=result.data;
-            console.log(this.operation)
+        //    console.log(this.operation)
             this.operationService.searchChamp("").subscribe({
               next:(value)=>{
                 this.champs=value.data;
@@ -146,7 +146,7 @@ export class DetailsOperationComponent {
        //console.log(result)
        if(result.status==200 ||  result.status==201){
         this.operationSuivPrece=result.data;
-         console.log( this.operationSuivPrece)
+      //   console.log( this.operationSuivPrece)
        
        }
        else{
@@ -553,13 +553,13 @@ export class DetailsOperationComponent {
               }, 2000);
             }
             else{
-              this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
+            //  this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
               this.loading=false;
         }
       },
         error:(error)=>{
           this.loading=false;
-          this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
+        //  this.messageService.add({severity:'error', summary: "Erreur", detail: error, life: 3000});
 
         }
 

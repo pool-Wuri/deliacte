@@ -253,7 +253,6 @@ export class DetailsDocAgentComponent {
               this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                 next:(result)=>{
                   this.champs=result.data;
-                  console.log(result)
                   if (this.champs){
                     this.demandeFor = this.champs.map(champ => ({
                       name: '',
@@ -261,15 +260,11 @@ export class DetailsDocAgentComponent {
                     }));
                   }
                   else{
-                    this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
-
                   }
-                
-              
+                  
                 },
                 complete:()=>{},
                 error:(error)=>{
-                  this.messageService.add({severity:'error', summary: error, detail: "Erreur de récupération", life: 3000});
 
                 }
               });
@@ -410,7 +405,7 @@ export class DetailsDocAgentComponent {
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
       this.rejetbutt=true;
-    //  this.loading=true;
+      this.loading=true;
        
     },
     reject:()=>{
@@ -421,7 +416,6 @@ export class DetailsDocAgentComponent {
 
   rejetterOperation(){
     this.rejetbutt=false;
-    console.log(this.operationSelectrejet);
     this.traitement.operationRejectIds = this.operationSelectrejet.map((op: { id: any; }) => op.id);
     //  console.log(this.traitement);
     this.data1 = {
@@ -430,12 +424,14 @@ export class DetailsDocAgentComponent {
     };
     this.procedureService.saveDemande(this.data1,this.numeroDossier).subscribe({
         next:(result)=>{
-          this.router.navigate(['/deliacte/dossier/list']);
-          console.log(result)
-          if(result){
-            this.loading=false;
-            this.messageService.add({severity:'success', summary: 'Succès', detail: 'Dossier rejetté ', life: 3000});
-          }
+          setTimeout(() => {
+            if(result){
+              this.router.navigate(['/deliacte/dossier/list']);
+              this.loading=false;
+              this.messageService.add({severity:'success', summary: 'Succès', detail: 'Dossier rejetté ', life: 3000});
+            }
+          }, 2000);
+         
         },
         complete:()=>{
     

@@ -10,6 +10,7 @@ import { ChampOperation } from 'src/app/core/models/champOperation.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Product } from '../product';
 import { ProductService } from '../ProductService';
+import { OrganisationService } from 'src/app/core/services/organisation.service';
 
 @Component({
   selector: 'app-list-procedure-published',
@@ -67,7 +68,7 @@ export class ListProcedurePublishedComponent {
     private ProcedureService: ProcedureService,
     private router: Router,
     private route: ActivatedRoute, 
-    private confirmationService: ConfirmationService,
+    private organisationService: OrganisationService,
     private messageService: MessageService,
     private operationService:OperationService,
     private productService: ProductService
@@ -123,8 +124,22 @@ export class ListProcedurePublishedComponent {
    search_Procedure():void{
     this.ProcedureService.search_ProcedurePublier("PUBLISHED").subscribe({
       complete:()=>{},
-      next:(result)=>{
-        this.procedures=result.data;
+      next: (result) => {
+        this.procedures = result.data;
+      
+        this.procedures.forEach((procedure) => {
+          if (procedure.organisationId) {
+            this.organisationService.get_Organisation(procedure.organisationId).subscribe({
+              next: (orgResult) => {
+                procedure.organisation = orgResult.data;
+              },
+              error: (err) => {
+                console.error("Erreur récupération organisation :", err);
+              },
+            });
+          }
+        });
+     //   console.log(this.procedures)
         this.filteredProcedures=this.procedures;
         this.totalProcedurespublished = this.procedures.length;
        // this.procedures=this.procedures.filter(u=>u.status === 'PUBLISHED');

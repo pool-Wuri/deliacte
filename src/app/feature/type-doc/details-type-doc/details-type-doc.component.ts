@@ -162,8 +162,7 @@ export class DetailsTypeDocComponent {
                   icon: 'pi pi-check-circle',        // Icône de PrimeNG (en texte)
                   color: "#c8c8c8", // Gris par défaut
                 }));
-             //   console.log(this.events2);
-            //    console.log(this.traitement)
+       
                  for (let i = 0; i < this.events2.length; i++) {
                   if(this.events2[i].status==this.traitement.statusDossier){
                     this.events2[i].color = '#4caf50';
@@ -198,150 +197,44 @@ export class DetailsTypeDocComponent {
         }
     
       });
-    }
-    else if(this.user?.role!=="CITOYEN"){
-      this.traitement={};
-      this.operationPrecedent={};
-      this.operationnow={};
-      this.typeDocService.getDossierPour(id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          console.log(result)
-          this.traitementPass=result.data.traitement;
-          this.dossier=result.data.dossiers;
-       // console.log(this.dossier)
-        for(let i=0;i<this.dossier.length;i++){
-          if (this.dossier[i].champOperation.inputType === "PDF" ||
-            this.dossier[i].champOperation.inputType === "FILE" ||
-            this.dossier[i].champOperation.inputType === "IMAGE") {
-            this.document.push(this.dossier[i]);
+      }
+      else if(this.user?.role!=="CITOYEN"){
+        this.traitement={};
+        this.operationPrecedent={};
+        this.operationnow={};
+        this.typeDocService.getDossierPour(id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.traitementPass=result.data.traitement;
+            this.dossier=result.data.dossiers;
+          for(let i=0;i<this.dossier.length;i++){
+            if (this.dossier[i].champOperation.inputType === "PDF" ||
+              this.dossier[i].champOperation.inputType === "FILE" ||
+              this.dossier[i].champOperation.inputType === "IMAGE") {
+              this.document.push(this.dossier[i]);
+            }
           }
-        }
-        let i = 0;
-        //console.log(this.dossier)
-        while (i < this.dossier.length - 1) { 
-            if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
-                this.dossierTraiter.push(this.dossier[i + 1]);
-                this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
-             
-            } else {
-                i++;  // Incrémente seulement si aucun élément n'est supprimé
-            }
-        }
-        //console.log(this.dossierTraiter)
-        //fin while
-        if(this.traitementPass.status!=this.traitementPass.statusDossier){
-          this.isDisabled=false;
-        }
-       // this.idOperationNow=result.data.traitement.operationId;;
-     //  console.log(this.idOperationNow)
-       /* if(this.traitementPass.status!=this.traitementPass.statusDossier){
-          this.operationService.get_OperationNext(this.idOperationNow).subscribe({
-            next:(result)=>{
-            //  console.log(result)
-              this.traitement.operationId=result.data[0].id;
-              console.log(this.traitement)
-            
-            },
-            complete:()=>{},
-            error:(error)=>{
-            }
-          });
-        }
-        else{
-          this.userService.operationInfo(this.user?.id).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-             // console.log(result)
-            this.operationService.get_OperationNext(this.idOperationNow).subscribe({
-                next:(result)=>{
-                //  console.log(result)
-                  if(result.data.length>1)
-                  {
-                    if(result.data[0].operationPreviousId==this.idOperationNow){
-                      this.operationPrecedent=result.data[1];
-                      this.operationnow=result.data[0];
-                      this.traitement.operationId=this.operationnow.id;
-                    }
-                    else{
-                      this.operationPrecedent=result.data[0];
-                      this.operationnow=result.data[1];
-                      this.traitement.operationId=this.operationnow.id;
-    
-                    }
-                    this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
-                      next:(result)=>{
-                        this.champs=result.data;
-                        if (this.champs){
-                          this.demandeFor = this.champs.map(champ => ({
-                            name: '',
-                            champOperationId: champ.id // ou une autre logique
-                          }));
-                        }
-                      
-                    
-                      },
-                      complete:()=>{},
-                      error:(error)=>{
-                      }
-                    });
-                  }
-                  else{
-                    if(result.data[0].operationPreviousId==this.idOperationNow){
-                      this.operationnow=result.data[0];
-                    //  console.log(this.operationnow)
-
-                      this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
-                        next:(result)=>{
-                          this.operationPrecedent=result.data;
-                        
-                        },
-                        complete:()=>{},
-                        error:(err)=>{}
-                      });
-                      this.traitement.operationId=result.data[0].id;
-                   //   console.log(result.data)
-                      this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
-                        next:(result)=>{
-                        // this.numDossier=result.message;
-                        if(result){
-                          this.champs=result.data;
-                        // this.traitement.operationId=this.champs[0].operationId;
-                        }
-                        
-                          this.demandeFor = this.champs.map(champ => ({
-                            name: '',
-                            champOperationId: champ.id // ou une autre logique
-                          }));
-                         
-                        },
-                        complete:()=>{},
-                        error:(error)=>{
-                        }
-                      });
-                    }
-                    else{
-                      this.operationPrecedent=result.data[0];
-                    }
-                  
-                  }
-                },
-                complete:()=>{},
-                error:(error)=>{
-                }
-              });
-     
-            },
-            error:(error)=>{
-            }
-          });
-        }*/
-        },
-        error:(error)=>{
-        }
-    
-      });
-    }
+          let i = 0;
+          while (i < this.dossier.length - 1) { 
+              if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
+                  this.dossierTraiter.push(this.dossier[i + 1]);
+                  this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
+              
+              } else {
+                  i++;  // Incrémente seulement si aucun élément n'est supprimé
+              }
+          }
+      
+          if(this.traitementPass.status!=this.traitementPass.statusDossier){
+            this.isDisabled=false;
+          }
+      
+          },
+          error:(error)=>{
+          }
+      
+        });
+      }
   }
 
 
@@ -401,7 +294,7 @@ export class DetailsTypeDocComponent {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
-  console.log(this.data1)
+ // console.log(this.data1)
     this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
@@ -576,7 +469,6 @@ export class DetailsTypeDocComponent {
 
 
   modifierDossier(numDossier:number){
-  
     this.traitement.isActive=true;
     this.traitement.statusDossier=this.traitement.status;
     this.indexRequis=[];
