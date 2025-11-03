@@ -10,7 +10,9 @@ const DOCUMENTAPI=environment.mockApiUrl+"/uploads/";
 const DOSSIERBYPROCEDURE=environment.apiUrl+"/dossiers/dossierByProcedure/";
 const DOSSIERAtraiter=environment.apiUrl+"/dossiers/userConnectedDossierATraiter";
 const DOSSIERTraitements=environment.apiUrl+"/dossiers/dossierTraiterByNumero";
-const DOCUMENT_DOWNLOADAPI=environment.apiUrl+"/documentstemplate/pdffromword"
+const DOCUMENT_DOWNLOADAPI=environment.apiUrl+"/documentstemplate/pdffromword";
+const DOSSIER_BY_OPERATION=environment.apiUrl+"/dossiers/atraiterParAgentAffecter";
+
 
 
 
@@ -103,6 +105,19 @@ export class TypeDocService {
   public searchDoosierByProcedure(id:number): Observable<any> {
     return this.http
     .get(DOSSIERBYPROCEDURE +id, {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>
+         {}
+        )
+      );
+  }
+  public searchDoosierByOperations(id:number): Observable<any> {
+    return this.http
+    .get(DOSSIER_BY_OPERATION + '/'+ id, {
         headers: this.httpParams,
         responseType: 'json',
       })

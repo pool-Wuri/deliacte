@@ -460,7 +460,7 @@ export class DetailsOperationComponent {
                     // this.searchUser();
                     },
                     error:(error)=>{
-                      console.log(error);
+                     // console.log(error);
                       this.loading=false;
                     }
                 
@@ -470,6 +470,7 @@ export class DetailsOperationComponent {
         
               },
               error:(error)=>{
+                this.loading=false;
               }
             });
             

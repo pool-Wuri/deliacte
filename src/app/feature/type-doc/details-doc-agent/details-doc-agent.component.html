@@ -223,7 +223,7 @@
       </div>
 
       <div class="p-6">
-        <div class="grid gap-6 md:grid-cols-2 bg-gray-50 p-4 rounded-lg" [class.disabled]="isDisabled" [ngClass]="{'div-disabled': true}">
+        <div class="grid gap-6 md:grid-cols-2 bg-gray-50 p-4 rounded-lg" [class.disabled]="true" [ngClass]="{'div-disabled': true}">
           <ng-container *ngFor="let champ of dossierTraiter; let i = index">
 
             <!-- TEXT / NUMBER / EMAIL / PASSWORD / DATE -->
@@ -381,5 +381,49 @@
   <img *ngIf="imageUrl" [src]="imageUrl" alt="Document Image" width="100%" />
   <pdf-viewer *ngIf="docUrl" [src]="docUrl" [render-text]="true" style="display:block;width:100%;height:500px;"></pdf-viewer>
 </p-dialog>
+
+<p-dialog [(visible)]="rejetbutt" header="Choisir l'opération" [style]="{width: '900px'}" modal="true" styleClass="p-fluid">
+    <div class="card">
+      <p-table [value]="operationrejeter"  [(selection)]="operationSelectrejet"  dataKey="id" [tableStyle]="{'min-width': '50rem'}">
+  
+        <!-- En-tête -->
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th>Libelle</th>
+            <th>Description</th>
+            
+          </tr>
+        </ng-template>
+  
+        <!-- Corps du tableau -->
+        <ng-template pTemplate="body" let-operation>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="operation"></p-tableCheckbox>
+            </td>
+            <td>{{ operation.name }}</td>
+            <td>{{ operation.description }}</td>
+        
+          </tr>
+        </ng-template>
+  
+      </p-table>
+  
+    
+    </div>
+    <div class="mt-6">
+      <button  type="button" style="background-color: #ff0000;"  (click)="fermerBuuton()"
+      class="py-2.5 px-5 ms-3 text-sm font-medium text-white  hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 rounded-full">Annuler</button>
+      <button type="button" style="background-color: #060;" (click)="rejetterOperation()"
+      class="text-white  hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 
+      font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+      Valider</button>
+    
+    </div>
+    
+  </p-dialog>
 
 <p-confirmDialog [style]="{width: '40vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

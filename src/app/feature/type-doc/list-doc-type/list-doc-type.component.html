@@ -19,6 +19,18 @@
   <!-- Table Toolbar -->
   <div class="flex flex-col md:flex-row items-start md:items-center justify-between bg-gray-50 p-4 border-b border-gray-200 space-y-3 md:space-y-0">
 
+    <div class="w-full md:w-auto flex justify-end md:justify-start"   *ngIf="user && user.role === AGENT" >
+        <p-dropdown  
+          
+            [options]="operationsAgent" 
+            optionLabel="name"   
+            [(ngModel)]="operationChoisi" 
+            placeholder="Choisir l'opération" 
+            (onChange)="onSortChangeAgent($event)" 
+            styleClass="w-full md:w-60">
+        </p-dropdown>
+      </div>
+    
     <!-- Dropdown Procédure -->
     <div class="w-full md:w-auto flex justify-end md:justify-start">
       <p-dropdown  
@@ -31,7 +43,7 @@
           styleClass="w-full md:w-60">
       </p-dropdown>
     </div>
-  
+   
     <!-- Search Box (desktop uniquement, aligné à droite) -->
     <span class="p-input-icon-left w-full md:w-64 hidden md:block">
       <input 
@@ -75,10 +87,14 @@
             <td class="px-4 py-3">{{ doss.numeroDossier || '---' }}</td>
             <td class="px-4 py-3">{{ doss.updatedAt | date:'dd/MM/yyyy' }}</td>
             <td class="px-4 py-3 flex space-x-2">
-              <button type="button" title="Visualiser"  
+              <button *ngIf="user && user.role === AGENT" type="button" title="Visualiser"  
+                      (click)="detailsTypeAgent(doss)"
+                      class="bg-green-100 text-green-600 hover:bg-green-200 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
+                      <button *ngIf="user && user.role !== AGENT" type="button" title="Visualiser"  
                       (click)="detailsType(doss)"
                       class="bg-green-100 text-green-600 hover:bg-green-200 font-medium rounded-full p-2.5 pi pi-eye transition-colors duration-200"></button>
-              <button type="button" title="Supprimer" 
+              
+                      <button type="button" title="Supprimer" 
                       class="bg-red-600 text-white hover:bg-red-700 font-medium rounded-full p-2.5 pi pi-eraser transition-colors duration-200"></button>
             </td>
           </tr>

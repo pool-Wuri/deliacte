@@ -14,12 +14,15 @@ import { ConfirmationService, MessageService, PrimeIcons } from 'primeng/api';
 import { __core_private_testing_placeholder__ } from '@angular/core/testing';
 import { Location } from '@angular/common';
 
+
+
 @Component({
-  selector: 'app-details-type-doc',
-  templateUrl: './details-type-doc.component.html',
-  styleUrls: ['./details-type-doc.component.scss']
+  selector: 'app-details-doc-agent',
+  templateUrl: './details-doc-agent.component.html',
+  styleUrls: ['./details-doc-agent.component.scss']
 })
-export class DetailsTypeDocComponent {
+export class DetailsDocAgentComponent {
+
 
   id:number | undefined;
   Typedoc=new TypeDoc;
@@ -76,6 +79,11 @@ export class DetailsTypeDocComponent {
     indexRequis:number[]=[];
     idfile!:number;
     filurl:any;
+    numeroDossier!: number;
+    idOperation!: number;
+    rejetbutt:boolean=false;
+    operationrejeter:any;
+    operationSelectrejet:any;
 
   constructor(private route:ActivatedRoute,
       private typeDocService:TypeDocService,
@@ -95,8 +103,14 @@ export class DetailsTypeDocComponent {
       this.user = JSON.parse(userData);
     }
     this.route.params.subscribe(params => {
+      this.numeroDossier = params['numeroDossier'];
+      this.idOperation = params['idOperation']!;
+
+      console.log('Numéro du dossier :', this.numeroDossier);
+      console.log('ID de l’opération :', this.idOperation);
+
       this.id = params['id']; 
-      this.getDossier(this.id)
+      this.getDossier(this.numeroDossier)
      }
     );
     this.events2 = [
@@ -206,10 +220,8 @@ export class DetailsTypeDocComponent {
       this.typeDocService.getDossierPour(id).subscribe({
         complete:()=>{},
         next:(result)=>{
-          console.log(result)
           this.traitementPass=result.data.traitement;
           this.dossier=result.data.dossiers;
-       // console.log(this.dossier)
         for(let i=0;i<this.dossier.length;i++){
           if (this.dossier[i].champOperation.inputType === "PDF" ||
             this.dossier[i].champOperation.inputType === "FILE" ||
@@ -228,114 +240,45 @@ export class DetailsTypeDocComponent {
                 i++;  // Incrémente seulement si aucun élément n'est supprimé
             }
         }
-        //console.log(this.dossierTraiter)
-        //fin while
+        this.traitement.operationId=this.idOperation;
+        this.isDisabled=true;
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
-          this.isDisabled=false;
+          
         }
-       // this.idOperationNow=result.data.traitement.operationId;;
-     //  console.log(this.idOperationNow)
-       /* if(this.traitementPass.status!=this.traitementPass.statusDossier){
-          this.operationService.get_OperationNext(this.idOperationNow).subscribe({
-            next:(result)=>{
-            //  console.log(result)
-              this.traitement.operationId=result.data[0].id;
-              console.log(this.traitement)
-            
-            },
-            complete:()=>{},
-            error:(error)=>{
-            }
-          });
-        }
-        else{
-          this.userService.operationInfo(this.user?.id).subscribe({
-            complete:()=>{},
-            next:(result)=>{
-             // console.log(result)
-            this.operationService.get_OperationNext(this.idOperationNow).subscribe({
+        this.operationService.get_OperationById(this.idOperation).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            this.operationnow=result.data;
+            if(this.operationnow){
+              this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
                 next:(result)=>{
-                //  console.log(result)
-                  if(result.data.length>1)
-                  {
-                    if(result.data[0].operationPreviousId==this.idOperationNow){
-                      this.operationPrecedent=result.data[1];
-                      this.operationnow=result.data[0];
-                      this.traitement.operationId=this.operationnow.id;
-                    }
-                    else{
-                      this.operationPrecedent=result.data[0];
-                      this.operationnow=result.data[1];
-                      this.traitement.operationId=this.operationnow.id;
-    
-                    }
-                    this.operationService.get_ChampByOperation(this.operationnow.id).subscribe({
-                      next:(result)=>{
-                        this.champs=result.data;
-                        if (this.champs){
-                          this.demandeFor = this.champs.map(champ => ({
-                            name: '',
-                            champOperationId: champ.id // ou une autre logique
-                          }));
-                        }
-                      
-                    
-                      },
-                      complete:()=>{},
-                      error:(error)=>{
-                      }
-                    });
+                  this.champs=result.data;
+                  console.log(result)
+                  if (this.champs){
+                    this.demandeFor = this.champs.map(champ => ({
+                      name: '',
+                      champOperationId: champ.id // ou une autre logique
+                    }));
                   }
                   else{
-                    if(result.data[0].operationPreviousId==this.idOperationNow){
-                      this.operationnow=result.data[0];
-                    //  console.log(this.operationnow)
+                    this.messageService.add({severity:'error', summary: result.error, detail: result.message, life: 3000});
 
-                      this.operationService.get_Procedure(result.data[0].operationPreviousId).subscribe({
-                        next:(result)=>{
-                          this.operationPrecedent=result.data;
-                        
-                        },
-                        complete:()=>{},
-                        error:(err)=>{}
-                      });
-                      this.traitement.operationId=result.data[0].id;
-                   //   console.log(result.data)
-                      this.operationService.get_ChampByOperation(result.data[0].id).subscribe({
-                        next:(result)=>{
-                        // this.numDossier=result.message;
-                        if(result){
-                          this.champs=result.data;
-                        // this.traitement.operationId=this.champs[0].operationId;
-                        }
-                        
-                          this.demandeFor = this.champs.map(champ => ({
-                            name: '',
-                            champOperationId: champ.id // ou une autre logique
-                          }));
-                         
-                        },
-                        complete:()=>{},
-                        error:(error)=>{
-                        }
-                      });
-                    }
-                    else{
-                      this.operationPrecedent=result.data[0];
-                    }
-                  
                   }
+                
+              
                 },
                 complete:()=>{},
                 error:(error)=>{
+                  this.messageService.add({severity:'error', summary: error, detail: "Erreur de récupération", life: 3000});
+
                 }
               });
-     
-            },
-            error:(error)=>{
             }
-          });
-        }*/
+          },
+          error:(err)=>{
+          },
+
+        })
         },
         error:(error)=>{
         }
@@ -401,7 +344,7 @@ export class DetailsTypeDocComponent {
         traitement: this.traitement,
         dossiers: this.demandeFor
     }
-  console.log(this.data1)
+ // console.log(this.data1)
     this.confirmationService.confirm({
       message: 'Voulez-vous valider cette opération?',
       header: 'Confirmation',
@@ -424,7 +367,7 @@ export class DetailsTypeDocComponent {
     
         },
         error:(error)=>{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traietement du dossier', life: 3000});
+          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traitement du dossier', life: 3000});
           setTimeout(() => {
             this.loading=false;
           }, 2000);
@@ -447,7 +390,17 @@ export class DetailsTypeDocComponent {
       this.data1 = {
         traitement: this.traitement,
         dossiers: []
-      }
+      };
+      this.operationService.get_OperationById(this.idOperation).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          this.operationnow=result.data;
+         this.operationrejeter=this.operationnow.previous;
+        },
+        error:(err)=>{
+        },
+
+      })
     this.confirmationService.confirm({
       message: 'Voulez-vous rejeter ce dossier?',
       header: 'Confirmation',
@@ -456,10 +409,29 @@ export class DetailsTypeDocComponent {
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass:'acceptButton',
     accept: () => {
-      this.loading=true;
-      this.procedureService.saveDemande(this.data1,numDossier).subscribe({
+      this.rejetbutt=true;
+    //  this.loading=true;
+       
+    },
+    reject:()=>{
+      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
+    }
+    });
+  }
+
+  rejetterOperation(){
+    this.rejetbutt=false;
+    console.log(this.operationSelectrejet);
+    this.traitement.operationRejectIds = this.operationSelectrejet.map((op: { id: any; }) => op.id);
+    //  console.log(this.traitement);
+    this.data1 = {
+      traitement: this.traitement,
+      dossiers: []
+    };
+    this.procedureService.saveDemande(this.data1,this.numeroDossier).subscribe({
         next:(result)=>{
           this.router.navigate(['/deliacte/dossier/list']);
+          console.log(result)
           if(result){
             this.loading=false;
             this.messageService.add({severity:'success', summary: 'Succès', detail: 'Dossier rejetté ', life: 3000});
@@ -469,18 +441,16 @@ export class DetailsTypeDocComponent {
     
         },
         error:(error)=>{
-          this.messageService.add({severity:'error', summary: 'Erreur', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
+          this.messageService.add({severity:'error', summary: error, detail: 'Erreur de traitement du dossier,dossier non rejetté', life: 3000});
           setTimeout(() => {
             this.loading=false;
           }, 2000);
         }
-      });        
-    },
-    reject:()=>{
-      this.messageService.add({severity:'error', summary: 'Annuler', detail: 'Erreur de traietement du dossier,dossier non rejetté', life: 3000});
+      });     
+  }
 
-    }
-    });
+  fermerBuuton(){
+    this.rejetbutt=false;
   }
 
   onOptionChange(option: string, index: number) {

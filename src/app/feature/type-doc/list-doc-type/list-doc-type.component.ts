@@ -29,6 +29,8 @@ validButtn:boolean=false;
 procedurechoisi=new Procedure;
 procedures=new Array<Procedure>();
 operations=new Array <Operation>();
+operationsAgent=new Array <Operation>();
+
 user: User | null = null;
 doosierUser:any;
 dossierAff:any;
@@ -38,6 +40,8 @@ procedure=new Procedure;
 operationTrou=new Array <Operation>();
 proceduresTrou=new Array<Procedure>();
 PROCEDURE_MANAGER='PROCEDURE_MANAGER';
+AGENT='AGENT';
+operationChoisi:any;
 dossier:any;
 displayBasic: boolean=false;
 
@@ -69,132 +73,152 @@ HIDDEN="HIDDEN";
 loading:boolean=false;
 
 
-constructor(
-  private typeDocService:TypeDocService,
-  private router:Router,
-  private confirmationService: ConfirmationService,
-  private messageService: MessageService,
-  private procedureService:ProcedureService,
-  private operationService:OperationService,
-  private userService:UtilisateurService,
-  private authService:AuthentificationService
+  constructor(
+    private typeDocService:TypeDocService,
+    private router:Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private procedureService:ProcedureService,
+    private operationService:OperationService,
+    private userService:UtilisateurService,
+    private authService:AuthentificationService
 
-){
-}
-
-ngOnInit(): void {
-  const userData = localStorage.getItem('user');
-  if (userData) {
-    this.user = JSON.parse(userData);
+  ){
   }
-  //this.searchType();
-  this.getDossier();
-  this.search_Procedure();
- }
 
- searchType():void{
-  this.typeDocService.search_TypeDoc().subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.typeDcs=result;
-     // console.log(result)
-    },
-    error:(error)=>{
-      //console.log(error)
-    }
+  ngOnInit(): void {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        this.user = JSON.parse(userData);
+      }
+      //this.searchType();
+      this.getDossier();
+      this.search_Procedure();
+      this.getOperationByAgent();
+  }
 
-  })
- }
+  searchType():void{
+    this.typeDocService.search_TypeDoc().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.typeDcs=result;
+      // console.log(result)
+      },
+      error:(error)=>{
+        //console.log(error)
+      }
 
- fermerModal(){
-  this.addbutton=false;
- }
+    })
+  }
+
+  fermerModal(){
+    this.addbutton=false;
+  }
+
+  getOperationByAgent(){
+    this.operationService.search_Operation().subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.operationsAgent=result.data;
+      //  console.log(this.operationsAgent)
+      },
+      error:(error)=>{
+        //console.log(error)
+      }
+
+    })
+  }
+
+  detailsType(dossier: any) {
+    this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
+  }
+
+  detailsTypeAgent(dossier: any) {
+    this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier, this.operationChoisi.id]);
+  }
 
 
- detailsType(dossier: any) {
-  this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier]);
-}
+  modifierDossier(dossier: any) {
+    this.displayBasic=true;
+    this.typeDocService.getDossier(dossier.numeroDossier).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+      this.dossier=result.data;
+      },
+      error:(error)=>{
+      }
 
+    })
+  }
 
-modifierDossier(dossier: any) {
-  this.displayBasic=true;
-  this.typeDocService.getDossier(dossier.numeroDossier).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-     this.dossier=result.data;
-    },
-    error:(error)=>{
-    }
+  editDossier(){
 
-  })
-}
+  }
 
-editDossier(){
+  getDossier(){
+   // this.loading=true;
+      if(this.user?.role=="CITOYEN"){
+        this.typeDocService.searchDoosier().subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result.status==200 || result.status==201){
+              this.doosierUser=result.data;
+              this.loading=false;
+            }
+            else{
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
+                this.authService.logOut();
+              }, 2000);
+            }
+          },
+          error:(error)=>{
+          //  console.log(error);
+            if(error.error.status==500){
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'error', summary: error.error.error, detail: 'Veuillez vous reconnecter', life: 3000});
+                this.authService.logOut();
 
-}
+              }, 2000);
+            }
+          }
+        });
+      }
 
-getDossier(){
-  this.loading=true;
-    if(this.user?.role=="CITOYEN"){
-      this.typeDocService.searchDoosier().subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          if(result.status==200 || result.status==201){
-            this.doosierUser=result.data;
+      else if(this.user?.role!=="AGENT"){
+        this.userService.operationInfo(this.user?.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+          },
+          error:(error)=>{
+          }
+        });
+        this.typeDocService.getDossierAtraiter().subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result.status==200 || result.status==201){
+              this.doosierUser=result.data;
+            // console.log(this.doosierUser)
+              this.loading=false;
+            }
+            else{
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
+                this.authService.logOut();
+              }, 2000);
+            }
+          },
+          error:(error)=>{
             this.loading=false;
           }
-          else{
-            setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
-              this.authService.logOut();
-            }, 2000);
-          }
-        },
-        error:(error)=>{
-        //  console.log(error);
-          if(error.error.status==500){
-            setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'error', summary: error.error.error, detail: 'Veuillez vous reconnecter', life: 3000});
-              this.authService.logOut();
+        });
+        
+      }
+  }
 
-            }, 2000);
-          }
-        }
-      });
-    }
-    else{
-      this.userService.operationInfo(this.user?.id).subscribe({
-        complete:()=>{},
-        next:(result)=>{
-        },
-        error:(error)=>{
-        }
-      });
-      this.typeDocService.getDossierAtraiter().subscribe({
-        complete:()=>{},
-        next:(result)=>{
-          if(result.status==200 || result.status==201){
-            this.doosierUser=result.data;
-           // console.log(this.doosierUser)
-            this.loading=false;
-          }
-          else{
-            setTimeout(() => {
-              this.loading=false;
-              this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
-              this.authService.logOut();
-            }, 2000);
-          }
-        },
-        error:(error)=>{
-          this.loading=false;
-        }
-      });
-      
-    }
-}
   searchOperation():void{
     this.operationService.search_Procedure("").subscribe({
       next:(value)=>{
@@ -235,7 +259,7 @@ getDossier(){
   
   }
 
- onSortChange(event: { value: any; }) {
+  onSortChange(event: { value: any; }) {
   let proced = event.value;
   this.getProcedure();
   this.typeDocService.searchDoosierByProcedure(this.procedurechoisi.id || 0).subscribe({
@@ -249,6 +273,21 @@ getDossier(){
 
   });
 
+  }
+
+  onSortChangeAgent(event: { value: any; }) {
+    this.typeDocService.searchDoosierByOperations(this.operationChoisi.id || 0).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+       // console.log(result)
+        this.doosierUser=result.data;
+      
+      },
+      error:(error)=>{
+      }
+  
+    });
+  
   }
   
   getProcedure(id?:number){

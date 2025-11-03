@@ -35,6 +35,7 @@ export class MotDepassOublieComponent {
       "password":null,
       "encodeEmail": null
     }
+    console.log(this.dataMailOubli)
       this.confirmationService.confirm({
         message: 'Voulez-vous reinitialiser votre mot de passe?',
         header: 'Confirmation',
@@ -47,7 +48,7 @@ export class MotDepassOublieComponent {
         this.authentificationService.oublieservice(this.dataMailOubli).subscribe({
           complete:()=>{},
           next:(result)=>{
-          //  console.log(result+"User add");
+           console.log(result+"User add");
             setTimeout(() => {
               this.loading=false;
               this.messageService.add({severity:'success', summary: 'Succès', detail: 'Verifier votre boite mail pour valider', life: 3000});

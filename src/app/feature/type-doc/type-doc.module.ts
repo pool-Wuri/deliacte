@@ -29,6 +29,7 @@ import { DetailsTypeDocComponent } from './details-type-doc/details-type-doc.com
 import {TimelineModule} from 'primeng/timeline';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { DetailsDocAgentComponent } from './details-doc-agent/details-doc-agent.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
     TypeDocComponent,
     ListDocTypeComponent,
     DetailsTypeDocComponent,
+    DetailsDocAgentComponent,
     
 
   ],

@@ -5,6 +5,8 @@ import { environment } from 'src/environnements/environment';
 
 
 const PROCEDURE_API=environment.apiUrl +"/operations";
+const OPERATIONAPI=environment.apiUrl +"/operations/all";
+
 const OPERATION_API=environment.apiUrl +"/operations/previous-next-operations";
 const USER_API=environment.apiUrl + "/users"
 const CHAMP=environment.apiUrl+ "/champ-operations";
@@ -33,6 +35,21 @@ export class OperationService {
   public search_Procedure(filterParam =''): Observable<any> {
     return this.http
     .get(PROCEDURE_API , {
+        headers: this.httpParams,
+        responseType: 'json',
+      })
+      .pipe(
+        retry(1),
+        tap((data: any) =>{
+        //  console.log('api.service > get_formulaire > tap > server data :',data)     
+
+        }
+        )
+      );
+  }
+  public search_Operation(filterParam =''): Observable<any> {
+    return this.http
+    .get(OPERATIONAPI , {
         headers: this.httpParams,
         responseType: 'json',
       })
@@ -122,7 +139,6 @@ export class OperationService {
       );
   }
 
-
   public get_OperationById(id?:number): Observable<any> {
     return this.http
       .get(OPERATION_API+ '/' + id, {
@@ -139,6 +155,7 @@ export class OperationService {
         )
       );
   }
+
   public get_Operation(id?:number): Observable<any> {
     return this.http
       .get(OPERATIONPROCEDURE+ '/' + id, {
@@ -245,6 +262,7 @@ export class OperationService {
         )
       );
   }
+
   searchOperationByProcedure(procedureId?:number): Observable<any> {
     return this.http
       .get(ProcedureOPERATION+ '/' + procedureId, {
@@ -295,7 +313,6 @@ export class OperationService {
         )
       );
   }
-
 
 
   public get_ChampByOperation(id?:number): Observable<any> {
