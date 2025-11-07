@@ -221,7 +221,7 @@ loading:boolean=false;
         
       }
 
-      else if(this.user?.role!=="PROCEDURE_MANAGER"){
+      else if(this.user?.role=="PROCEDURE_MANAGER"){
         this.userService.operationInfo(this.user?.id).subscribe({
           complete:()=>{},
           next:(result)=>{
