@@ -378,9 +378,10 @@ export class DetailsDocAgentComponent {
 
 
   rejetterDossier(numDossier:number){
-      if(this.traitementPass.status!==this.traitementPass.statusDossier){
+    /*  if(this.traitementPass.status!==this.traitementPass.statusDossier){
         this.traitement.operationId=this.traitementPass.operationId;
-      }
+      }*/
+      this.traitement.operationId=this.idOperation;
       this.traitement.isActive=false;
       this.data1 = {
         traitement: this.traitement,
@@ -417,11 +418,12 @@ export class DetailsDocAgentComponent {
   rejetterOperation(){
     this.rejetbutt=false;
     this.traitement.operationRejectIds = this.operationSelectrejet.map((op: { id: any; }) => op.id);
-    //  console.log(this.traitement);
+    //console.log(this.traitement);
     this.data1 = {
       traitement: this.traitement,
       dossiers: []
     };
+   // console.log(this.data1)
     this.procedureService.saveDemande(this.data1,this.numeroDossier).subscribe({
         next:(result)=>{
           setTimeout(() => {

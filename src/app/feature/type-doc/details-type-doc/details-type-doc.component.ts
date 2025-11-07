@@ -122,7 +122,7 @@ export class DetailsTypeDocComponent {
         complete:()=>{},
         next:(result)=>{
          this.dossier=result.data.dossiers;
-      //   console.log(this.dossier)
+         console.log(this.dossier)
          this.numDossier=result.data.traitement.numeroDossier;
          let i = 0;
          while (i < this.dossier.length - 1) { 
