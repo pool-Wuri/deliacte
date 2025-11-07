@@ -4,7 +4,7 @@ import { Observable, retry, tap } from 'rxjs';
 import { environment } from 'src/environnements/environment';
 
 const TYPEDOC_API=environment.apiUrl +"/type-documents";
-const DOSSIER=environment.apiUrl+"/dossiers";
+const DOSSIER=environment.apiUrl+"/dossiers/userConnectedDossier";
 const DOSSIERBYCITOYEN=environment.apiUrl+"/dossiers/dossierByNumero/"
 const DOCUMENTAPI=environment.mockApiUrl+"/uploads/";
 const DOSSIERBYPROCEDURE=environment.apiUrl+"/dossiers/dossierByProcedure/";

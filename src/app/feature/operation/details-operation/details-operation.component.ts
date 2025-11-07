@@ -369,7 +369,21 @@ export class DetailsOperationComponent {
 
 
     retirerUser(user:User){
-      this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+      this.userService.operationInfo(user.id).subscribe({
+        complete:()=>{},
+        next:(result)=>{
+          if(result){
+            this.operationsIds.operationsIds = []; // Initialiser si nécessaire
+            this.operationsIds.operationsIds = result.data.filter(
+              (item: any) => item.id !== this.id
+            );
+            this.operationsIds.operationsIds = this.operationsIds.operationsIds?.map((item: any) => item.id);           
+          }
+        },
+        error:(error)=>{
+          this.loading=false;
+        }
+      });
       this.confirmationService.confirm({
         message: 'Voulez-vous vraiment lui retirer de cette opération?',
         header: 'Confirmation',
@@ -378,9 +392,30 @@ export class DetailsOperationComponent {
         icon: 'pi pi-exclamation-triangle',
         acceptButtonStyleClass:'acceptButton',
       accept: () => { 
+        this.userService.assigneroperation(this.operationsIds,user.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+          // console.log(result)
+            if(result.status==200 || result.status==201){
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'success', summary: 'Succès', detail: 'Utilisateur affecté', life: 3000});
+                this.searchRespon(this.id ?? 0);
+              }, 2000);
+            }
+            else{
+              this.messageService.add({severity:'error', summary: 'Echec', detail:result.error, life: 3000});
+              this.loading=false;
 
-        this.messageService.add({severity:'success', summary: 'Succès', detail: 'Opération retirée', life: 3000});
-          //Actual logic to perform a confirmation
+            }
+          // this.searchUser();
+          },
+          error:(error)=>{
+           // console.log(error);
+            this.loading=false;
+          }
+      
+        });
           
       },
       reject:()=>{
@@ -429,7 +464,7 @@ export class DetailsOperationComponent {
         acceptButtonStyleClass:'acceptButton',
         accept: () => {
           this.listeUser=false;
-          this.operationsIds.operationsIds = []; // Initialiser si nécessaire    
+     //     this.operationsIds.operationsIds = [];
           this.loading=true;
           for(let i=0;i<this.usergroup.length;i++){
             if(this.usergroup[i].id){
@@ -437,8 +472,9 @@ export class DetailsOperationComponent {
               complete:()=>{},
               next:(result)=>{
                 if(result){
-                  for(let i=0;i<result.data.length;i++){
-                    this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+                  this.operationsIds.operationsIds = [];
+                  for(let j=0;j<result.data.length;j++){
+                    this.operationsIds.operationsIds?.push(result.data[j].id);
                   }
                   this.operationsIds.operationsIds?.push(this.operation.id || 0);
                   this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({

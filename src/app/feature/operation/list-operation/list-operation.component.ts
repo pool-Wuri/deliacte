@@ -710,7 +710,6 @@ ngOnInit(): void {
 
   userSelet(){
     this.listeUser=false;
-    this.operationsIds.operationsIds = []; // Initialiser si nécessaire   
     this.confirmationService.confirm({
       message: 'Voulez-vous vraiment affecter ces agents à l\'opération?',
       header: 'Confirmation',
@@ -725,8 +724,9 @@ ngOnInit(): void {
             this.userService.operationInfo(this.usergroup[i].id).subscribe({
               complete:()=>{},
               next:(result)=>{
+                this.operationsIds.operationsIds = []; // Initialiser si nécessaire   
                 for(let i=0;i<result.data.length;i++){
-                  this.operationsIds.operationsIds ?.push(result.data[i].id); // Initialiser si nécessaire
+                  this.operationsIds.operationsIds?.push(result.data[i].id); // Initialiser si nécessaire
                 }
                 this.operationsIds.operationsIds?.push(this.selectedOperation[0].id || 0);
                   this.userService.assigneroperation(this.operationsIds,this.usergroup[i].id).subscribe({

@@ -30,6 +30,7 @@ procedurechoisi=new Procedure;
 procedures=new Array<Procedure>();
 operations=new Array <Operation>();
 operationsAgent=new Array <Operation>();
+operationsManager=new Array <Operation>();
 
 user: User | null = null;
 doosierUser:any;
@@ -41,6 +42,8 @@ operationTrou=new Array <Operation>();
 proceduresTrou=new Array<Procedure>();
 PROCEDURE_MANAGER='PROCEDURE_MANAGER';
 AGENT='AGENT';
+CITOYEN='CITOYEN';
+
 operationChoisi:any;
 dossier:any;
 displayBasic: boolean=false;
@@ -120,7 +123,7 @@ loading:boolean=false;
       complete:()=>{},
       next:(result)=>{
         this.operationsAgent=result.data;
-      //  console.log(this.operationsAgent)
+      // console.log(this.operationsAgent)
       },
       error:(error)=>{
         //console.log(error)
@@ -217,6 +220,38 @@ loading:boolean=false;
         });
         
       }
+
+      else if(this.user?.role!=="PROCEDURE_MANAGER"){
+        this.userService.operationInfo(this.user?.id).subscribe({
+          complete:()=>{},
+          next:(result)=>{
+          },
+          error:(error)=>{
+          }
+        });
+        this.typeDocService.getDossierAtraiter().subscribe({
+          complete:()=>{},
+          next:(result)=>{
+            if(result.status==200 || result.status==201){
+              this.doosierUser=result.data;
+            // console.log(this.doosierUser)
+              this.loading=false;
+            }
+            else{
+              setTimeout(() => {
+                this.loading=false;
+                this.messageService.add({severity:'error', summary: 'Erreur', detail: result.error, life: 3000});
+                this.authService.logOut();
+              }, 2000);
+            }
+          },
+          error:(error)=>{
+            this.loading=false;
+          }
+        });
+        
+      }
+
   }
 
   searchOperation():void{
@@ -260,18 +295,28 @@ loading:boolean=false;
   }
 
   onSortChange(event: { value: any; }) {
-  let proced = event.value;
-  this.getProcedure();
-  this.typeDocService.searchDoosierByProcedure(this.procedurechoisi.id || 0).subscribe({
-    complete:()=>{},
-    next:(result)=>{
-      this.doosierUser=result.data;
-    
-    },
-    error:(error)=>{
-    }
+    let proced = event.value;
+    this.getProcedure();
+    this.operationService.get_OperationByProceure(proced.id).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        console.log(result)
+        this.operationsManager=result.data;
+        console.log(this.operationsManager)
+        //this.doosierUser=result.data;
+      },
+      error:(error)=>{
+      }
+    });
+  /* this.typeDocService.searchDoosierByProcedure(this.procedurechoisi.id || 0).subscribe({
+      complete:()=>{},
+      next:(result)=>{
+        this.doosierUser=result.data;
+      },
+      error:(error)=>{
+      }
 
-  });
+    });*/
 
   }
 
