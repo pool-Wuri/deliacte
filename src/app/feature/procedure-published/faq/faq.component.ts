@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class FaqComponent {
 
+    isMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
 }

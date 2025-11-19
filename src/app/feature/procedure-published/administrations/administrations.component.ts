@@ -32,6 +32,7 @@ export class AdministrationsComponent {
 // filteredOrganisations: any[] = [];
   searchTerm: string = '';
    isSearching = false;
+   isMenuOpen = false;
   //filteredOrganisations = [...this.organisations];
   constructor(
     private organisationService: OrganisationService,
@@ -46,6 +47,9 @@ export class AdministrationsComponent {
   }
 
   
+  toggleMobileMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   searchOrganisation():void{
     

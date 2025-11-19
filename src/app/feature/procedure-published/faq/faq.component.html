@@ -77,50 +77,61 @@
 <body class="min-h-screen">
      <!-- Header -->
     <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo et titre -->
-                <div class="flex items-center space-x-3">
-                    <div class="h-10 w-10 bg-burkina-red rounded-full flex items-center justify-center">
-                         <img src="assets/img/armoiriePh.jpeg" alt="Logo Burkina Faso" class="h-10 w-10">
-                    </div>
-                    <div class="flex items-center space-x-2">
-                         <!-- Navigation<i class="fas fa-globe text-burkina-green text-xl"></i> -->
-                        <span class="text-xl font-bold text-gray-900">Deliacte</span>
-                    </div>
-                </div>
-                
-                <!-- Navigation -->
-                <nav class="hidden md:flex space-x-8">
-                    <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
-                    <a [routerLink]="'/deliacte/procedure-published/list'"  class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
-                    <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
-                    <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
-                </nav>
-                
-                <!-- Boutons d'action -->
-                <div class="flex items-center space-x-3">
-                    <button class="text-gray-700 hover:text-burkina-green">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
-                        Se déconnecter
-                    </button>
-                    <button type="button"  [routerLink]="'/deliacte/login/suiviDemande'" routerLinkActive="active" class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors" style="background-color: #060;">
-                        Voir Dossier
-                    </button>
-                     <!--<div class="flex space-x-1">
-                        <button class="p-2 text-gray-500 hover:text-burkina-green">
-                            <i class="fab fa-facebook"></i>
-                        </button>
-                        <button class="p-2 text-gray-500 hover:text-burkina-green">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                    </div>-->
-                </div>
-            </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      
+      <!-- Logo et titre -->
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 bg-burkina-red rounded-full flex items-center justify-center">
+          <img src="assets/img/armoiriePh.jpeg" alt="Logo Burkina Faso" class="h-10 w-10">
         </div>
-    </header>
+        <span class="text-xl font-bold text-gray-900">Deliacte</span>
+      </div>
+
+      <!-- Navigation Desktop -->
+      <nav class="hidden md:flex space-x-8">
+        <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+        <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
+        <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
+        <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
+      </nav>
+
+      <!-- Actions Desktop -->
+      <div class="hidden md:flex items-center space-x-3">
+        <button class="text-gray-700 hover:text-burkina-green">
+          <i class="fas fa-search"></i>
+        </button>
+        <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
+          Se déconnecter
+        </button>
+        <button type="button" [routerLink]="'/deliacte/login/suiviDemande'" routerLinkActive="active" class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors">
+          Voir Dossier
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <div class="md:hidden">
+        <button (click)="isMenuOpen = !isMenuOpen" class="text-gray-700 hover:text-burkina-green focus:outline-none">
+          <i class="fas fa-bars fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav *ngIf="isMenuOpen" class="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full z-50">
+      <div class="flex flex-col space-y-2 p-4">
+        <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+        <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
+        <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
+        <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
+        <button type="button" [routerLink]="'/deliacte/login'" class="text-gray-700 hover:text-burkina-green transition-colors text-left">Se déconnecter</button>
+        <button type="button" [routerLink]="'/deliacte/login/suiviDemande'" class="bg-burkina-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors mt-2 text-left">Voir Dossier</button>
+      </div>
+    </nav>
+
+  </div>
+</header>
+
 
     <!-- Section Hero pour FAQ -->
     <section class="faq-hero relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-16 md:py-24">

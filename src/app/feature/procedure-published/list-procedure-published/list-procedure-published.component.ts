@@ -59,6 +59,8 @@ export class ListProcedurePublishedComponent {
     itemsPerPage = 6;
     totalProcedurespublished: number = 0;
 
+    mobileMenuOpen = false;
+
 
   parseStatus(status: string): string {
     return ProcedureStatus[status as keyof typeof ProcedureStatus] || 'Statut inconnu';
@@ -105,6 +107,11 @@ export class ListProcedurePublishedComponent {
 
 
   
+// menu mobile
+toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
   onSearch1() {
   
     this.filteredProcedures=this.procedures;
