@@ -11,6 +11,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Product } from '../product';
 import { ProductService } from '../ProductService';
 import { OrganisationService } from 'src/app/core/services/organisation.service';
+import { AuthentificationService } from 'src/app/core/services/authentification.service';
 
 @Component({
   selector: 'app-list-procedure-published',
@@ -18,6 +19,7 @@ import { OrganisationService } from 'src/app/core/services/organisation.service'
   styleUrls: ['./list-procedure-published.component.scss']
 })
 export class ListProcedurePublishedComponent {
+  isMenuOpen: boolean = false;
 
   procedures=new Array <Procedure>();
 
@@ -73,6 +75,7 @@ export class ListProcedurePublishedComponent {
     private organisationService: OrganisationService,
     private messageService: MessageService,
     private operationService:OperationService,
+    private authentificationService: AuthentificationService,
     private productService: ProductService
 
   ) {
@@ -271,5 +274,11 @@ showDialog(position: string) {
   this.position = position;
   this.visible = true;
 }
+
+
+  seConnecter(){
+    this.authentificationService.logOut();
+    this.router.navigate(['/deliacte/login']);
+  }
 
 }

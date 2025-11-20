@@ -58,14 +58,17 @@ onResize(event: any) {
       this.sidebarOpenChange.emit(this.sidebarOpen);
     }
   }
-
+  
   @HostListener('document:keydown.escape', ['$event'])
-  onEscPress(event: KeyboardEvent) {
+  onEscPress(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
     if (this.sidebarOpen) {
       this.sidebarOpen = false;
       this.sidebarOpenChange.emit(this.sidebarOpen);
     }
   }
+  
   }
+  
 
 

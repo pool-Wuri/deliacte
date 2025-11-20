@@ -137,7 +137,13 @@ loading:boolean=false;
   }
 
   detailsTypeAgent(dossier: any) {
-    this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier, this.operationChoisi.id]);
+    if(!this.operationChoisi){
+      this.messageService.add({severity:'error', summary: 'Operation non choisie', detail: "choisir l'operation d'abord", life: 3000});
+    }
+    else{
+      this.router.navigate(['/deliacte/dossier/details', dossier.numeroDossier, this.operationChoisi.id]);
+
+    }
   }
 
 
@@ -300,9 +306,9 @@ loading:boolean=false;
     this.operationService.get_OperationByProceure(proced.id).subscribe({
       complete:()=>{},
       next:(result)=>{
-        console.log(result)
+       // console.log(result)
         this.operationsManager=result.data;
-        console.log(this.operationsManager)
+       // console.log(this.operationsManager)
         //this.doosierUser=result.data;
       },
       error:(error)=>{
@@ -342,21 +348,25 @@ loading:boolean=false;
         this.procedure=result;
         this.operationService.search_Procedure("").subscribe({
           next:(value)=>{
-            this.operations=value;
-            this.operations=this.operations.filter(u=>u.procedureId==this.procedurechoisi.id);
-            this.operations=this.operations.filter(u=>u.name=="SOUMISSION");
-            if(this.operations[0]){
-              this.operationService.searchChamp("").subscribe({
-                next:(value)=>{
-                  this.champs=value;
-                  this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
-                   
-              
-                },
-                complete:()=>{},
-                error:(err)=>{}
-              })
+            this.operations=value.data;
+            //console.log(this.operations)
+            if(this.operations){
+              this.operations=this.operations.filter(u=>u.procedureId==this.procedurechoisi.id);
+              this.operations=this.operations.filter(u=>u.name=="SOUMISSION");
+              if(this.operations[0]){
+                this.operationService.searchChamp("").subscribe({
+                  next:(value)=>{
+                    this.champs=value.data;
+                    this.champs=this.champs.filter(u=>u.operationId===this.operations[0].id)
+                     
+                
+                  },
+                  complete:()=>{},
+                  error:(err)=>{}
+                })
+              }
             }
+        
            
           
           },
