@@ -90,19 +90,19 @@
 
                 <!-- Navigation Desktop -->
                 <nav class="hidden md:flex space-x-8">
-                    <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+                    <!--a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
                     <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
                     <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
-                    <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
+                    <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a-->
                 </nav>
 
                 <!-- Boutons d'action -->
                 <div class="hidden md:flex items-center space-x-3">
                     <button class="text-gray-700 hover:text-burkina-green">
-                        <i class="fas fa-search"></i>
+                      <!--  <i class="fas fa-search"></i>-->
                     </button>
-                    <button type="button" [routerLink]="'/deliacte/login'" routerLinkActive="active" class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
-                        Se déconnecter
+                    <button type="button" (click)="seConnecter()" routerLinkActive="active" class="px-4 py-2 text-gray-700 hover:text-burkina-green transition-colors">
+                        Se Connecter
                     </button>
                     <button type="button" [routerLink]="'/deliacte/login/suiviDemande'" routerLinkActive="active" class="px-4 py-2 bg-burkina-green text-white rounded-lg hover:bg-green-700 transition-colors">
                         Voir Dossier
@@ -114,11 +114,11 @@
         <!-- Menu Mobile -->
         <nav *ngIf="mobileMenuOpen" class="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full z-50">
             <div class="flex flex-col space-y-2 p-4">
-                <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
+                <!--a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Accueil</a>
                 <a [routerLink]="'/deliacte/procedure-published/list'" class="text-gray-700 hover:text-burkina-green transition-colors">Procédures</a>
                 <a [routerLink]="'/deliacte/procedure-published/administrations'" class="text-gray-700 hover:text-burkina-green transition-colors">Administration Publique</a>
-                <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a>
-                <button type="button" [routerLink]="'/deliacte/login'" class="text-gray-700 hover:text-burkina-green transition-colors text-left">Se déconnecter</button>
+                <a [routerLink]="'/deliacte/procedure-published/faq'" class="text-gray-700 hover:text-burkina-green transition-colors">Faq</a-->
+                <button type="button" (click)="seConnecter()" class="text-gray-700 hover:text-burkina-green transition-colors text-left">Se Connecter</button>
                 <button type="button" [routerLink]="'/deliacte/login/suiviDemande'" class="bg-burkina-green text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors mt-2 text-left">Voir Dossier</button>
             </div>
         </nav>
@@ -144,9 +144,9 @@
                 </p>
                 
                 <!-- Barre de recherche -->
-                <div class="bg-white rounded-lg p-2 flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-2 shadow-none">
+                <!--div class="bg-white rounded-lg p-2 flex flex-col md:flex-row items-center md:items-start gap-2 md:gap-2 shadow-none">
                     
-                <!-- <i class="fas fa-search text-gray-400 ml-0 md:ml-4"></i>-->
+                <i class="fas fa-search text-gray-400 ml-0 md:ml-4"></i>
 
                     <input 
                         type="text" 
@@ -163,7 +163,7 @@
                     >
                         Rechercher
                     </button>
-                </div>
+                </div-->
             </div>
         </div>
     </section>
@@ -181,7 +181,7 @@
             <!-- Texte -->
             <div class="text-white">
                 <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                    Plus de {{ totalProcedurespublished }} procédures gouvernementales maintenant disponibles
+                    Plus de {{ totalProcedurespublished }} procédure(s) gouvernementales maintenant disponibles
                 </h2>
                 <p class="text-xl mb-6">
                     de plus de 50 Ministères, Directions, et Départements.
