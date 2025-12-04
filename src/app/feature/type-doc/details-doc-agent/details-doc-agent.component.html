@@ -159,55 +159,57 @@
 
         </ng-container>
       </div>
-    </div>
+
 
     <!-- Documents joints (remplace p-table par cartes façon maquette) -->
-    <div class="bg-white rounded-xl card-shadow-strong overflow-hidden">
-      <div class="bg-gradient-to-r from-[#FCD116] to-yellow-500 px-6 py-3">
-        <div class="flex items-center gap-3">
-          <i class="pi pi-paperclip text-gray-800 text-xl"></i>
-          <h2 class="text-xl font-bold text-gray-800">Documents Joints</h2>
-        </div>
-      </div>
-
-      <div class="p-6 space-y-3">
-        <div *ngFor="let doc of document" class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div class="flex items-center gap-4 flex-1">
-            <div class="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                 [ngClass]="{
-                   'bg-red-600': doc.champOperation?.inputType==='PDF',
-                   'bg-blue-500': doc.champOperation?.inputType==='IMAGE',
-                   'bg-purple-500': doc.champOperation?.inputType==='FILE'
-                 }">
-              <i class="pi" [ngClass]="{
-                   'pi-file-pdf': doc.champOperation?.inputType==='PDF',
-                   'pi-image': doc.champOperation?.inputType==='IMAGE',
-                   'pi-file': doc.champOperation?.inputType==='FILE'
-              }"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-gray-900">{{ doc.champOperation?.name }}</p>
-              <p class="text-sm text-gray-500">{{ doc.champOperation?.inputType }}</p>
-            </div>
-          </div>
-          <div class="flex gap-2">
-            <button type="button" (click)="voirDoc(doc)"
-                    class="px-4 py-2 bg-[#00853F] text-white rounded-lg hover:bg-green-700 text-sm">
-              <i class="pi pi-eye mr-1"></i> Voir
-            </button>
-            <button type="button" (click)="telechargerDoc(doc)"
-                    class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm">
-              <i class="pi pi-download mr-1"></i> Télécharger
-            </button>
+      <div class="bg-white rounded-xl card-shadow-strong overflow-hidden" style="width: 95%;margin-left: 2%;margin-right: 2%;">
+        <div class="bg-gradient-to-r from-[#FCD116] to-yellow-500 px-6 py-3">
+          <div class="flex items-center gap-3">
+            <i class="pi pi-paperclip text-gray-800 text-xl"></i>
+            <h2 class="text-xl font-bold text-gray-800">Documents Joints</h2>
           </div>
         </div>
 
-        <!-- Message vide -->
-        <div *ngIf="!document || document.length===0" class="p-4 text-center text-gray-500">
-          Document non trouvé
+        <div class="p-6 space-y-3">
+          <div *ngFor="let doc of document" class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <div class="flex items-center gap-4 flex-1">
+              <div class="w-12 h-12 rounded-lg flex items-center justify-center text-white"
+                  [ngClass]="{
+                    'bg-red-600': doc.champOperation?.inputType==='PDF',
+                    'bg-blue-500': doc.champOperation?.inputType==='IMAGE',
+                    'bg-purple-500': doc.champOperation?.inputType==='FILE'
+                  }">
+                <i class="pi" [ngClass]="{
+                    'pi-file-pdf': doc.champOperation?.inputType==='PDF',
+                    'pi-image': doc.champOperation?.inputType==='IMAGE',
+                    'pi-file': doc.champOperation?.inputType==='FILE'
+                }"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900">{{ doc.champOperation?.name }}</p>
+                <p class="text-sm text-gray-500">{{ doc.champOperation?.inputType }}</p>
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button type="button" (click)="voirDoc(doc)"
+                      class="px-4 py-2 bg-[#00853F] text-white rounded-lg hover:bg-green-700 text-sm">
+                <i class="pi pi-eye mr-1"></i> Voir
+              </button>
+              <button type="button" (click)="telechargerDoc(doc)"
+                      class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm">
+                <i class="pi pi-download mr-1"></i> Télécharger
+              </button>
+            </div>
+          </div>
+
+          <!-- Message vide -->
+          <div *ngIf="!document || document.length===0" class="p-4 text-center text-gray-500">
+            Document non trouvé
+          </div>
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- COLONNE DROITE : Traitement (agent) -->
@@ -222,7 +224,19 @@
         </div>
       </div>
 
+      <hr class="my-2 border-gray-300">
+
+      <div class="px-6 py-3 border-b">
+        <h2 class="text-center text-2xl font-bold text-black">
+          Opération passée
+        </h2>
+      </div>
       <div class="p-6">
+        <div *ngIf="dossierTraiter.length==0">
+          <h2 class="text-center text-2xl text-black">
+            Aucun champ associé
+          </h2>
+        </div>
         <div class="grid gap-6 md:grid-cols-2 bg-gray-50 p-4 rounded-lg" [class.disabled]="true" [ngClass]="{'div-disabled': true}">
           <ng-container *ngFor="let champ of dossierTraiter; let i = index">
 
@@ -286,20 +300,24 @@
         </div>
 
         <!-- Commentaire "traitementPass" (conservé) -->
-        <div class="mt-4">
+        <!--div class="mt-4">
           <label class="block text-sm font-semibold text-gray-700 mb-2">Commentaire</label>
           <textarea rows="4" [(ngModel)]="traitementPass.commentaire" [disabled]="true"
                     class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00853F] focus:border-[#00853F] resize-none"
                     placeholder="Écrivez votre commentaire..."></textarea>
-        </div>
+        </div-->
       </div>
-    </div>
 
-    <!-- Opération en cours : reprend tes variables champs/demandeFor -->
+        <!-- Opération en cours : reprend tes variables champs/demandeFor -->
     <div class="bg-white rounded-xl card-shadow-strong overflow-hidden" *ngIf="operationnow">
+      <hr class="my-2 border-gray-300">
+
       <div class="px-6 py-3 border-b">
-        <h2 class="text-center text-2xl font-bold text-black">{{ operationnow.name }}</h2>
+        <h2 class="text-center text-2xl font-bold text-black">
+          {{ operationnow.name }}
+        </h2>
       </div>
+      
 
       <div class="p-6 grid gap-6 md:grid-cols-2">
         <ng-container *ngFor="let champ of champs; let i = index">
@@ -353,11 +371,11 @@
       </div>
 
       <!-- Commentaire traitement (conservé) -->
-      <div class="px-6 pb-6">
+      <!--div class="px-6 pb-6">
         <label class="block text-sm font-semibold text-gray-700 mb-2">Commentaire</label>
         <textarea rows="4" [(ngModel)]="traitement.commentaire"
                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00853F] focus:border-[#00853F]"></textarea>
-      </div>
+      </div-->
 
       <!-- Boutons d’action -->
       <div class="px-6 pb-6 flex flex-col sm:flex-row gap-3 justify-end">
@@ -373,6 +391,9 @@
         </button>
       </div>
     </div>
+    </div>
+
+  
   </div>
 </div>
 

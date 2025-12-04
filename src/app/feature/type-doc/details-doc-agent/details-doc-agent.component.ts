@@ -105,10 +105,6 @@ export class DetailsDocAgentComponent {
     this.route.params.subscribe(params => {
       this.numeroDossier = params['numeroDossier'];
       this.idOperation = params['idOperation']!;
-
-      console.log('Numéro du dossier :', this.numeroDossier);
-      console.log('ID de l’opération :', this.idOperation);
-
       this.id = params['id']; 
       this.getDossier(this.numeroDossier)
      }
@@ -148,6 +144,8 @@ export class DetailsDocAgentComponent {
                  i++;  // Incrémente seulement si aucun élément n'est supprimé
              }
          }
+         console.log(this.dossierTraiter)
+
          
          for(let i=0;i<this.dossier.length;i++){
           if (this.dossier[i].champOperation.inputType === "PDF" ||
@@ -235,13 +233,15 @@ export class DetailsDocAgentComponent {
             if (this.dossier[i + 1].champOperation.operationId !== this.dossier[0].champOperation.operationId) {
                 this.dossierTraiter.push(this.dossier[i + 1]);
                 this.dossier.splice(i + 1, 1);  // Supprime un élément à l'index i+1
-             
+
             } else {
                 i++;  // Incrémente seulement si aucun élément n'est supprimé
             }
         }
         this.traitement.operationId=this.idOperation;
         this.isDisabled=true;
+        console.log(this.dossierTraiter)
+
         if(this.traitementPass.status!=this.traitementPass.statusDossier){
           
         }
